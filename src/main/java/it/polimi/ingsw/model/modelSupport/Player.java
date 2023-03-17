@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.modelSupport;
 
-public class Player {
+import it.polimi.ingsw.model.Game;
+
+public class Player extends Game {
     private String nickname;
     private Client ofClient;
     private String UID;
