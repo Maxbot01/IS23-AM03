@@ -4,13 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="Classe player">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/BoardCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Shelf.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/colorType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/ornamentType.java" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="directory management">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameLobby.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameStateType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/InitStateMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/MatchStateMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/Message.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,9 +48,12 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
   }
 }]]></component>
@@ -104,14 +111,7 @@
       <option name="project" value="LOCAL" />
       <updated>1679062925504</updated>
     </task>
-    <task id="LOCAL-00006" summary="Classe player">
-      <created>1679064305038</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1679064305038</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,7 +160,6 @@
     <MESSAGE value="creazione classe Game" />
     <MESSAGE value="creazione classe Controller" />
     <MESSAGE value="directory management" />
-    <MESSAGE value="Classe player" />
-    <option name="LAST_COMMIT_MESSAGE" value="Classe player" />
+    <option name="LAST_COMMIT_MESSAGE" value="directory management" />
   </component>
 </project>
