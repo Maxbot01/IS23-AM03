@@ -1,6 +1,12 @@
 package it.polimi.ingsw.model.modelSupport;
 
-public class Livingroom extends Ciao {
+import it.polimi.ingsw.model.Game;
+
+
+public class Livingroom extends Game {
     //added by enrico
     //added again
 }
+
+
+
