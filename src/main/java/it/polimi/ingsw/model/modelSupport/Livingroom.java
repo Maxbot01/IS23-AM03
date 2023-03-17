@@ -1,4 +1,7 @@
 package it.polimi.ingsw.model.modelSupport;
 
-public class Livingroom {
+import it.polimi.ingsw.model.Game;
+
+public class Livingroom extends Game {
+
 }
