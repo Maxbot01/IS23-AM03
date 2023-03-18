@@ -8,7 +8,7 @@ public class Player{
     private PersonalGoalType personalGoal;
     private boolean hasChair;
     private Shelf withShelf;
-    private turnStateType turnState;
+    private TurnStateType turnState;
 
     //TODO: fare l'inizializzazione migliore con input anche il client
 
