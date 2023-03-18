@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.modelSupport;
 
-import it.polimi.ingsw.model.Game;
-
-public class Player extends Game {
+public class Player{
     private String nickname;
     private Client ofClient;
     private String UID;
@@ -12,7 +10,15 @@ public class Player extends Game {
     private Shelf withShelf;
     private turnStateType turnState;
 
+    //TODO: fare l'inizializzazione migliore con input anche il client
+
+    Player(){
+        hasChair = false;
+    }
     public Integer getScore() {
         return score;
+    }
+    public void setHasChair(){
+        hasChair = true;
     }
 }

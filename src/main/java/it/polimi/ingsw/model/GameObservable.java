@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.messageModel.Message;
+import it.polimi.ingsw.model.modelSupport.Player;
 
 public abstract class GameObservable {
 
