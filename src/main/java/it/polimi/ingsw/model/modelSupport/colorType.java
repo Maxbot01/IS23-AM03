@@ -6,5 +6,6 @@ public enum colorType {
     LIGHT_BLUE,
     YELLOW,
     WHITE,
-    GREEN
+    GREEN,
+    THOMBSTONE
 }
