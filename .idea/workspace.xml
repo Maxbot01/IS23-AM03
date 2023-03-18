@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b653871e-4adf-4647-8ee3-609c0437085b" name="Changes" comment="directory management" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="created CommonGoals, some error messages, Pair and worked on Game">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/colorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/colorType.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -58,12 +62,13 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b653871e-4adf-4647-8ee3-609c0437085b" name="Changes" comment="directory management" />
+      <changelist id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="" />
       <created>1678902372336</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678902372336</updated>
       <workItem from="1678902374655" duration="7636000" />
+      <workItem from="1679140207267" duration="7796000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1678903177375</created>
@@ -100,7 +105,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679062925504</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="created CommonGoals, some error messages, Pair and worked on Game">
+      <created>1679140836621</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1679140836621</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -111,19 +123,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/main" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -149,6 +149,7 @@
     <MESSAGE value="creazione classe Game" />
     <MESSAGE value="creazione classe Controller" />
     <MESSAGE value="directory management" />
-    <option name="LAST_COMMIT_MESSAGE" value="directory management" />
+    <MESSAGE value="created CommonGoals, some error messages, Pair and worked on Game" />
+    <option name="LAST_COMMIT_MESSAGE" value="created CommonGoals, some error messages, Pair and worked on Game" />
   </component>
 </project>
