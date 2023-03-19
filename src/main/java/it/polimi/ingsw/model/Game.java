@@ -18,15 +18,15 @@ import java.util.stream.Collectors;
 //this class handles the state of a match
 public class Game extends GameObservable{
 
-    private final ArrayList<Player> players;
-    private final LivingRoom livingRoom;
-    private final CommonGoals commonGoals;
-    private final Player playingPlayer;
+    private  ArrayList<Player> players;
+    private LivingRoom livingRoom;
+    private CommonGoals commonGoals;
+    private Player playingPlayer;
 
     private GameStateType gameState;
 
 
-    Game(ArrayList<Player> fromPlayers){
+    public Game(ArrayList<Player> fromPlayers){
         this.players = new ArrayList<Player>(fromPlayers);
         //set up players info
         this.setPlayersUp();
