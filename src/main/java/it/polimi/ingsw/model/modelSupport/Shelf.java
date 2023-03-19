@@ -1,28 +1,106 @@
 package it.polimi.ingsw.model.modelSupport;
 
-import it.polimi.ingsw.model.Game;
 
-// Bisognerebbe chiamarla in questo modo:
-// BoardCard[][] cards = new BoardCard[6][5];
- // Shelf shelf = new Shelf(cards);
+import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 
-public class Shelf extends Game {
-    private BoardCard[][] ShelfCards;
-    private static final int ROWSLEN = 6 ;
-    private static final int COLUMNSLEN = 5 ;
+import java.util.ArrayList;
 
-    public Shelf(BoardCard[][] ShelfCards) {
-        this.ShelfCards = ShelfCards;
+
+/**
+ * A class representing a shelf that can hold BoardCard objects.
+ */
+public class Shelf {
+
+    private BoardCard[][] shelfCards;
+    private static final int ROWS_LEN = 6;
+    private static final int COLUMNS_LEN = 5;
+
+    /**
+     * Constructs a new Shelf object with a 2D array of BoardCard objects.
+     */
+    public Shelf() {
+        this.shelfCards = new BoardCard[ROWS_LEN][COLUMNS_LEN];
     }
 
+    /**
+     * Returns whether the shelf is full and cannot hold any more BoardCard objects.
+     * @return true if the shelf is full, false otherwise
+     */
     public boolean isFull() {
-        for (int i = 0; i < ROWSLEN; i++) {
-            for (int j = 0; j < COLUMNSLEN; j++) {
-                if (ShelfCards[i][j] == null) {
+        for (int i = 0; i < ROWS_LEN; i++) {
+            for (int j = 0; j < COLUMNS_LEN; j++) {
+                if (shelfCards[i][j] == null) {
                     return false;
                 }
             }
         }
         return true;
     }
+
+    /**
+     * Adds a list of BoardCard objects to a column in the shelf.
+     * @param selCards the list of cards to add to the column
+     * @param colIndex the index of the column to add the cards to
+     * @throws ColumnNotSelectable if the column index is invalid, the list of cards is too long, or the column is already full
+     */
+    public void insertInColumn(ArrayList<BoardCard> selCards, Integer colIndex) throws ColumnNotSelectable {
+        // check if the column index is valid
+        if (colIndex < 0 || colIndex >= COLUMNS_LEN) {
+            throw new ColumnNotSelectable("Invalid column index");
+        }
+        // check if the list of cards to add is too long
+        if (selCards.size() > 3) {
+            throw new ColumnNotSelectable("Cannot select more than 3 cards");
+        }
+        // check if the column is already full
+        if (columnIsFull(colIndex)) {
+            throw new ColumnNotSelectable("Selected column is already full");
+        }
+        // find the first empty row in the column
+        int row = 0;
+        while (row < ROWS_LEN && shelfCards[row][colIndex] != null) {
+            row++;
+        }
+        // check if there is enough space in the column for the selected cards
+        if (row + selCards.size() > ROWS_LEN) {
+            throw new ColumnNotSelectable("Cannot add cards to column: not enough space");
+        }
+        for (BoardCard card : selCards) {
+            shelfCards[row][colIndex] = selCards;
+            row++;
+        }
+    }
+
+    /**
+     * Checks whether a given column in the shelf is full.
+     * @param colIndex the index of the column to check
+     * @return true if the column is full, false otherwise
+     */
+    private boolean columnIsFull(int colIndex) {
+        for (int i = 0; i < ROWS_LEN; i++) {
+            if (shelfCards[i][colIndex] == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns the current state of the shelf as a 2D array of BoardCard objects.
+     * @return a 2D array of BoardCard objects representing the current state of the shelf
+     */
+    public BoardCard[][] getShelfCards() {
+        return shelfCards;
+    }
+
+    /**
+     * Returns the BoardCard object at the specified position in the shelf.
+     * @param row the row index of the position
+     * @param column the column index of the position
+     * @return the BoardCard object at the specified position
+     */
+    public BoardCard getCardAtPosition(int row, int column) {
+        return shelfCards[row][column];
+    }
 }
+
