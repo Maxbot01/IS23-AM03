@@ -5,10 +5,9 @@ import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.errorMessages.SelectedColumnsMessageError;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
-import it.polimi.ingsw.model.modelSupport.BoardCard;
-import it.polimi.ingsw.model.modelSupport.CommonGoals;
-import it.polimi.ingsw.model.modelSupport.LivingRoom;
-import it.polimi.ingsw.model.modelSupport.Player;
+import it.polimi.ingsw.model.modelSupport.*;
+import it.polimi.ingsw.model.modelSupport.enums.TurnStateType;
+import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +28,6 @@ public class Game extends GameObservable{
     public Game(ArrayList<Player> fromPlayers){
         this.players = new ArrayList<Player>(fromPlayers);
         //set up players info
-        this.setPlayersUp();
-
         //send message of game created
         livingRoom = new LivingRoom(players.size());
         commonGoals = new CommonGoals();
@@ -43,19 +40,14 @@ public class Game extends GameObservable{
         super.notifyAllObservers(new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectables(), this.commonGoals, new HashMap<>(players, players.stream().map(x -> x.personalGoal).Collect(Collectors.toList())), players, players.stream().reduce(x->x.hasChair)));
     }
 
-    private void setPlayersUp(){
-        for(int i = 0; i < players.size(); i++){
-
-        }
-    }
 
 
-    public void selectedCards(ArrayList<Pair> selected){
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected){
         /*
         l'utente sa che carte poteva scegliere, le ha scelte. Il metodo aggiorna la board (i pezzi) chiamando updateBoard di Livingroom.
         Invia il messaggio al controller
-     */
-        ArrayList<BoardCard> updatedCards = livingRoom.updateBoard(selected);
+         */
+        BoardCard[][] updatedCards = livingRoom.updateBoard(selected);
         super.notifyAllObservers(new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selected, livingRoom.calculateSelectables(), livingRoom.getPieces(), playingPlayer));
     }
 
@@ -66,9 +58,9 @@ public class Game extends GameObservable{
     controlliamo se la board va refillata (livingRoom::refillBoard) mandiamo il messaggio.
     Il current player nuovo si riconosce nel messaggio e il controller sa che può scegliere le carte.
      */
-    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex){
+    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex) {
         try {
-            shelf.insertInColumn();
+            playingPlayer.getPlayersShelf().insertInColumn(colIndex);
         }
         catch(ColumnNotSelectable e) {
             //can't insert the items in the columns
@@ -76,8 +68,11 @@ public class Game extends GameObservable{
             super.notifyObserver(playingPlayer, new SelectedColumnsMessageError());
             return;
         }
+
         //the shelf is updated
+
         //calculate the points of the player
+
 
     }
 

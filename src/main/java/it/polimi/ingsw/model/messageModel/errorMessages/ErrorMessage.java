@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model.messageModel.errorMessages;
 
-public abstract class ErrorMessage {
+import it.polimi.ingsw.model.messageModel.Message;
+
+public abstract class ErrorMessage extends Message {
 }

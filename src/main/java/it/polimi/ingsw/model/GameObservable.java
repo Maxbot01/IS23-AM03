@@ -5,10 +5,10 @@ import it.polimi.ingsw.model.modelSupport.Player;
 
 public abstract class GameObservable {
 
-    protected void notifyObserver(Player toPlayer, Message withMessage) throws Exception{
+    protected void notifyObserver(Player toPlayer, Message withMessage){
 
     }
-    protected void notifyAllObservers(List<Player> toPlayers, Message withMessage) throws Exception{
+    protected void notifyAllObservers(List<Player> toPlayers, Message withMessage){
         //send the message
 
     }
