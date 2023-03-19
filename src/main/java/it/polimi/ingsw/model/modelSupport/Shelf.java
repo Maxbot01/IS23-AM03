@@ -65,8 +65,8 @@ public class Shelf {
         if (row + selCards.size() > ROWS_LEN) {
             throw new ColumnNotSelectable("Cannot add cards to column: not enough space");
         }
-        for (BoardCard card : selCards) {
-            shelfCards[row][colIndex] = selCards;
+        for (BoardCard selCard : selCards) {
+            shelfCards[row][colIndex] = selCard;
             row++;
         }
     }
