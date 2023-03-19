@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.modelSupport;
 
+import it.polimi.ingsw.model.modelSupport.enums.ConnectionType;
+
 public class Client {
     private String IP;
     private ConnectionType withConnectionType;
