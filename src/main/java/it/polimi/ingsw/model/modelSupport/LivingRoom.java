@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model.modelSupport;
+import it.polimi.ingsw.model.helpers.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -141,6 +143,17 @@ public class LivingRoom{
             }
        }
        return selectable;
+    }
+
+
+
+
+        }
+
+
+
+
+
     }
 
     /**
