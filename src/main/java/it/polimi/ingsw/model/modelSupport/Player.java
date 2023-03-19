@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.modelSupport;
 
+import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
+import it.polimi.ingsw.model.modelSupport.enums.TurnStateType;
+
 public class Player{
     private String nickname;
     private Client ofClient;
