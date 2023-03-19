@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.modelSupport;
+import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +147,23 @@ public class LivingRoom{
        return selectable;
     }
 
+    public BoardCard[][] updateBoard(ArrayList<Pair<Integer ,Integer>> selected ) throws UnselectableCardException {
+        for (Pair<Integer, Integer> coordinates : selected) {
+            int i = coordinates.getFirst();
+            int j = coordinates.getSecond();
+            if (!(isPresent(i, j) && freeCorner(i, j))) {
+                throw new UnselectableCardException();
+            }
+        }
+        for (Pair<Integer, Integer> coordinates : selected) {
+            int i = coordinates.getFirst();
+            int j = coordinates.getSecond();
+            pieces[i][j] = THOMBSTONE;
+        }
+        return pieces;
+    }
+
+
     /**
      * Checks if an item in the board has adjacent items
      * @param i i coordinate
@@ -171,6 +190,7 @@ public class LivingRoom{
 
     }
 
+
     //funzione che calcola se la tessera ha ALMENO un lato libero
     private boolean freeCorner(int i, int j){
         if (i == 0 || i == DIM - 1 || j == 0 || j == DIM - 1) return true;
@@ -181,7 +201,7 @@ public class LivingRoom{
 
     //funzione che calcola se una tessera è presente nella Livingroom  (altrimenti è null o THOMBSTONE)
     private boolean isPresent(int i, int j){
-        return pieces[i][j] != THOMBSTONE && pieces[i][j] != null;
+        return (pieces[i][j] != THOMBSTONE) && (pieces[i][j] != null);
     }
 
 }
