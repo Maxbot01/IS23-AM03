@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model.modelSupport;
-import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,17 +143,6 @@ public class LivingRoom{
             }
        }
        return selectable;
-    }
-
-
-
-
-        }
-
-
-
-
-
     }
 
     /**

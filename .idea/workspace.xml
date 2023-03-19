@@ -4,9 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2967b32f-f35f-426d-b635-894e5729a555" name="Changes" comment="una LivingRoom che manco Scavolini">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="created CommonGoals, some error messages, Pair and worked on Game">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/exceptions/ColumnNotSelectable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/BoardCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/BoardCard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/ConnectionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/enums/ConnectionType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/PersonalGoalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/enums/PersonalGoalType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/TurnStateType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/enums/TurnStateType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/colorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/enums/colorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/ornamentType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/enums/ornamentType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +70,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2967b32f-f35f-426d-b635-894e5729a555" name="Changes" comment="una LivingRoom che manco Scavolini" />
+      <changelist id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="" />
       <created>1678902372336</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
