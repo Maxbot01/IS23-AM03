@@ -172,8 +172,8 @@ public class LivingRoom{
     public BoardCard getBoardCardAt(Pair<Integer,Integer> coordinates){
         int i = coordinates.getFirst();
         int j = coordinates.getSecond();
-        if(isPresent(i,j))
-            throw new UnselectableCardException;
+        if(!isPresent(i,j))
+            throw new UnselectableCardException();
         else return pieces[i][j];{
 
         }
