@@ -169,14 +169,13 @@ public class LivingRoom{
         return pieces;
     }
 
-    public BoardCard getBoardCardAt(Pair<Integer,Integer> coordinates){
+    public BoardCard getBoardCardAt(Pair<Integer,Integer> coordinates) throws UnselectableCardException{
         int i = coordinates.getFirst();
         int j = coordinates.getSecond();
         if(!isPresent(i,j))
             throw new UnselectableCardException();
-        else return pieces[i][j];{
+        else return pieces[i][j];
 
-        }
     }
 
     /**
