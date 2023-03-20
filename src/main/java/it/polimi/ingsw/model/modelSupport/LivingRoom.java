@@ -109,7 +109,7 @@ public class LivingRoom{
      * Refills the board only if needed and returns the updated (or not if not needed) livingroom
      * @param numOfPlayers players in the game
      */
-    public BoardCard[][] refillBoard(int numOfPlayers) {
+    public BoardCard[][] refillBoard(int numOfPlayers) throws NoMoreCardsException{
         //CHECK dei refill requirements
         int startRefill = 1;
         for (int i = 0; i < DIM; i++) {
@@ -125,6 +125,10 @@ public class LivingRoom{
             for(int i = 0; i < DIM; i++){
                 for(int j = 0; j < DIM; j++){
                     if(j >= fp[i][0] && j < fp[i][0] + fp[i][1] && pieces[i][j] == THOMBSTONE){
+                        if(indexOfStackCard > stack.size()){
+                            //no more cards are usable
+                            return new NoMoreCardsException();
+                        }
                         pieces[i][j] = stack.get(indexOfStackCard);
                         indexOfStackCard++;
                     }
@@ -146,6 +150,7 @@ public class LivingRoom{
        }
        return selectable;
     }
+
 
     public BoardCard[][] updateBoard(ArrayList<Pair<Integer ,Integer>> selected ) throws UnselectableCardException {
         for (Pair<Integer, Integer> coordinates : selected) {

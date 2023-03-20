@@ -22,24 +22,52 @@ public class Player{
 
     //TODO: fare l'inizializzazione migliore con input anche il client
 
-    Player(){
+    Player(String nickname){
+        this.nickname = nickname;
         hasChair = false;
+        score = 0;
         turnState = TurnStateType.CARDS_SELECTION;
         withShelf = new Shelf();
-        personalGoal = new PersonalGoal();
     }
     public Integer getScore() {
         return score;
     }
+
+    public void setPersonalGoalFromIndex(int personalGoalIndex){
+        this.personalGoal = new PersonalGoal(personalGoalIndex);
+    }
+
     public Shelf getPlayersShelf(){return withShelf;}
+
+    public PersonalGoal getPersonalGoal() {
+        return personalGoal;
+    }
+
+    public boolean hasChair(){
+        return hasChair;
+    }
     public void setHasChair(){
         hasChair = true;
     }
 
-    public void setScore(Integer score){
-        this.score = score;
+    public void updateScore(Integer addedScore){
+        this.score += addedScore;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public int getFinalScore() {
+        //HAS TO BE CALLED ONLY ONCE
+        //TODO: possibility to put an observer from the player to the shelf to automatically update points
+        this.addPersonalGoalPoints();
+        return this.score;
+    }
+
+    private void addPersonalGoalPoints(){
+        score += personalGoal.calculatePoints(withShelf.getShelfCards());
+    }
 }
 
 

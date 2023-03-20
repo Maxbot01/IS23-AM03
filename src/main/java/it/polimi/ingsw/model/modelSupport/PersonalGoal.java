@@ -24,51 +24,49 @@ public class PersonalGoal {
     private static final List<Pair<colorType, Pair<Integer, Integer>>> eleventh = Arrays.asList(new Pair(colorType.PURPLE, new Pair(0, 0)));
     private static final List<Pair<colorType, Pair<Integer, Integer>>> twelve = Arrays.asList(new Pair(colorType.PURPLE, new Pair(0, 0)));
 
+    /**
+     * List of all the possible common goals, each of them is a List composed by [card type, x coord, y coord]
+     */
+    private static final List<List<Pair<colorType, Pair<Integer, Integer>>>> personalGoals= Arrays.asList(first, second, third, fourth, fifth, seventh, eight, ninth, tenth, eleventh, twelve);
     private List<Pair<colorType, Pair<Integer, Integer>>> selectedGoal;
 
-    PersonalGoal() {
-        Random rand = new Random();
-        // generate a random integer between 0 and 11 (inclusive)
-        int randomNum = rand.nextInt(12);
-        switch (randomNum) {
-            case 0:
-                this.selectedGoal = first;
-                break;
+    /**
+     * Initializes the selected goal for the player, caller guarantees the index be different from the other players index
+     * @param withIndex personal goal card # to choose
+     */
+    PersonalGoal(int withIndex) {
+        this.selectedGoal = personalGoals.get(withIndex);
+    }
+
+    /**
+     * By looking at the shelf cards matrix the personal goals score is calculated
+     * @param withCards players shelf cards
+     * @return returns the calculated points
+     */
+    public int calculatePoints(BoardCard[][] withCards){
+        int correct = 0;
+        for(int i = 0; i < selectedGoal.size(); i++){
+            Pair<colorType, Pair<Integer, Integer>> item = selectedGoal.get(i);
+            //if same color at correct position
+            if(item.getFirst() == withCards[item.getSecond().getFirst()][item.getSecond().getSecond()].getColor()){
+                correct++;
+            }
+        }
+        switch(correct) {
             case 1:
-                this.selectedGoal = second;
-                break;
+                return 1;
             case 2:
-                this.selectedGoal = third;
-                break;
+                return 2;
             case 3:
-                this.selectedGoal = fourth;
-                break;
+                return 4;
             case 4:
-                this.selectedGoal = fifth;
-                break;
+                return 6;
             case 5:
-                this.selectedGoal = sixth;
-                break;
+                return 9;
             case 6:
-                this.selectedGoal = seventh;
-                break;
-            case 7:
-                this.selectedGoal = eight;
-                break;
-            case 8:
-                this.selectedGoal = ninth;
-                break;
-            case 9:
-                this.selectedGoal = tenth;
-                break;
-            case 10:
-                this.selectedGoal = eleventh;
-                break;
-            case 11:
-                this.selectedGoal = twelve;
-                break;
+                return 12;
             default:
-                break;
+                return 0; // or throw an exception for invalid inputs
         }
     }
 }
