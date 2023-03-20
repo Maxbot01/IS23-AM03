@@ -1,9 +1,15 @@
 package it.polimi.ingsw.model.CommonGoals.Strategy;
 
-public class FourOfFourGoalStrategy implements CommonGoalStrategy{
-    public int calculateGoalPoints(){
-        int ris = 0;
+import it.polimi.ingsw.model.modelSupport.BoardCard;
 
-        return ris;
+public class FourOfFourGoalStrategy implements CommonGoalStrategy{
+    public boolean calculateGoalPoints(BoardCard[][] Mat){
+        int complete = 0;
+
+        if(complete == 1){
+            return true;
+        }else{
+            return false;
+        }
     };
 }
