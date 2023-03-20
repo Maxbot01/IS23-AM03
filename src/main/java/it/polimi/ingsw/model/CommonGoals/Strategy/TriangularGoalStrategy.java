@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.CommonGoals.Strategy;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 
 public class TriangularGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         int cols = Mat[0].length;
         int rows = Mat.length;
         int valid = 0;
@@ -57,5 +57,5 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
         }else{
             return false;
         }
-    };
+    }
 }

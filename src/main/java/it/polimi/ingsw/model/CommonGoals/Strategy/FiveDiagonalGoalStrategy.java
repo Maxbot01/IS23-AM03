@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 public class FiveDiagonalGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         int cols = Mat[0].length;
         int rows = Mat.length;
         int valid = 0;
@@ -81,5 +81,5 @@ caso favorevole
         }else{
             return false;
         }
-    };
+    }
 }

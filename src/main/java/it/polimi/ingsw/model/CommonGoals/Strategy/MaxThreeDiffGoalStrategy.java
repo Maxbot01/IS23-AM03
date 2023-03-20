@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import java.util.ArrayList;
 
 public class MaxThreeDiffGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<colorType> different = new ArrayList<>();
         int completed = 0;
         int correctLines = 0;
@@ -39,5 +39,5 @@ public class MaxThreeDiffGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    };
+    }
 }

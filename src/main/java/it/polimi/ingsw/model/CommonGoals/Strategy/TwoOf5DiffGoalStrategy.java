@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import java.util.*;
 public class TwoOf5DiffGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
 /* si può fare come twoofsix, in maniera più leggibile e semplice */
 
 /* Ho creato un set a partire dall'enum e per iterarci con un indice l'ho resa una lista */
