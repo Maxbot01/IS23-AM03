@@ -13,7 +13,7 @@ public class PersonalGoal {
     //TODO: riempire queste
     private static final List<Pair<colorType, Pair<Integer, Integer>>> first = Arrays.asList(new Pair(colorType.PURPLE, new Pair(0, 0)), new Pair(colorType.BLUE, new Pair(0, 2)), new Pair(colorType.GREEN, new Pair(1, 4)), new Pair(colorType.WHITE, new Pair(2, 3)), new Pair(colorType.YELLOW, new Pair(3, 1)), new Pair(colorType.LIGHT_BLUE, new Pair(5, 2)));
     private static final List<Pair<colorType, Pair<Integer, Integer>>> second = Arrays.asList(new Pair(colorType.PURPLE, new Pair(1, 1)), new Pair(colorType.GREEN, new Pair(2, 0)), new Pair(colorType.YELLOW, new Pair(2, 2)), new Pair(colorType.WHITE, new Pair(3, 4)), new Pair(colorType.LIGHT_BLUE, new Pair(4, 3)), new Pair(colorType.BLUE, new Pair(5, 4)));
-    private static final List<Pair<colorType, Pair<Integer, Integer>>> third = Arrays.asList(new Pair(colorType.PURPLE, new Pair(0, 0)));
+    private static final List<Pair<colorType, Pair<Integer, Integer>>> third = Arrays.asList(new Pair(colorType.BLUE, new Pair(1, 0)), new Pair(colorType.PURPLE, new Pair(0, 0)));
     private static final List<Pair<colorType, Pair<Integer, Integer>>> fourth = Arrays.asList(new Pair(colorType.PURPLE, new Pair(0, 0)));
     private static final List<Pair<colorType, Pair<Integer, Integer>>> fifth = Arrays.asList(new Pair(colorType.PURPLE, new Pair(0, 0)));
     private static final List<Pair<colorType, Pair<Integer, Integer>>> sixth = Arrays.asList(new Pair(colorType.PURPLE, new Pair(0, 0)));
@@ -27,7 +27,7 @@ public class PersonalGoal {
     /**
      * List of all the possible common goals, each of them is a List composed by [card type, x coord, y coord]
      */
-    private static final List<List<Pair<colorType, Pair<Integer, Integer>>>> personalGoals= Arrays.asList(first, second, third, fourth, fifth, seventh, eight, ninth, tenth, eleventh, twelve);
+    private static final List<List<Pair<colorType, Pair<Integer, Integer>>>> personalGoals= Arrays.asList(first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth, eleventh, twelve);
     private List<Pair<colorType, Pair<Integer, Integer>>> selectedGoal;
 
     /**

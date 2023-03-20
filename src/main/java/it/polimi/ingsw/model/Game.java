@@ -33,15 +33,15 @@ public class Game extends GameObservable{
     /**
      * A list of all the players playing the game, the order of the list is also the order of the match
      */
-    private  ArrayList<Player> players;
+    private final ArrayList<Player> players;
     /**
      * Represents the livingroom, used with its methods to update the game state
      */
-    private LivingRoom livingRoom;
+    private final LivingRoom livingRoom;
     /**
      * Represents the common goals in a match, they are set at init. Used also to update the players score
      */
-    private CommonGoals commonGoals;
+    private final CommonGoals commonGoals;
     /**
      * Currently playing player
      */
