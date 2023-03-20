@@ -15,13 +15,13 @@ import java.util.Random;
  * This class represents the player
  */
 public class Player{
-    private String nickname;
+    private final String nickname;
     private Client ofClient;
     private String UID;
     private Integer score;
     private PersonalGoal personalGoal;
     private boolean hasChair;
-    private Shelf withShelf;
+    private final Shelf withShelf;
     private TurnStateType turnState;
 
     //TODO: fare l'inizializzazione migliore con input anche il client
@@ -30,7 +30,7 @@ public class Player{
      * The player is set up, whith its nickname, shelf and related client
      * @param nickname
      */
-    Player(String nickname){
+    public Player(String nickname){
         this.nickname = nickname;
         hasChair = false;
         score = 0;

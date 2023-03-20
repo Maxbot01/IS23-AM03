@@ -57,7 +57,7 @@ public class LivingRoom{
         for (int j = 0; j < COLORS; j++) {
             for (int i = 0; i < NUMXCOLOR; i++) {
                 BoardCard card = new BoardCard(colors[j]);
-                temp.set(i, card);
+                temp.add(card);
             }
         }
         //pesco carte dall'ArrayList per creare il mazzo
@@ -66,7 +66,7 @@ public class LivingRoom{
             int range = temp.size();
             int chosen = random.nextInt(range);
             BoardCard piece = temp.get(chosen);
-            bag.set(i, piece);
+            bag.add(piece);
             temp.remove(chosen);
         }
 
@@ -80,7 +80,7 @@ public class LivingRoom{
          * Integer matrix that represents the "footprint" of the constructed n-players game, {x,z} where x is the starting column and z the number of items in the row
          */
         Integer[][] fp = posItms.get(numOfPLayers - 2);
-
+        this.pieces = new BoardCard[DIM][DIM];
         //Insert the cards in the living room
         indexOfStackCard = 0;
         for(int i = 0; i < DIM; i++){
@@ -93,6 +93,15 @@ public class LivingRoom{
                 }
             }
         }
+        /*
+        for(int i = 0; i < DIM; i++){
+            for(int j = 0; j < DIM; j++){
+                if (pieces[i][j] != null){
+                    System.out.print(pieces[i][j].getColor().toString());
+                    System.out.print(" " + i + " "+ j + " | ");
+                }
+            }
+        }*/
     }
 
 
@@ -169,14 +178,12 @@ public class LivingRoom{
         return pieces;
     }
 
-    public BoardCard getBoardCardAt(Pair<Integer,Integer> coordinates){
+    public BoardCard getBoardCardAt(Pair<Integer,Integer> coordinates) throws UnselectableCardException{
         int i = coordinates.getFirst();
         int j = coordinates.getSecond();
         if(!isPresent(i,j))
             throw new UnselectableCardException();
-        else return pieces[i][j];{
-
-        }
+        else return pieces[i][j];
     }
 
     /**

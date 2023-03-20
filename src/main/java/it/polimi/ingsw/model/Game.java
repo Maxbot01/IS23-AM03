@@ -33,15 +33,15 @@ public class Game extends GameObservable{
     /**
      * A list of all the players playing the game, the order of the list is also the order of the match
      */
-    private  ArrayList<Player> players;
+    private final ArrayList<Player> players;
     /**
      * Represents the livingroom, used with its methods to update the game state
      */
-    private LivingRoom livingRoom;
+    private final LivingRoom livingRoom;
     /**
      * Represents the common goals in a match, they are set at init. Used also to update the players score
      */
-    private CommonGoals commonGoals;
+    private final CommonGoals commonGoals;
     /**
      * Currently playing player
      */
@@ -97,21 +97,25 @@ public class Game extends GameObservable{
      * Broadcasts the selected cards so that everyone can see them via a SelectedCardsMessage.
      * @param selected selected cards from the user
      */
-    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected){
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected) throws UnselectableCardException {
         /*
         l'utente sa che carte poteva scegliere, le ha scelte. Il metodo aggiorna la board (i pezzi) chiamando updateBoard di Livingroom.
         Invia il messaggio al controller
          */
+        ArrayList<BoardCard> selectedCardsTypes = new ArrayList<>();
+        for (Pair<Integer, Integer> pr: selected) {
+            try {
+                selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
+            } catch (UnselectableCardException e) {
+                throw new RuntimeException(e);
+                //TODO: manage this exception
+            }
+        }
         try {
             BoardCard[][] updatedCards = livingRoom.updateBoard(selected);
         } catch (UnselectableCardException e) {
             throw new RuntimeException(e);
             //TODO: gestire questo errore
-        }
-        //TODO: add a method called getBoardCardAt(Pair<Integer, Integer> index) in LivingRoom
-        ArrayList<BoardCard> selectedCardsTypes = new ArrayList<>();
-        for (Pair<Integer, Integer> pr: selected) {
-            selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
         }
         super.notifyAllObservers(players, new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer));
     }
@@ -153,12 +157,11 @@ public class Game extends GameObservable{
             super.notifyAllObservers(players, new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname));
             return;
         }
-        boolean isRefillNeeded = false;
         //refill board if needed
         try{
             this.livingRoom.refillBoard(players.size());
         }catch(NoMoreCardsException e){
-            //TODO: Handle no more cards
+            this.gameState = GameStateType.LAST_ROUND;
         }
         //se il game non è finito posso procedere ed inviare l'update a tutti
         super.notifyAllObservers(players, new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()));
