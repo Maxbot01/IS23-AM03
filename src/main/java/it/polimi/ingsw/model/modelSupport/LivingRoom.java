@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.modelSupport;
+import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
+import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +110,7 @@ public class LivingRoom{
      * Refills the board only if needed and returns the updated (or not if not needed) livingroom
      * @param numOfPlayers players in the game
      */
-    public BoardCard[][] refillBoard(int numOfPlayers) {
+    public BoardCard[][] refillBoard(int numOfPlayers) throws NoMoreCardsException{
         //CHECK dei refill requirements
         int startRefill = 1;
         for (int i = 0; i < DIM; i++) {
@@ -122,7 +125,11 @@ public class LivingRoom{
         if (startRefill == 1) {
             for(int i = 0; i < DIM; i++){
                 for(int j = 0; j < DIM; j++){
-                    if(j >= fp[i][0] && j < fp[i][0] + fp[i][1] && pieces[i][j] == THOMBSTONE){
+                    if(pieces[i][j] == THOMBSTONE){
+                        if(indexOfStackCard > stack.size()){
+                            //no more cards are usable
+                            throw new NoMoreCardsException();
+                        }
                         pieces[i][j] = stack.get(indexOfStackCard);
                         indexOfStackCard++;
                     }
@@ -143,6 +150,33 @@ public class LivingRoom{
             }
        }
        return selectable;
+    }
+
+
+    public BoardCard[][] updateBoard(ArrayList<Pair<Integer ,Integer>> selected ) throws UnselectableCardException {
+        for (Pair<Integer, Integer> coordinates : selected) {
+            int i = coordinates.getFirst();
+            int j = coordinates.getSecond();
+            if (!(isPresent(i, j) && freeCorner(i, j))) {
+                throw new UnselectableCardException();
+            }
+        }
+        for (Pair<Integer, Integer> coordinates : selected) {
+            int i = coordinates.getFirst();
+            int j = coordinates.getSecond();
+            pieces[i][j] = THOMBSTONE;
+        }
+        return pieces;
+    }
+
+    public BoardCard getBoardCardAt(Pair<Integer,Integer> coordinates){
+        int i = coordinates.getFirst();
+        int j = coordinates.getSecond();
+        if(isPresent(i,j))
+            throw new UnselectableCardException;
+        else return pieces[i][j];{
+
+        }
     }
 
     /**
@@ -171,6 +205,7 @@ public class LivingRoom{
 
     }
 
+
     //funzione che calcola se la tessera ha ALMENO un lato libero
     private boolean freeCorner(int i, int j){
         if (i == 0 || i == DIM - 1 || j == 0 || j == DIM - 1) return true;
@@ -181,7 +216,7 @@ public class LivingRoom{
 
     //funzione che calcola se una tessera è presente nella Livingroom  (altrimenti è null o THOMBSTONE)
     private boolean isPresent(int i, int j){
-        return pieces[i][j] != THOMBSTONE && pieces[i][j] != null;
+        return (pieces[i][j] != THOMBSTONE) && (pieces[i][j] != null);
     }
 
 }

@@ -2,7 +2,9 @@ package it.polimi.ingsw.model;
 
 import java.util.HashMap;
 
-//this class is a singleton with all the current games
+/**
+ * Singleton with all the current games and the needed methods to create or join a game
+ */
 public class GameManager extends GameObservable{
 
     //this instance is used whenever we want the singleton
@@ -12,15 +14,15 @@ public class GameManager extends GameObservable{
     private HashMap<GameLobby, Game> currentGames;
     private GameManager(){}
 
-    //thread safe way of getting the GameManager singleton
+    /*
+    Thread safe GameManager instance creator
+     */
     public static synchronized GameManager getInstance() {
-        if (instance == null) {
             synchronized (GameManager.class) {
                 if (instance == null) {
                     instance = new GameManager();
                 }
             }
-        }
         return instance;
     }
 
