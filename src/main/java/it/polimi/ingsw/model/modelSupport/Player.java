@@ -30,7 +30,7 @@ public class Player{
      * The player is set up, whith its nickname, shelf and related client
      * @param nickname
      */
-    Player(String nickname){
+    public Player(String nickname){
         this.nickname = nickname;
         hasChair = false;
         score = 0;
