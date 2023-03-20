@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.errorMessages.SelectedColumnsMessageError;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
@@ -12,6 +13,8 @@ import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
 import it.polimi.ingsw.model.modelSupport.enums.TurnStateType;
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
+import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
+import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +102,12 @@ public class Game extends GameObservable{
         l'utente sa che carte poteva scegliere, le ha scelte. Il metodo aggiorna la board (i pezzi) chiamando updateBoard di Livingroom.
         Invia il messaggio al controller
          */
-        BoardCard[][] updatedCards = livingRoom.updateBoard(selected);
+        try {
+            BoardCard[][] updatedCards = livingRoom.updateBoard(selected);
+        } catch (UnselectableCardException e) {
+            throw new RuntimeException(e);
+            //TODO: gestire questo errore
+        }
         //TODO: add a method called getBoardCardAt(Pair<Integer, Integer> index) in LivingRoom
         ArrayList<BoardCard> selectedCardsTypes = new ArrayList<>();
         for (Pair<Integer, Integer> pr: selected) {
