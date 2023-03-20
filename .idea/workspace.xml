@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="few updates on Game">
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="rimossi problems in LivingRoom">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679344936534</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="rimossi problems in LivingRoom">
+      <created>1679347630075</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1679347630075</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +212,7 @@
     <MESSAGE value="added PersonalGoal and player" />
     <MESSAGE value="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals" />
     <MESSAGE value="few updates on Player, created javadoc dir" />
-    <option name="LAST_COMMIT_MESSAGE" value="few updates on Player, created javadoc dir" />
+    <MESSAGE value="rimossi problems in LivingRoom" />
+    <option name="LAST_COMMIT_MESSAGE" value="rimossi problems in LivingRoom" />
   </component>
 </project>
