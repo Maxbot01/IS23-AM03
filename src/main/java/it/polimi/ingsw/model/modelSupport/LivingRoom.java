@@ -125,7 +125,7 @@ public class LivingRoom{
         if (startRefill == 1) {
             for(int i = 0; i < DIM; i++){
                 for(int j = 0; j < DIM; j++){
-                    if(j >= fp[i][0] && j < fp[i][0] + fp[i][1] && pieces[i][j] == THOMBSTONE){
+                    if(pieces[i][j] == THOMBSTONE){
                         if(indexOfStackCard > stack.size()){
                             //no more cards are usable
                             throw new NoMoreCardsException();
@@ -169,6 +169,15 @@ public class LivingRoom{
         return pieces;
     }
 
+    public BoardCard getBoardCardAt(Pair<Integer,Integer> coordinates){
+        int i = coordinates.getFirst();
+        int j = coordinates.getSecond();
+        if(isPresent(i,j))
+            throw new UnselectableCardException;
+        else return pieces[i][j];{
+
+        }
+    }
 
     /**
      * Checks if an item in the board has adjacent items

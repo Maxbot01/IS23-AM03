@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.modelSupport;
 
 
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
+import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 
 import java.util.ArrayList;
 
@@ -24,9 +25,11 @@ public class Shelf {
 
     /**
      * Returns whether the shelf is full and cannot hold any more BoardCard objects.
+     *
+     * @throws ShelfFullException if the shelf is full
      * @return true if the shelf is full, false otherwise
      */
-    public boolean isFull() {
+    public boolean isFull() throws ShelfFullException {
         for (int i = 0; i < ROWS_LEN; i++) {
             for (int j = 0; j < COLUMNS_LEN; j++) {
                 if (shelfCards[i][j] == null) {
@@ -34,7 +37,7 @@ public class Shelf {
                 }
             }
         }
-        return true;
+        throw new ShelfFullException("Shelf is full");
     }
 
     /**
