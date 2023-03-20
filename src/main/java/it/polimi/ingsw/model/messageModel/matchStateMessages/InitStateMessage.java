@@ -1,13 +1,11 @@
 package it.polimi.ingsw.model.messageModel.matchStateMessages;
 
+import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
-import it.polimi.ingsw.model.modelSupport.CommonGoals;
 import it.polimi.ingsw.model.modelSupport.PersonalGoal;
 import it.polimi.ingsw.model.modelSupport.Player;
-import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
