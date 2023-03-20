@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="implementato getBoardCardAt">
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" afterDir="false" />
+    <list default="true" id="67999147-0c48-4af9-a63c-97ea9ada8e18" name="Changes" comment="few updates on Game">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/matchStateMessages/InitStateMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/matchStateMessages/InitStateMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/CommonGoals.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,21 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679329947805</updated>
     </task>
-    <task id="LOCAL-00012" summary="implementato getBoardCardAt">
-      <created>1679345301644</created>
+    <task id="LOCAL-00012" summary="few updates on Player, created javadoc dir">
+      <created>1679344936534</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1679345301644</updated>
+      <updated>1679344936534</updated>
     </task>
-    <task id="LOCAL-00013" summary="implementato getBoardCardAt">
-      <created>1679345699268</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1679345699268</updated>
-    </task>
-    <option name="localTasksCounter" value="14" />
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,7 +171,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="HEAD" />
+                        <option value="main/main" />
                       </list>
                     </value>
                   </entry>
@@ -212,7 +208,6 @@
     <MESSAGE value="added PersonalGoal and player" />
     <MESSAGE value="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals" />
     <MESSAGE value="few updates on Player, created javadoc dir" />
-    <MESSAGE value="implementato getBoardCardAt" />
-    <option name="LAST_COMMIT_MESSAGE" value="implementato getBoardCardAt" />
+    <option name="LAST_COMMIT_MESSAGE" value="few updates on Player, created javadoc dir" />
   </component>
 </project>

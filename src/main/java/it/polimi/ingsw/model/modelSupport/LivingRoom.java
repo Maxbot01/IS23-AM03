@@ -31,27 +31,23 @@ public class LivingRoom{
      */
     private final static Integer[][] fp4 = {{3,2}, {3,3}, {1,8}, {0,9}, {0,8}, {0,7}, {2,6}, {3,5}, {4,1}};
     private final static ArrayList<Integer[][]> posItms = new ArrayList<>();
-    /**
-     * Integer matrix that represents the "footprint" of the constructed n-players game, {x,z} where x is the starting column and z the number of items in the row
-     */
-    private final Integer[][] fp;
 
     /**
      * BoardCard matrix that represents the board, null means no cards in match, a thombstone card is put when the position doesn't have a card
      */
     private BoardCard [][] pieces;
     /**
-     * BoardCard stack with shuffled cards
+     * BoardCard bag with shuffled cards
      */
-    private final List<BoardCard> stack = new ArrayList<BoardCard>();
+    private final List<BoardCard> bag = new ArrayList<BoardCard>();
     /**
-     * Index of the last-selected card in the stack
+     * Index of the last-selected card in the bag
      */
     private int indexOfStackCard;
 
 
     /**
-     * Create the shuffled stack, fills the livingroom
+     * Create the shuffled bag, fills the livingroom
      * @param numOfPLayers number of players, needed to know how to fill the board
      */
     public LivingRoom(int numOfPLayers) {
@@ -70,7 +66,7 @@ public class LivingRoom{
             int range = temp.size();
             int chosen = random.nextInt(range);
             BoardCard piece = temp.get(chosen);
-            stack.set(i, piece);
+            bag.set(i, piece);
             temp.remove(chosen);
         }
 
@@ -79,14 +75,18 @@ public class LivingRoom{
         posItms.add(fp2);
         posItms.add(fp3);
         posItms.add(fp4);
-        fp = posItms.get(numOfPLayers-2);
+
+        /**
+         * Integer matrix that represents the "footprint" of the constructed n-players game, {x,z} where x is the starting column and z the number of items in the row
+         */
+        Integer[][] fp = posItms.get(numOfPLayers - 2);
 
         //Insert the cards in the living room
         indexOfStackCard = 0;
         for(int i = 0; i < DIM; i++){
             for(int j = 0; j < DIM; j++){
                 if(j >= fp[i][0] && j < fp[i][0] + fp[i][1]){
-                    pieces[i][j] = stack.get(indexOfStackCard);
+                    pieces[i][j] = bag.get(indexOfStackCard);
                     indexOfStackCard++;
                 }else{
                     pieces[i][j] = null;
@@ -126,11 +126,11 @@ public class LivingRoom{
             for(int i = 0; i < DIM; i++){
                 for(int j = 0; j < DIM; j++){
                     if(pieces[i][j] == THOMBSTONE){
-                        if(indexOfStackCard > stack.size()){
+                        if(indexOfStackCard > bag.size()){
                             //no more cards are usable
                             throw new NoMoreCardsException();
                         }
-                        pieces[i][j] = stack.get(indexOfStackCard);
+                        pieces[i][j] = bag.get(indexOfStackCard);
                         indexOfStackCard++;
                     }
                 }
