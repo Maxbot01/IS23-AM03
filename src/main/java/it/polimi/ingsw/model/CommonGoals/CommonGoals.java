@@ -49,29 +49,29 @@ public class CommonGoals {
         }
         switch (ran2Int){
             case 0:
-                firstGoal = new SixOfTwoGoalStrategy();
+                secondGoal = new SixOfTwoGoalStrategy();
             case 1:
-                firstGoal = new FiveDiagonalGoalStrategy();
+                secondGoal = new FiveDiagonalGoalStrategy();
             case 2:
-                firstGoal = new FourOfFourGoalStrategy();
+                secondGoal = new FourOfFourGoalStrategy();
             case 3:
-                firstGoal = new FourCornersGoalStrategy();
+                secondGoal = new FourCornersGoalStrategy();
             case 4:
-                firstGoal = new Double2x2GoalStrategy();
+                secondGoal = new Double2x2GoalStrategy();
             case 5:
-                firstGoal = new MaxThreeDiffGoalStrategy();
+                secondGoal = new MaxThreeDiffGoalStrategy();
             case 6:
-                firstGoal = new EightTilesGoalStrategy();
+                secondGoal = new EightTilesGoalStrategy();
             case 7:
-                firstGoal = new FourLines3DiffGoalStrategy();
+                secondGoal = new FourLines3DiffGoalStrategy();
             case 8:
-                firstGoal = new TwoOfSixGoalStrategy();
+                secondGoal = new TwoOfSixGoalStrategy();
             case 9:
-                firstGoal = new TwoOf5DiffGoalStrategy();
+                secondGoal = new TwoOf5DiffGoalStrategy();
             case 10:
-                firstGoal = new FiveXGoalStrategy();
+                secondGoal = new FiveXGoalStrategy();
             case 11:
-                firstGoal = new TriangularGoalStrategy();
+                secondGoal = new TriangularGoalStrategy();
         }
     }
     public int calculateAllPoints(Player player, int numOfPlayers){
