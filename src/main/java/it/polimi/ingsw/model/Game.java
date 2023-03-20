@@ -111,7 +111,12 @@ public class Game extends GameObservable{
         //TODO: add a method called getBoardCardAt(Pair<Integer, Integer> index) in LivingRoom
         ArrayList<BoardCard> selectedCardsTypes = new ArrayList<>();
         for (Pair<Integer, Integer> pr: selected) {
-            selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
+            try {
+                selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
+            } catch (UnselectableCardException e) {
+                throw new RuntimeException(e);
+                //TODO: manage this exception
+            }
         }
         super.notifyAllObservers(players, new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer));
     }
