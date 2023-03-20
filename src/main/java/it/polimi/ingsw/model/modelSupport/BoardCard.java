@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.modelSupport;
 
+import it.polimi.ingsw.model.modelSupport.enums.colorType;
+
 public class BoardCard {
 
     public final colorType color;

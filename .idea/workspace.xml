@@ -4,24 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="uno">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoalType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoals.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/CommonGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/EightTilesGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FiveDiagonalGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FiveXGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourCornersGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourLines3DiffGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourOfFourGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/MaxThreeDiffGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TriangularGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf5DiffGoalStrategy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOfSixGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="Aggiornamento codice">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/exceptions/ShelfFullException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Shelf.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Shelf.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +17,6 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -56,14 +40,16 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
+    "settings.editor.selected.configurable": "Errors"
   }
 }]]></component>
   <component name="RunManager">
@@ -128,7 +114,28 @@
       <option name="project" value="LOCAL" />
       <updated>1679140836621</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="modified pattern">
+      <created>1679244738224</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1679244738224</updated>
+    </task>
+    <task id="LOCAL-00008" summary="added PersonalGoal and player">
+      <created>1679255189842</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1679255189842</updated>
+    </task>
+    <task id="LOCAL-00009" summary="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals">
+      <created>1679271689797</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1679271689797</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,6 +173,9 @@
     <MESSAGE value="creazione classe Controller" />
     <MESSAGE value="directory management" />
     <MESSAGE value="created CommonGoals, some error messages, Pair and worked on Game" />
-    <option name="LAST_COMMIT_MESSAGE" value="created CommonGoals, some error messages, Pair and worked on Game" />
+    <MESSAGE value="modified pattern" />
+    <MESSAGE value="added PersonalGoal and player" />
+    <MESSAGE value="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals" />
   </component>
 </project>
