@@ -105,7 +105,7 @@ public class Game extends GameObservable{
         for (Pair<Integer, Integer> pr: selected) {
             selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
         }
-        super.notifyAllObservers(new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer));
+        super.notifyAllObservers(players, new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer));
     }
 
     /**

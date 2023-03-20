@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.modelSupport;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
@@ -127,7 +128,7 @@ public class LivingRoom{
                     if(j >= fp[i][0] && j < fp[i][0] + fp[i][1] && pieces[i][j] == THOMBSTONE){
                         if(indexOfStackCard > stack.size()){
                             //no more cards are usable
-                            return new NoMoreCardsException();
+                            throw new NoMoreCardsException();
                         }
                         pieces[i][j] = stack.get(indexOfStackCard);
                         indexOfStackCard++;
