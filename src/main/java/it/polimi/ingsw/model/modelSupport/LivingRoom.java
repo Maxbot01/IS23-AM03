@@ -173,7 +173,7 @@ public class LivingRoom{
         int i = coordinates.getFirst();
         int j = coordinates.getSecond();
         if(!isPresent(i,j))
-            throw new UnselectableCardException;
+            throw new UnselectableCardException();
         else return pieces[i][j];{
 
         }
