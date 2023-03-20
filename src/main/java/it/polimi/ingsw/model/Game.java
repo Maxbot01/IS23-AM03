@@ -97,7 +97,7 @@ public class Game extends GameObservable{
      * Broadcasts the selected cards so that everyone can see them via a SelectedCardsMessage.
      * @param selected selected cards from the user
      */
-    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected){
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected) throws UnselectableCardException {
         /*
         l'utente sa che carte poteva scegliere, le ha scelte. Il metodo aggiorna la board (i pezzi) chiamando updateBoard di Livingroom.
         Invia il messaggio al controller

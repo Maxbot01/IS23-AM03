@@ -24,29 +24,13 @@ public class Shelf {
     }
 
     /**
-     * Returns whether the shelf is full and cannot hold any more BoardCard objects.
-     *
-     * @throws ShelfFullException if the shelf is full
-     * @return true if the shelf is full, false otherwise
-     */
-    public boolean isFull() throws ShelfFullException {
-        for (int i = 0; i < ROWS_LEN; i++) {
-            for (int j = 0; j < COLUMNS_LEN; j++) {
-                if (shelfCards[i][j] == null) {
-                    return false;
-                }
-            }
-        }
-        throw new ShelfFullException("Shelf is full");
-    }
-
-    /**
      * Adds a list of BoardCard objects to a column in the shelf.
      * @param selCards the list of cards to add to the column
      * @param colIndex the index of the column to add the cards to
      * @throws ColumnNotSelectable if the column index is invalid, the list of cards is too long, or the column is already full
+     * @throws ShelfFullException if the shelf is already full
      */
-    public void insertInColumn(ArrayList<BoardCard> selCards, Integer colIndex) throws ColumnNotSelectable {
+    public void insertInColumn(ArrayList<BoardCard> selCards, Integer colIndex) throws ColumnNotSelectable, ShelfFullException {
         // check if the column index is valid
         if (colIndex < 0 || colIndex >= COLUMNS_LEN) {
             throw new ColumnNotSelectable("Invalid column index");
@@ -58,6 +42,10 @@ public class Shelf {
         // check if the column is already full
         if (columnIsFull(colIndex)) {
             throw new ColumnNotSelectable("Selected column is already full");
+        }
+        // check if the shelf is already full
+        if (shelfIsFull()) {
+            throw new ShelfFullException("Shelf is already full");
         }
         // find the first empty row in the column
         int row = 0;
@@ -72,6 +60,21 @@ public class Shelf {
             shelfCards[row][colIndex] = selCard;
             row++;
         }
+    }
+
+    /**
+     * Checks whether the shelf is full.
+     * @return true if the shelf is full, false otherwise
+     */
+    private boolean shelfIsFull() {
+        for (int i = 0; i < ROWS_LEN; i++) {
+            for (int j = 0; j < COLUMNS_LEN; j++) {
+                if (shelfCards[i][j] == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
