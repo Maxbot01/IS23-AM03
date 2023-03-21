@@ -42,6 +42,8 @@ public class InitStateMessage extends MatchStateMessage {
             for (int j = 0; j < pieces[i].length; j++) {
                 if(pieces[i][j] != null){
                     System.out.print(pieces[i][j].getColor() + " ");
+                }else{
+                    System.out.print(" null ");
                 }
             }
             System.out.println();
