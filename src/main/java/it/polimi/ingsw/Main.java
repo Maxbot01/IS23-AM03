@@ -31,7 +31,5 @@ public class Main {
         crds.add(new BoardCard(colorType.BLUE));
         crds.add(new BoardCard(colorType.PURPLE));
         myGame.selectedColumn(crds, 2);
-        
-
     }
 } // ciao
