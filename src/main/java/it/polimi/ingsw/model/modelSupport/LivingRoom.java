@@ -106,7 +106,7 @@ public class LivingRoom{
     /**
      * Refills the board only if needed and returns the updated (or not if not needed) livingroom
      */
-    public void refillBoard() throws NoMoreCardsException{C
+    public void refillBoard() throws NoMoreCardsException{
         //CHECK dei refill requirements
         int startRefill = 1;
         for (int i = 0; i < DIM; i++) {
