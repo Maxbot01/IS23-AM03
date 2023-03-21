@@ -84,7 +84,7 @@ public class Shelf {
      */
     private boolean columnIsFull(int colIndex) {
         for (int i = 0; i < ROWS_LEN; i++) {
-            if (shelfCards[i][colIndex] == null) {
+            if (shelfCards[i][colIndex] == null){
                 return false;
             }
         }

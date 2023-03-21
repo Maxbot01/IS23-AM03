@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -57,7 +58,7 @@ public class LivingRoom{
         for (int j = 0; j < COLORS; j++) {
             for (int i = 0; i < NUMXCOLOR; i++) {
                 BoardCard card = new BoardCard(colors[j]);
-                temp.set(i, card);
+                temp.add(i, card);
             }
         }
         //pesco carte dall'ArrayList per creare il mazzo
@@ -66,7 +67,7 @@ public class LivingRoom{
             int range = temp.size();
             int chosen = random.nextInt(range);
             BoardCard piece = temp.get(chosen);
-            bag.set(i, piece);
+            bag.add(i, piece);
             temp.remove(chosen);
         }
 
