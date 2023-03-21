@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="fixed stuff and some forbidden tests">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="finished common goal">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/PersonalGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/PersonalGoal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/enums/colorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/enums/colorType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +68,7 @@
       <updated>1678902372336</updated>
       <workItem from="1678902374655" duration="7636000" />
       <workItem from="1679140207267" duration="7796000" />
-      <workItem from="1679406294278" duration="5277000" />
+      <workItem from="1679406294278" duration="8529000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1678903177375</created>
@@ -184,7 +182,21 @@
       <option name="project" value="LOCAL" />
       <updated>1679406482992</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="empty piece instead of null in boards">
+      <created>1679415273125</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1679415273126</updated>
+    </task>
+    <task id="LOCAL-00018" summary="finished common goal">
+      <created>1679417726922</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1679417726922</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,6 +251,8 @@
     <MESSAGE value="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals" />
     <MESSAGE value="few updates on Player, created javadoc dir" />
     <MESSAGE value="fixed stuff and some forbidden tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed stuff and some forbidden tests" />
+    <MESSAGE value="empty piece instead of null in boards" />
+    <MESSAGE value="finished common goal" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished common goal" />
   </component>
 </project>
