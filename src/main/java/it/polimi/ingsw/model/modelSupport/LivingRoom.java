@@ -17,6 +17,7 @@ public class LivingRoom{
     private final static int NUMXCOLOR = 22;
 
     private final static BoardCard THOMBSTONE = new BoardCard(colorType.THOMBSTONE);
+    private final static BoardCard EMPTY_SPOT_CARD = new BoardCard(colorType.EMPTY_SPOT);
 
     /**
      * Integer matrix that represents the "footprint" of the generic two-players game, {x,z} where x is the starting column and z the number of items in the row
