@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import java.util.ArrayList;
 
 public class FourLines3DiffGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
 
         ArrayList<colorType> different = new ArrayList<>();
         int correctLines = 0;
@@ -40,5 +40,5 @@ public class FourLines3DiffGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    };
+    }
 }

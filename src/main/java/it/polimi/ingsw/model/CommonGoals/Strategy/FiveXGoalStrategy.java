@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 public class FiveXGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         colorType chosen;
         int found = 0;
 
@@ -25,5 +25,5 @@ public class FiveXGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    };
+    }
 }

@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import java.util.ArrayList;
 
 public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<Pair<Integer,Integer>> verticals = new ArrayList<>();
         int completed = 0;
         int couples = 0;
@@ -35,5 +35,5 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    };
+    }
 }
