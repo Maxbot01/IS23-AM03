@@ -45,23 +45,6 @@ public class SelectedCardsMessage extends MatchStateMessage {
             }
             System.out.println();
         }
-        System.out.println("CommonGoals 1: " + commonGoals.getFirstGoal().toString());
-        System.out.println("CommonGoals 2: " + commonGoals.getSecondGoal().toString());
-        System.out.println("PersonalGoals:");
-        for (Map.Entry<Player, PersonalGoal> entry : personalGoals.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-        System.out.println("Players: " + players);
-        System.out.println("ChairedPlayer: " + chairedPlayer);
-        System.out.println("PlayersShelves:");
-        for (Pair<Player, BoardCard[][]> pair : playersShelves) {
-            System.out.println(pair.getFirst().getNickname() + ":");
-            for (int i = 0; i < pair.getSecond().length; i++) {
-                for (int j = 0; j < pair.getSecond()[i].length; j++) {
-                    System.out.print(pair.getSecond()[i][j] + " ");
-                }
-                System.out.println();
-            }
-        }
+
     }
 }

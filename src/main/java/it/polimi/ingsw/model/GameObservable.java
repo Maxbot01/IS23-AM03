@@ -9,6 +9,7 @@ public abstract class GameObservable {
 
     protected void notifyObserver(Player toPlayer, Message withMessage){
         System.out.println("Arrived message to " + toPlayer.getNickname() + withMessage.toString());
+        withMessage.printMessage();
     }
     protected void notifyAllObservers(ArrayList<Player> toPlayers, Message withMessage){
         //send the message

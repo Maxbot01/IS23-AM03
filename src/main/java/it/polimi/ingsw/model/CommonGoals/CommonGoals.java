@@ -16,7 +16,8 @@ public class CommonGoals {
 
     public CommonGoals() {
         int[] indexes = ThreadLocalRandom.current().ints(0, 12).distinct().limit(2).toArray();
-
+        indexes[0] = 3;
+        indexes[1] = 3;
         switch (indexes[0]){
             case 0:
                 firstGoal = new SixOfTwoGoalStrategy();
