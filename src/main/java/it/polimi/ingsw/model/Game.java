@@ -102,13 +102,6 @@ public class Game extends GameObservable{
         l'utente sa che carte poteva scegliere, le ha scelte. Il metodo aggiorna la board (i pezzi) chiamando updateBoard di Livingroom.
         Invia il messaggio al controller
          */
-        try {
-            BoardCard[][] updatedCards = livingRoom.updateBoard(selected);
-        } catch (UnselectableCardException e) {
-            throw new RuntimeException(e);
-            //TODO: gestire questo errore
-        }
-        //TODO: add a method called getBoardCardAt(Pair<Integer, Integer> index) in LivingRoom
         ArrayList<BoardCard> selectedCardsTypes = new ArrayList<>();
         for (Pair<Integer, Integer> pr: selected) {
             try {
@@ -117,6 +110,12 @@ public class Game extends GameObservable{
                 throw new RuntimeException(e);
                 //TODO: manage this exception
             }
+        }
+        try {
+            BoardCard[][] updatedCards = livingRoom.updateBoard(selected);
+        } catch (UnselectableCardException e) {
+            throw new RuntimeException(e);
+            //TODO: gestire questo errore
         }
         super.notifyAllObservers(players, new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer));
     }
@@ -158,12 +157,11 @@ public class Game extends GameObservable{
             super.notifyAllObservers(players, new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname));
             return;
         }
-        boolean isRefillNeeded = false;
         //refill board if needed
         try{
             this.livingRoom.refillBoard(players.size());
         }catch(NoMoreCardsException e){
-            //TODO: Handle no more cards
+            this.gameState = GameStateType.LAST_ROUND;
         }
         //se il game non è finito posso procedere ed inviare l'update a tutti
         super.notifyAllObservers(players, new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()));

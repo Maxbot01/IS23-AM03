@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import java.util.ArrayList;
 
 public class EightTilesGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<colorType> colors = new ArrayList<>();
         int completed = 0;
         int [] numOfColor = {0,0,0,0,0,0};
@@ -29,5 +29,5 @@ public class EightTilesGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    };
+    }
 }

@@ -28,7 +28,7 @@ public class PersonalGoal {
      * List of all the possible common goals, each of them is a List composed by [card type, x coord, y coord]
      */
     private static final List<List<Pair<colorType, Pair<Integer, Integer>>>> personalGoals= Arrays.asList(first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth, eleventh, twelve);
-    private List<Pair<colorType, Pair<Integer, Integer>>> selectedGoal;
+    private final List<Pair<colorType, Pair<Integer, Integer>>> selectedGoal;
 
     /**
      * Initializes the selected goal for the player, caller guarantees the index be different from the other players index

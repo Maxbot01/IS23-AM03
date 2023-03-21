@@ -5,11 +5,9 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
 
 public class Double2x2GoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<Pair<Integer,Integer>> blocksCoordinates = new ArrayList<>();
         ArrayList<Pair<colorType,Integer>> colors = new ArrayList<>();
         int completed = 0;
@@ -55,5 +53,5 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    };
+    }
 }

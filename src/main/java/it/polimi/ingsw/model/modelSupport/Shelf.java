@@ -43,13 +43,9 @@ public class Shelf {
         if (columnIsFull(colIndex)) {
             throw new ColumnNotSelectable("Selected column is already full");
         }
-        // check if the shelf is already full
-        if (shelfIsFull()) {
-            throw new ShelfFullException("Shelf is already full");
-        }
         // find the first empty row in the column
         int row = 0;
-        while (row < ROWS_LEN && shelfCards[row][colIndex] != null) {
+        while (row < ROWS_LEN && shelfCards[5-row][colIndex] != null) {
             row++;
         }
         // check if there is enough space in the column for the selected cards
@@ -57,8 +53,13 @@ public class Shelf {
             throw new ColumnNotSelectable("Cannot add cards to column: not enough space");
         }
         for (BoardCard selCard : selCards) {
-            shelfCards[row][colIndex] = selCard;
+            shelfCards[5-row][colIndex] = selCard;
             row++;
+        }
+
+        // check if the shelf is already full
+        if (shelfIsFull()) {
+            throw new ShelfFullException("Shelf is already full");
         }
     }
 

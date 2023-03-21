@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import java.util.ArrayList;
 
 public class TwoOfSixGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<colorType> colors = new ArrayList<>();
         int completed = 0;
         int correctLines = 0;

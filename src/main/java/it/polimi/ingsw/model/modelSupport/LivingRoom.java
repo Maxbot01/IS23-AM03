@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 
@@ -30,7 +29,7 @@ public class LivingRoom{
     /**
      * Integer matrix that represents the "footprint" of generic the four-players game, {x,z} where x is the starting column and z the number of items in the row
      */
-    private final static Integer[][] fp4 = {{3,2}, {3,3}, {1,8}, {0,9}, {0,8}, {0,7}, {2,6}, {3,5}, {4,1}};
+    private final static Integer[][] fp4 = {{3,2}, {3,3}, {2,5}, {1,7}, {0,9}, {0,8}, {2, 5}, {3,3}, {4,2}};
     private final static ArrayList<Integer[][]> posItms = new ArrayList<>();
 
     /**
@@ -58,7 +57,7 @@ public class LivingRoom{
         for (int j = 0; j < COLORS; j++) {
             for (int i = 0; i < NUMXCOLOR; i++) {
                 BoardCard card = new BoardCard(colors[j]);
-                temp.add(i, card);
+                temp.add(card);
             }
         }
         //pesco carte dall'ArrayList per creare il mazzo
@@ -67,7 +66,7 @@ public class LivingRoom{
             int range = temp.size();
             int chosen = random.nextInt(range);
             BoardCard piece = temp.get(chosen);
-            bag.add(i, piece);
+            bag.add(piece);
             temp.remove(chosen);
         }
 
@@ -81,7 +80,7 @@ public class LivingRoom{
          * Integer matrix that represents the "footprint" of the constructed n-players game, {x,z} where x is the starting column and z the number of items in the row
          */
         Integer[][] fp = posItms.get(numOfPLayers - 2);
-
+        this.pieces = new BoardCard[DIM][DIM];
         //Insert the cards in the living room
         indexOfStackCard = 0;
         for(int i = 0; i < DIM; i++){
@@ -94,6 +93,15 @@ public class LivingRoom{
                 }
             }
         }
+        /*
+        for(int i = 0; i < DIM; i++){
+            for(int j = 0; j < DIM; j++){
+                if (pieces[i][j] != null){
+                    System.out.print(pieces[i][j].getColor().toString());
+                    System.out.print(" " + i + " "+ j + " | ");
+                }
+            }
+        }*/
     }
 
 
@@ -176,7 +184,6 @@ public class LivingRoom{
         if(!isPresent(i,j))
             throw new UnselectableCardException();
         else return pieces[i][j];
-
     }
 
     /**
@@ -193,7 +200,7 @@ public class LivingRoom{
             return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
 
         } else if (j == 0) {
-            return isPresent(i, j - 1) || (isPresent(i, j + 1) || isPresent(i + 1, j));
+            return isPresent(i - 1, j) || (isPresent(i + 1, j) || isPresent(i, j + 1));
 
         } else if (j == DIM - 1) {
             return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);

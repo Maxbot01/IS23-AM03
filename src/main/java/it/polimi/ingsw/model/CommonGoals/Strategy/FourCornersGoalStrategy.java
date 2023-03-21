@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.CommonGoals.Strategy;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 
 public class FourCornersGoalStrategy implements CommonGoalStrategy{
-    public boolean calculateGoalPoints(BoardCard[][] Mat){
+    public boolean goalCompleted(BoardCard[][] Mat){
         int cols = Mat[0].length;
         int rows = Mat.length;
 /* Check dei quattro angoli */
@@ -19,5 +19,5 @@ public class FourCornersGoalStrategy implements CommonGoalStrategy{
         } else {
             return false;
         }
-    };
+    }
 }
