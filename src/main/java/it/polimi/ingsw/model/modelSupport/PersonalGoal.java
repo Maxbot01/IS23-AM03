@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+
 
 
 public class PersonalGoal {

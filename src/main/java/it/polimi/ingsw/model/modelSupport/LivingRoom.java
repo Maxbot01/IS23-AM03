@@ -16,7 +16,7 @@ public class LivingRoom{
     private final static int COLORS = 6;
     private final static int NUMXCOLOR = 22;
 
-    private final static BoardCard THOMBSTONE = new BoardCard(colorType.THOMBSTONE);
+    private final static BoardCard TOMBSTONE_CARD = new BoardCard(colorType.TOMBSTONE);
     private final static BoardCard EMPTY_SPOT_CARD = new BoardCard(colorType.EMPTY_SPOT);
 
     /**
@@ -31,12 +31,13 @@ public class LivingRoom{
      * Integer matrix that represents the "footprint" of generic the four-players game, {x,z} where x is the starting column and z the number of items in the row
      */
     private final static Integer[][] fp4 = {{3,2}, {3,3}, {2,5}, {1,7}, {0,9}, {0,8}, {2, 5}, {3,3}, {4,2}};
+
     private final static ArrayList<Integer[][]> posItms = new ArrayList<>();
 
     /**
-     * BoardCard matrix that represents the board, null means no cards in match, a thombstone card is put when the position doesn't have a card
+     * BoardCard matrix that represents the board, null means no cards in match, a tombstone card is put when the position doesn't have a card
      */
-    private BoardCard [][] pieces;
+    private final BoardCard [][] pieces;
     /**
      * BoardCard bag with shuffled cards
      */
@@ -77,9 +78,9 @@ public class LivingRoom{
         posItms.add(fp3);
         posItms.add(fp4);
 
-        /**
-         * Integer matrix that represents the "footprint" of the constructed n-players game, {x,z} where x is the starting column and z the number of items in the row
-         */
+
+
+
         Integer[][] fp = posItms.get(numOfPLayers - 2);
         this.pieces = new BoardCard[DIM][DIM];
         //Insert the cards in the living room
@@ -90,26 +91,12 @@ public class LivingRoom{
                     pieces[i][j] = bag.get(indexOfStackCard);
                     indexOfStackCard++;
                 }else{
-                    pieces[i][j] = null;
+                    pieces[i][j] = EMPTY_SPOT_CARD;
                 }
             }
         }
-        /*
-        for(int i = 0; i < DIM; i++){
-            for(int j = 0; j < DIM; j++){
-                if (pieces[i][j] != null){
-                    System.out.print(pieces[i][j].getColor().toString());
-                    System.out.print(" " + i + " "+ j + " | ");
-                }
-            }
-        }*/
+
     }
-
-
-    public int getIndexOfStackCard(){
-        return indexOfStackCard;
-    }
-
 
     public BoardCard[][] getPieces() {
         return pieces;
@@ -118,9 +105,8 @@ public class LivingRoom{
 
     /**
      * Refills the board only if needed and returns the updated (or not if not needed) livingroom
-     * @param numOfPlayers players in the game
      */
-    public BoardCard[][] refillBoard(int numOfPlayers) throws NoMoreCardsException{
+    public void refillBoard() throws NoMoreCardsException{C
         //CHECK dei refill requirements
         int startRefill = 1;
         for (int i = 0; i < DIM; i++) {
@@ -131,11 +117,11 @@ public class LivingRoom{
             }
         }
 
-        //insert where there's thombstones, in other places there are already usable cards
+        //insert where there's tombstones, in other places there are already usable cards
         if (startRefill == 1) {
             for(int i = 0; i < DIM; i++){
                 for(int j = 0; j < DIM; j++){
-                    if(pieces[i][j] == THOMBSTONE){
+                    if(pieces[i][j].getColor() == colorType.TOMBSTONE){
                         if(indexOfStackCard > bag.size()){
                             //no more cards are usable
                             throw new NoMoreCardsException();
@@ -146,7 +132,6 @@ public class LivingRoom{
                 }
             }
         }
-        return pieces;
     }
 
     /**
@@ -174,7 +159,7 @@ public class LivingRoom{
         for (Pair<Integer, Integer> coordinates : selected) {
             int i = coordinates.getFirst();
             int j = coordinates.getSecond();
-            pieces[i][j] = THOMBSTONE;
+            pieces[i][j] = TOMBSTONE_CARD;
         }
         return pieces;
     }
@@ -222,9 +207,9 @@ public class LivingRoom{
         }
     }
 
-    //funzione che calcola se una tessera è presente nella Livingroom  (altrimenti è null o THOMBSTONE)
+    //funzione che calcola se una tessera è presente nella Livingroom  (altrimenti è null o TOMBSTONE)
     private boolean isPresent(int i, int j){
-        return (pieces[i][j] != THOMBSTONE) && (pieces[i][j] != null);
+        return (pieces[i][j].getColor() != colorType.TOMBSTONE) && (pieces[i][j] != null);
     }
 
 }
