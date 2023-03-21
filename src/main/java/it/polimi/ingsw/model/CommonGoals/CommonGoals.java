@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.CommonGoals;
 
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
+import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
@@ -101,6 +102,8 @@ public class CommonGoals {
         return secondGoal;
     }
 
+
+
     public int calculateAllPoints(Player player, int numOfPlayers){
         int ris;
         int pointsOfFirst;
@@ -108,8 +111,22 @@ public class CommonGoals {
         /* firstGoal */
         /* potrei fare un metodo per il calcolo dei punti di un goal, così da non dover riscrivere
             la stessa cosa per entrambi i goal */
+
+        /* CASO DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
+        BoardCard[][] prova = new BoardCard[6][5];
+        colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
+        Random random = new Random();
+        int range = colors.length;
+        for (int i = 0; i < 6; i++) {
+            for(int j = 0; j < 5; j++) {
+                int chosen = random.nextInt(range);
+                BoardCard piece = new BoardCard(colors[chosen]);
+                prova[i][j] = piece;
+            }
+        }
+
         if(!reachedFirstGoal.contains(player)){
-            if (firstGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
+            if (firstGoal.goalCompleted(prova)) {/*boolean return*/
                 reachedFirstGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 2);
@@ -123,8 +140,9 @@ public class CommonGoals {
             pointsOfFirst = 0;
         }
         /* secondGoal */
+        /* CASO DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
         if(!reachedSecondGoal.contains(player)){
-            if (secondGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
+            if (secondGoal.goalCompleted(prova)) {/*boolean return*/
                 reachedSecondGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 2);
