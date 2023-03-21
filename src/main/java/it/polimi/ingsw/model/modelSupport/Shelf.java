@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.modelSupport;
 
 
+import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 
@@ -16,11 +17,18 @@ public class Shelf {
     private static final int ROWS_LEN = 6;
     private static final int COLUMNS_LEN = 5;
 
+    private final static BoardCard EMPTY_SPOT_CARD = new BoardCard(colorType.EMPTY_SPOT);
+
     /**
-     * Constructs a new Shelf object with a 2D array of BoardCard objects.
+     * Constructs a new Shelf object with a 2D array of BoardCard objects. Initially all EMPTY_SPOT card types
      */
     public Shelf() {
         this.shelfCards = new BoardCard[ROWS_LEN][COLUMNS_LEN];
+        for(int i = 0; i < ROWS_LEN; i++){
+            for(int j= 0; j < COLUMNS_LEN; j++){
+                this.shelfCards[i][j] = EMPTY_SPOT_CARD;
+            }
+        }
     }
 
     /**
@@ -45,7 +53,7 @@ public class Shelf {
         }
         // find the first empty row in the column
         int row = 0;
-        while (row < ROWS_LEN && shelfCards[5-row][colIndex] != null) {
+        while (row < ROWS_LEN && shelfCards[5-row][colIndex].getColor() == colorType.EMPTY_SPOT) {
             row++;
         }
         // check if there is enough space in the column for the selected cards
@@ -70,7 +78,7 @@ public class Shelf {
     private boolean shelfIsFull() {
         for (int i = 0; i < ROWS_LEN; i++) {
             for (int j = 0; j < COLUMNS_LEN; j++) {
-                if (shelfCards[i][j] == null) {
+                if (shelfCards[i][j].getColor() == colorType.EMPTY_SPOT) {
                     return false;
                 }
             }
