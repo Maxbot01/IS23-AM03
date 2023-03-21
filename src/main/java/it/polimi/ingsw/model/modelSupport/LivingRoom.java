@@ -200,7 +200,7 @@ public class LivingRoom{
             return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
 
         } else if (j == 0) {
-            return isPresent(i, j - 1) || (isPresent(i, j + 1) || isPresent(i + 1, j));
+            return isPresent(i - 1, j) || (isPresent(i + 1, j) || isPresent(i, j + 1));
 
         } else if (j == DIM - 1) {
             return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);

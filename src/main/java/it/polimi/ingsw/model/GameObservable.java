@@ -13,6 +13,7 @@ public abstract class GameObservable {
     protected void notifyAllObservers(ArrayList<Player> toPlayers, Message withMessage){
         //send the message
         System.out.println("Arrived message" + withMessage.toString());
+        withMessage.printMessage();
     }
 
     /*

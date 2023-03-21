@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class CommonGoals {
     private final EnumSet<CommonGoalType> possibleGoals = EnumSet.allOf(CommonGoalType.class);
     private CommonGoalStrategy firstGoal;
@@ -12,68 +14,93 @@ public class CommonGoals {
     private final ArrayList<Player> reachedFirstGoal = new ArrayList<>();
     private final ArrayList<Player> reachedSecondGoal = new ArrayList<>();
 
-    public void CommonGoal() {
-        Random ran1 = new Random();
-        int ran1Int = ran1.nextInt(possibleGoals.size());
-        Random ran2 = new Random();
-        int ran2Int;
-        do {
-            ran2Int = ran2.nextInt(possibleGoals.size());
-        } while (ran2Int == ran1Int);
+    public CommonGoals() {
+        int[] indexes = ThreadLocalRandom.current().ints(0, 12).distinct().limit(2).toArray();
 
-        switch (ran1Int){
+        switch (indexes[0]){
             case 0:
                 firstGoal = new SixOfTwoGoalStrategy();
+                break;
             case 1:
                 firstGoal = new FiveDiagonalGoalStrategy();
+                break;
             case 2:
                 firstGoal = new FourOfFourGoalStrategy();
+                break;
             case 3:
                 firstGoal = new FourCornersGoalStrategy();
+                break;
             case 4:
                 firstGoal = new Double2x2GoalStrategy();
+                break;
             case 5:
                 firstGoal = new MaxThreeDiffGoalStrategy();
+                break;
             case 6:
                 firstGoal = new EightTilesGoalStrategy();
+                break;
             case 7:
                 firstGoal = new FourLines3DiffGoalStrategy();
+                break;
             case 8:
                 firstGoal = new TwoOfSixGoalStrategy();
+                break;
             case 9:
                 firstGoal = new TwoOf5DiffGoalStrategy();
+                break;
             case 10:
                 firstGoal = new FiveXGoalStrategy();
+                break;
             case 11:
                 firstGoal = new TriangularGoalStrategy();
         }
-        switch (ran2Int){
+        switch (indexes[1]){
             case 0:
                 secondGoal = new SixOfTwoGoalStrategy();
+                break;
             case 1:
                 secondGoal = new FiveDiagonalGoalStrategy();
+                break;
             case 2:
                 secondGoal = new FourOfFourGoalStrategy();
+                break;
             case 3:
                 secondGoal = new FourCornersGoalStrategy();
+                break;
             case 4:
                 secondGoal = new Double2x2GoalStrategy();
+                break;
             case 5:
                 secondGoal = new MaxThreeDiffGoalStrategy();
+                break;
             case 6:
                 secondGoal = new EightTilesGoalStrategy();
+                break;
             case 7:
                 secondGoal = new FourLines3DiffGoalStrategy();
+                break;
             case 8:
                 secondGoal = new TwoOfSixGoalStrategy();
+                break;
             case 9:
                 secondGoal = new TwoOf5DiffGoalStrategy();
+                break;
             case 10:
                 secondGoal = new FiveXGoalStrategy();
+                break;
             case 11:
                 secondGoal = new TriangularGoalStrategy();
         }
     }
+
+    public CommonGoalStrategy getFirstGoal() {
+        return firstGoal;
+    }
+
+    public CommonGoalStrategy getSecondGoal() {
+        return secondGoal;
+    }
+
     public int calculateAllPoints(Player player, int numOfPlayers){
         int ris;
         int pointsOfFirst;
