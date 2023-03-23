@@ -15,9 +15,9 @@ caso favorevole
         if(Mat[0][0] != null) {
             colorType chosen = Mat[0][0].getColor();
             int found = 1;
-            for (int i = 0; i < Mat.length-1 && found == 1; i++) {
+            for (int i = 1; i < rows-1 && found == 1; i++) {
                 if(Mat[i][i] != null){
-                    if(!Mat[i][i].getColor().equals(chosen)){
+                    if(!Mat[i][i].getColor().equals(chosen) || Mat[i-1][i] != null){
                        found = 0;
                     }
                 }else{
@@ -31,9 +31,9 @@ caso favorevole
         if(Mat[1][0] != null && valid == 0){
             colorType chosen = Mat[1][0].getColor();
             int found = 1;
-            for (int i = 1; i < Mat.length && found == 1; i++) {
-                if(Mat[i][i] != null){
-                    if(!Mat[i][i].getColor().equals(chosen)){
+            for (int i = 2; i < rows && found == 1; i++) {
+                if(Mat[i][i-1] != null){
+                    if(!Mat[i][i-1].getColor().equals(chosen) || Mat[i-1][i-1] != null){
                         found = 0;
                     }
                 }else{
@@ -47,9 +47,9 @@ caso favorevole
         if(Mat[0][cols-1] != null && valid == 0){
             colorType chosen = Mat[0][cols-1].getColor();
             int found = 1;
-            for (int i = 0; i < Mat.length-1 && found == 1; i++) {
+            for (int i = 1; i < rows-1 && found == 1; i++) {
                 if(Mat[i][cols-(1+i)] != null){
-                    if(!Mat[i][cols-(1+i)].getColor().equals(chosen)){
+                    if(!Mat[i][cols-(1+i)].getColor().equals(chosen) || Mat[i-1][cols-(1-i)] != null){
                         found = 0;
                     }
                 }else{
@@ -63,9 +63,9 @@ caso favorevole
         if(Mat[1][cols-1] != null && valid == 0){
             colorType chosen = Mat[1][cols-1].getColor();
             int found = 1;
-            for (int i = 1; i < Mat.length && found == 1; i++) {
+            for (int i = 2; i < rows && found == 1; i++) {
                 if(Mat[i][cols-i] != null){
-                    if(!Mat[i][cols-i].getColor().equals(chosen)){
+                    if(!Mat[i][cols-i].getColor().equals(chosen) || Mat[i-1][cols-i] != null){
                         found = 0;
                     }
                 }else{

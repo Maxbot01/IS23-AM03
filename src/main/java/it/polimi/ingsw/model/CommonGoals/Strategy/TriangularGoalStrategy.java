@@ -13,8 +13,8 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
  */
         if(Mat[0][0] != null) {
             int found = 1;
-            for (int i = 0; i < Mat.length-1 && found == 1; i++) {
-                if(Mat[i][i] == null){
+            for (int i = 1; i < rows-1 && found == 1; i++) {
+                if(Mat[i][i] == null || Mat[i-1][i] != null){
                     found = 0;
                 }
             }
@@ -23,8 +23,8 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
             }
         } else if(Mat[1][0] != null){
             int found = 1;
-            for (int i = 1; i < Mat.length && found == 1; i++) {
-                if(Mat[i][i] == null) {
+            for (int i = 2; i < rows && found == 1; i++) {
+                if(Mat[i][i-1] == null || Mat[i-1][i-1] != null) {
                     found = 0;
                 }
             }
@@ -33,8 +33,8 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
             }
         } else if(Mat[0][cols-1] != null){
             int found = 1;
-            for (int i = 0; i < Mat.length-1 && found == 1; i++) {
-                if(Mat[i][cols-(1+i)] == null){
+            for (int i = 1; i < rows-1 && found == 1; i++) {
+                if(Mat[i][cols-(1+i)] == null || Mat[i-1][cols-(1+i)] != null){
                         found = 0;
                 }
             }
@@ -43,8 +43,8 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
             }
         } else if(Mat[1][cols-1] != null){
             int found = 1;
-            for (int i = 1; i < Mat.length && found == 1; i++) {
-                if(Mat[i][cols-i] == null){
+            for (int i = 2; i < rows && found == 1; i++) {
+                if(Mat[i][cols-i] == null || Mat[i-1][cols-i] != null){
                         found = 0;
                 }
             }

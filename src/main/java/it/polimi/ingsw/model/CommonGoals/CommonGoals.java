@@ -17,9 +17,7 @@ public class CommonGoals {
 
     public CommonGoals() {
         int[] indexes = ThreadLocalRandom.current().ints(0, 12).distinct().limit(2).toArray();
-        indexes[0] = 3;
-        indexes[1] = 3;
-        switch (indexes[0]){
+        /*switch (indexes[0]){
             case 0:
                 firstGoal = new SixOfTwoGoalStrategy();
                 break;
@@ -92,7 +90,9 @@ public class CommonGoals {
                 break;
             case 11:
                 secondGoal = new TriangularGoalStrategy();
-        }
+        }*/
+        firstGoal = new Double2x2GoalStrategy();
+        secondGoal = new TriangularGoalStrategy();
     }
 
     public CommonGoalStrategy getFirstGoal() {
@@ -125,6 +125,16 @@ public class CommonGoals {
                 prova[i][j] = piece;
             }
         }
+        System.out.println("Stampo 'prova:'");
+        for(int i = 0; i < 6; i++){
+            for(int j = 0;j < 5; j++){
+                System.out.print(prova[i][j].getColor() + "  ");
+            }
+            System.out.print("\n");
+        }
+        System.out.println("\n");
+        System.out.println("reachedFirstGoal:\n" + reachedFirstGoal + "\n");
+        System.out.println("reachedSecondGoal:\n" + reachedSecondGoal + "\n");
 
         if(!reachedFirstGoal.contains(player)){
             if (firstGoal.goalCompleted(prova)) {/*boolean return*/
@@ -134,11 +144,14 @@ public class CommonGoals {
                 } else {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 4);
                 }
+                System.out.println("firstgoal completato\n");
             } else {
                 pointsOfFirst = 0;
+                System.out.println("firstGoal non completato\n");
             }
         }else{
             pointsOfFirst = 0;
+            System.out.println("Il player " + player.getNickname() + "ha già completato il goal\n");
         }
         /* secondGoal */
         /* CASO DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
@@ -150,11 +163,14 @@ public class CommonGoals {
                 } else {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 4);
                 }
+                System.out.println("secondGoal completato\n");
             } else {
                 pointsOfSecond = 0;
+                System.out.println("secondGoal non completato\n");
             }
         }else{
             pointsOfSecond = 0;
+            System.out.println("Il player " + player.getNickname() + "ha già comletato il goal\n");
         }
         ris = pointsOfFirst + pointsOfSecond;
         return ris;

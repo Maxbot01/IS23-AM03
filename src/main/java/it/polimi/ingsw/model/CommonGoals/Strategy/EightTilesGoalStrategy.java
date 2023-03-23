@@ -12,7 +12,7 @@ public class EightTilesGoalStrategy implements CommonGoalStrategy{
         int [] numOfColor = {0,0,0,0,0,0};
 
         for(int i = 0; i < Mat.length && completed == 0; i++){
-            for(int j = 0; i< Mat[0].length && completed == 0; j++) {
+            for(int j = 0; j < Mat[0].length && completed == 0; j++) {
                 if(Mat[i][j] != null){
                     if(!colors.contains(Mat[i][j].getColor())){
                         colors.add(Mat[i][j].getColor());
