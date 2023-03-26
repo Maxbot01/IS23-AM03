@@ -73,7 +73,7 @@ public class InitStateMessage extends MatchStateMessage {
             System.out.println(pair.getFirst().getNickname() + ":");
             for (int i = 0; i < pair.getSecond().length; i++) {
                 for (int j = 0; j < pair.getSecond()[i].length; j++) {
-                    System.out.print(pair.getSecond()[i][j] + " ");
+                    System.out.print(pair.getSecond()[i][j].getColor() + " ");
                 }
                 System.out.println();
             }

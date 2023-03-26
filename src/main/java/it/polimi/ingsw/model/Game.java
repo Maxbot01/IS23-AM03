@@ -159,7 +159,7 @@ public class Game extends GameObservable{
         }
         //refill board if needed
         try{
-            this.livingRoom.refillBoard(players.size());
+            this.livingRoom.refillBoard();
         }catch(NoMoreCardsException e){
             this.gameState = GameStateType.LAST_ROUND;
         }
