@@ -7,5 +7,6 @@ public enum colorType {
     YELLOW,
     WHITE,
     GREEN,
-    THOMBSTONE
+    TOMBSTONE,
+    EMPTY_SPOT
 }
