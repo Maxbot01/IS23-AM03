@@ -1,23 +1,21 @@
 package it.polimi.ingsw.model.CommonGoals;
 
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
-import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
-import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommonGoals {
-    private final EnumSet<CommonGoalType> possibleGoals = EnumSet.allOf(CommonGoalType.class);
-    private final CommonGoalStrategy firstGoal;
-    private final CommonGoalStrategy secondGoal;
+    /* private final EnumSet<CommonGoalType> possibleGoals = EnumSet.allOf(CommonGoalType.class); non viene usata */
+    private CommonGoalStrategy firstGoal;
+    private CommonGoalStrategy secondGoal;
     private final ArrayList<Player> reachedFirstGoal = new ArrayList<>();
     private final ArrayList<Player> reachedSecondGoal = new ArrayList<>();
 
     public CommonGoals() {
         int[] indexes = ThreadLocalRandom.current().ints(0, 12).distinct().limit(2).toArray();
-        /*switch (indexes[0]){
+        switch (indexes[0]){
             case 0:
                 firstGoal = new SixOfTwoGoalStrategy();
                 break;
@@ -43,7 +41,7 @@ public class CommonGoals {
                 firstGoal = new FourLines3DiffGoalStrategy();
                 break;
             case 8:
-                firstGoal = new TwoOfSixGoalStrategy();
+                firstGoal = new TwoOf6DiffGoalStrategy();
                 break;
             case 9:
                 firstGoal = new TwoOf5DiffGoalStrategy();
@@ -71,7 +69,7 @@ public class CommonGoals {
                 secondGoal = new Double2x2GoalStrategy();
                 break;
             case 5:
-                secondGoal = new MaxThreeDiffGoalStrategy();
+                secondGoal = new ThreeColumns3DiffGoalStrategy();
                 break;
             case 6:
                 secondGoal = new EightTilesGoalStrategy();
@@ -80,7 +78,7 @@ public class CommonGoals {
                 secondGoal = new FourLines3DiffGoalStrategy();
                 break;
             case 8:
-                secondGoal = new TwoOfSixGoalStrategy();
+                secondGoal = new TwoOf6DiffGoalStrategy();
                 break;
             case 9:
                 secondGoal = new TwoOf5DiffGoalStrategy();
@@ -90,9 +88,10 @@ public class CommonGoals {
                 break;
             case 11:
                 secondGoal = new TriangularGoalStrategy();
-        }*/
-        firstGoal = new TriangularGoalStrategy();
-        secondGoal = new FiveDiagonalGoalStrategy();
+        }
+        /* Assegnamento Strategy */
+        /* firstGoal = new TriangularGoalStrategy();
+        secondGoal = new FiveDiagonalGoalStrategy(); */
     }
 
     public CommonGoalStrategy getFirstGoal() {
@@ -109,7 +108,19 @@ public class CommonGoals {
         int ris;
         int pointsOfFirst;
         int pointsOfSecond;
-        /* CASI DI TEST: ho cambiato player.getPlayersShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
+        /* TEST RANDOMICO */
+        /*
+        colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
+        Random random = new Random();
+        int range = colors.length;
+        for (int i = 0; i < 6; i++) {
+            for(int j = 0; j < 5; j++) {
+                int chosen = random.nextInt(range);
+                BoardCard piece = new BoardCard(colors[chosen]);
+                prova[i][j] = piece;
+            }
+        }
+        */
         /* TESTING FourOfFour SPECIFICI: NON ELIMINARE*/
         /*
         Caso funzionante senza 4-adiac (guarda il foglio):
@@ -165,19 +176,6 @@ public class CommonGoals {
         colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
         colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
         */
-        /* TEST RANDOMICO */
-        /*
-        colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
-        Random random = new Random();
-        int range = colors.length;
-        for (int i = 0; i < 6; i++) {
-            for(int j = 0; j < 5; j++) {
-                int chosen = random.nextInt(range);
-                BoardCard piece = new BoardCard(colors[chosen]);
-                prova[i][j] = piece;
-            }
-        }
-        */
         /* TESTING Double2x2 SPECIFICI: NON ELIMINARE */
         /*
         Caso limite 10 carte con disposizione killer in verticale verso dx:
@@ -214,15 +212,40 @@ public class CommonGoals {
         colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
         colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
         */
-        /* TESTING FiveDiagonal e Triangular SPECIFICI: NON ELIMINARE DA FARE ANCORA*/
-        /* Caso funzionante:*/
+        /* TESTING Triangular SPECIFICI: NON ELIMINARE */
+        /* Caso funzionante:
         colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT};
         colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE};
         colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE,colorType.BLUE};
         colorType[] fourthLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
         colorType[] fifthLine = {colorType.EMPTY_SPOT,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
         colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-
+        */
+        /* Caso non funzionante:
+        colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT};
+        colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE};
+        colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.WHITE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {colorType.EMPTY_SPOT,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
+        */
+        /* TESTING FiveDiagonal SPECIFICI: NON ELIMINARE */
+        /* Caso funzionante:
+        colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.GREEN};
+        colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE};
+        colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.LIGHT_BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {colorType.YELLOW,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
+        */
+        /* Caso non funzionante:
+        colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT};
+        colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE};
+        colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {colorType.EMPTY_SPOT,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
+        */
         /* TESTING FiveX SPECIFICI: NON ELIMINARE */
         /* Caso funzionante:
         colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
@@ -258,7 +281,7 @@ public class CommonGoals {
         colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
         */
         /* CASI DI TEST: sezione di assegnamento delle carte desiderate sulla shelf */
-
+        /*
         ArrayList<colorType[]> testColors = new ArrayList<>();
         testColors.add(firstLine);
         testColors.add(secondLine);
@@ -284,44 +307,44 @@ public class CommonGoals {
         System.out.println("\n");
         System.out.println("reachedFirstGoal:\n" + reachedFirstGoal + "\n");
         System.out.println("reachedSecondGoal:\n" + reachedSecondGoal + "\n");
-
+        */
 
         /* Vanno eliminate le println negli if */
         if(!reachedFirstGoal.contains(player)){
-            if (firstGoal.goalCompleted(prova)) {/*boolean return*/
+            if (firstGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
                 reachedFirstGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 2);
                 } else {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 4);
                 }
-                System.out.println("firstgoal completato\n");
+                /* System.out.println("firstgoal completato\n"); */
             } else {
                 pointsOfFirst = 0;
-                System.out.println("firstGoal non completato\n");
+                /* System.out.println("firstGoal non completato\n"); */
             }
         }else{
             pointsOfFirst = 0;
-            System.out.println("Il player " + player.getNickname() + " ha già completato il goal\n");
+            /* System.out.println("Il player " + player.getNickname() + " ha già completato il goal\n"); */
         }
         /* secondGoal */
         /* CASO DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
         if(!reachedSecondGoal.contains(player)){
-            if (secondGoal.goalCompleted(prova)) {/*boolean return*/
+            if (secondGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
                 reachedSecondGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 2);
                 } else {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 4);
                 }
-                System.out.println("secondGoal completato\n");
+                /* System.out.println("secondGoal completato\n"); */
             } else {
                 pointsOfSecond = 0;
-                System.out.println("secondGoal non completato\n");
+                /* System.out.println("secondGoal non completato\n"); */
             }
         }else{
             pointsOfSecond = 0;
-            System.out.println("Il player " + player.getNickname() + " ha già completato il goal\n");
+            /* System.out.println("Il player " + player.getNickname() + " ha già completato il goal\n"); */
         }
         ris = pointsOfFirst + pointsOfSecond;
         return ris;

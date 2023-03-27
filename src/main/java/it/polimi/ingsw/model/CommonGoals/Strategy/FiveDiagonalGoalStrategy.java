@@ -17,7 +17,7 @@ caso favorevole
             int found = 1;
             for (int i = 1; i < rows-1 && found == 1; i++) {
                 if(Mat[i][i].getColor() != colorType.EMPTY_SPOT){
-                    if(!Mat[i][i].getColor().equals(chosen) || Mat[i-1][i].getColor() != colorType.EMPTY_SPOT){
+                    if(!Mat[i][i].getColor().equals(chosen)){
                        found = 0;
                     }
                 }else{
@@ -33,7 +33,7 @@ caso favorevole
             int found = 1;
             for (int i = 2; i < rows && found == 1; i++) {
                 if(Mat[i][i-1].getColor() != colorType.EMPTY_SPOT){
-                    if(!Mat[i][i-1].getColor().equals(chosen) || Mat[i-1][i-1].getColor() != colorType.EMPTY_SPOT){
+                    if(!Mat[i][i-1].getColor().equals(chosen)){
                         found = 0;
                     }
                 }else{
@@ -49,7 +49,7 @@ caso favorevole
             int found = 1;
             for (int i = 1; i < rows-1 && found == 1; i++) {
                 if(Mat[i][cols-(1+i)].getColor() != colorType.EMPTY_SPOT){
-                    if(!Mat[i][cols-(1+i)].getColor().equals(chosen) || Mat[i-1][cols-(1-i)].getColor() != colorType.EMPTY_SPOT){
+                    if(!Mat[i][cols-(1+i)].getColor().equals(chosen)){
                         found = 0;
                     }
                 }else{
@@ -65,7 +65,7 @@ caso favorevole
             int found = 1;
             for (int i = 2; i < rows && found == 1; i++) {
                 if(Mat[i][cols-i].getColor() != colorType.EMPTY_SPOT){
-                    if(!Mat[i][cols-i].getColor().equals(chosen) || Mat[i-1][cols-i].getColor() != colorType.EMPTY_SPOT){
+                    if(!Mat[i][cols-i].getColor().equals(chosen)){
                         found = 0;
                     }
                 }else{

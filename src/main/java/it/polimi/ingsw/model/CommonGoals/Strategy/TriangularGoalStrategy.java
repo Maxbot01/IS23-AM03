@@ -15,7 +15,7 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
         if(Mat[0][0].getColor() != colorType.EMPTY_SPOT) {
             int found = 1;
             for (int i = 1; i < rows-1 && found == 1; i++) {
-                if(Mat[i][i].getColor() == colorType.EMPTY_SPOT || Mat[i-1][i].getColor() == colorType.EMPTY_SPOT){
+                if(Mat[i][i].getColor() == colorType.EMPTY_SPOT || Mat[i-1][i].getColor() != colorType.EMPTY_SPOT){
                     found = 0;
                 }
             }
@@ -25,7 +25,7 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
         } else if(Mat[1][0].getColor() != colorType.EMPTY_SPOT){
             int found = 1;
             for (int i = 2; i < rows && found == 1; i++) {
-                if(Mat[i][i-1].getColor() == colorType.EMPTY_SPOT || Mat[i-1][i-1].getColor() == colorType.EMPTY_SPOT) {
+                if(Mat[i][i-1].getColor() == colorType.EMPTY_SPOT || Mat[i-1][i-1].getColor() != colorType.EMPTY_SPOT) {
                     found = 0;
                 }
             }
@@ -35,7 +35,7 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
         } else if(Mat[0][cols-1].getColor() != colorType.EMPTY_SPOT){
             int found = 1;
             for (int i = 1; i < rows-1 && found == 1; i++) {
-                if(Mat[i][cols-(1+i)].getColor() == colorType.EMPTY_SPOT || Mat[i-1][cols-(1+i)].getColor() == colorType.EMPTY_SPOT){
+                if(Mat[i][cols-(1+i)].getColor() == colorType.EMPTY_SPOT || Mat[i-1][cols-(1+i)].getColor() != colorType.EMPTY_SPOT){
                         found = 0;
                 }
             }
@@ -45,7 +45,7 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
         } else if(Mat[1][cols-1].getColor() != colorType.EMPTY_SPOT){
             int found = 1;
             for (int i = 2; i < rows && found == 1; i++) {
-                if(Mat[i][cols-i].getColor() == colorType.EMPTY_SPOT || Mat[i-1][cols-i].getColor() == colorType.EMPTY_SPOT){
+                if(Mat[i][cols-i].getColor() == colorType.EMPTY_SPOT || Mat[i-1][cols-i].getColor() != colorType.EMPTY_SPOT){
                         found = 0;
                 }
             }
