@@ -109,14 +109,12 @@ public class CommonGoals {
         int ris;
         int pointsOfFirst;
         int pointsOfSecond;
-        /* firstGoal */
-        /* potrei fare un metodo per il calcolo dei punti di un goal, così da non dover riscrivere
-            la stessa cosa per entrambi i goal */
-
         /* CASI DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
-
-        /* TESTING FoF: */
-        /* Caso funzionante senza 4-adiac (guarda il foglio)
+        /* TESTING FoF SPECIFICI: NON ELIMINARE*/
+        /*
+        Caso funzionante senza 4-adiac (guarda il foglio)
+        */
+        /*
         colorType[] firstLine = {colorType.BLUE,colorType.PURPLE,colorType.GREEN,colorType.LIGHT_BLUE,colorType.YELLOW};
         colorType[] secondLine = {colorType.BLUE,colorType.BLUE,colorType.PURPLE,colorType.GREEN,colorType.LIGHT_BLUE};
         colorType[] thirdLine = {colorType.PURPLE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
@@ -127,13 +125,59 @@ public class CommonGoals {
         /*
         Caso killer senza 4-adiac (guarda il foglio)
         */
+        /*
         colorType[] firstLine = {colorType.GREEN,colorType.PURPLE,colorType.GREEN,colorType.LIGHT_BLUE,colorType.YELLOW};
         colorType[] secondLine = {colorType.BLUE,colorType.BLUE,colorType.PURPLE,colorType.GREEN,colorType.LIGHT_BLUE};
         colorType[] thirdLine = {colorType.PURPLE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
         colorType[] fourthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
         colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE,colorType.BLUE};
         colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-
+        */
+        /*
+        Caso funzionante con 4-adiac (guarda il foglio)
+        */
+        /*
+        colorType[] firstLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.LIGHT_BLUE,colorType.YELLOW};
+        colorType[] secondLine = {colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.GREEN,colorType.LIGHT_BLUE};
+        colorType[] thirdLine = {colorType.PURPLE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
+        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE,colorType.YELLOW};
+        colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
+        */
+        /*
+        Caso killer con 4-adiac (guard il foglio)
+        */
+        /*
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.BLUE,colorType.LIGHT_BLUE,colorType.YELLOW};
+        colorType[] secondLine = {colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.GREEN,colorType.LIGHT_BLUE};
+        colorType[] thirdLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
+        colorType[] fourthLine = {colorType.GREEN,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
+        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
+        colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
+        */
+        /*
+        Caso funzionante senza 4-adiac con 3-adiac vicine
+        */
+        /*
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.BLUE,colorType.YELLOW};
+        colorType[] secondLine = {colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
+        colorType[] thirdLine = {colorType.LIGHT_BLUE,colorType.BLUE,colorType.GREEN,colorType.YELLOW,colorType.BLUE};
+        colorType[] fourthLine = {colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE};
+        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
+        colorType[] sixthLine = {colorType.GREEN,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
+        */
+        /*
+        Caso funionante con 16 carte che restituiscono 3 combinazioni più due di un altro colore (sono partito dal caso killer 4-adiac)
+        */
+        /*
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] secondLine = {colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] thirdLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
+        colorType[] fourthLine = {colorType.GREEN,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
+        colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
+        */
+        /*
         ArrayList<colorType[]> testColors = new ArrayList<>();
         testColors.add(firstLine);
         testColors.add(secondLine);
@@ -141,9 +185,8 @@ public class CommonGoals {
         testColors.add(fourthLine);
         testColors.add(fifthLine);
         testColors.add(sixthLine);
-
-
         BoardCard[][] prova = new BoardCard[6][5];
+        */
         /* TEST RANDOMICO
         colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
         Random random = new Random();
@@ -156,7 +199,8 @@ public class CommonGoals {
             }
         }
         */
-        /* TEST FoF: specifico */
+        /* TEST FoF SPECIFICI: sezione di assegnamento delle carte desiderate sulla shelf */
+        /*
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++){
                 BoardCard piece = new BoardCard(testColors.get(i)[j]);
@@ -174,9 +218,11 @@ public class CommonGoals {
         System.out.println("\n");
         System.out.println("reachedFirstGoal:\n" + reachedFirstGoal + "\n");
         System.out.println("reachedSecondGoal:\n" + reachedSecondGoal + "\n");
+        */
 
+        /* Vanno eliminate le println negli if */
         if(!reachedFirstGoal.contains(player)){
-            if (firstGoal.goalCompleted(prova)) {/*boolean return*/
+            if (firstGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
                 reachedFirstGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 2);
@@ -195,7 +241,7 @@ public class CommonGoals {
         /* secondGoal */
         /* CASO DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
         if(!reachedSecondGoal.contains(player)){
-            if (secondGoal.goalCompleted(prova)) {/*boolean return*/
+            if (secondGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
                 reachedSecondGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 2);

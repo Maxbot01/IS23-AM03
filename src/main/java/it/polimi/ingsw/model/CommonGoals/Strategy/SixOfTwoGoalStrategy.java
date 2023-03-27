@@ -16,11 +16,11 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
                 Pair<Integer,Integer> coordinatesCenter = new Pair<>(i,j);
                 Pair<Integer,Integer> coordinatesdx = new Pair<>(i,j+1);
 
-                if(!verticals.contains(coordinatesCenter) && !verticals.contains(coordinatesdx)) {
+                if(!pairIsPresent(coordinatesCenter, verticals) && !pairIsPresent(coordinatesdx, verticals)) {
                     if (Mat[i][j].getColor().equals(Mat[i][j + 1].getColor())) {
                         j++;
                         couples++;
-                    } else if (Mat[i][j].getColor().equals(Mat[i + 1][j].getColor())) {
+                    } else if (Mat[i][j].getColor().equals(Mat[i+1][j].getColor())) {
                         couples++;
                         verticals.add(new Pair<>(i+1,j));
                     }
@@ -35,5 +35,14 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
+    }
+    private boolean pairIsPresent(Pair<Integer,Integer> tmp, ArrayList<Pair<Integer,Integer>> verticals){
+        int present = 0;
+        for(int i = 0; i < verticals.size() && present == 0; i++){
+            if(verticals.get(i).getFirst().equals(tmp.getFirst()) && verticals.get(i).getSecond().equals(tmp.getSecond())){
+                present = 1;
+            }
+        }
+        return present == 1;
     }
 }

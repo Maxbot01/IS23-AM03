@@ -28,21 +28,25 @@ delle combinazioni
                 if(Mat[i][j] != null){
                     Pair<Integer,Integer> tmp = new Pair<>(i,j);
                     if(!pairIsPresent(tmp,savedTotalCoord)) {
-/*
-resetto il numero di carte viste e il numero di combinazioni trovate per il colore precedente
- */
+/* resetto il numero di carte viste e il numero di combinazioni trovate per il colore precedente */
                         savedNumbOfCoord.removeAll(savedNumbOfCoord);
                         combinations.removeAll(combinations);
 
                         startSearchOfCombinations(Mat, Mat[i][j].getColor(), i, j, savedTotalCoord, combinations, savedNumbOfCoord);
 
-                        /* stampo i risultati che mi interessano */
+                        /* stampo i risultati che mi interessano:
                         System.out.println("\nNumero di combinazioni trovate per " + i + "-" + j + ": " + combinations.size() + "\nNumero di" +
                                 " BoardCards relative" + " alle combinazioni: " + savedNumbOfCoord.size() + "\n");
+
+                        */
                         if (savedNumbOfCoord.size() >= 4) {
+                        /*
                             System.out.println("Prima di fare la add, correctLines vale: " + correctLines);
+                         */
                             correctLines += calculateQuartets(combinations, savedNumbOfCoord);
+                        /*
                             System.out.println("Dopo aver fatto la add, correctLines vale: " + correctLines);
+                         */
                             if (correctLines >= 4) {
                                 completed = 1;
                             }
@@ -260,9 +264,9 @@ per ogni pair di interi nel primo quartetto cerco un pair uguale nel secondo, se
 
         ArrayList<Pair<Integer,Integer>> considered = new ArrayList<>();
         savedTotalCoord.add(new Pair<>(x,y));
-        System.out.println("Elementi di savedTotalCoord: i=" + savedTotalCoord.get(savedTotalCoord.size()-1).getFirst() + " j=" +
+        /*System.out.println("Elementi di savedTotalCoord: i=" + savedTotalCoord.get(savedTotalCoord.size()-1).getFirst() + " j=" +
                 savedTotalCoord.get(savedTotalCoord.size()-1).getSecond());
-
+        */
         findCombinations(mat,chosenColor,x,y,x,y,considered,combinations,savedNumbOfCoord);
 
         if(y-1 >= 0 && mat[x][y-1].getColor().equals(chosenColor)) { /* W card */
