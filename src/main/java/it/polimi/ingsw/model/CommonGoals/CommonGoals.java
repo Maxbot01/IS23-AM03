@@ -215,14 +215,14 @@ public class CommonGoals {
         colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
         */
         /* TESTING FiveDiagonal e Triangular SPECIFICI: NON ELIMINARE DA FARE ANCORA*/
-        /* Caso funzionante:
-        colorType[] firstLine = {null,null,null,null,null};
-        colorType[] secondLine = {null,null,null,null,colorType.WHITE};
-        colorType[] thirdLine = {null,null,null,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {null,null,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {null,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        /* Caso funzionante:*/
+        colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT};
+        colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE};
+        colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {colorType.EMPTY_SPOT,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
         colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
+
         /* TESTING FiveX SPECIFICI: NON ELIMINARE */
         /* Caso funzionante:
         colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
@@ -258,7 +258,7 @@ public class CommonGoals {
         colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
         */
         /* CASI DI TEST: sezione di assegnamento delle carte desiderate sulla shelf */
-        /*
+
         ArrayList<colorType[]> testColors = new ArrayList<>();
         testColors.add(firstLine);
         testColors.add(secondLine);
@@ -285,10 +285,10 @@ public class CommonGoals {
         System.out.println("reachedFirstGoal:\n" + reachedFirstGoal + "\n");
         System.out.println("reachedSecondGoal:\n" + reachedSecondGoal + "\n");
 
-        */
+
         /* Vanno eliminate le println negli if */
         if(!reachedFirstGoal.contains(player)){
-            if (firstGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
+            if (firstGoal.goalCompleted(prova)) {/*boolean return*/
                 reachedFirstGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 2);
@@ -307,7 +307,7 @@ public class CommonGoals {
         /* secondGoal */
         /* CASO DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
         if(!reachedSecondGoal.contains(player)){
-            if (secondGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
+            if (secondGoal.goalCompleted(prova)) {/*boolean return*/
                 reachedSecondGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 2);
