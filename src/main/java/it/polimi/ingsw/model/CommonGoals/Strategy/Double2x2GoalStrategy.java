@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Double2x2GoalStrategy implements CommonGoalStrategy {
     public boolean goalCompleted(BoardCard[][] Mat) {
         ArrayList<Pair<Integer, Integer>> blocksCoordinates = new ArrayList<>();
-        ArrayList<Pair<colorType, Integer>> colors = new ArrayList<>();
+        ArrayList<colorType> colors = new ArrayList<>();
         int completed = 0;
         int rows = Mat.length;
         int cols = Mat[0].length;
@@ -21,15 +21,15 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy {
                             Mat[i][j].getColor().equals(Mat[i + 1][j].getColor()) &&
                             Mat[i][j].getColor().equals(Mat[i + 1][j + 1].getColor())) {
                         int found = 0;
-                        Pair<colorType, Integer> updateColor = new Pair<>(Mat[i][j].getColor(), 1);
+                        colorType updateColor = Mat[i][j].getColor();
 
                         Pair<Integer, Integer> coordinatesOne = new Pair<>(i, j);
                         Pair<Integer, Integer> coordinatesTwo = new Pair<>(i, j + 1);
                         Pair<Integer, Integer> coordinatesThree = new Pair<>(i + 1, j);
                         Pair<Integer, Integer> coordinatesFour = new Pair<>(i + 1, j + 1);
                         /* potrei mettere il primo caso isempty per ridurre da 4 a 1 controllo la prima volta, ma è irrilevante */
-                        if (!blocksCoordinates.contains(coordinatesOne) && !blocksCoordinates.contains(coordinatesTwo) &&
-                                !blocksCoordinates.contains(coordinatesThree) && !blocksCoordinates.contains(coordinatesFour)) {
+                        if (!pairIsPresent(coordinatesOne,blocksCoordinates) && !pairIsPresent(coordinatesTwo,blocksCoordinates) &&
+                                !pairIsPresent(coordinatesThree,blocksCoordinates) && !pairIsPresent(coordinatesFour,blocksCoordinates)) {
                             blocksCoordinates.add(coordinatesOne);
                             blocksCoordinates.add(coordinatesTwo);
                             blocksCoordinates.add(coordinatesThree);
@@ -59,15 +59,15 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy {
                                 Mat[i][j].getColor().equals(Mat[i - 1][j].getColor()) &&
                                 Mat[i][j].getColor().equals(Mat[i - 1][j - 1].getColor())) {
 
-                            Pair<colorType, Integer> updateColor = new Pair<>(Mat[i][j].getColor(), 1);
+                            colorType updateColor = Mat[i][j].getColor();
 
                             Pair<Integer, Integer> coordinatesOne = new Pair<>(i, j);
                             Pair<Integer, Integer> coordinatesTwo = new Pair<>(i, j - 1);
                             Pair<Integer, Integer> coordinatesThree = new Pair<>(i - 1, j);
                             Pair<Integer, Integer> coordinatesFour = new Pair<>(i - 1, j - 1);
                             /* potrei mettere il primo caso isempty per ridurre da 4 a 1 controllo la prima volta, ma è irrilevante */
-                            if (!blocksCoordinates.contains(coordinatesOne) && !blocksCoordinates.contains(coordinatesTwo) &&
-                                    !blocksCoordinates.contains(coordinatesThree) && !blocksCoordinates.contains(coordinatesFour)) {
+                            if (!pairIsPresent(coordinatesOne,blocksCoordinates) && !pairIsPresent(coordinatesTwo,blocksCoordinates) &&
+                                    !pairIsPresent(coordinatesThree,blocksCoordinates) && !pairIsPresent(coordinatesFour,blocksCoordinates)) {
                                 blocksCoordinates.add(coordinatesOne);
                                 blocksCoordinates.add(coordinatesTwo);
                                 blocksCoordinates.add(coordinatesThree);
@@ -92,5 +92,14 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy {
         } else {
             return false;
         }
+    }
+    private boolean pairIsPresent(Pair<Integer,Integer> tmp, ArrayList<Pair<Integer,Integer>> group){
+        int present = 0;
+        for(int i = 0; i < group.size() && present == 0; i++){
+            if(group.get(i).getFirst().equals(tmp.getFirst()) && group.get(i).getSecond().equals(tmp.getSecond())){
+                present = 1;
+            }
+        }
+        return present == 1;
     }
 }
