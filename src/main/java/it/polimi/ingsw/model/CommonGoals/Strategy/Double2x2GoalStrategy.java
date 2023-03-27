@@ -16,7 +16,8 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy {
 
         for (int i = 0; i < rows - 1 && completed == 0; i++) {
             for (int j = 0; j < cols - 1 && completed == 0; j++) {
-                if (Mat[i][j] != null && Mat[i][j + 1] != null && Mat[i + 1][j] != null && Mat[i + 1][j + 1] != null) {
+                if (Mat[i][j].getColor() != colorType.EMPTY_SPOT && Mat[i][j+1].getColor() != colorType.EMPTY_SPOT &&
+                    Mat[i+1][j].getColor() != colorType.EMPTY_SPOT && Mat[i+1][j+1].getColor() != colorType.EMPTY_SPOT) {
                     if (Mat[i][j].getColor().equals(Mat[i][j + 1].getColor()) &&
                             Mat[i][j].getColor().equals(Mat[i + 1][j].getColor()) &&
                             Mat[i][j].getColor().equals(Mat[i + 1][j + 1].getColor())) {
@@ -53,7 +54,8 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy {
             blocksCoordinates.removeAll(blocksCoordinates);
             for (int i = rows - 1; i > 0; i--) {
                 for (int j = cols - 1; j > 0; j--) {
-                    if (Mat[i][j] != null && Mat[i][j - 1] != null && Mat[i - 1][j] != null && Mat[i - 1][j - 1] != null) {
+                    if (Mat[i][j].getColor() != colorType.EMPTY_SPOT && Mat[i][j-1].getColor() != colorType.EMPTY_SPOT &&
+                        Mat[i-1][j].getColor() != colorType.EMPTY_SPOT && Mat[i-1][j-1].getColor() != colorType.EMPTY_SPOT) {
                         int found = 0;
                         if (Mat[i][j].getColor().equals(Mat[i][j - 1].getColor()) &&
                                 Mat[i][j].getColor().equals(Mat[i - 1][j].getColor()) &&

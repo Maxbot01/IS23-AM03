@@ -10,8 +10,9 @@ public class FiveXGoalStrategy implements CommonGoalStrategy{
 
         for(int i = 1; i < Mat.length-1 && found == 0; i++){
             for(int j = 1; j < Mat[0].length-1 && found == 0; j++){
-                if(Mat[i][j] != null && Mat[i-1][j-1] != null && Mat[i-1][j+1] != null &&
-                        Mat[i+1][j-1] != null && Mat[i+1][j+1] != null) {
+                if(Mat[i][j].getColor() != colorType.EMPTY_SPOT && Mat[i-1][j-1].getColor() != colorType.EMPTY_SPOT &&
+                    Mat[i-1][j+1].getColor() != colorType.EMPTY_SPOT && Mat[i+1][j-1].getColor() != colorType.EMPTY_SPOT &&
+                    Mat[i+1][j+1].getColor() != colorType.EMPTY_SPOT) {
                     chosen = Mat[i][j].getColor();
                     if (Mat[i-1][j-1].getColor().equals(chosen) && Mat[i-1][j+1].getColor().equals(chosen) &&
                             Mat[i+1][j-1].getColor().equals(chosen) && Mat[i+1][j+1].getColor().equals(chosen)) {

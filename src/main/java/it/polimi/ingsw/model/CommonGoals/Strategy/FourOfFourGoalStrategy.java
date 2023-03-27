@@ -25,7 +25,7 @@ delle combinazioni
  */
         for(int i = 0; i < rows && completed == 0; i++){
             for(int j = 0; j < cols && completed == 0; j++){
-                if(Mat[i][j] != null){
+                if(Mat[i][j].getColor() != colorType.EMPTY_SPOT){
                     Pair<Integer,Integer> tmp = new Pair<>(i,j);
                     if(!pairIsPresent(tmp,savedTotalCoord)) {
 /* resetto il numero di carte viste e il numero di combinazioni trovate per il colore precedente */

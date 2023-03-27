@@ -16,7 +16,7 @@ public class ThreeColumns3DiffGoalStrategy implements CommonGoalStrategy{
             different.removeAll(different);
             int valid = 1;
             for(int i = 0; i < Mat.length && valid == 1; i++){
-                if(Mat[i][j] != null) {
+                if(Mat[i][j].getColor() != colorType.EMPTY_SPOT) {
                     if (!different.contains(Mat[i][j].getColor())) {
                         different.add(Mat[i][j].getColor());
                         if(different.size() > 3){

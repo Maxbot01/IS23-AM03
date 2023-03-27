@@ -16,7 +16,7 @@ public class TwoOf5DiffGoalStrategy implements CommonGoalStrategy{
             int valid = 1;
             colors.removeAll(colors);
             for(int j = 0; j < Mat[0].length; j++){
-                if(Mat[i][j] != null){
+                if(Mat[i][j].getColor() != colorType.EMPTY_SPOT){
                     if(!colors.contains(Mat[i][j].getColor())){
                         colors.add(Mat[i][j].getColor());
                     }else{

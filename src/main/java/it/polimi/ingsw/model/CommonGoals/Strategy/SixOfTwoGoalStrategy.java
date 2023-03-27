@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.CommonGoals.Strategy;
 
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
+import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
@@ -11,9 +12,9 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
 
         for(int i = 0; i < Mat.length; i++){
             for(int j = 0; j < Mat[0].length; j++){
-                if(Mat[i][j] != null) {
+                if(Mat[i][j].getColor() != colorType.EMPTY_SPOT) {
                     if (j+1 < Mat[0].length) {
-                        if(Mat[i][j+1] != null) {
+                        if(Mat[i][j+1].getColor() != colorType.EMPTY_SPOT) {
                             if (Mat[i][j].getColor().equals(Mat[i][j + 1].getColor())) {
                                 Pair<Integer, Integer> val1 = new Pair<>(i, j);
                                 Pair<Integer, Integer> val2 = new Pair<>(i, j + 1);
@@ -25,7 +26,7 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
                         }
                     }
                     if(i+1 < Mat.length) {
-                        if(Mat[i+1][j] != null) {
+                        if(Mat[i+1][j].getColor() != colorType.EMPTY_SPOT) {
                             if (Mat[i][j].getColor().equals(Mat[i + 1][j].getColor())) {
                                 Pair<Integer, Integer> val1 = new Pair<>(i, j);
                                 Pair<Integer, Integer> val2 = new Pair<>(i + 1, j);
