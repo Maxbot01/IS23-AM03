@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.helpers.Quartet;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class FourOfFourGoalStrategy implements CommonGoalStrategy {
@@ -16,7 +15,6 @@ public class FourOfFourGoalStrategy implements CommonGoalStrategy {
         int completed = 0;
         ArrayList<Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>>>
                 combinations = new ArrayList<>();
-        ArrayList<Pair<Integer,Integer>> considered = new ArrayList<>();
         int correctLines = 0;
         ArrayList<Pair<Integer,Integer>> savedNumbOfCoord = new ArrayList<>();
         ArrayList<Pair<Integer,Integer>> savedTotalCoord = new ArrayList<>();
@@ -29,12 +27,18 @@ delle combinazioni
             for(int j = 0; j < cols && completed == 0; j++){
                 if(Mat[i][j] != null){
                     Pair<Integer,Integer> tmp = new Pair<>(i,j);
-                    if(!savedTotalCoord.contains(tmp)) {
+                    if(!pairIsPresent(tmp,savedTotalCoord)) {
+/*
+resetto il numero di carte viste e il numero di combinazioni trovate per il colore precedente
+ */
                         savedNumbOfCoord.removeAll(savedNumbOfCoord);
-                        findCombinations(Mat, Mat[i][j].getColor(), i, j, i, j, considered, combinations, savedNumbOfCoord, savedTotalCoord);
+                        combinations.removeAll(combinations);
+
+                        startSearchOfCombinations(Mat, Mat[i][j].getColor(), i, j, savedTotalCoord, combinations, savedNumbOfCoord);
+
                         /* stampo i risultati che mi interessano */
-                        System.out.println("\nNumero di combinazioni trovate: " + combinations.size() + "\nNumero di BoardCards relative alle combinazioni: " +
-                                savedNumbOfCoord.size() + "\n");
+                        System.out.println("\nNumero di combinazioni trovate per " + i + "-" + j + ": " + combinations.size() + "\nNumero di" +
+                                " BoardCards relative" + " alle combinazioni: " + savedNumbOfCoord.size() + "\n");
                         if (savedNumbOfCoord.size() >= 4) {
                             System.out.println("Prima di fare la add, correctLines vale: " + correctLines);
                             correctLines += calculateQuartets(combinations, savedNumbOfCoord);
@@ -56,7 +60,7 @@ delle combinazioni
     private void findCombinations(BoardCard[][] mat, colorType chosenColor, int x, int y, int xPrec, int yPrec,
                 ArrayList<Pair<Integer,Integer>> considered, ArrayList<Quartet<Pair<Integer,Integer>,
                 Pair<Integer,Integer>,Pair<Integer,Integer>, Pair<Integer,Integer>>> combinations,
-                ArrayList<Pair<Integer,Integer>> savedNumbOfCoord, ArrayList<Pair<Integer,Integer>> savedTotalCoord){
+                ArrayList<Pair<Integer,Integer>> savedNumbOfCoord){
 /*
 W-S-E-N mi servono er le combinazioni a T
  */
@@ -64,9 +68,14 @@ W-S-E-N mi servono er le combinazioni a T
         int S = 0;
         int E = 0;
         int N = 0;
-
-        savedNumbOfCoord.add(new Pair<>(x,y));
-        savedTotalCoord.add(new Pair<>(x,y));
+/*
+aggiungo l'elemento a savedNumbOfCoord per tenere traccia del numero di tessere totali considerate per quel colore, nel main verrà resettato per ogni
+elemento di partenza studiato
+ */
+        Pair<Integer,Integer> val = new Pair<>(x,y);
+        if(!pairIsPresent(val,savedNumbOfCoord)) {
+            savedNumbOfCoord.add(val);
+        }
 /*
 aggiungo l'elemento nuovo alla lista di considered così da mantenere le coordinate viste e la size della
 combinazione fino a quel momento
@@ -82,7 +91,7 @@ combinations, così da averla per il controllo finale, solo se non è già prese
             Pair<Integer,Integer> third = new Pair<>(considered.get(2).getFirst(),considered.get(2).getSecond());
             Pair<Integer,Integer> fourth = new Pair<>(considered.get(3).getFirst(),considered.get(3).getSecond());
             Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>, Pair<Integer,Integer>> tmp = new Quartet<>(first,second,third,fourth);
-            if(!combinations.contains(tmp)) {
+            if(!quartetIsPresent(tmp,combinations)) {
                 combinations.add(tmp);
             }
 /*
@@ -91,19 +100,19 @@ in cui cercare una combinazione
  */
         }else{
             if(y-1 >= 0 && mat[x][y-1].getColor().equals(chosenColor) && y-1 != yPrec) { /* W card */
-                findCombinations(mat,chosenColor,x,y-1,x,y,considered,combinations,savedNumbOfCoord,savedTotalCoord);
+                findCombinations(mat,chosenColor,x,y-1,x,y,considered,combinations,savedNumbOfCoord);
                 W = 1;
             }
             if(x+1 < mat.length && mat[x+1][y].getColor().equals(chosenColor) && x+1 != xPrec){ /* S card */
-                findCombinations(mat,chosenColor,x+1,y,x,y,considered,combinations,savedNumbOfCoord,savedTotalCoord);
+                findCombinations(mat,chosenColor,x+1,y,x,y,considered,combinations,savedNumbOfCoord);
                 S = 1;
             }
             if(y+1 < mat[0].length && mat[x][y+1].getColor().equals(chosenColor) && y+1 != yPrec){ /* E card */
-                findCombinations(mat,chosenColor,x,y+1,x,y,considered,combinations,savedNumbOfCoord,savedTotalCoord);
+                findCombinations(mat,chosenColor,x,y+1,x,y,considered,combinations,savedNumbOfCoord);
                 E = 1;
             }
             if(x-1 >= 0 && mat[x-1][y].getColor().equals(chosenColor) && x-1 != xPrec){ /* N card */
-                findCombinations(mat,chosenColor,x-1,y,x,y,considered,combinations,savedNumbOfCoord,savedTotalCoord);
+                findCombinations(mat,chosenColor,x-1,y,x,y,considered,combinations,savedNumbOfCoord);
                 N = 1;
             }
 /*
@@ -117,7 +126,7 @@ riga di 3)
                 Pair<Integer,Integer> fourth = new Pair<>(x+1,y);
                 Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>, Pair<Integer,
                         Integer>> tmp = new Quartet<>(first,second,third,fourth);
-                if(!combinations.contains(tmp)) {
+                if(!quartetIsPresent(tmp,combinations)) {
                     combinations.add(tmp);
                 }
             }
@@ -128,7 +137,7 @@ riga di 3)
                 Pair<Integer,Integer> fourth = new Pair<>(x,y+1);
                 Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>, Pair<Integer,
                         Integer>> tmp = new Quartet<>(first,second,third,fourth);
-                if(!combinations.contains(tmp)) {
+                if(!quartetIsPresent(tmp,combinations)) {
                     combinations.add(tmp);
                 }
             }
@@ -139,7 +148,7 @@ riga di 3)
                 Pair<Integer,Integer> fourth = new Pair<>(x-1,y);
                 Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>, Pair<Integer,
                         Integer>> tmp = new Quartet<>(first,second,third,fourth);
-                if(!combinations.contains(tmp)) {
+                if(!quartetIsPresent(tmp,combinations)) {
                     combinations.add(tmp);
                 }
             }
@@ -150,7 +159,7 @@ riga di 3)
                 Pair<Integer,Integer> fourth = new Pair<>(x+1,y);
                 Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>, Pair<Integer,
                         Integer>> tmp = new Quartet<>(first,second,third,fourth);
-                if(!combinations.contains(tmp)) {
+                if(!quartetIsPresent(tmp,combinations)) {
                     combinations.add(tmp);
                 }
             }
@@ -219,22 +228,89 @@ tornando indietro per cercare possibili altre combinazioni con gli elementi prec
 /*
 per ogni pair di interi nel primo quartetto cerco un pair uguale nel secondo, se lo trovo noOverlap è falso
  */
-        if(firstQ.getFirst().equals(secondQ.getFirst()) || firstQ.getFirst().equals(secondQ.getSecond()) ||
-                firstQ.getFirst().equals(secondQ.getThird()) || firstQ.getFirst().equals(secondQ.getFourth())){
+        if((firstQ.getFirst().getFirst().equals(secondQ.getFirst().getFirst()) && firstQ.getFirst().getSecond().equals(secondQ.getFirst().getSecond())) ||
+            (firstQ.getFirst().getFirst().equals(secondQ.getSecond().getFirst()) && firstQ.getFirst().getSecond().equals(secondQ.getSecond().getSecond())) ||
+            (firstQ.getFirst().getFirst().equals(secondQ.getThird().getFirst()) && firstQ.getFirst().getSecond().equals(secondQ.getThird().getSecond())) ||
+            (firstQ.getFirst().getFirst().equals(secondQ.getFourth().getFirst()) && firstQ.getFirst().getSecond().equals(secondQ.getFourth().getSecond()))){
             return false;
         }
-        if(firstQ.getSecond().equals(secondQ.getFirst()) || firstQ.getSecond().equals(secondQ.getSecond()) ||
-                firstQ.getSecond().equals(secondQ.getThird()) || firstQ.getSecond().equals(secondQ.getFourth())){
+        if((firstQ.getSecond().getFirst().equals(secondQ.getFirst().getFirst()) && firstQ.getSecond().getSecond().equals(secondQ.getFirst().getSecond())) ||
+            (firstQ.getSecond().getFirst().equals(secondQ.getSecond().getFirst()) && firstQ.getSecond().getSecond().equals(secondQ.getSecond().getSecond())) ||
+            (firstQ.getSecond().getFirst().equals(secondQ.getThird().getFirst()) && firstQ.getSecond().getSecond().equals(secondQ.getThird().getSecond())) ||
+            (firstQ.getSecond().getFirst().equals(secondQ.getFourth().getFirst()) && firstQ.getSecond().getSecond().equals(secondQ.getFourth().getSecond()))){
             return false;
         }
-        if(firstQ.getThird().equals(secondQ.getFirst()) || firstQ.getThird().equals(secondQ.getSecond()) ||
-                firstQ.getThird().equals(secondQ.getThird()) || firstQ.getThird().equals(secondQ.getFourth())){
+        if((firstQ.getThird().getFirst().equals(secondQ.getFirst().getFirst()) && firstQ.getThird().getSecond().equals(secondQ.getFirst().getSecond())) ||
+            (firstQ.getThird().getFirst().equals(secondQ.getSecond().getFirst()) && firstQ.getThird().getSecond().equals(secondQ.getSecond().getSecond())) ||
+            (firstQ.getThird().getFirst().equals(secondQ.getThird().getFirst()) && firstQ.getThird().getSecond().equals(secondQ.getThird().getSecond())) ||
+            (firstQ.getThird().getFirst().equals(secondQ.getFourth().getFirst()) && firstQ.getThird().getSecond().equals(secondQ.getFourth().getSecond()))){
             return false;
         }
-        if(firstQ.getFourth().equals(secondQ.getFirst()) || firstQ.getFourth().equals(secondQ.getSecond()) ||
-                firstQ.getFourth().equals(secondQ.getThird()) || firstQ.getFourth().equals(secondQ.getFourth())){
+        if((firstQ.getFourth().getFirst().equals(secondQ.getFirst().getFirst()) && firstQ.getFourth().getSecond().equals(secondQ.getFirst().getSecond())) ||
+            (firstQ.getFourth().getFirst().equals(secondQ.getSecond().getFirst()) && firstQ.getFourth().getSecond().equals(secondQ.getSecond().getSecond())) ||
+            (firstQ.getFourth().getFirst().equals(secondQ.getThird().getFirst()) && firstQ.getFourth().getSecond().equals(secondQ.getThird().getSecond())) ||
+            (firstQ.getFourth().getFirst().equals(secondQ.getFourth().getFirst()) && firstQ.getFourth().getSecond().equals(secondQ.getFourth().getSecond()))){
             return false;
         }
         return true;
+    }
+    private void startSearchOfCombinations(BoardCard[][] mat, colorType chosenColor, int x, int y, ArrayList<Pair<Integer,Integer>> savedTotalCoord,
+                                           ArrayList<Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>>>
+                                           combinations, ArrayList<Pair<Integer,Integer>> savedNumbOfCoord) {
+
+        ArrayList<Pair<Integer,Integer>> considered = new ArrayList<>();
+        savedTotalCoord.add(new Pair<>(x,y));
+        System.out.println("Elementi di savedTotalCoord: i=" + savedTotalCoord.get(savedTotalCoord.size()-1).getFirst() + " j=" +
+                savedTotalCoord.get(savedTotalCoord.size()-1).getSecond());
+
+        findCombinations(mat,chosenColor,x,y,x,y,considered,combinations,savedNumbOfCoord);
+
+        if(y-1 >= 0 && mat[x][y-1].getColor().equals(chosenColor)) { /* W card */
+            Pair<Integer,Integer> tmp = new Pair<>(x,y-1);
+            if(!pairIsPresent(tmp,savedTotalCoord)) {
+                startSearchOfCombinations(mat, chosenColor, x, y - 1, savedTotalCoord, combinations, savedNumbOfCoord);
+            }
+        }
+        if(x+1 < mat.length && mat[x+1][y].getColor().equals(chosenColor)){ /* S card */
+            Pair<Integer,Integer> tmp = new Pair<>(x+1,y);
+            if(!pairIsPresent(tmp,savedTotalCoord)) {
+                startSearchOfCombinations(mat, chosenColor, x + 1, y, savedTotalCoord, combinations, savedNumbOfCoord);
+            }
+        }
+        if(y+1 < mat[0].length && mat[x][y+1].getColor().equals(chosenColor)){ /* E card */
+            Pair<Integer,Integer> tmp = new Pair<>(x,y+1);
+            if(!pairIsPresent(tmp,savedTotalCoord)) {
+                startSearchOfCombinations(mat, chosenColor, x, y + 1, savedTotalCoord, combinations, savedNumbOfCoord);
+            }
+        }
+        if(x-1 >= 0 && mat[x-1][y].getColor().equals(chosenColor)){ /* N card */
+            Pair<Integer,Integer> tmp = new Pair<>(x-1,y);
+            if(!pairIsPresent(tmp,savedTotalCoord)) {
+                startSearchOfCombinations(mat, chosenColor, x - 1, y, savedTotalCoord, combinations, savedNumbOfCoord);
+            }
+        }
+    }
+    private boolean pairIsPresent(Pair<Integer,Integer> tmp, ArrayList<Pair<Integer,Integer>> savedTotalCoord){
+        int present = 0;
+        for(int i = 0; i < savedTotalCoord.size() && present == 0; i++){
+            if(savedTotalCoord.get(i).getFirst().equals(tmp.getFirst()) && savedTotalCoord.get(i).getSecond().equals(tmp.getSecond())){
+                present = 1;
+            }
+        }
+        return present == 1;
+    }
+    private boolean quartetIsPresent(Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>> tmp, ArrayList<
+            Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>>> combinations){
+        int present = 0;
+
+        for(int i = 0; i < combinations.size() && present == 0; i++){
+            if(combinations.get(i).getFirst().getFirst().equals(tmp.getFirst().getFirst()) && combinations.get(i).getFirst().getSecond().equals(tmp.getFirst().getSecond()) &&
+                combinations.get(i).getSecond().getFirst().equals(tmp.getSecond().getFirst()) && combinations.get(i).getSecond().getSecond().equals(tmp.getSecond().getSecond()) &&
+                combinations.get(i).getThird().getFirst().equals(tmp.getThird().getFirst()) && combinations.get(i).getThird().getSecond().equals(tmp.getThird().getSecond()) &&
+                combinations.get(i).getFourth().getFirst().equals(tmp.getFourth().getFirst()) && combinations.get(i).getFourth().getSecond().equals(tmp.getFourth().getSecond())){
+                present = 1;
+            }
+        }
+        return present == 1;
     }
 }
