@@ -91,8 +91,8 @@ public class CommonGoals {
             case 11:
                 secondGoal = new TriangularGoalStrategy();
         }*/
-        firstGoal = new Double2x2GoalStrategy();
-        secondGoal = new FourOfFourGoalStrategy();
+        firstGoal = new TriangularGoalStrategy();
+        secondGoal = new FiveDiagonalGoalStrategy();
     }
 
     public CommonGoalStrategy getFirstGoal() {
@@ -109,7 +109,7 @@ public class CommonGoals {
         int ris;
         int pointsOfFirst;
         int pointsOfSecond;
-        /* CASI DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
+        /* CASI DI TEST: ho cambiato player.getPlayersShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
         /* TESTING FourOfFour SPECIFICI: NON ELIMINARE*/
         /*
         Caso funzionante senza 4-adiac (guarda il foglio):
@@ -197,16 +197,68 @@ public class CommonGoals {
         colorType[] fifthLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
         colorType[] sixthLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
         */
-        /* TESTING EightTiles SPECIFICI: NON ELIMINARE*/
-        /* TESTING FiveDiagonal SPECIFICI: NON ELIMINARE*/
-        /* TESTING FiveX SPECIFICI: NON ELIMINARE*/
-        /* TESTING FiveX SPECIFICI: NON ELIMINARE*/
-        /* TESTING FiveX SPECIFICI: NON ELIMINARE*/
-        /* TESTING FiveX SPECIFICI: NON ELIMINARE*/
-        /* TESTING FiveX SPECIFICI: NON ELIMINARE*/
-
+        /* TESTING EightTiles SPECIFICI: NON ELIMINARE */
+        /* Caso non funzionante con 7 carte casuali:
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
+        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
+        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
+        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
+        */
+        /* Caso funzionante con 8 carte casuali:
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
+        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
+        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
+        */
+        /* TESTING FiveDiagonal e Triangular SPECIFICI: NON ELIMINARE DA FARE ANCORA*/
+        /* Caso funzionante:
+        colorType[] firstLine = {null,null,null,null,null};
+        colorType[] secondLine = {null,null,null,null,colorType.WHITE};
+        colorType[] thirdLine = {null,null,null,colorType.WHITE,colorType.BLUE};
+        colorType[] fourthLine = {null,null,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {null,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
+        */
+        /* TESTING FiveX SPECIFICI: NON ELIMINARE */
+        /* Caso funzionante:
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
+        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
+        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
+        */
+        /* Caso non funzionante:
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
+        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
+        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.WHITE,colorType.YELLOW,colorType.YELLOW};
+        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
+        */
+        /* TESTING SixOfTwo SPECIFICI: NON ELIMINARE */
+        /* Caso non funzionante:
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
+        colorType[] secondLine = {colorType.WHITE,colorType.LIGHT_BLUE,colorType.WHITE,colorType.LIGHT_BLUE,colorType.WHITE};
+        colorType[] thirdLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
+        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
+        */
+        /* Caso funzionante:
+        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
+        colorType[] secondLine = {colorType.GREEN,colorType.LIGHT_BLUE,colorType.WHITE,colorType.LIGHT_BLUE,colorType.WHITE};
+        colorType[] thirdLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
+        colorType[] fourthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
+        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE};
+        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
+        */
         /* CASI DI TEST: sezione di assegnamento delle carte desiderate sulla shelf */
-
+        /*
         ArrayList<colorType[]> testColors = new ArrayList<>();
         testColors.add(firstLine);
         testColors.add(secondLine);
@@ -233,10 +285,10 @@ public class CommonGoals {
         System.out.println("reachedFirstGoal:\n" + reachedFirstGoal + "\n");
         System.out.println("reachedSecondGoal:\n" + reachedSecondGoal + "\n");
 
-
+        */
         /* Vanno eliminate le println negli if */
         if(!reachedFirstGoal.contains(player)){
-            if (firstGoal.goalCompleted(prova)) {/*boolean return*/
+            if (firstGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
                 reachedFirstGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 2);
@@ -255,7 +307,7 @@ public class CommonGoals {
         /* secondGoal */
         /* CASO DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
         if(!reachedSecondGoal.contains(player)){
-            if (secondGoal.goalCompleted(prova)) {/*boolean return*/
+            if (secondGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
                 reachedSecondGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 2);
