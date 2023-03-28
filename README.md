@@ -1,2 +1,2 @@
 # IS23-AM03
-https://progress-bar.dev/<thepercentage>?title=<title>
+UML: ![50%](https://progress-bar.dev/50)
