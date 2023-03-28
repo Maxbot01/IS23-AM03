@@ -37,20 +37,6 @@
       <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/controller/package-summary.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/controller/package-tree.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/CommonGoalType.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/CommonGoals.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/CommonGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/EightTilesGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FiveDiagonalGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FiveXGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FourCornersGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FourLines3DiffGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FourOfFourGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/ThreeColumns3DiffGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/TriangularGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf5DiffGoalStrategy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf6DiffGoalStrategy.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/package-summary.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/package-tree.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/package-summary.html" afterDir="false" />
@@ -129,7 +115,6 @@
       <change afterPath="$PROJECT_DIR$/javadoc/stylesheet.css" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/javadoc/tag-search-index.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/javadoc/type-search-index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +186,7 @@
       <workItem from="1679406294278" duration="9156000" />
       <workItem from="1679599868107" duration="3252000" />
       <workItem from="1680003829656" duration="6361000" />
-      <workItem from="1680015883580" duration="618000" />
+      <workItem from="1680015883580" duration="955000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1678903177375</created>
@@ -364,7 +349,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680015530637</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="fixed stuff and some forbidden tests">
+      <created>1680016681585</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1680016681585</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
