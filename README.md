@@ -1,9 +1,12 @@
 # IS23-AM03
 
 # Progress
-## UML
+## Schema
 UML:<br />
 ![80%](https://progress-bar.dev/50)
+
+Connection protocol:<br />
+![80%](https://progress-bar.dev/0)
 
 ## Code
 Model:<br />
