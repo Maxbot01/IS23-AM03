@@ -1,10 +1,10 @@
 # IS23-AM03
 
-##Progress
+## Progress
 UML:<br />
 ![80%](https://progress-bar.dev/50)
 
-##Code
+## Code
 Model:<br />
 ![90%](https://progress-bar.dev/90)
 
