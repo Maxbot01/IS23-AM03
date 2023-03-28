@@ -17,7 +17,7 @@ public class FourLines3DiffGoalStrategy implements CommonGoalStrategy{
             int valid = 1;
             different.removeAll(different);
             for(int j = 0; j < Mat[0].length && valid == 1; j++){
-                if(Mat[i][j] != null) {
+                if(Mat[i][j].getColor() != colorType.EMPTY_SPOT) {
                     if (!different.contains(Mat[i][j].getColor())) {
                         different.add(Mat[i][j].getColor());
                         if(different.size() > 3){

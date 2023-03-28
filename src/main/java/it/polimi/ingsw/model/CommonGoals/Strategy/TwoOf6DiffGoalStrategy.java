@@ -5,23 +5,21 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
-public class MaxThreeDiffGoalStrategy implements CommonGoalStrategy{
+public class TwoOf6DiffGoalStrategy implements CommonGoalStrategy{
     public boolean goalCompleted(BoardCard[][] Mat){
-        ArrayList<colorType> different = new ArrayList<>();
+        ArrayList<colorType> colors = new ArrayList<>();
         int completed = 0;
         int correctLines = 0;
 
-
         for(int j = 0; j < Mat[0].length && completed == 0; j++){
-            different.removeAll(different);
             int valid = 1;
+            colors.removeAll(colors);
             for(int i = 0; i < Mat.length && valid == 1; i++){
-                if(Mat[i][j] != null) {
-                    if (!different.contains(Mat[i][j].getColor())) {
-                        different.add(Mat[i][j].getColor());
-                        if(different.size() > 3){
-                            valid = 0;
-                        }
+                if(Mat[i][j].getColor() != colorType.EMPTY_SPOT) {
+                    if (!colors.contains(Mat[i][j].getColor())) {
+                        colors.add(Mat[i][j].getColor());
+                    } else {
+                        valid = 0;
                     }
                 }else{
                     valid = 0;
@@ -29,7 +27,7 @@ public class MaxThreeDiffGoalStrategy implements CommonGoalStrategy{
             }
             if(valid == 1){
                 correctLines++;
-                if(correctLines == 3){
+                if(correctLines == 2){
                     completed = 1;
                 }
             }
@@ -39,5 +37,5 @@ public class MaxThreeDiffGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    }
+    };
 }
