@@ -6,7 +6,15 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
+/**
+ * Strategy of Double2x2: it looks for 2 groups of 4 boardCards of the same color in a square formation (the two groups can be of a different color)
+ */
 public class Double2x2GoalStrategy implements CommonGoalStrategy {
+    /**
+     * Algorithm of Double2x2
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat) {
         ArrayList<Pair<Integer, Integer>> blocksCoordinates = new ArrayList<>();
         ArrayList<colorType> colors = new ArrayList<>();
@@ -95,6 +103,12 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy {
             return false;
         }
     }
+    /**
+     * Private method to check if the pair of coordinates is in a given list
+     * @param tmp
+     * @param group
+     * @return boolean
+     */
     private boolean pairIsPresent(Pair<Integer,Integer> tmp, ArrayList<Pair<Integer,Integer>> group){
         int present = 0;
         for(int i = 0; i < group.size() && present == 0; i++){

@@ -3,7 +3,15 @@ package it.polimi.ingsw.model.CommonGoals.Strategy;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
+/**
+ * Strategy of FiveX: it looks for 5 boardCards of the same color distributed in an X shape
+ */
 public class FiveXGoalStrategy implements CommonGoalStrategy{
+    /**
+     * Algorithm of FiveX
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat){
         colorType chosen;
         int found = 0;

@@ -5,7 +5,15 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
+/**
+ * Strategy of EightTiles: it looks for 8 boardCards of the same color distributed in any manner
+ */
 public class EightTilesGoalStrategy implements CommonGoalStrategy{
+    /**
+     * Algorithm of EightTiles
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<colorType> colors = new ArrayList<>();
         int completed = 0;

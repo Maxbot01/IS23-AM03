@@ -5,7 +5,15 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
+/**
+ * Strategy of TwoOf6Diff: it looks for 2 columns with all boardCards with different colors
+ */
 public class TwoOf6DiffGoalStrategy implements CommonGoalStrategy{
+    /**
+     * Algorithm of TwoOf6Diff
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<colorType> colors = new ArrayList<>();
         int completed = 0;

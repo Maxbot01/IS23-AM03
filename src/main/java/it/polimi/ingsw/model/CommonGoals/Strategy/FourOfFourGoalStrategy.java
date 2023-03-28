@@ -7,8 +7,17 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
+/**
+ * Strategy of FourOfFour: it looks for 4 combinations of 4 boardCards of the same color (it can vary between combinations),
+ * arranged in any manner, granted that they are connected
+ */
 public class FourOfFourGoalStrategy implements CommonGoalStrategy {
 
+    /**
+     * Algorithm of FourOfFour
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat) {
         int rows = Mat.length;
         int cols = Mat[0].length;
@@ -61,6 +70,19 @@ delle combinazioni
             return false;
         }
     }
+
+    /**
+     * Private method used to look for all the possible combinations from a starting boardCard
+     * @param mat
+     * @param chosenColor
+     * @param x
+     * @param y
+     * @param xPrec
+     * @param yPrec
+     * @param considered
+     * @param combinations
+     * @param savedNumbOfCoord
+     */
     private void findCombinations(BoardCard[][] mat, colorType chosenColor, int x, int y, int xPrec, int yPrec,
                 ArrayList<Pair<Integer,Integer>> considered, ArrayList<Quartet<Pair<Integer,Integer>,
                 Pair<Integer,Integer>,Pair<Integer,Integer>, Pair<Integer,Integer>>> combinations,
@@ -174,6 +196,13 @@ tornando indietro per cercare possibili altre combinazioni con gli elementi prec
  */
         considered.remove(considered.size()-1);
     }
+
+    /**
+     * Private method used to check how many non-overlapping combinations have been found
+     * @param combinations
+     * @param savedNumbOfCoord
+     * @return int
+     */
     private int calculateQuartets(ArrayList<Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,
             Integer>,Pair<Integer,Integer>>> combinations, ArrayList<Pair<Integer,Integer>> savedNumbOfCoord){
         int ris;
@@ -226,6 +255,13 @@ tornando indietro per cercare possibili altre combinazioni con gli elementi prec
         }
         return ris;
     }
+
+    /**
+     * Private method used to check that two combinations don't overlap
+     * @param firstQ
+     * @param secondQ
+     * @return boolena
+     */
     private boolean noOverlap(Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer, Integer>,Pair<
             Integer,Integer>> firstQ, Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,
             Integer>,Pair<Integer,Integer>> secondQ){
@@ -258,6 +294,17 @@ per ogni pair di interi nel primo quartetto cerco un pair uguale nel secondo, se
         }
         return true;
     }
+
+    /**
+     * Private method used for each boardCard of the player's shelf to add the found combinations to the collection
+     * @param mat
+     * @param chosenColor
+     * @param x
+     * @param y
+     * @param savedTotalCoord
+     * @param combinations
+     * @param savedNumbOfCoord
+     */
     private void startSearchOfCombinations(BoardCard[][] mat, colorType chosenColor, int x, int y, ArrayList<Pair<Integer,Integer>> savedTotalCoord,
                                            ArrayList<Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>>>
                                            combinations, ArrayList<Pair<Integer,Integer>> savedNumbOfCoord) {
@@ -294,6 +341,13 @@ per ogni pair di interi nel primo quartetto cerco un pair uguale nel secondo, se
             }
         }
     }
+
+    /**
+     * Private method to check if the pair of coordinates is in a given list
+     * @param tmp
+     * @param savedTotalCoord
+     * @return boolean
+     */
     private boolean pairIsPresent(Pair<Integer,Integer> tmp, ArrayList<Pair<Integer,Integer>> savedTotalCoord){
         int present = 0;
         for(int i = 0; i < savedTotalCoord.size() && present == 0; i++){
@@ -303,6 +357,13 @@ per ogni pair di interi nel primo quartetto cerco un pair uguale nel secondo, se
         }
         return present == 1;
     }
+
+    /**
+     * Private method used to check if the combination is in a given list
+     * @param tmp
+     * @param combinations
+     * @return boolean
+     */
     private boolean quartetIsPresent(Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>> tmp, ArrayList<
             Quartet<Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>,Pair<Integer,Integer>>> combinations){
         int present = 0;

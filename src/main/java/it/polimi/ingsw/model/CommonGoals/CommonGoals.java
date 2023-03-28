@@ -7,12 +7,27 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommonGoals {
+    /**
+     * It refers to the first goal chosen
+     */
     /* private final EnumSet<CommonGoalType> possibleGoals = EnumSet.allOf(CommonGoalType.class); non viene usata */
     private CommonGoalStrategy firstGoal;
+    /**
+     * It refers to the second goal chosen
+     */
     private CommonGoalStrategy secondGoal;
+    /**
+     * It consists in the ordered list of players that have reached the first goal
+     */
     private final ArrayList<Player> reachedFirstGoal = new ArrayList<>();
+    /**
+     * It consists in the ordered list of players that have reached the second goal
+     */
     private final ArrayList<Player> reachedSecondGoal = new ArrayList<>();
 
+    /**
+     * Creator of CommonGoals: chooses randomly two goal strategies out of 12 of the enumeration
+     */
     public CommonGoals() {
         int[] indexes = ThreadLocalRandom.current().ints(0, 12).distinct().limit(2).toArray();
         switch (indexes[0]){
@@ -89,21 +104,31 @@ public class CommonGoals {
             case 11:
                 secondGoal = new TriangularGoalStrategy();
         }
-        /* Assegnamento Strategy */
+        /* Assegnamento Strategy per i casi di Test */
         /* firstGoal = new TriangularGoalStrategy();
         secondGoal = new FiveDiagonalGoalStrategy(); */
     }
 
+    /**
+     * @return CommonGoalStrategy
+     */
     public CommonGoalStrategy getFirstGoal() {
         return firstGoal;
     }
 
+    /**
+     * @return CommonGoalStrategy
+     */
     public CommonGoalStrategy getSecondGoal() {
         return secondGoal;
     }
 
-
-
+    /**
+     * Calculates player's points based on the number of players and the goals' completion
+     * @param player
+     * @param numOfPlayers
+     * @return int
+     */
     public int calculateAllPoints(Player player, int numOfPlayers){
         int ris;
         int pointsOfFirst;
