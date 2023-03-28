@@ -5,23 +5,131 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="fixed stuff and some forbidden tests">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/allclasses-index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/allpackages-index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/copy.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/element-list" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/help-doc.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-1.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-10.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-11.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-12.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-13.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-14.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-15.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-16.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-17.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-18.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-19.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-2.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-20.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-21.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-3.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-4.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-5.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-6.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-7.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-8.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index-files/index-9.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/Main.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/controller/GameController.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/controller/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/controller/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/CommonGoalType.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/CommonGoals.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/CommonGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/EightTilesGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FiveDiagonalGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FiveXGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FourCornersGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FourLines3DiffGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/FourOfFourGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/ThreeColumns3DiffGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/TriangularGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf5DiffGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf6DiffGoalStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/Strategy/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/CommonGoals/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/Game.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/GameLobby.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/GameManager.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/GameObservable.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/GameStateType.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/helpers/Pair.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/helpers/Quartet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/helpers/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/helpers/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/Message.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/errorMessages/ErrorMessage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/errorMessages/SelectedColumnsMessageError.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/errorMessages/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/errorMessages/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/matchStateMessages/FinishedGameMessage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/matchStateMessages/InitStateMessage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/matchStateMessages/MatchStateMessage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/matchStateMessages/SelectedCardsMessage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/matchStateMessages/SelectedColumnsMessage.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/matchStateMessages/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/matchStateMessages/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/messageModel/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/BoardCard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/Client.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/GameLobby.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/LivingRoom.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/PersonalGoal.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/Player.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/SenderConnectionStrategy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/Shelf.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/enums/ConnectionType.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/enums/PersonalGoalType.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/enums/TurnStateType.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/enums/colorType.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/enums/ornamentType.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/enums/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/enums/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/exceptions/ColumnNotSelectable.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/exceptions/NoMoreCardsException.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/exceptions/ShelfFullException.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/exceptions/UnselectableCardException.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/exceptions/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/exceptions/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/modelSupport/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/model/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/package-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/it/polimi/ingsw/package-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/jquery-ui.overrides.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/legal/ADDITIONAL_LICENSE_INFO" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/legal/ASSEMBLY_EXCEPTION" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/legal/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/legal/jquery.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/legal/jqueryUI.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/member-search-index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/module-search-index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/overview-summary.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/overview-tree.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/package-search-index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/resources/glass.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/resources/x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/script-dir/jquery-3.6.0.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/script-dir/jquery-ui.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/script-dir/jquery-ui.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/search-page.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/search.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/search.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/serialized-form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/stylesheet.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/tag-search-index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javadoc/type-search-index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/enums/CommonGoalType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/CommonGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/CommonGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/EightTilesGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/EightTilesGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FiveDiagonalGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FiveDiagonalGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FiveXGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FiveXGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourCornersGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourCornersGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourLines3DiffGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourLines3DiffGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourOfFourGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourOfFourGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/ThreeColumns3DiffGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/ThreeColumns3DiffGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TriangularGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TriangularGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf5DiffGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf5DiffGoalStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf6DiffGoalStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf6DiffGoalStrategy.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,22 +163,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "Errors",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Testing_Common_Goals_Finale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.Main" />
@@ -92,7 +200,8 @@
       <workItem from="1679140207267" duration="7796000" />
       <workItem from="1679406294278" duration="9156000" />
       <workItem from="1679599868107" duration="3252000" />
-      <workItem from="1680003829656" duration="5957000" />
+      <workItem from="1680003829656" duration="6361000" />
+      <workItem from="1680015883580" duration="618000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1678903177375</created>
@@ -248,7 +357,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679959568751</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="fixed stuff and some forbidden tests">
+      <created>1680015530637</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1680015530637</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
