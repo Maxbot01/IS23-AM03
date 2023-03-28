@@ -3,13 +3,13 @@ UML:<br />
 ![80%](https://progress-bar.dev/50)
 
 Model:<br />
-![90%](https://progress-bar.dev/50)
+![90%](https://progress-bar.dev/90)
 
 Controller:<br />
-![10%](https://progress-bar.dev/50)
+![10%](https://progress-bar.dev/10)
 
 Socket:<br />
-![0%](https://progress-bar.dev/50)
+![0%](https://progress-bar.dev/0)
 
 RMI:<br />
-![0%](https://progress-bar.dev/50)
+![0%](https://progress-bar.dev/0)
