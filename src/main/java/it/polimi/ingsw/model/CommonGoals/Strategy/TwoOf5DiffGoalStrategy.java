@@ -3,7 +3,16 @@ package it.polimi.ingsw.model.CommonGoals.Strategy;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import java.util.*;
+
+/**
+ * Strategy of TwoOf5Diff: it looks for 2 full lines with all the boardCards with a different color
+ */
 public class TwoOf5DiffGoalStrategy implements CommonGoalStrategy{
+    /**
+     * Algorithm of TwoOf5Diff
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat){
 /* si può fare come twoofsix, in maniera più leggibile e semplice */
 

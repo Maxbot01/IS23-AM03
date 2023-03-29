@@ -6,7 +6,15 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
+/**
+ * Strategy of SixOfTwo: it looks for 6 couples of 2 boardCards of the same color (the color can vary between couples)
+ */
 public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
+    /**
+     * Algorithm of SixOfTwo
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<Pair<Pair<Integer,Integer>,Pair<Integer,Integer>>> combinations = new ArrayList<>();
 
@@ -42,6 +50,11 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
         }
         return calculateNumberOfCombinations(combinations);
     }
+    /**
+     * Private method used to calculate if the number of combinations reaches the desired total
+     * @param combinations
+     * @return boolean
+     */
     private boolean calculateNumberOfCombinations(ArrayList<Pair<Pair<Integer,Integer>,Pair<Integer,Integer>>>
                                                       combinations){
         if(combinations.size() >= 6) {
@@ -77,6 +90,12 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
         }
         return false;
     }
+
+    /** Private method used to check if 2 couples of 2 couples of coordinates overlap
+     * @param one
+     * @param two
+     * @return boolean
+     */
     private boolean noOverlap(Pair<Pair<Integer,Integer>,Pair<Integer,Integer>> one, Pair<Pair<Integer,Integer>,
             Pair<Integer,Integer>> two){
 
@@ -89,6 +108,12 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
             return true;
         }
     }
+    /**
+     * Private method used to check if a couple of 2 couples of coordinate are in a given list
+     * @param group
+     * @param tmp
+     * @return boolean
+     */
     private boolean dupletIsPresent(ArrayList<Pair<Pair<Integer,Integer>,Pair<Integer,Integer>>> group,
                                     Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> tmp){
         for(int i = 0; i < group.size(); i++){

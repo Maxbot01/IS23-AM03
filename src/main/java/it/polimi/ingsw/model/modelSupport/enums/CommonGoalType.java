@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.CommonGoals;
+package it.polimi.ingsw.model.modelSupport.enums;
 
 public enum CommonGoalType {
     SIXOFTWO,

@@ -3,7 +3,15 @@ package it.polimi.ingsw.model.CommonGoals.Strategy;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
+/**
+ * Strategy of FiveDiagonal: it looks for 5 boardCards of the same color in diagonal
+ */
 public class FiveDiagonalGoalStrategy implements CommonGoalStrategy{
+    /**
+     * Algorithm of FiveDiagonal
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat){
         int cols = Mat[0].length;
         int rows = Mat.length;

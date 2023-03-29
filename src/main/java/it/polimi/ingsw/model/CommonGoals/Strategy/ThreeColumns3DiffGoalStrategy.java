@@ -5,7 +5,15 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
+/**
+ * Strategy of ThreeColumns3Diff: it looks for 3 full columns with a maximum of 3 different colors inside every single column
+ */
 public class ThreeColumns3DiffGoalStrategy implements CommonGoalStrategy{
+    /**
+     * Algorithm of ThreeColumns3Diff
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat){
         ArrayList<colorType> different = new ArrayList<>();
         int completed = 0;
