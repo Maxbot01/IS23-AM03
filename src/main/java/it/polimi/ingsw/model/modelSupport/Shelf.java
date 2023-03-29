@@ -53,7 +53,7 @@ public class Shelf {
         }
         // find the first empty row in the column
         int row = 0;
-        while (row < ROWS_LEN && shelfCards[5-row][colIndex].getColor() == colorType.EMPTY_SPOT) {
+        while (row < ROWS_LEN && shelfCards[COLUMNS_LEN-row][colIndex].getColor() != colorType.EMPTY_SPOT) {
             row++;
         }
         // check if there is enough space in the column for the selected cards
@@ -93,7 +93,7 @@ public class Shelf {
      */
     private boolean columnIsFull(int colIndex) {
         for (int i = 0; i < ROWS_LEN; i++) {
-            if (shelfCards[i][colIndex] == null){
+            if (shelfCards[i][colIndex].getColor() == colorType.EMPTY_SPOT){
                 return false;
             }
         }

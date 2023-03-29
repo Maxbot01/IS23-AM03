@@ -5,21 +5,31 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 
-public class TwoOfSixGoalStrategy implements CommonGoalStrategy{
+/**
+ * Strategy of ThreeColumns3Diff: it looks for 3 full columns with a maximum of 3 different colors inside every single column
+ */
+public class ThreeColumns3DiffGoalStrategy implements CommonGoalStrategy{
+    /**
+     * Algorithm of ThreeColumns3Diff
+     * @param Mat
+     * @return boolean
+     */
     public boolean goalCompleted(BoardCard[][] Mat){
-        ArrayList<colorType> colors = new ArrayList<>();
+        ArrayList<colorType> different = new ArrayList<>();
         int completed = 0;
         int correctLines = 0;
 
+
         for(int j = 0; j < Mat[0].length && completed == 0; j++){
+            different.removeAll(different);
             int valid = 1;
-            colors.removeAll(colors);
             for(int i = 0; i < Mat.length && valid == 1; i++){
-                if(Mat[i][j] != null) {
-                    if (!colors.contains(Mat[i][j].getColor())) {
-                        colors.add(Mat[i][j].getColor());
-                    } else {
-                        valid = 0;
+                if(Mat[i][j].getColor() != colorType.EMPTY_SPOT) {
+                    if (!different.contains(Mat[i][j].getColor())) {
+                        different.add(Mat[i][j].getColor());
+                        if(different.size() > 3){
+                            valid = 0;
+                        }
                     }
                 }else{
                     valid = 0;
@@ -27,7 +37,7 @@ public class TwoOfSixGoalStrategy implements CommonGoalStrategy{
             }
             if(valid == 1){
                 correctLines++;
-                if(correctLines == 2){
+                if(correctLines == 3){
                     completed = 1;
                 }
             }
@@ -37,5 +47,5 @@ public class TwoOfSixGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    };
+    }
 }

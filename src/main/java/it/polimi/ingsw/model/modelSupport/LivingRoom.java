@@ -209,7 +209,7 @@ public class LivingRoom{
 
     //funzione che calcola se una tessera è presente nella Livingroom  (altrimenti è null o TOMBSTONE)
     private boolean isPresent(int i, int j){
-        return (pieces[i][j].getColor() != colorType.TOMBSTONE) && (pieces[i][j] != null);
+        return (pieces[i][j].getColor() != colorType.TOMBSTONE) && (pieces[i][j].getColor() != colorType.EMPTY_SPOT);
     }
 
 }
