@@ -117,6 +117,10 @@ public class Shelf {
     public BoardCard getCardAtPosition(int row, int column) {
         return shelfCards[row][column];
     }
+    public int calculateAdiacentPoints(){
+        int ris = 0;
 
+        return ris;
+    }
 }
 
