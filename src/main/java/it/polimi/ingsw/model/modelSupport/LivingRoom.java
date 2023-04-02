@@ -106,7 +106,7 @@ public class LivingRoom{
     /**
      * Refills the board only if needed and returns the updated (or not if not needed) livingroom
      */
-    public void refillBoard() throws NoMoreCardsException{
+    public BoardCard[][] refillBoard() throws NoMoreCardsException{
         //CHECK dei refill requirements
         int startRefill = 1;
         for (int i = 0; i < DIM; i++) {
@@ -132,6 +132,7 @@ public class LivingRoom{
                 }
             }
         }
+        return pieces;
     }
 
     /**
@@ -164,12 +165,22 @@ public class LivingRoom{
         return pieces;
     }
 
+    /**
+     * Returns the Card at the given coordinates
+     * @param coordinates
+     * @return BoardCard
+     * @throws UnselectableCardException
+     */
     public BoardCard getBoardCardAt(Pair<Integer,Integer> coordinates) throws UnselectableCardException{
         int i = coordinates.getFirst();
         int j = coordinates.getSecond();
         if(!isPresent(i,j))
             throw new UnselectableCardException();
         else return pieces[i][j];
+    }
+
+    public boolean cardIsSelectable(int i, int j){
+        return isPresent(i,j) && freeCorner(i,j);
     }
 
     /**
@@ -182,24 +193,29 @@ public class LivingRoom{
         if (i == 0) {
             return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i + 1, j);
 
-        } else if (i == DIM - 1) {
+        } else if (i == (DIM - 1)) {
             return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
 
         } else if (j == 0) {
             return isPresent(i - 1, j) || (isPresent(i + 1, j) || isPresent(i, j + 1));
 
-        } else if (j == DIM - 1) {
+        } else if (j == (DIM - 1)) {
             return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
 
         } else {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j) || isPresent(i + 1, j);
+                return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j) || isPresent(i + 1, j);
 
         }
 
     }
 
 
-    //funzione che calcola se la tessera ha ALMENO un lato libero
+    /**
+     * function to check whether a card has a free corner
+     * @param i
+     * @param j
+     * @return a boolen to indicate whether the card can be taken or not
+     */
     private boolean freeCorner(int i, int j){
         if (i == 0 || i == DIM - 1 || j == 0 || j == DIM - 1) return true;
         else {
@@ -207,9 +223,18 @@ public class LivingRoom{
         }
     }
 
-    //funzione che calcola se una tessera è presente nella Livingroom  (altrimenti è null o TOMBSTONE)
+    /**
+     * function to check whether there's an actual card in the given coordinates
+     * @param i
+     * @param j
+     * @return boolean
+     */
     private boolean isPresent(int i, int j){
         return (pieces[i][j].getColor() != colorType.TOMBSTONE) && (pieces[i][j].getColor() != colorType.EMPTY_SPOT);
+    }
+
+    private boolean isAngle(int i, int j){
+        return ((i+j) % DIM - 1 == 0 && (i == 0 || i == DIM - 1));
     }
 
 }

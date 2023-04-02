@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="fixed shelves">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="rimossi warning">
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/modelSupport/BoardCardTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/modelSupport/LivingRoomTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +20,7 @@
       <list>
         <option value="Enum" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -44,6 +48,8 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
@@ -52,7 +58,15 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="it.polimi.ingsw.model.modelSupport" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.LivingRoomTest.getBoardCardAt">
     <configuration name="Testing_Common_Goals_Finale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.Main" />
       <module name="AM03" />
@@ -60,6 +74,95 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LivingRoomTest.No_Starting_refillBoard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM03" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.LivingRoomTest" />
+      <option name="METHOD_NAME" value="No_Starting_refillBoard" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LivingRoomTest.emptyRefill" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM03" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.LivingRoomTest" />
+      <option name="METHOD_NAME" value="emptyRefill" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LivingRoomTest.getBoardCardAt" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM03" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.LivingRoomTest" />
+      <option name="METHOD_NAME" value="getBoardCardAt" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LivingRoomTest.starting_Selectable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM03" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.LivingRoomTest" />
+      <option name="METHOD_NAME" value="starting_Selectable" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LivingRoomTest.updateBoard_creates_TOMBS" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM03" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.LivingRoomTest" />
+      <option name="METHOD_NAME" value="updateBoard_creates_TOMBS" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.LivingRoomTest.getBoardCardAt" />
+        <item itemvalue="JUnit.LivingRoomTest.updateBoard_creates_TOMBS" />
+        <item itemvalue="JUnit.LivingRoomTest.emptyRefill" />
+        <item itemvalue="JUnit.LivingRoomTest.No_Starting_refillBoard" />
+        <item itemvalue="JUnit.LivingRoomTest.starting_Selectable" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
