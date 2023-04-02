@@ -117,5 +117,6 @@ public class Shelf {
     public BoardCard getCardAtPosition(int row, int column) {
         return shelfCards[row][column];
     }
+
 }
 
