@@ -1,0 +1,19 @@
+package it.polimi.ingsw.model.modelSupport;
+
+import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class BoardCardTest {
+
+    @Test
+    void get_every_Color() {
+        ArrayList<BoardCard> al = new ArrayList<>();
+        BoardCard bc = new BoardCard(colorType.BLUE);
+
+        assertTrue(bc.getColor() == colorType.BLUE);
+    }
+}
