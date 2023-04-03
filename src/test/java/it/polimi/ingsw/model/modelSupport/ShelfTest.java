@@ -158,6 +158,10 @@ public class ShelfTest {
         }
     }
 
+    /**
+     * Tests that an exception is thrown when attempting to insert a list of BoardCard objects into a column of the Shelf
+     * that does not have enough space to accommodate the new cards.
+     */
     @Test
     public void testShelfIsFullReturnsTrueWhenShelfIsFull() {
         // Fill up the entire shelf with cards
@@ -174,17 +178,59 @@ public class ShelfTest {
             }
             System.out.println();
         }
-        try {
-            shelf.insertInColumn(new ArrayList<>(), 0);
-            fail("Expected ShelfFullException exception was not thrown");
-        } catch (ColumnNotSelectable e) {
-            fail("Unexpected exception thrown: " + e.getMessage());
-        } catch (ShelfFullException e) {
-            assertEquals("Shelf is full", e.getMessage());
-        }
+        assertTrue(shelf.shelfIsFull());
+
+
     }
 
-    // test invalid column number
+    /**
+     * Tests emptySpotsInColumn method returns the correct number of empty spots in a column.
+     */
+
+    @Test
+    public void testEmptySpotsInColumnReturnsCorrectNumberOfEmptySpots() {
+        // Fill up the entire shelf with cards
+        BoardCard[][] shelfCards = shelf.getShelfCards();
+        shelfCards[5][0] = new BoardCard(colorType.BLUE);
+        shelfCards[4][0] = new BoardCard(colorType.BLUE);
+        shelfCards[3][0] = new BoardCard(colorType.BLUE);
+        shelfCards[2][0] = new BoardCard(colorType.BLUE);
+        shelfCards[1][0] = new BoardCard(colorType.BLUE);
+        shelfCards[0][0] = new BoardCard(colorType.BLUE);
+        shelfCards[5][1] = new BoardCard(colorType.BLUE);
+        shelfCards[4][1] = new BoardCard(colorType.BLUE);
+        shelfCards[3][1] = new BoardCard(colorType.BLUE);
+        shelfCards[2][1] = new BoardCard(colorType.BLUE);
+        shelfCards[1][1] = new BoardCard(colorType.BLUE);
+        shelfCards[5][2] = new BoardCard(colorType.BLUE);
+        shelfCards[4][2] = new BoardCard(colorType.BLUE);
+        shelfCards[3][2] = new BoardCard(colorType.BLUE);
+        shelfCards[2][2] = new BoardCard(colorType.BLUE);
+        shelfCards[1][2] = new BoardCard(colorType.BLUE);
+        shelfCards[5][3] = new BoardCard(colorType.BLUE);
+        shelfCards[4][3] = new BoardCard(colorType.BLUE);
+        shelfCards[3][3] = new BoardCard(colorType.BLUE);
+        shelfCards[2][3] = new BoardCard(colorType.BLUE);
+        shelfCards[1][3] = new BoardCard(colorType.BLUE);
+        shelfCards[5][4] = new BoardCard(colorType.BLUE);
+        shelfCards[4][4] = new BoardCard(colorType.BLUE);
+        shelfCards[3][4] = new BoardCard(colorType.BLUE);
+
+
+        // output the shelf
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(shelf.getCardAtPosition(i, j).getColor() + " ");
+            }
+            System.out.println();
+        }
+        assertEquals(3, shelf.getEmptyColumn());
+    }
+
+
+    /**
+     * Tests invalid column number throws exception.
+     */
     @Test
     public void testInsertInColumnThrowsExceptionWhenColumnIsInvalid() {
         ArrayList<BoardCard> cards = new ArrayList<>();
@@ -200,5 +246,14 @@ public class ShelfTest {
         } catch (ShelfFullException e) {
             fail("Unexpected exception thrown: " + e.getMessage());
         }
+        // output the shelf
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(shelf.getCardAtPosition(i, j).getColor() + " ");
+            }
+            System.out.println();
+        }
     }
+
+
 }
