@@ -32,6 +32,37 @@ public class Shelf {
     }
 
     /**
+     * Returns the maximum number of empty spots in any column.
+     *
+     * @return an integer value representing the maximum number of empty spots in any column
+     */
+    public int getEmptyColumn(){
+        int max = 0;
+        for(int i = 0; i < COLUMNS_LEN; i++){
+            if(emptySpotsInColumn(i) > max){
+                max = emptySpotsInColumn(i);
+            }
+        }
+        return max;
+    }
+
+    /**
+     * Returns the number of empty spots in a specified column.
+     *
+     * @param i the index of the column to count the number of empty spots in
+     * @return an integer value representing the number of empty spots in the specified column
+     */
+    private int emptySpotsInColumn(int i) {
+        int emptySpots = 0;
+        for (int j = 0; j < ROWS_LEN; j++) {
+            if (shelfCards[j][i].getColor() == colorType.EMPTY_SPOT) {
+                emptySpots++;
+            }
+        }
+        return emptySpots;
+    }
+
+    /**
      * Adds a list of BoardCard objects to a column in the shelf.
      * @param selCards the list of cards to add to the column
      * @param colIndex the index of the column to add the cards to
@@ -71,11 +102,12 @@ public class Shelf {
         }
     }
 
+
     /**
      * Checks whether the shelf is full.
      * @return true if the shelf is full, false otherwise
      */
-    private boolean shelfIsFull() {
+    public boolean shelfIsFull() {
         for (int i = 0; i < ROWS_LEN; i++) {
             for (int j = 0; j < COLUMNS_LEN; j++) {
                 if (shelfCards[i][j].getColor() == colorType.EMPTY_SPOT) {
@@ -91,7 +123,7 @@ public class Shelf {
      * @param colIndex the index of the column to check
      * @return true if the column is full, false otherwise
      */
-    private boolean columnIsFull(int colIndex) {
+    public boolean columnIsFull(int colIndex) {
         for (int i = 0; i < ROWS_LEN; i++) {
             if (shelfCards[i][colIndex].getColor() == colorType.EMPTY_SPOT){
                 return false;
@@ -117,6 +149,10 @@ public class Shelf {
     public BoardCard getCardAtPosition(int row, int column) {
         return shelfCards[row][column];
     }
+    public int calculateAdiacentPoints(){
+        int ris = 0;
 
+        return ris;
+    }
 }
 
