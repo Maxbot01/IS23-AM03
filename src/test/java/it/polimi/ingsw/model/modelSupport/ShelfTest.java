@@ -21,11 +21,70 @@ public class ShelfTest {
     }
 
     /**
+     * Tests the Shelf constructor.
+     */
+    @Test
+    void testShelfConstructor() {
+        BoardCard[][] shelfCards = shelf.getShelfCards();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                assertEquals(shelfCards[i][j].getColor(), colorType.EMPTY_SPOT);
+            }
+        }
+
+        // output the shelf
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(shelf.getCardAtPosition(i, j).getColor() + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Tests GetShelfCards method of the Shelf class.
+     */
+    @Test
+    void testGetShelfCards() {
+        BoardCard[][] shelfCards = shelf.getShelfCards();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                assertEquals(shelfCards[i][j].getColor(), colorType.EMPTY_SPOT);
+            }
+        }
+
+        // output the shelf
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(shelf.getCardAtPosition(i, j).getColor() + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Tests GetCardAtPosition method of the Shelf class.
+     */
+    @Test
+    void testGetCardAtPosition() {
+        BoardCard[][] shelfCards = shelf.getShelfCards();
+        shelfCards[3][0] = new BoardCard(colorType.BLUE);
+                assertEquals(shelfCards[3][0].getColor(), colorType.BLUE);
+
+        // output the shelf
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(shelf.getCardAtPosition(i, j).getColor() + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
      * Tests the insertion of a list of BoardCard objects into a column of the Shelf object.
      * This test method verifies that when a list of BoardCard objects is inserted into a column of a Shelf object using the
      * insertInColumn() method, the cards are inserted in the correct order and position on the shelf.
      */
-
     @Test
     void testInsertInColumn() {
         ArrayList<BoardCard> cards = new ArrayList<>();
@@ -179,8 +238,6 @@ public class ShelfTest {
             System.out.println();
         }
         assertTrue(shelf.shelfIsFull());
-
-
     }
 
     /**
@@ -227,7 +284,6 @@ public class ShelfTest {
         assertEquals(3, shelf.getEmptyColumn());
     }
 
-
     /**
      * Tests invalid column number throws exception.
      */
@@ -254,6 +310,4 @@ public class ShelfTest {
             System.out.println();
         }
     }
-
-
 }
