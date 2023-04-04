@@ -108,7 +108,7 @@ public class Game extends GameObservable{
                 selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
             } catch (UnselectableCardException e) {
                 throw new RuntimeException(e);
-                //TODO: manage this exception
+                //TODO: manage this exception, send an error message
             }
         }
         try {
@@ -139,6 +139,8 @@ public class Game extends GameObservable{
             //TODO: handle game over
             //the shelf is full, the state changes to LAST_ROUND
             this.gameState = GameStateType.LAST_ROUND;
+            //the current player gets the bonus point for finishing
+            this.playingPlayer.updateScore(1);
         }
         //the playing players shelf is updated
         //calculate players points gained from the move
@@ -146,7 +148,6 @@ public class Game extends GameObservable{
         //if we are in the last round and the next player has the chair we can set the state as FINISHED and terminate the match
         if(gameState == GameStateType.LAST_ROUND && getNextPlayer().hasChair()){
             this.gameState = GameStateType.FINISHED;
-            Player winner = players.get(0);
             ArrayList<Pair<String, Integer>> finalScoreBoard = new ArrayList<>();
             for (Player pl:players){
                 //TODO: possibility to put an observer from the player to the shelf to automatically update points
