@@ -18,6 +18,6 @@ public class BoardCard {
     public colorType getColor() {
         return color;
     }
-    public ornamentType getOrnament(){return ornament;}
+    public ornamentType getOrnament(){return ornament;};
 
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.modelSupport;
 
 import it.polimi.ingsw.model.modelSupport.*;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +69,7 @@ public class ShelfTest {
     @Test
     void testGetCardAtPosition() {
         BoardCard[][] shelfCards = shelf.getShelfCards();
-        shelfCards[3][0] = new BoardCard(colorType.BLUE);
+        shelfCards[3][0] = new BoardCard(colorType.BLUE, ornamentType.A);
                 assertEquals(shelfCards[3][0].getColor(), colorType.BLUE);
 
         // output the shelf
@@ -88,9 +89,9 @@ public class ShelfTest {
     @Test
     void testInsertInColumn() {
         ArrayList<BoardCard> cards = new ArrayList<>();
-        cards.add(new BoardCard(colorType.GREEN));
-        cards.add(new BoardCard(colorType.BLUE));
-        cards.add(new BoardCard(colorType.YELLOW));
+        cards.add(new BoardCard(colorType.GREEN, ornamentType.A));
+        cards.add(new BoardCard(colorType.BLUE, ornamentType.A));
+        cards.add(new BoardCard(colorType.YELLOW, ornamentType.A));
         assertDoesNotThrow(() -> shelf.insertInColumn(cards, 0));
         assertEquals(shelf.getCardAtPosition(5, 0).getColor(), colorType.GREEN);
         assertEquals(shelf.getCardAtPosition(4, 0).getColor(), colorType.BLUE);
@@ -113,21 +114,20 @@ public class ShelfTest {
     @Test
     public void testInsertInColumnThrowsExceptionWhenColumnIsFull() {
         // Fill column 0 with cards
-        ArrayList<BoardCard> cards = new ArrayList<>();
         BoardCard[][] shelfCards = shelf.getShelfCards();
-        shelfCards[5][0] = new BoardCard(colorType.BLUE);
-        shelfCards[4][0] = new BoardCard(colorType.BLUE);
-        shelfCards[3][0] = new BoardCard(colorType.BLUE);
-        shelfCards[2][0] = new BoardCard(colorType.BLUE);
-        shelfCards[1][0] = new BoardCard(colorType.BLUE);
-        shelfCards[0][0] = new BoardCard(colorType.BLUE);
+        shelfCards[5][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[4][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[3][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[2][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[1][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[0][0] = new BoardCard(colorType.BLUE, ornamentType.A);
 
 
         // Try to insert more cards into column 0
         ArrayList<BoardCard> extraCards = new ArrayList<>();
-        extraCards.add(new BoardCard(colorType.PURPLE));
-        extraCards.add(new BoardCard(colorType.GREEN));
-        extraCards.add(new BoardCard(colorType.YELLOW));
+        extraCards.add(new BoardCard(colorType.PURPLE, ornamentType.A));
+        extraCards.add(new BoardCard(colorType.GREEN, ornamentType.A));
+        extraCards.add(new BoardCard(colorType.YELLOW, ornamentType.A));
         try {
             shelf.insertInColumn(extraCards, 0);
             fail("Expected ColumnNotSelectable exception was not thrown");
@@ -155,10 +155,10 @@ public class ShelfTest {
         @Test
     public void testInsertInColumnThrowsExceptionWhenListIsTooLong() {
         ArrayList<BoardCard> cards = new ArrayList<>();
-        cards.add(new BoardCard(colorType.BLUE));
-        cards.add(new BoardCard(colorType.YELLOW));
-        cards.add(new BoardCard(colorType.GREEN));
-        cards.add(new BoardCard(colorType.PURPLE)); // too many cards
+        cards.add(new BoardCard(colorType.BLUE, ornamentType.A));
+        cards.add(new BoardCard(colorType.YELLOW, ornamentType.A));
+        cards.add(new BoardCard(colorType.GREEN, ornamentType.A));
+        cards.add(new BoardCard(colorType.PURPLE, ornamentType.A)); // too many cards
 
         try {
             shelf.insertInColumn(cards, 0);
@@ -190,15 +190,15 @@ public class ShelfTest {
         ArrayList<BoardCard> cards = new ArrayList<>();
 
         BoardCard[][] shelfCards = shelf.getShelfCards();
-        shelfCards[5][0] = new BoardCard(colorType.BLUE);
-        shelfCards[4][0] = new BoardCard(colorType.BLUE);
-        shelfCards[3][0] = new BoardCard(colorType.BLUE);
-        shelfCards[2][0] = new BoardCard(colorType.BLUE);
-        shelfCards[1][0] = new BoardCard(colorType.BLUE);
+        shelfCards[5][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[4][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[3][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[2][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[1][0] = new BoardCard(colorType.BLUE, ornamentType.A);
 
-        cards.add(new BoardCard(colorType.BLUE));
-        cards.add(new BoardCard(colorType.YELLOW));
-        cards.add(new BoardCard(colorType.GREEN));
+        cards.add(new BoardCard(colorType.BLUE, ornamentType.A));
+        cards.add(new BoardCard(colorType.YELLOW, ornamentType.A));
+        cards.add(new BoardCard(colorType.GREEN, ornamentType.A));
 
         try {
             shelf.insertInColumn(cards, 0);
@@ -227,7 +227,7 @@ public class ShelfTest {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 BoardCard[][] shelfCards = shelf.getShelfCards();
-                shelfCards[i][j] = new BoardCard(colorType.BLUE);
+                shelfCards[i][j] = new BoardCard(colorType.BLUE, ornamentType.A);
             }
         }
         // output the shelf
@@ -248,30 +248,30 @@ public class ShelfTest {
     public void testEmptySpotsInColumnReturnsCorrectNumberOfEmptySpots() {
         // Fill up the entire shelf with cards
         BoardCard[][] shelfCards = shelf.getShelfCards();
-        shelfCards[5][0] = new BoardCard(colorType.BLUE);
-        shelfCards[4][0] = new BoardCard(colorType.BLUE);
-        shelfCards[3][0] = new BoardCard(colorType.BLUE);
-        shelfCards[2][0] = new BoardCard(colorType.BLUE);
-        shelfCards[1][0] = new BoardCard(colorType.BLUE);
-        shelfCards[0][0] = new BoardCard(colorType.BLUE);
-        shelfCards[5][1] = new BoardCard(colorType.BLUE);
-        shelfCards[4][1] = new BoardCard(colorType.BLUE);
-        shelfCards[3][1] = new BoardCard(colorType.BLUE);
-        shelfCards[2][1] = new BoardCard(colorType.BLUE);
-        shelfCards[1][1] = new BoardCard(colorType.BLUE);
-        shelfCards[5][2] = new BoardCard(colorType.BLUE);
-        shelfCards[4][2] = new BoardCard(colorType.BLUE);
-        shelfCards[3][2] = new BoardCard(colorType.BLUE);
-        shelfCards[2][2] = new BoardCard(colorType.BLUE);
-        shelfCards[1][2] = new BoardCard(colorType.BLUE);
-        shelfCards[5][3] = new BoardCard(colorType.BLUE);
-        shelfCards[4][3] = new BoardCard(colorType.BLUE);
-        shelfCards[3][3] = new BoardCard(colorType.BLUE);
-        shelfCards[2][3] = new BoardCard(colorType.BLUE);
-        shelfCards[1][3] = new BoardCard(colorType.BLUE);
-        shelfCards[5][4] = new BoardCard(colorType.BLUE);
-        shelfCards[4][4] = new BoardCard(colorType.BLUE);
-        shelfCards[3][4] = new BoardCard(colorType.BLUE);
+        shelfCards[5][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[4][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[3][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[2][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[1][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[0][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[5][1] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[4][1] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[3][1] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[2][1] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[1][1] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[5][2] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[4][2] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[3][2] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[2][2] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[1][2] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[5][3] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[4][3] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[3][3] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[2][3] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[1][3] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[5][4] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[4][4] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[3][4] = new BoardCard(colorType.BLUE, ornamentType.A);
 
 
         // output the shelf
@@ -290,9 +290,9 @@ public class ShelfTest {
     @Test
     public void testInsertInColumnThrowsExceptionWhenColumnIsInvalid() {
         ArrayList<BoardCard> cards = new ArrayList<>();
-        cards.add(new BoardCard(colorType.BLUE));
-        cards.add(new BoardCard(colorType.YELLOW));
-        cards.add(new BoardCard(colorType.GREEN));
+        cards.add(new BoardCard(colorType.BLUE, ornamentType.A));
+        cards.add(new BoardCard(colorType.YELLOW, ornamentType.A));
+        cards.add(new BoardCard(colorType.GREEN, ornamentType.A));
 
         try {
             shelf.insertInColumn(cards, 5);
@@ -309,5 +309,55 @@ public class ShelfTest {
             }
             System.out.println();
         }
+    }
+
+    /**
+     * Tests calculateAdiacentPoints method returns the correct number of points.
+     */
+    @Test
+    public void testCalculateAdiacentPointsReturnsCorrectNumberOfPoints() {
+        // Fill up the entire shelf with cards
+        BoardCard[][] shelfCards = shelf.getShelfCards();
+        shelfCards[5][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[4][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[3][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[2][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[1][0] = new BoardCard(colorType.GREEN, ornamentType.A);
+        shelfCards[0][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        shelfCards[5][1] = new BoardCard(colorType.GREEN, ornamentType.A);
+        shelfCards[4][1] = new BoardCard(colorType.GREEN, ornamentType.A);
+        shelfCards[3][1] = new BoardCard(colorType.GREEN, ornamentType.A);
+        shelfCards[2][1] = new BoardCard(colorType.GREEN, ornamentType.A);
+        shelfCards[1][1] = new BoardCard(colorType.GREEN, ornamentType.A);
+        shelfCards[0][1] = new BoardCard(colorType.GREEN, ornamentType.A);
+        shelfCards[5][2] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        shelfCards[4][2] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        shelfCards[3][2] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        shelfCards[2][2] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        shelfCards[1][2] = new BoardCard(colorType.GREEN, ornamentType.A);
+        shelfCards[0][2] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        shelfCards[5][3] = new BoardCard(colorType.LIGHT_BLUE, ornamentType.A);
+        shelfCards[4][3] = new BoardCard(colorType.LIGHT_BLUE, ornamentType.A);
+        shelfCards[3][3] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        shelfCards[2][3] = new BoardCard(colorType.WHITE, ornamentType.A);
+        shelfCards[1][3] = new BoardCard(colorType.LIGHT_BLUE, ornamentType.A);
+        shelfCards[0][3] = new BoardCard(colorType.LIGHT_BLUE, ornamentType.A);
+        shelfCards[5][4] = new BoardCard(colorType.WHITE, ornamentType.A);
+        shelfCards[4][4] = new BoardCard(colorType.WHITE, ornamentType.A);
+        shelfCards[3][4] = new BoardCard(colorType.LIGHT_BLUE, ornamentType.A);
+        shelfCards[2][4] = new BoardCard(colorType.WHITE, ornamentType.A);
+        shelfCards[1][4] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        shelfCards[0][4] = new BoardCard(colorType.WHITE, ornamentType.A);
+        //output the shelf
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(shelf.getCardAtPosition(i, j).getColor() + " ");
+            }
+            System.out.println();
+        }
+
+        // calculate the points
+        assertEquals(16, shelf.calculateAdiacentPoints());
+
     }
 }

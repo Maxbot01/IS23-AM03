@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.modelSupport;
 
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,7 @@ class LivingRoomTest {
         for(int i=0; i<9;i++){
             for(int j=0; j<9;j++){
                if(!mat[i][j].equals(colorType.EMPTY_SPOT)){
-                   BoardCard c = new BoardCard(colorType.TOMBSTONE);
+                   BoardCard c = new BoardCard(colorType.TOMBSTONE, ornamentType.A);
                    mat[i][j] = c;
                }
             }
