@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.Shelf;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 public class Main {
@@ -30,8 +31,8 @@ public class Main {
             e.printStackTrace();
         }
         ArrayList<BoardCard> crds = new ArrayList<>();
-        crds.add(new BoardCard(colorType.BLUE));
-        crds.add(new BoardCard(colorType.PURPLE));
+        crds.add(new BoardCard(colorType.BLUE, ornamentType.A));
+        crds.add(new BoardCard(colorType.PURPLE, ornamentType.A));
         myGame.selectedColumn(crds, 1);
 
         //---- new round
@@ -48,8 +49,8 @@ public class Main {
             e.printStackTrace();
         }
         crds = new ArrayList<>();
-        crds.add(new BoardCard(colorType.LIGHT_BLUE));
-        crds.add(new BoardCard(colorType.YELLOW));
+        crds.add(new BoardCard(colorType.LIGHT_BLUE, ornamentType.A));
+        crds.add(new BoardCard(colorType.YELLOW, ornamentType.A));
         myGame.selectedColumn(crds, 1);
 
         //---- new round
@@ -66,8 +67,8 @@ public class Main {
             e.printStackTrace();
         }
         crds = new ArrayList<>();
-        crds.add(new BoardCard(colorType.LIGHT_BLUE));
-        crds.add(new BoardCard(colorType.YELLOW));
+        crds.add(new BoardCard(colorType.LIGHT_BLUE, ornamentType.A));
+        crds.add(new BoardCard(colorType.YELLOW, ornamentType.A));
         myGame.selectedColumn(crds, 1);
 
         //---- new round
@@ -85,8 +86,8 @@ public class Main {
             e.printStackTrace();
         }
         crds = new ArrayList<>();
-        crds.add(new BoardCard(colorType.BLUE));
-        crds.add(new BoardCard(colorType.YELLOW));
+        crds.add(new BoardCard(colorType.BLUE, ornamentType.A));
+        crds.add(new BoardCard(colorType.YELLOW, ornamentType.A));
         myGame.selectedColumn(crds, 1);
 
         //---- new round
@@ -103,8 +104,8 @@ public class Main {
             e.printStackTrace();
         }
         crds = new ArrayList<>();
-        crds.add(new BoardCard(colorType.BLUE));
-        crds.add(new BoardCard(colorType.YELLOW));
+        crds.add(new BoardCard(colorType.BLUE, ornamentType.A));
+        crds.add(new BoardCard(colorType.YELLOW, ornamentType.A));
         myGame.selectedColumn(crds, 1);
 
         //---- new round
@@ -121,8 +122,8 @@ public class Main {
             e.printStackTrace();
         }
         crds = new ArrayList<>();
-        crds.add(new BoardCard(colorType.YELLOW));
-        crds.add(new BoardCard(colorType.LIGHT_BLUE));
+        crds.add(new BoardCard(colorType.YELLOW, ornamentType.A));
+        crds.add(new BoardCard(colorType.LIGHT_BLUE, ornamentType.A));
         myGame.selectedColumn(crds, 3);
 
 
