@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
+import it.polimi.ingsw.model.modelSupport.Shelf;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
@@ -124,5 +125,12 @@ public class Main {
         crds.add(new BoardCard(colorType.LIGHT_BLUE));
         myGame.selectedColumn(crds, 3);
 
+
+        /* inizio assegnamento testing con printf di calculateAdiacentPoint nella shelf */
+        /*
+        Shelf provaAdiacent = new Shelf();
+        provaAdiacent.initializeShelfForTesting();
+        System.out.println("punti ottenuti dalla shelf = " + provaAdiacent.calculateAdiacentPoints() + "\n");
+        */
     }
-} // ciao
+}

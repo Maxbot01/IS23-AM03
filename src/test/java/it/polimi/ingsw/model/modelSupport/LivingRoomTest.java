@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LivingRoomTest {
 
     // stupid way to test whether the starting angles are empty spot
-    // EXPECTED: FALSE
+    // EXPECTED: TRUE
     @Test
     void Empty_Angles_getPieces() {
         LivingRoom l = new LivingRoom(4);
@@ -27,7 +27,7 @@ class LivingRoomTest {
 
     }
 
-    // tests whether there are TOMBSTONES in the initial Board
+    // tests whether there are TOMBSTONES in the starting Board
     // EXPECTED: FALSE
     @Test
     void No_Starting_TOMB_getPieces() {
@@ -79,7 +79,7 @@ class LivingRoomTest {
     }
 
 
-    // tests the actual starting selectable
+    // tests the actual starting selectable in 4 players
     @Test
     void starting_Selectable() {
         LivingRoom l = new LivingRoom(4);
