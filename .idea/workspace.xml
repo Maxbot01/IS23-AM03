@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="Aggiornamento codice">
-      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/CommonGoalsTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategyTest.java" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="Aggiornamento">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/CommonGoalsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/CommonGoalsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategyTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +72,7 @@
       <recent name="it.polimi.ingsw.model.modelSupport" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ShelfTest">
+  <component name="RunManager" selected="JUnit.CommonGoalsTest">
     <configuration name="Testing_Common_Goals_Finale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.Main" />
       <module name="AM03" />
@@ -90,6 +90,21 @@
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.BoardCardTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CommonGoalsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM03" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.CommonGoalsTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -125,22 +140,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShelfTest.testInsertInColumn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AM03" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.ShelfTest" />
-      <option name="METHOD_NAME" value="testInsertInColumn" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ShelfTest.testInsertInFullColumn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AM03" />
       <extension name="coverage">
@@ -159,11 +158,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CommonGoalsTest" />
         <item itemvalue="JUnit.ShelfTest" />
         <item itemvalue="JUnit.LivingRoomTest" />
         <item itemvalue="JUnit.BoardCardTest" />
         <item itemvalue="JUnit.ShelfTest.testInsertInFullColumn" />
-        <item itemvalue="JUnit.ShelfTest.testInsertInColumn" />
       </list>
     </recent_temporary>
   </component>
