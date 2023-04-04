@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.CommonGoals.Strategy;
 
-import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
@@ -11,33 +10,24 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Double2x2GoalStrategyTest {
+class TwoOf5DiffGoalStrategyTest {
     private CommonGoalStrategy goal;
 
     @BeforeEach
     void setUp() {
-        goal = new Double2x2GoalStrategy();
+        goal = new TwoOf5DiffGoalStrategy();
     }
 
     @Test
     void testGoalCompleted() {
-        /* TESTING Double2x2 SPECIFICI: NON ELIMINARE */
-        /* Caso limite 10 carte con disposizione killer in verticale verso dx: */
+        /* TESTING TwoOf5Diff SPECIFICI: NON ELIMINARE */
+        /* Caso funzionante: */
         colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
         colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
         colorType[] thirdLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.BLUE};
         colorType[] fourthLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] sixthLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        /* Caso limite 10 carte con disposizione killer in orizzontale verso l'alto: */
-        /*
-        colorType[] firstLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.GREEN};
-        colorType[] secondLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.GREEN};
-        colorType[] thirdLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] fourthLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] fifthLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] sixthLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        */
+        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.LIGHT_BLUE,colorType.PURPLE,colorType.YELLOW};
+        colorType[] sixthLine = {colorType.GREEN,colorType.BLUE,colorType.WHITE,colorType.YELLOW,colorType.LIGHT_BLUE};
 
         ArrayList<colorType[]> testColors = new ArrayList<>();
         testColors.add(firstLine);

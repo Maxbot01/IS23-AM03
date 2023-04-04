@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="Aggiornamento codice">
-      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/CommonGoalsTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategyTest.java" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="fixed stuff and some forbidden tests">
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/EightTilesGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/FiveDiagonalGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/FiveXGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourCornersGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourLines3DiffGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/FourOfFourGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/ThreeColumns3DiffGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/TriangularGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf5DiffGoalStrategyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/TwoOf6DiffGoalStrategyTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/CommonGoals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/CommonGoals/Strategy/Double2x2GoalStrategyTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +81,7 @@
       <recent name="it.polimi.ingsw.model.modelSupport" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ShelfTest">
+  <component name="RunManager" selected="JUnit.TwoOf6DiffGoalStrategyTest">
     <configuration name="Testing_Common_Goals_Finale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.Main" />
       <module name="AM03" />
@@ -80,90 +89,88 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardCardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SixOfTwoGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AM03" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.BoardCardTest" />
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.SixOfTwoGoalStrategyTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LivingRoomTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ThreeColumns3DiffGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AM03" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.LivingRoomTest" />
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.ThreeColumns3DiffGoalStrategyTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShelfTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TriangularGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AM03" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.ShelfTest" />
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategyTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShelfTest.testInsertInColumn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TwoOf5DiffGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AM03" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.ShelfTest" />
-      <option name="METHOD_NAME" value="testInsertInColumn" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf5DiffGoalStrategyTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShelfTest.testInsertInFullColumn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TwoOf6DiffGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AM03" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.ShelfTest" />
-      <option name="METHOD_NAME" value="testInsertInFullColumn" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf6DiffGoalStrategyTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ShelfTest" />
-        <item itemvalue="JUnit.LivingRoomTest" />
-        <item itemvalue="JUnit.BoardCardTest" />
-        <item itemvalue="JUnit.ShelfTest.testInsertInFullColumn" />
-        <item itemvalue="JUnit.ShelfTest.testInsertInColumn" />
+        <item itemvalue="JUnit.TwoOf6DiffGoalStrategyTest" />
+        <item itemvalue="JUnit.TwoOf5DiffGoalStrategyTest" />
+        <item itemvalue="JUnit.TriangularGoalStrategyTest" />
+        <item itemvalue="JUnit.ThreeColumns3DiffGoalStrategyTest" />
+        <item itemvalue="JUnit.SixOfTwoGoalStrategyTest" />
       </list>
     </recent_temporary>
   </component>
@@ -350,7 +357,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680608847280</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="fixed stuff and some forbidden tests">
+      <created>1680618086686</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1680618086686</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -407,10 +421,10 @@
     <MESSAGE value="empty piece instead of null in boards" />
     <MESSAGE value="finished common goal" />
     <MESSAGE value="finished common goal with maximus" />
-    <MESSAGE value="fixed stuff and some forbidden tests" />
     <MESSAGE value="Shelf, ShelfTest" />
     <MESSAGE value="ShelfTest" />
     <MESSAGE value="Aggiornamento codice" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiornamento codice" />
+    <MESSAGE value="fixed stuff and some forbidden tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed stuff and some forbidden tests" />
   </component>
 </project>
