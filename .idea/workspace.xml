@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="fixed stuff and some forbidden tests">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="Shelf, ShelfTest">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Shelf.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/Shelf.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/modelSupport/ShelfTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/modelSupport/ShelfTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,14 +17,15 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategy.java" root0="FORCE_HIGHLIGHTING" />
@@ -42,23 +42,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "Errors",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -67,10 +68,40 @@
       <recent name="it.polimi.ingsw.model.modelSupport" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.ShelfTest">
     <configuration name="Testing_Common_Goals_Finale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.Main" />
       <module name="AM03" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardCardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM03" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.BoardCardTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LivingRoomTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AM03" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.LivingRoomTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -86,38 +117,6 @@
       <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.ShelfTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ShelfTest.getShelfCards" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AM03" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.ShelfTest" />
-      <option name="METHOD_NAME" value="getShelfCards" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ShelfTest.insertInColumn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AM03" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.modelSupport.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.modelSupport" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.modelSupport.ShelfTest" />
-      <option name="METHOD_NAME" value="insertInColumn" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -157,10 +156,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.ShelfTest" />
+        <item itemvalue="JUnit.LivingRoomTest" />
+        <item itemvalue="JUnit.BoardCardTest" />
         <item itemvalue="JUnit.ShelfTest.testInsertInFullColumn" />
         <item itemvalue="JUnit.ShelfTest.testInsertInColumn" />
-        <item itemvalue="JUnit.ShelfTest.insertInColumn" />
-        <item itemvalue="JUnit.ShelfTest.getShelfCards" />
       </list>
     </recent_temporary>
   </component>
@@ -176,6 +175,7 @@
       <workItem from="1679140207267" duration="7796000" />
       <workItem from="1679406294278" duration="9156000" />
       <workItem from="1679599868107" duration="3252000" />
+      <workItem from="1680518555865" duration="2307000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1678903177375</created>
@@ -324,12 +324,12 @@
       <option name="project" value="LOCAL" />
       <updated>1679939611760</updated>
     </task>
-    <task id="LOCAL-00022" summary="fixed stuff and some forbidden tests">
-      <created>1680443409772</created>
+    <task id="LOCAL-00022" summary="Shelf, ShelfTest">
+      <created>1680516089207</created>
       <option name="number" value="00022" />
       <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1680443409772</updated>
+      <updated>1680516089207</updated>
     </task>
     <option name="localTasksCounter" value="23" />
     <servers />
@@ -389,6 +389,7 @@
     <MESSAGE value="finished common goal" />
     <MESSAGE value="finished common goal with maximus" />
     <MESSAGE value="fixed stuff and some forbidden tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed stuff and some forbidden tests" />
+    <MESSAGE value="Shelf, ShelfTest" />
+    <option name="LAST_COMMIT_MESSAGE" value="Shelf, ShelfTest" />
   </component>
 </project>
