@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.modelSupport;
 
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 
@@ -15,8 +16,7 @@ public class Shelf {
     private BoardCard[][] shelfCards;
     private static final int ROWS_LEN = 6;
     private static final int COLUMNS_LEN = 5;
-
-    private final static BoardCard EMPTY_SPOT_CARD = new BoardCard(colorType.EMPTY_SPOT);
+    private final static BoardCard EMPTY_SPOT_CARD = new BoardCard(colorType.EMPTY_SPOT, ornamentType.A);
 
     /**
      * Constructs a new Shelf object with a 2D array of BoardCard objects. Initially all EMPTY_SPOT card types
