@@ -123,6 +123,14 @@ public class CommonGoals {
         return secondGoal;
     }
 
+    public void setFirstGoal(CommonGoalStrategy firstGoal) {
+        this.firstGoal = firstGoal; /* setter per il testing */
+    }
+
+    public void setSecondGoal(CommonGoalStrategy secondGoal) {
+        this.secondGoal = secondGoal; /* setter per il testing */
+    }
+
     /**
      * Calculates player's points based on the number of players and the goals' completion
      * @param player
