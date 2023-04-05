@@ -18,6 +18,9 @@ class FiveDiagonalGoalStrategyTest {
         goal = new FiveDiagonalGoalStrategy();
     }
 
+    /**
+     * Tests whether FiveDiagonalGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING FiveDiagonal SPECIFICI: NON ELIMINARE */

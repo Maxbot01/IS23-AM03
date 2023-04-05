@@ -18,6 +18,9 @@ class FourLines3DiffGoalStrategyTest {
         goal = new FourLines3DiffGoalStrategy();
     }
 
+    /**
+     * Tests whether FourLines3DiffGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING FourLines3Diff SPECIFICI: NON ELIMINARE */

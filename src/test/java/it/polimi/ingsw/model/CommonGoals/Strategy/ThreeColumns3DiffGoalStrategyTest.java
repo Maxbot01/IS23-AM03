@@ -18,6 +18,9 @@ class ThreeColumns3DiffGoalStrategyTest {
         goal = new ThreeColumns3DiffGoalStrategy();
     }
 
+    /**
+     * Tests whether ThreeColumns3DiffGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING ThreeColumns3Diff SPECIFICI: NON ELIMINARE */

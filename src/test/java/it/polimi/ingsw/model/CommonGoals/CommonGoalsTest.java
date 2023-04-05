@@ -46,6 +46,10 @@ class CommonGoalsTest {
         // output prova
         out.println("Second goal: " + prova.getSecondGoal());
     }
+
+    /**
+     * Tests whether the addition of players with a certain goal completed is correct and if the assigned point are correct
+     */
     @Test
     public void testCalculateAllPoints() {
         Player player1 = new Player("player1");

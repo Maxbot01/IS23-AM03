@@ -18,6 +18,9 @@ class FourOfFourGoalStrategyTest {
         goal = new FourOfFourGoalStrategy();
     }
 
+    /**
+     * Tests whether FourOfFourGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING FourOfFour SPECIFICI: NON ELIMINARE*/

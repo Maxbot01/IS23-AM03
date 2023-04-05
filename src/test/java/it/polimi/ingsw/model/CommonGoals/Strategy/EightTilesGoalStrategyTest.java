@@ -18,6 +18,9 @@ class EightTilesGoalStrategyTest {
         goal = new EightTilesGoalStrategy();
     }
 
+    /**
+     * Tests whether EightTilesGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING EightTiles SPECIFICI: NON ELIMINARE */

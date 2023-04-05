@@ -18,6 +18,9 @@ class TriangularGoalStrategyTest {
         goal = new TriangularGoalStrategy();
     }
 
+    /**
+     * Tests whether TriangularGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING Triangular SPECIFICI: NON ELIMINARE */

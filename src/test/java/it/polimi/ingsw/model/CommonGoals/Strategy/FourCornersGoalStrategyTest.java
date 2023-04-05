@@ -18,6 +18,9 @@ class FourCornersGoalStrategyTest {
         goal = new FourCornersGoalStrategy();
     }
 
+    /**
+     * Tests whether FourCornersGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING FourCorners SPECIFICI: NON ELIMINARE */

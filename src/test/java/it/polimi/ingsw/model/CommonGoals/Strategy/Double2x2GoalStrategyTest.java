@@ -19,6 +19,9 @@ class Double2x2GoalStrategyTest {
         goal = new Double2x2GoalStrategy();
     }
 
+    /**
+     * Tests whether Double2x2GoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING Double2x2 SPECIFICI: NON ELIMINARE */

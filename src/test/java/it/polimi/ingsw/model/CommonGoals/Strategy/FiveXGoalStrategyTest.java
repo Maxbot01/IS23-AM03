@@ -17,6 +17,10 @@ class FiveXGoalStrategyTest {
     void setUp() {
         goal = new FiveXGoalStrategy();
     }
+
+    /**
+     * Tests whether FiveXGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING FiveX SPECIFICI: NON ELIMINARE */

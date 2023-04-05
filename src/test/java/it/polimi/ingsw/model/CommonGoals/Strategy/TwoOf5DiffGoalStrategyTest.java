@@ -18,6 +18,9 @@ class TwoOf5DiffGoalStrategyTest {
         goal = new TwoOf5DiffGoalStrategy();
     }
 
+    /**
+     * Tests whether TwoOf5DiffGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING TwoOf5Diff SPECIFICI: NON ELIMINARE */

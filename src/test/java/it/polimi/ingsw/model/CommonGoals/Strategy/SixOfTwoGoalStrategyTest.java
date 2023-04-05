@@ -18,6 +18,9 @@ class SixOfTwoGoalStrategyTest {
         goal = new SixOfTwoGoalStrategy();
     }
 
+    /**
+     * Tests whether SixOfTwoGoalStrategy is correct
+     */
     @Test
     void testGoalCompleted() {
         /* TESTING SixOfTwo SPECIFICI: NON ELIMINARE */
