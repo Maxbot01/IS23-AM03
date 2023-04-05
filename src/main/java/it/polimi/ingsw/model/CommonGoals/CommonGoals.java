@@ -10,7 +10,6 @@ public class CommonGoals {
     /**
      * It refers to the first goal chosen
      */
-    /* private final EnumSet<CommonGoalType> possibleGoals = EnumSet.allOf(CommonGoalType.class); non viene usata */
     private CommonGoalStrategy firstGoal;
     /**
      * It refers to the second goal chosen
@@ -115,7 +114,6 @@ public class CommonGoals {
     public CommonGoalStrategy getFirstGoal() {
         return firstGoal;
     }
-
     /**
      * @return CommonGoalStrategy
      */
@@ -123,12 +121,20 @@ public class CommonGoals {
         return secondGoal;
     }
 
+    /**
+     * Sets the firstGoal desired, it is used for the testing section
+     * @param firstGoal
+     */
     public void setFirstGoal(CommonGoalStrategy firstGoal) {
-        this.firstGoal = firstGoal; /* setter per il testing */
+        this.firstGoal = firstGoal;
     }
 
+    /**
+     * Sets the secondGoal desired, it is used for the testing section
+     * @param secondGoal
+     */
     public void setSecondGoal(CommonGoalStrategy secondGoal) {
-        this.secondGoal = secondGoal; /* setter per il testing */
+        this.secondGoal = secondGoal;
     }
 
     /**
@@ -141,6 +147,7 @@ public class CommonGoals {
         int ris;
         int pointsOfFirst;
         int pointsOfSecond;
+
         /* TEST RANDOMICO */
         /*
         colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
@@ -153,165 +160,6 @@ public class CommonGoals {
                 prova[i][j] = piece;
             }
         }
-        */
-        /* TESTING FourOfFour SPECIFICI: NON ELIMINARE*/
-        /*
-        Caso funzionante senza 4-adiac (guarda il foglio):
-        colorType[] firstLine = {colorType.BLUE,colorType.PURPLE,colorType.GREEN,colorType.LIGHT_BLUE,colorType.YELLOW};
-        colorType[] secondLine = {colorType.BLUE,colorType.BLUE,colorType.PURPLE,colorType.GREEN,colorType.LIGHT_BLUE};
-        colorType[] thirdLine = {colorType.PURPLE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE,colorType.GREEN};
-        colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        */
-        /*
-        Caso killer senza 4-adiac (guarda il foglio):
-        colorType[] firstLine = {colorType.GREEN,colorType.PURPLE,colorType.GREEN,colorType.LIGHT_BLUE,colorType.YELLOW};
-        colorType[] secondLine = {colorType.BLUE,colorType.BLUE,colorType.PURPLE,colorType.GREEN,colorType.LIGHT_BLUE};
-        colorType[] thirdLine = {colorType.PURPLE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE,colorType.BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        */
-        /*
-        Caso funzionante con 4-adiac (guarda il foglio):
-        colorType[] firstLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.LIGHT_BLUE,colorType.YELLOW};
-        colorType[] secondLine = {colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.GREEN,colorType.LIGHT_BLUE};
-        colorType[] thirdLine = {colorType.PURPLE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE,colorType.YELLOW};
-        colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        */
-        /*
-        Caso killer con 4-adiac (guard il foglio):
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.BLUE,colorType.LIGHT_BLUE,colorType.YELLOW};
-        colorType[] secondLine = {colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.GREEN,colorType.LIGHT_BLUE};
-        colorType[] thirdLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] fourthLine = {colorType.GREEN,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        */
-        /*
-        Caso funzionante senza 4-adiac con 3-adiac vicine (guarda il foglio):
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.BLUE,colorType.YELLOW};
-        colorType[] secondLine = {colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] thirdLine = {colorType.LIGHT_BLUE,colorType.BLUE,colorType.GREEN,colorType.YELLOW,colorType.BLUE};
-        colorType[] fourthLine = {colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE};
-        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] sixthLine = {colorType.GREEN,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
-        */
-        /*
-        Caso funionante con 16 carte che restituiscono 3 combinazioni più due di un altro colore (sono partito dal caso killer 4-adiac):
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] secondLine = {colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] thirdLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] fourthLine = {colorType.GREEN,colorType.GREEN,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] sixthLine = {colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        */
-        /* TESTING Double2x2 SPECIFICI: NON ELIMINARE */
-        /*
-        Caso limite 10 carte con disposizione killer in verticale verso dx:
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] thirdLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.BLUE};
-        colorType[] fourthLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] sixthLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        */
-        /*
-        Caso limite 10 carte con disposizione killer in orizzontale verso l'alto:
-        colorType[] firstLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.GREEN};
-        colorType[] secondLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.GREEN};
-        colorType[] thirdLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW};
-        colorType[] fourthLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] fifthLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] sixthLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        */
-        /* TESTING EightTiles SPECIFICI: NON ELIMINARE */
-        /* Caso non funzionante con 7 carte casuali:
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /* Caso funzionante con 8 carte casuali:
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /* TESTING Triangular SPECIFICI: NON ELIMINARE */
-        /* Caso funzionante:
-        colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT};
-        colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE};
-        colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.EMPTY_SPOT,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /* Caso non funzionante:
-        colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT};
-        colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE};
-        colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.EMPTY_SPOT,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /* TESTING FiveDiagonal SPECIFICI: NON ELIMINARE */
-        /* Caso funzionante:
-        colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.GREEN};
-        colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE};
-        colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.LIGHT_BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.YELLOW,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /* Caso non funzionante:
-        colorType[] firstLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT};
-        colorType[] secondLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE};
-        colorType[] thirdLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.EMPTY_SPOT,colorType.EMPTY_SPOT,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.EMPTY_SPOT,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /* TESTING FiveX SPECIFICI: NON ELIMINARE */
-        /* Caso funzionante:
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /* Caso non funzionante:
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.WHITE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /* TESTING SixOfTwo SPECIFICI: NON ELIMINARE */
-        /* Caso non funzionante:
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] secondLine = {colorType.WHITE,colorType.LIGHT_BLUE,colorType.WHITE,colorType.LIGHT_BLUE,colorType.WHITE};
-        colorType[] thirdLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
-        */
-        /* Caso funzionante:
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] secondLine = {colorType.GREEN,colorType.LIGHT_BLUE,colorType.WHITE,colorType.LIGHT_BLUE,colorType.WHITE};
-        colorType[] thirdLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
         */
         /* CASI DI TEST: sezione di assegnamento delle carte desiderate sulla shelf */
         /*
@@ -342,42 +190,33 @@ public class CommonGoals {
         System.out.println("reachedSecondGoal:\n" + reachedSecondGoal + "\n");
         */
 
-        /* Vanno eliminate le println negli if */
         if(!reachedFirstGoal.contains(player)){
-            if (firstGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
+            if (firstGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {
                 reachedFirstGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 2);
                 } else {
                     pointsOfFirst = 8 - (reachedFirstGoal.indexOf(player) * 4);
                 }
-                /* System.out.println("firstgoal completato\n"); */
             } else {
                 pointsOfFirst = 0;
-                /* System.out.println("firstGoal non completato\n"); */
             }
         }else{
             pointsOfFirst = 0;
-            /* System.out.println("Il player " + player.getNickname() + " ha già completato il goal\n"); */
         }
-        /* secondGoal */
-        /* CASO DI TEST: ho cambiato player.getPlayerShelf().getShelfCards() con prova, ovvero la shelf inizializzata */
         if(!reachedSecondGoal.contains(player)){
-            if (secondGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {/*boolean return*/
+            if (secondGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {
                 reachedSecondGoal.add(player);
                 if (numOfPlayers > 2) {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 2);
                 } else {
                     pointsOfSecond = 8 - (reachedSecondGoal.indexOf(player) * 4);
                 }
-                /* System.out.println("secondGoal completato\n"); */
             } else {
                 pointsOfSecond = 0;
-                /* System.out.println("secondGoal non completato\n"); */
             }
         }else{
             pointsOfSecond = 0;
-            /* System.out.println("Il player " + player.getNickname() + " ha già completato il goal\n"); */
         }
         ris = pointsOfFirst + pointsOfSecond;
         return ris;
