@@ -8,8 +8,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+
 public class ClientMain implements Runnable {
     private Socket socket;
+
+
     public ClientMain(Socket socket) {
         this.socket = socket;
     }
