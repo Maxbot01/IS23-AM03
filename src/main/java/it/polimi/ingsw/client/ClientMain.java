@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.controller.pubSub.PubSubService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,10 +13,12 @@ import java.util.Scanner;
 
 public class ClientMain implements Runnable {
     private Socket socket;
-
+    private static PubSubService pubsub;
 
     public ClientMain(Socket socket) {
+        //the client starts, lets set the pub/sub environment.
         this.socket = socket;
+        pubsub = new PubSubService();
     }
     public void run() {
         try {
@@ -22,11 +26,12 @@ public class ClientMain implements Runnable {
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             // Leggo e scrivo nella connessione finche' non ricevo "quit"
             while (true) {
-                String line = in.nextLine();
-                if (line.equals("quit")) {
+                String receivedMessage = in.nextLine();
+                if (receivedMessage.equals("quit")) {
                     break;
                 } else {
-                    out.println("Received: " + line);
+                    out.println("Received: " + receivedMessage);
+                    //receives a json encoded message, decoding is needed
                     out.flush();
                 }
             }
