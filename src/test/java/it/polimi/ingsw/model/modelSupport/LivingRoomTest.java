@@ -127,7 +127,16 @@ class LivingRoomTest {
             l.updateBoard(a);
             BoardCard[][] mat = l.getPieces();assertTrue(mat[i][j].getColor() == colorType.TOMBSTONE);
 
+    }
 
+    @Test
+    void unselectableCards_test() {
+        LivingRoom l = new LivingRoom(4);
+        ArrayList<Pair<Integer,Integer>> chosen = new ArrayList<>();
+        Pair<Integer, Integer> p1 = new Pair(0,3);
+        Pair<Integer, Integer> p2 = new Pair(0,4);
+        chosen.add(p1);
+        chosen.add(p2);
 
     }
 

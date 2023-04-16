@@ -35,7 +35,7 @@ public class LivingRoom{
     /**
      * Integer matrix that represents the "footprint" of generic the four-players game, {x,z} where x is the starting column and z the number of items in the row
      */
-    private final static Integer[][] fp4 = {{3,2}, {3,3}, {2,5}, {1,7}, {0,9}, {0,8}, {2, 5}, {3,3}, {4,2}};
+    private final static Integer[][] fp4 = {{3,2}, {3,3}, {2,5}, {1,8}, {0,9}, {0,8}, {2, 5}, {3,3}, {4,2}};
 
     private final static ArrayList<Integer[][]> posItms = new ArrayList<>();
 
@@ -165,7 +165,7 @@ public class LivingRoom{
             int i = coordinates.getFirst();
             int j = coordinates.getSecond();
             if (!(isPresent(i, j) && freeCorner(i, j) && consecutive(selected))) {
-                throw new UnselectableCardException();
+                throw new UnselectableCardException("card is not selectable");
             }
         }
         for (Pair<Integer, Integer> coordinates : selected) {
