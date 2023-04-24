@@ -52,6 +52,8 @@ public class Game extends GameObservable{
      */
     private GameStateType gameState;
 
+    private String ID;
+
 
     /**
      * Initialization of the game.
@@ -61,7 +63,8 @@ public class Game extends GameObservable{
      *
      * @param fromPlayers players playing the game
      */
-    public Game(ArrayList<Player> fromPlayers){
+    public Game(ArrayList<Player> fromPlayers, String ID){
+        this.ID = ID;
         this.players = new ArrayList<Player>(fromPlayers);
         //all the players need to have a separate commonGoal, generates different indexes from 0 to 11 for creation
         int[] indexes = ThreadLocalRandom.current().ints(0, 12).distinct().limit(fromPlayers.size()).toArray();
@@ -91,6 +94,10 @@ public class Game extends GameObservable{
         super.notifyAllObservers(players, new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players, this.playingPlayer, playersShelves));
     }
 
+    public String getID(){
+        return ID;
+    }
+
 
     /**
      * The player knew which cards he could select, he chose them. This method updates the board and returns the update to everyone.
@@ -108,7 +115,7 @@ public class Game extends GameObservable{
                 selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
             } catch (UnselectableCardException e) {
                 throw new RuntimeException(e);
-                //TODO: manage this exception
+                //TODO: manage this exception, send an error message
             }
         }
         try {
@@ -139,6 +146,8 @@ public class Game extends GameObservable{
             //TODO: handle game over
             //the shelf is full, the state changes to LAST_ROUND
             this.gameState = GameStateType.LAST_ROUND;
+            //the current player gets the bonus point for finishing
+            this.playingPlayer.updateScore(1);
         }
         //the playing players shelf is updated
         //calculate players points gained from the move
@@ -146,7 +155,6 @@ public class Game extends GameObservable{
         //if we are in the last round and the next player has the chair we can set the state as FINISHED and terminate the match
         if(gameState == GameStateType.LAST_ROUND && getNextPlayer().hasChair()){
             this.gameState = GameStateType.FINISHED;
-            Player winner = players.get(0);
             ArrayList<Pair<String, Integer>> finalScoreBoard = new ArrayList<>();
             for (Player pl:players){
                 //TODO: possibility to put an observer from the player to the shelf to automatically update points
