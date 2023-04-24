@@ -7,7 +7,7 @@ import it.polimi.ingsw.controller.controllerObservers.LobbyViewObserver;
 
 import java.util.ArrayList;
 
-public abstract class View implements ViewObservable{
+public abstract class View implements ViewObservable, UpdateHandler{
 
     protected GameManagerViewObserver gameManagerController;
     protected LobbyViewObserver lobbyController;
