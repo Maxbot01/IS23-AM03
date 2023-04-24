@@ -4,8 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="fixed stuff and some forbidden tests">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="some networking">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameManagerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/LobbyController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/controllerObservers/GameManagerViewObserver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/controllerObservers/GameViewObserver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/controllerObservers/LobbyViewObserver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameLobby.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/LobbyView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/View.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/ViewObservable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/ViewObservable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/pubSub/PubSubService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/pubSub/PubSubService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/pubSub/Subscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/pubSub/Subscriber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/pubSub/TopicType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/pubSub/TopicType.java" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,15 +35,19 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
-        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategy.java" root0="FORCE_HIGHLIGHTING" />
@@ -46,30 +69,21 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
-    </key>
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="it.polimi.ingsw.model.CommonGoals.Strategy" />
-      <recent name="it.polimi.ingsw.model.CommonGoals" />
-      <recent name="it.polimi.ingsw.model.modelSupport" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="it.polimi.ingsw.controller" />
+      <recent name="it.polimi.ingsw.controller.pubSub" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CommonGoalsTest">
+  <component name="RunManager">
     <configuration name="Testing_Common_Goals_Finale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.Main" />
       <module name="AM03" />
@@ -77,90 +91,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CommonGoalsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AM03" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.CommonGoalsTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ThreeColumns3DiffGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AM03" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.ThreeColumns3DiffGoalStrategyTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TriangularGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AM03" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategyTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TwoOf5DiffGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AM03" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf5DiffGoalStrategyTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TwoOf6DiffGoalStrategyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AM03" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.model.CommonGoals.Strategy.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf6DiffGoalStrategyTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JUnit.CommonGoalsTest" />
-        <item itemvalue="JUnit.TwoOf6DiffGoalStrategyTest" />
-        <item itemvalue="JUnit.TwoOf5DiffGoalStrategyTest" />
-        <item itemvalue="JUnit.TriangularGoalStrategyTest" />
-        <item itemvalue="JUnit.ThreeColumns3DiffGoalStrategyTest" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -174,6 +104,8 @@
       <workItem from="1679140207267" duration="7796000" />
       <workItem from="1679406294278" duration="9156000" />
       <workItem from="1679599868107" duration="3252000" />
+      <workItem from="1680441412637" duration="35509000" />
+      <workItem from="1682256175740" duration="6019000" />
       <workItem from="1680518555865" duration="2468000" />
       <workItem from="1680608800383" duration="1801000" />
       <workItem from="1680683043593" duration="6041000" />
@@ -326,47 +258,47 @@
       <option name="project" value="LOCAL" />
       <updated>1679939611760</updated>
     </task>
-    <task id="LOCAL-00022" summary="Shelf, ShelfTest">
-      <created>1680516089207</created>
+    <task id="LOCAL-00022" summary="gitignore updated with no javadoc">
+      <created>1680099142064</created>
       <option name="number" value="00022" />
       <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1680516089207</updated>
+      <updated>1680099142064</updated>
     </task>
-    <task id="LOCAL-00023" summary="ShelfTest">
-      <created>1680532259342</created>
+    <task id="LOCAL-00023" summary="gitignore updated with no javadoc">
+      <created>1680099181985</created>
       <option name="number" value="00023" />
       <option name="presentableId" value="LOCAL-00023" />
       <option name="project" value="LOCAL" />
-      <updated>1680532259342</updated>
+      <updated>1680099181985</updated>
     </task>
-    <task id="LOCAL-00024" summary="Aggiornamento codice">
-      <created>1680608847280</created>
+    <task id="LOCAL-00024" summary="some networking">
+      <created>1680441998893</created>
       <option name="number" value="00024" />
       <option name="presentableId" value="LOCAL-00024" />
       <option name="project" value="LOCAL" />
-      <updated>1680608847280</updated>
+      <updated>1680441998893</updated>
     </task>
-    <task id="LOCAL-00025" summary="fixed stuff and some forbidden tests">
-      <created>1680618086686</created>
+    <task id="LOCAL-00025" summary="some networking">
+      <created>1680611648319</created>
       <option name="number" value="00025" />
       <option name="presentableId" value="LOCAL-00025" />
       <option name="project" value="LOCAL" />
-      <updated>1680618086686</updated>
+      <updated>1680611648319</updated>
     </task>
-    <task id="LOCAL-00026" summary="fixed stuff and some forbidden tests">
-      <created>1680622070723</created>
+    <task id="LOCAL-00026" summary="some networking">
+      <created>1680991510044</created>
       <option name="number" value="00026" />
       <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
-      <updated>1680622070723</updated>
+      <updated>1680991510044</updated>
     </task>
-    <task id="LOCAL-00027" summary="fixed stuff and some forbidden tests">
-      <created>1680697515380</created>
+    <task id="LOCAL-00027" summary="some networking">
+      <created>1681324805482</created>
       <option name="number" value="00027" />
       <option name="presentableId" value="LOCAL-00027" />
       <option name="project" value="LOCAL" />
-      <updated>1680697515380</updated>
+      <updated>1681324805482</updated>
     </task>
     <task id="LOCAL-00028" summary="fixed stuff and some forbidden tests">
       <created>1680698102296</created>
@@ -392,7 +324,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="server_side" />
                       </list>
                     </value>
                   </entry>
@@ -432,10 +364,9 @@
     <MESSAGE value="empty piece instead of null in boards" />
     <MESSAGE value="finished common goal" />
     <MESSAGE value="finished common goal with maximus" />
-    <MESSAGE value="Shelf, ShelfTest" />
-    <MESSAGE value="ShelfTest" />
-    <MESSAGE value="Aggiornamento codice" />
     <MESSAGE value="fixed stuff and some forbidden tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed stuff and some forbidden tests" />
+    <MESSAGE value="gitignore updated with no javadoc" />
+    <MESSAGE value="some networking" />
+    <option name="LAST_COMMIT_MESSAGE" value="some networking" />
   </component>
 </project>
