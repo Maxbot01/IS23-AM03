@@ -23,7 +23,6 @@ public class LivingRoom{
 
     private final static BoardCard TOMBSTONE_CARD = new BoardCard(colorType.TOMBSTONE, ornamentType.A);
     private final static BoardCard EMPTY_SPOT_CARD = new BoardCard(colorType.EMPTY_SPOT,ornamentType.A);
-
     /**
      * Integer matrix that represents the "footprint" of the generic two-players game, {x,z} where x is the starting column and z the number of items in the row
      */

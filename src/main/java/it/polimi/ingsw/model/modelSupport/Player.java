@@ -82,13 +82,15 @@ public class Player{
     public int getFinalScore() {
         //HAS TO BE CALLED ONLY ONCE
         //TODO: possibility to put an observer from the player to the shelf to automatically update points
+        this.addPersonalAdiacentPoints();
         this.addPersonalGoalPoints();
         return this.score;
     }
 
     private void addPersonalGoalPoints(){
-        score += personalGoal.calculatePoints(withShelf.getShelfCards());
+        score += this.personalGoal.calculatePoints(withShelf.getShelfCards());
     }
+    private void addPersonalAdiacentPoints(){score += this.withShelf.calculateAdiacentPoints(); }
 }
 
 
