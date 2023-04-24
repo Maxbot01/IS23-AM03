@@ -52,6 +52,8 @@ public class Game extends GameObservable{
      */
     private GameStateType gameState;
 
+    private String ID;
+
 
     /**
      * Initialization of the game.
@@ -61,7 +63,8 @@ public class Game extends GameObservable{
      *
      * @param fromPlayers players playing the game
      */
-    public Game(ArrayList<Player> fromPlayers){
+    public Game(ArrayList<Player> fromPlayers, String ID){
+        this.ID = ID;
         this.players = new ArrayList<Player>(fromPlayers);
         //all the players need to have a separate commonGoal, generates different indexes from 0 to 11 for creation
         int[] indexes = ThreadLocalRandom.current().ints(0, 12).distinct().limit(fromPlayers.size()).toArray();
@@ -89,6 +92,10 @@ public class Game extends GameObservable{
         }
 
         super.notifyAllObservers(players, new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players, this.playingPlayer, playersShelves));
+    }
+
+    public String getID(){
+        return ID;
     }
 
 
