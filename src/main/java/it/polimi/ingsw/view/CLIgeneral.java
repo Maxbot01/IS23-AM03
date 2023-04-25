@@ -5,109 +5,237 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
-import it.polimi.ingsw.model.modelSupport.BoardCard;
-import it.polimi.ingsw.model.modelSupport.LivingRoom;
+import it.polimi.ingsw.model.modelSupport.*;
 import it.polimi.ingsw.model.messageModel.*;
 import java.util.ArrayList;
 
-import it.polimi.ingsw.model.modelSupport.PersonalGoal;
-import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import org.apache.commons.cli.*;
 import java.util.*;
 
-import static it.polimi.ingsw.model.modelSupport.PersonalGoal.personalGoals;
+import static it.polimi.ingsw.model.modelSupport.PersonalGoal.*;
 
 public class CLIgeneral extends View{
-    protected GameStateType gameState;
-    protected String matchID;
+    private GameStateType gameState;
+    private String gameID;
     private Integer commandsOrder = 0;
-    private BoardCard[][] livingRoom;
+    private LivingRoom livingRoom;
     private CommonGoals commonGoals;
-    private HashMap<Player, PersonalGoal> personalGoals;
+    private PersonalGoal personalGoal;
     private ArrayList<Player> players;
-    private Player chairedPlayer;
+    private Player player;
+    private Shelf[] shelves;
+    private List<GameLobby> availableGames;
+
+// COMMANDS INITIALIZATION
+    /*
+    Option set_username = Option.builder("set_username")
+            .argName("nickname")
+            .hasArg(true)
+            .desc("sets the player's username")
+            .required(true)//the option is required in order to have a process that works
+            .build();
+    */
+    Option show_games = Option.builder("show_games")
+            .hasArg(false)
+            .desc("shows all the games available")
+            .required(false)
+            .build();
+    Option create_game = Option.builder("create_game")
+            .argName("numOfPlayers")
+            .hasArg(true)
+            .desc("creates a new game with a maximum number of players")
+            .required(false)
+            .build();
+    Option select_game = Option.builder("select_game")
+            .argName("gameID")
+            .hasArg(true)
+            .desc("selects an available game")
+            .required(false)
+            .build();
+    Option show_gameId = Option.builder("show_gameId")
+            .hasArg(false)
+            .desc("shows the gameId")
+            .required(false)
+            .build();
+    Option start_match = Option.builder("start_match")
+            .hasArg(false)
+            .desc("starts the game, it's available only to the game creator")
+            .required(false)
+            .build();
+    /*
+    Option select_cards = Option.builder("select_cards")
+            .argName("coordinates")
+            .hasArg(true)
+            .numberOfArgs(6)//it can have 4 arguments only (2 int for coord), with the thrid being 'null'
+            .desc("selects available cards from the living room")
+            .required(true)
+            .build();
+    Option choose_order = Option.builder("choose_order")
+            .argName("order")
+            .hasArg(true)
+            .desc("chooses the order of the selected boardCards")
+            .required(false)
+            .build();
+    Option select_column = Option.builder("select_column")
+            .argName("column")
+            .hasArg(true)
+            .numberOfArgs(2)
+            .desc("selects an available column of the player's shelf")
+            .required(true)
+            .build();
+    Option help = Option.builder("help")
+            .hasArg(false)
+            .desc("shows the available commands")
+            .required(false)
+            .build();
+    Option show_all = Option.builder("show_all")
+            .hasArg(false)
+            .desc("shows the list of all commands")
+            .required(false)
+            .build();
+    */
+
+    private String[] scanf(){
+        ArrayList<String> arguments = new ArrayList<>();
+        Scanner in = new Scanner(System.in);
+        String s = in.nextLine();
+        Scanner inScan = new Scanner(s);
+        while(inScan.hasNext()){
+            arguments.add(inScan.next());
+        }
+        String[] args = new String[arguments.size()];
+        for(int i = 0; i < arguments.size(); i++){
+            args[i] = arguments.get(i);
+        }
+        return args;
+    }
+
+    @Override
+    public void updatedLivingRoom(BoardCard[][] cards) {
+
+    }
+
+    @Override
+    public String requestUsername(){
+        System.out.println("Insert Username:");
+        Scanner in = new Scanner(System.in);
+        String s = in.nextLine();
+        return s;
+    }
+
+    @Override
+    public String requestPassword() {
+        System.out.println("Insert Password:");
+        Scanner in = new Scanner(System.in);
+        String s = in.nextLine();
+        return s;
+    }
+
+    public void launchGameManager(List<GameLobby> availableGames){
+        this.availableGames = availableGames;
+        Options options = new Options();
+        options.addOption(show_games);
+        options.addOption(create_game);
+        options.addOption(select_game);
+
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = null;
+
+        try{
+            cmd = parser.parse(options, scanf());
+            if(cmd.hasOption(show_games)){
+                for(int i = 0; i < availableGames.size(); i++){
+                    System.out.println("GameId: " + availableGames.get(i).getID());
+                    for(int j = 0; j < availableGames.get(i).getPlayers().size(); j++)
+                    {
+                        System.out.println("\t\t"+availableGames.get(i).getPlayers().get(j));
+                    }
+                }
+            } else if (cmd.hasOption(create_game)) {
+                Integer numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
+                super.gameManagerController.onCreateGame(numOfPlayers);
+            } else if (cmd.hasOption(select_game)) {
+                String gameId = cmd.getOptionValue(select_game);
+                super.gameManagerController.onSelectGame(gameId);
+            }
+
+        } catch (ParseException pe){
+            System.err.println("Error parsing command-line arguments");
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("Section Commands", options);
+        }
+    }
+    @Override
+    public void launchGameLobby(){
+        Options options = new Options();
+        options.addOption(start_match);
+        options.addOption(show_gameId);
+
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = null;
+
+        try{
+            cmd = parser.parse(options, scanf());
+            if(cmd.hasOption(start_match)){
+                super.lobbyController.onStartMatch();
+            }
+        } catch (ParseException pe){
+            System.err.println("Error parsing command-line arguments");
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("Section Commands", options);
+        }
+    }
+
+    public void startGameSequence() throws UnselectableCardException {
+        ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
+        ArrayList<BoardCard> selected = new ArrayList<>();
+
+        System.out.println("Select Cards in couples of coordinates.\nExample: 5 4 5 5 5 6\twhere 5-4 is the first couple and so on");
+        Scanner in = new Scanner(System.in);
+        String s = in.nextLine();
+        if(s.length() == 11 || s.length() == 3 || s.length() == 7){
+            for(int i = 0; i < s.length(); i+=4){
+                Pair<Integer,Integer> tmp = new Pair<>(Character.getNumericValue(s.charAt(i)),Character.getNumericValue(s.charAt(i+2)));
+                coord.add(tmp);
+            }
+        }else{
+            System.out.println("Insert coordinates through the right pattern\n"+"Example: '5 5 5 6 5 7' where 5 5 is the first couple");
+        }
+        System.out.println("Choose order for the selected cards.\nExample: '132' -> first card, third card, second card.");
+        Scanner in2 = new Scanner(System.in);
+        s = in2.next();
+        if(s.length() == coord.size()){
+            ArrayList<Pair<Integer,Integer>> copy = new ArrayList<>();
+            for(int i = 0; i < s.length(); i++){
+                copy.add(coord.get(Character.getNumericValue(s.charAt(i))-1));
+            }
+            coord = copy;
+            for(int i = 0; i < coord.size(); i++){
+                selected.add(livingRoom.getBoardCardAt(coord.get(i)));
+            }
+            super.gameController.onSelectedCards(coord);
+        }else{
+            System.out.println("The chosen order must be of the same size of the cards selected.");
+        }
+        System.out.println("Insert the shelf's column for the selected cards. From 0 to 4.");
+        Scanner in3 = new Scanner(System.in);
+        int column = Integer.parseInt(in3.next());
+        if(column >= 0 && column <= 4){
+            super.gameController.onSelectedColumn(selected,column);
+        }else{
+            System.out.println("Select a column within range, from 0 to 4.");
+        }
+    }
+
+
+
 
 
     public void executeLauncher(){ // method called after the client connects to the server
 
-        Options options = new Options();
 
-        Option set_username = Option.builder("set_username")
-                .argName("nickname")
-                .hasArg(true)
-                .desc("sets the player's username")
-                .required(true)//the option is required in order to have a process that works
-                .build();
-        Option show_games = Option.builder("show_games")
-                .hasArg(false)
-                .desc("shows all the games available")
-                .required(false)
-                .build();
-        Option create_game = Option.builder("create_game")
-                .argName("numOfPlayers")
-                .hasArg(true)
-                .desc("creates a new game with a maximum number of players")
-                .required(false)
-                .build();
-        Option select_game = Option.builder("select_game")
-                .argName("gameID")
-                .hasArg(true)
-                .desc("selects an available game")
-                .required(false)
-                .build();
-        Option show_gameId = Option.builder("show_gameId")
-                .hasArg(false)
-                .desc("shows the gameId")
-                .required(false)
-                .build();
-        Option start_match = Option.builder("start_match")
-                .hasArg(false)
-                .desc("starts the game, it's available only to the game creator")
-                .required(false)
-                .build();
-        Option select_cards = Option.builder("select_cards")
-                .argName("coordinates")
-                .hasArg(true)
-                .numberOfArgs(6)//it can have 4 arguments only (2 int for coord), with the thrid being 'null'
-                .desc("selects available cards from the living room")
-                .required(true)
-                .build();
-        Option choose_order = Option.builder("choose_order")
-                .argName("order")
-                .hasArg(true)
-                .desc("chooses the order of the selected boardCards")
-                .required(false)
-                .build();
-        Option select_column = Option.builder("select_column")
-                .argName("column")
-                .hasArg(true)
-                .numberOfArgs(2)
-                .desc("selects an available column of the player's shelf")
-                .required(true)
-                .build();
-        Option help = Option.builder("help")
-                .hasArg(false)
-                .desc("shows the available commands")
-                .required(false)
-                .build();
-        Option show_all = Option.builder("show_all")
-                .hasArg(false)
-                .desc("shows the list of all commands")
-                .required(false)
-                .build();
-
-        options.addOption(set_username);
-        options.addOption(show_games);
-        options.addOption(create_game);
-        options.addOption(select_game);
-        options.addOption(show_gameId);
-        options.addOption(start_match);
-        options.addOption(select_cards);
-        options.addOption(choose_order);
-        options.addOption(select_column);
-        options.addOption(help);
-        options.addOption(show_all);
 
         // Scaning command line arguments
         ArrayList<String> arguments = new ArrayList<>();
@@ -153,7 +281,7 @@ public class CLIgeneral extends View{
                 super.gameManagerController.onCreateGame(numOfPlayers);
                 // printo la lobby (il controller lo fa)
             }else if(cmd.hasOption(select_game) && (commandsOrder == 1 || commandsOrder == 2)){
-                Integer gameId = Integer.parseInt(cmd.getOptionValue(select_game));
+                String gameId = cmd.getOptionValue(select_game);
                 System.out.println("CHECK: Chosen gameId is "+gameId);
                 commandsOrder = optionList.indexOf(select_game);//4
                 super.gameManagerController.onSelectGame(gameId);
@@ -237,63 +365,4 @@ public class CLIgeneral extends View{
         }
     }
 
-    private void printAll(){
-// it prints the livingRoom and all the shelves, later on also the players' points
-    }
-
-    @Override
-    public void updatedLivingRoom(BoardCard[][] cards) {
-        System.out.println("InitStateMessage:");
-        System.out.println("GameStateType: " + super.gameState);
-        System.out.println("MatchID: " + super.gameState);
-        System.out.println("Pieces:");
-        for (int i = 0; i < pieces.length; i++) {
-            for (int j = 0; j < pieces[i].length; j++) {
-                if(pieces[i][j].getColor() != colorType.EMPTY_SPOT){
-                    System.out.print(pieces[i][j].getColor() + " ");
-                }else{
-                    System.out.print(" null ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println("Selecectables:");
-        for (int i = 0; i < selecectables.length; i++) {
-            for (int j = 0; j < selecectables[i].length; j++) {
-                if(selecectables[i][j]){
-                    System.out.print("[] ");
-                }else{
-                    System.out.print(" * ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println("CommonGoals 1: " + commonGoals.getFirstGoal().toString());
-        System.out.println("CommonGoals 2: " + commonGoals.getSecondGoal().toString());
-        System.out.println("PersonalGoals:");
-        for (Map.Entry<Player, PersonalGoal> entry : personalGoals.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-        System.out.println("Players: " + players);
-        System.out.println("ChairedPlayer: " + chairedPlayer);
-        System.out.println("PlayersShelves:");
-        for (Pair<Player, BoardCard[][]> pair : playersShelves) {
-            System.out.println(pair.getFirst().getNickname() + ":");
-            for (int i = 0; i < pair.getSecond().length; i++) {
-                for (int j = 0; j < pair.getSecond()[i].length; j++) {
-                    System.out.print(pair.getSecond()[i][j].getColor() + " ");
-                }
-                System.out.println();
-            }
-        }
-    }
-
-
-
-
-
-
-    public void printMessage() {
-
-    }
 }

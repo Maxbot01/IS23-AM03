@@ -15,7 +15,6 @@ public class GameLobby {
     private Game game;
 
     public void startMatch() {
-        Game g = new Game(players);
     }
 
     public Player getHost(){

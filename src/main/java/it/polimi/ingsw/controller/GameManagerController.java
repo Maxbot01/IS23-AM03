@@ -18,13 +18,13 @@ public class GameManagerController extends Controller implements GameManagerView
     }
 
     @Override
-    public void onSelectGame() {
-
+    public void onSelectGame(String gameId) {
+        //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
     }
 
     @Override
     public void onCreateGame(int numOfPlayers) {
-
+        //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
     }
 
     @Override
