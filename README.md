@@ -23,3 +23,6 @@ RMI:<br />
 
 Chat:<br />
 ![0%](https://progress-bar.dev/0)
+
+CLI:<br />
+![0%](https://progress-bar.dev/0)
