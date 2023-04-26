@@ -23,7 +23,6 @@ public class CommonGoals {
      * It consists in the ordered list of players that have reached the second goal
      */
     private final ArrayList<Player> reachedSecondGoal = new ArrayList<>();
-
     /**
      * Creator of CommonGoals: chooses randomly two goal strategies out of 12 of the enumeration
      */
@@ -107,7 +106,6 @@ public class CommonGoals {
         /* firstGoal = new TriangularGoalStrategy();
         secondGoal = new FiveDiagonalGoalStrategy(); */
     }
-
     /**
      * @return CommonGoalStrategy
      */
@@ -120,7 +118,6 @@ public class CommonGoals {
     public CommonGoalStrategy getSecondGoal() {
         return secondGoal;
     }
-
     /**
      * Sets the firstGoal desired, it is used for the testing section
      * @param firstGoal
@@ -128,7 +125,6 @@ public class CommonGoals {
     public void setFirstGoal(CommonGoalStrategy firstGoal) {
         this.firstGoal = firstGoal;
     }
-
     /**
      * Sets the secondGoal desired, it is used for the testing section
      * @param secondGoal
@@ -136,7 +132,6 @@ public class CommonGoals {
     public void setSecondGoal(CommonGoalStrategy secondGoal) {
         this.secondGoal = secondGoal;
     }
-
     /**
      * Calculates player's points based on the number of players and the goals' completion
      * @param player

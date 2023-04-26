@@ -69,4 +69,8 @@ public class PersonalGoal {
                 return 0; // or throw an exception for invalid inputs
         }
     }
+
+    public List<Pair<colorType, Pair<Integer, Integer>>> getSelectedGoal() {
+        return selectedGoal;
+    }
 }

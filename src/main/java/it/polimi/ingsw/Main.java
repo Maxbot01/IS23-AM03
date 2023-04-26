@@ -136,30 +136,5 @@ public class Main {
         provaAdiacent.initializeShelfForTesting();
         System.out.println("punti ottenuti dalla shelf = " + provaAdiacent.calculateAdiacentPoints() + "\n");
         */
-        /*
-        Scanner in = new Scanner(System.in);
-        String s = in.nextLine();
-        System.out.println(s);
-        if(s.length() == 11 || s.length() == 3 || s.length() == 7){
-            for(int i = 0; i < s.length(); i+=4) {
-                System.out.println("First coordinate: "+s.charAt(i)+"\nSecond coordinate: "+s.charAt(i+2));
-            }
-        }else{
-            System.out.println("Insert coordinates through the right pattern\n"+"Example: '5 5 5 6 5 7' where 5 5 is the first couple");
-        }
-        */
-        ArrayList<String> arguments = new ArrayList<>();
-        Scanner in = new Scanner(System.in);
-        String s = in.nextLine();
-        Scanner inScan = new Scanner(s);
-        while(inScan.hasNext()){
-            arguments.add(inScan.next());
-        }
-        String[] argu = new String[arguments.size()];
-        for(int i = 0; i < arguments.size(); i++){
-            argu[i] = arguments.get(i);
-        }
-        System.out.println(Arrays.toString(argu));
-
     }
 }
