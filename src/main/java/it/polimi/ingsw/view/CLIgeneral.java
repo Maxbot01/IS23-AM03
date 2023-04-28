@@ -116,6 +116,7 @@ public class CLIgeneral extends View{
                 Scanner scan = new Scanner(System.in);
                 String msg = scan.nextLine();
                 super.gameController.onGetChatMessage(msg);
+                // It also needs to show the past messages
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
@@ -235,6 +236,7 @@ public class CLIgeneral extends View{
                     String msg = scan.nextLine();
                     super.lobbyController.onGetChatMessage(msg);
                     cmd = parser.parse(options, scanf());
+                    // It also needs to show the past messages
                 }
             }
             if (cmd.hasOption(start_match)) {
