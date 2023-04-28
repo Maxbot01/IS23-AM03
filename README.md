@@ -25,4 +25,4 @@ Chat:<br />
 ![0%](https://progress-bar.dev/0)
 
 CLI:<br />
-![70%](https://progress-bar.dev/70)
+![90%](https://progress-bar.dev/90)
