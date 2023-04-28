@@ -22,6 +22,9 @@ public interface UpdateHandler {
      * @param userPlayer
      */
     void initializeGame(ArrayList<Player> players, CommonGoals commonGoals, PersonalGoal personalGoal, Player userPlayer);
+    /**
+     * It contains all the available command the CLI user can call while waiting for his turn
+     */
     void waitingCommands(); // The controller continues to call this method until the playing player changes to the CLI user
     /**
      * Updates the CLI parameters for the match

@@ -69,7 +69,7 @@ public class LivingRoom{
                 int orn = 0;
                 for (int k = 0; k < ORNAMENTXCOLOR; k++) {
                     BoardCard card = new BoardCard(colors[j], ornaments[orn]);
-                    bag.add(card);
+                    this.bag.add(card);
                 }
             }
         }
@@ -78,7 +78,7 @@ public class LivingRoom{
 
         for(int i=0; i<COLORS; i++) {
             BoardCard card = new BoardCard(colors[i], ornaments[0]);
-            bag.add(card);
+            this.bag.add(card);
         }
 
         Collections.shuffle(bag);
@@ -90,7 +90,7 @@ public class LivingRoom{
         posItms.add(fp4);
 
 
-
+        System.out.println(this.bag);
 
         Integer[][] fp = posItms.get(numOfPLayers - 2);
         this.pieces = new BoardCard[DIM][DIM];

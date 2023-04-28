@@ -5,19 +5,12 @@ import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.*;
-
 import java.util.ArrayList;
-
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import org.apache.commons.cli.*;
-
-import javax.swing.plaf.synth.ColorType;
 import java.util.*;
-
-import static it.polimi.ingsw.model.modelSupport.PersonalGoal.*;
-
 public class CLIgeneral extends View{
     private GameStateType gameState;
     private String gameID;
@@ -30,14 +23,6 @@ public class CLIgeneral extends View{
     private boolean host;
 
 // COMMANDS INITIALIZATION
-    /*
-    Option set_username = Option.builder("set_username")
-            .argName("nickname")
-            .hasArg(true)
-            .desc("sets the player's username")
-            .required(true)//the option is required in order to have a process that works
-            .build();
-    */
     Option show_games = Option.builder("show_games")
             .hasArg(false)
             .desc("shows all the games available")
@@ -80,31 +65,10 @@ public class CLIgeneral extends View{
             .desc("shows the player's personal goal")
             .required(false)
             .build();
-/*
-    Option select_cards = Option.builder("select_cards")
-            .argName("coordinates")
-            .hasArg(true)
-            .numberOfArgs(6)//it can have 4 arguments only (2 int for coord), with the thrid being 'null'
-            .desc("selects available cards from the living room")
-            .required(true)
-            .build();
-    Option choose_order = Option.builder("choose_order")
-            .argName("order")
-            .hasArg(true)
-            .desc("chooses the order of the selected boardCards")
-            .required(false)
-            .build();
-    Option select_column = Option.builder("select_column")
-            .argName("column")
-            .hasArg(true)
-            .numberOfArgs(2)
-            .desc("selects an available column of the player's shelf")
-            .required(true)
-            .build();
-
-    Option show_all = Option.builder("show_all")
+    /*
+    Option chat = Option.builder("chat")
             .hasArg(false)
-            .desc("shows the list of all commands")
+            .desc("activates chat section")
             .required(false)
             .build();
     */
@@ -150,7 +114,9 @@ public class CLIgeneral extends View{
             } else if (cmd.hasOption(help)) {
                 HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp("Available Commands", options);
-            }
+            } /*else if (cmd.hasOption(chat)) {
+                ........................TODO
+            }*/
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
             HelpFormatter formatter = new HelpFormatter();
@@ -163,7 +129,7 @@ public class CLIgeneral extends View{
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
-        this. gameID = gameID;
+        this.gameID = gameID;
         for(int i = 0; i < players.size(); i++){ // With the first two for cycles I avoid possible differences in the players' order between the old ArrayList and the updated
             for(int j = 0; j < players.size(); j++){
                 if(players.get(i).getNickname().equals(playersShelves.get(j).getFirst())){
@@ -197,25 +163,33 @@ public class CLIgeneral extends View{
         options.addOption(show_games);
         options.addOption(create_game);
         options.addOption(select_game);
+        options.addOption(help);
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
-
+        for(int i = 0; i < options.getOptions().size(); i++){
+            System.out.println(options.getOptions().toArray()[i].toString());
+        }
         try{
             cmd = parser.parse(options, scanf());
             while(!options.hasOption(cmd.getOptions()[0].getOpt())){ // Until it receives a possible command, it continues to scan
                 cmd = parser.parse(options, scanf());
-            }
-            if(cmd.hasOption(show_games)){ // AvailableGames is only used in this method, therefore it is not saved as a parameter
-                for(int i = 0; i < availableGames.size(); i++){
-                    System.out.println("GameId: " + availableGames.get(i).getID());
-                    for(int j = 0; j < availableGames.get(i).getPlayers().size(); j++)
-                    {
-                        System.out.println("\t\t"+availableGames.get(i).getPlayers().get(j));
+                while(cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
+                    for (int i = 0; i < availableGames.size(); i++) {
+                        System.out.println("GameId: " + availableGames.get(i).getID());
+                        for (int j = 0; j < availableGames.get(i).getPlayers().size(); j++) {
+                            System.out.println("\t\t" + availableGames.get(i).getPlayers().get(j));
+                        }
                     }
+                    cmd = parser.parse(options, scanf());
                 }
-//TODO: I need to repeat the try statement after this command, because I don't exit the GameManager section
-            } else if (cmd.hasOption(create_game)) {
+                while(cmd.hasOption(help)){
+                    HelpFormatter formatter = new HelpFormatter();
+                    formatter.printHelp("Section Commands", options);
+                    cmd = parser.parse(options, scanf());
+                }
+            }
+            if (cmd.hasOption(create_game)) {
                 Integer numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
                 host = true;
                 super.gameManagerController.onCreateGame(numOfPlayers);
@@ -224,7 +198,6 @@ public class CLIgeneral extends View{
                 host = false;
                 super.gameManagerController.onSelectGame(gameSelectedId);
             }
-
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
             HelpFormatter formatter = new HelpFormatter();
@@ -237,11 +210,10 @@ public class CLIgeneral extends View{
         Options options = new Options();
         options.addOption(show_gameId);
         //options.addOption(chat);
+        options.addOption(help);
         if(host){
             options.addOption(start_match);
         }
-
-
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
 
@@ -249,19 +221,18 @@ public class CLIgeneral extends View{
             cmd = parser.parse(options, scanf());
             while(!options.hasOption(cmd.getOptions()[0].getOpt())){ // Until it receives a possible command, it continues to scan
                 cmd = parser.parse(options, scanf());
+                while(cmd.hasOption(show_gameId)){
+                    System.out.println("Your gameId is: " + gameID);
+                    cmd = parser.parse(options, scanf());
+                }
+                while(cmd.hasOption(help)){
+                    HelpFormatter formatter = new HelpFormatter();
+                    formatter.printHelp("Section Commands", options);
+                    cmd = parser.parse(options, scanf());
+                }
             }
-            if(!host){
-                if (cmd.hasOption(start_match)) {
+            if (cmd.hasOption(start_match)) {
                     super.lobbyController.onStartMatch();
-                } else if (cmd.hasOption(show_gameId)) {
-                    System.out.println("Your gameId is: " + gameID);
-// TODO: goes back to the start of the try
-                }
-            }else{
-                if(cmd.hasOption(show_gameId)){
-                    System.out.println("Your gameId is: " + gameID);
-// TODO: goes back to the start of the try
-                }
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
@@ -314,6 +285,11 @@ public class CLIgeneral extends View{
     public void printLivingRoomAndShelves(){
         BoardCard[][] pieces = livingRoom.getPieces();
         System.out.println("Game state: "+gameState.toString()+"\n");
+        System.out.print("  0");
+        for(int j = 1; j < pieces[0].length; j++){
+            System.out.print(" "+j);
+        }
+        System.out.println();
         for(int i = 0; i < pieces.length; i++){
             System.out.print(i+" ");
             for(int j = 0; j < pieces[0].length; j++){
@@ -321,9 +297,9 @@ public class CLIgeneral extends View{
                 Pair<String,Character> color;
                 color = getColor(tmp);
                 if(selectables[i][j].equals(true)) {
-                    System.out.print(CLIColors.BLACK_BACKGROUND+color.getFirst()+CLIColors.WHITE_UNDERLINE+color.getSecond()+CLIColors.RESET);
+                    System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.UNDERLINE+color.getFirst()+color.getSecond()+CLIColors.RESET);
                 } else {
-                    System.out.print(CLIColors.BLACK_BACKGROUND+color.getFirst()+color.getSecond()+CLIColors.RESET);
+                    System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.BASE+color.getFirst()+color.getSecond()+CLIColors.RESET);
                 }
                 if(j != pieces[0].length-1){
                     System.out.print(CLIColors.BLACK_BACKGROUND+" "+CLIColors.RESET);
@@ -331,18 +307,16 @@ public class CLIgeneral extends View{
             }
             System.out.print("\n");
         }
-        for(int j = 0; j < pieces[0].length; j++){
-            System.out.print("  "+j+" ");
-        }
-        System.out.print("\n\n");
+        System.out.print("\n");
 
 /* Printing of shelves, starting from the playingPlayer's shelf */
-        System.out.println("Your shelf:");
+        System.out.println("Your shelf:\t\tYour score: "+userPlayer.getScore());
         printShelf(userPlayer.getPlayersShelf());
 /* Printing other players' shelves */
         for(int i = 0; i < players.size(); i++){
             if(!players.get(i).equals(userPlayer)){
-                System.out.println(players.get(i).getNickname());
+                System.out.println(players.get(i).getNickname()+"'s shelf:\t\t"+players.get(i).getNickname()+"'s score: "
+                +players.get(i).getScore());
                 printShelf(players.get(i).getPlayersShelf());
             }
         }
@@ -395,7 +369,7 @@ public class CLIgeneral extends View{
                 BoardCard card = tmp.getCardAtPosition(i,j);
                 Pair<String,Character> color;
                 color = getColor(card);
-                System.out.print(CLIColors.BLACK_BACKGROUND+color.getFirst()+color.getSecond()+ CLIColors.RESET);
+                System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.BASE+color.getFirst()+color.getSecond()+ CLIColors.RESET);
                 if(j != tmp.getShelfCards()[0].length-1){
                     System.out.print(CLIColors.BLACK_BACKGROUND+" "+CLIColors.RESET);
                 }
