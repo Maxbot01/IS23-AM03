@@ -326,7 +326,7 @@ public class CLIgeneral extends View{
                 printShelf(players.get(i).getPlayersShelf());
             }
         }
-    }// TODO Testing
+    }
     private Pair<String,Character> getColor(BoardCard tmp){
         String colorHighlight;
         char colorValue;
