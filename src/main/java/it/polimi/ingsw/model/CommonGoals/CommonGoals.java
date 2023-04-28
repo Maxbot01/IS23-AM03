@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.CommonGoals;
 
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
 import it.polimi.ingsw.model.modelSupport.Player;
+import it.polimi.ingsw.model.modelSupport.enums.CommonGoalType;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;

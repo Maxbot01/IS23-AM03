@@ -12,7 +12,7 @@ import it.polimi.ingsw.view.View;
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
     private VirtualGameManager virtualGameManager;
 
-    GameManagerController(View view, VirtualGameManager virtualGameManager) {
+    public GameManagerController(View view, VirtualGameManager virtualGameManager) {
         super(view);
         this.virtualGameManager = virtualGameManager;
     }

@@ -23,49 +23,49 @@ public class CLIgeneral extends View{
     private boolean host;
 
 // COMMANDS INITIALIZATION
-    Option show_games = Option.builder("show_games")
+    private final Option show_games = Option.builder("show_games")
             .hasArg(false)
             .desc("shows all the games available")
             .required(false)
             .build();
-    Option create_game = Option.builder("create_game")
+    private final Option create_game = Option.builder("create_game")
             .argName("numOfPlayers")
             .hasArg(true)
             .desc("creates a new game with a maximum number of players")
             .required(false)
             .build();
-    Option select_game = Option.builder("select_game")
+    private final Option select_game = Option.builder("select_game")
             .argName("gameID")
             .hasArg(true)
             .desc("selects an available game")
             .required(false)
             .build();
-    Option show_gameId = Option.builder("show_gameId")
+    private final Option show_gameId = Option.builder("show_gameId")
             .hasArg(false)
             .desc("shows the gameId")
             .required(false)
             .build();
-    Option start_match = Option.builder("start_match")
+    private final Option start_match = Option.builder("start_match")
             .hasArg(false)
             .desc("starts the game, it's available only to the game creator")
             .required(false)
             .build();
-    Option help = Option.builder("help")
+    private final Option help = Option.builder("help")
             .hasArg(false)
             .desc("shows the available commands")
             .required(false)
             .build();
-    Option show_commonGoals = Option.builder("show_commonGoals")
+    private final Option show_commonGoals = Option.builder("show_commonGoals")
             .hasArg(false)
             .desc("shows the game's common goals")
             .required(false)
             .build();
-    Option show_personalGoal = Option.builder("show_personalGoal")
+    private final Option show_personalGoal = Option.builder("show_personalGoal")
             .hasArg(false)
             .desc("shows the player's personal goal")
             .required(false)
             .build();
-    Option chat = Option.builder("chat")
+    private final Option chat = Option.builder("chat")
             .hasArg(false)
             .desc("activates chat input")
             .required(false)
@@ -148,14 +148,14 @@ public class CLIgeneral extends View{
     public String requestUsername(){
         System.out.println("Insert Username:");
         Scanner in = new Scanner(System.in);
-        String s = in.nextLine();
+        String s = in.next();
         return s;
     }
     @Override
     public String requestPassword() {
         System.out.println("Insert Password:");
         Scanner in = new Scanner(System.in);
-        String s = in.nextLine();
+        String s = in.next();
         return s;
     }
     @Override
@@ -388,9 +388,6 @@ public class CLIgeneral extends View{
     /* Old Commands version */
     /*
     public void executeLauncher(){ // method called after the client connects to the server
-
-
-
         // Scaning command line arguments
         ArrayList<String> arguments = new ArrayList<>();
         Scanner in = new Scanner(System.in);
