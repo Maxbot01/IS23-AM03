@@ -52,4 +52,8 @@ public class GameController extends Controller implements GameViewObserver, Subs
     /*
     Types of messages
      */
+    @Override
+    public String onGetChatMessage(String msg){
+        return msg; //TODO: fix this method with the correspondent virtual section
+    }
 }

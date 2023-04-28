@@ -10,6 +10,5 @@ public interface GameViewObserver {
     void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected);
     void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex);
     void onAcceptFinishedGame();
-
-
+    String onGetChatMessage(String msg);
 }

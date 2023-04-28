@@ -65,13 +65,11 @@ public class CLIgeneral extends View{
             .desc("shows the player's personal goal")
             .required(false)
             .build();
-    /*
     Option chat = Option.builder("chat")
             .hasArg(false)
-            .desc("activates chat section")
+            .desc("activates chat input")
             .required(false)
             .build();
-    */
     @Override
     public void initializeGame(ArrayList<Player> players, CommonGoals commonGoals, PersonalGoal personalGoal, Player userPlayer){
         this.players = players;
@@ -83,7 +81,7 @@ public class CLIgeneral extends View{
     public void waitingCommands(){
         Options options = new Options();
         options.addOption(show_gameId);
-        //options.addOption(chat);
+        options.addOption(chat);
         options.addOption(show_commonGoals);
         options.addOption(show_personalGoal);
         options.addOption(help);
@@ -114,9 +112,11 @@ public class CLIgeneral extends View{
             } else if (cmd.hasOption(help)) {
                 HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp("Available Commands", options);
-            } /*else if (cmd.hasOption(chat)) {
-                ........................TODO
-            }*/
+            } else if (cmd.hasOption(chat)) { // Example of chat implementation
+                Scanner scan = new Scanner(System.in);
+                String msg = scan.nextLine();
+                super.gameController.onGetChatMessage(msg);
+            }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
             HelpFormatter formatter = new HelpFormatter();
@@ -209,7 +209,7 @@ public class CLIgeneral extends View{
         this.gameID = gameID;
         Options options = new Options();
         options.addOption(show_gameId);
-        //options.addOption(chat);
+        options.addOption(chat);
         options.addOption(help);
         if(host){
             options.addOption(start_match);
@@ -228,6 +228,12 @@ public class CLIgeneral extends View{
                 while(cmd.hasOption(help)){
                     HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("Section Commands", options);
+                    cmd = parser.parse(options, scanf());
+                }
+                while(cmd.hasOption(chat)) { // Example of chat implementation
+                    Scanner scan = new Scanner(System.in);
+                    String msg = scan.nextLine();
+                    super.lobbyController.onGetChatMessage(msg);
                     cmd = parser.parse(options, scanf());
                 }
             }
@@ -377,7 +383,6 @@ public class CLIgeneral extends View{
             System.out.print("\n");
         }
     }
-
     /* Old Commands version */
     /*
     public void executeLauncher(){ // method called after the client connects to the server

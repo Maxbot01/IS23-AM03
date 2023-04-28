@@ -33,4 +33,9 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
     public boolean receiveSubscriberMessages(Message message) {
         return false;
     }
+
+    @Override
+    public String onGetChatMessage(String msg){
+        return msg; //TODO: fix this method with the correspondent virtual section
+    }
 }

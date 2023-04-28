@@ -134,7 +134,7 @@ public class Main {
         myGame.selectedColumn(crds, 3);
         */
         // TESTING CLI
-
+        /**/
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player("Max"));
         players.add(new Player("Asso"));
