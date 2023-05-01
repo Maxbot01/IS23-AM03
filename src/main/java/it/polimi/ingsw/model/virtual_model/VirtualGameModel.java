@@ -1,24 +1,31 @@
 package it.polimi.ingsw.model.virtual_model;
-
+import com.google.gson.Gson;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 
 import java.util.ArrayList;
 
-public class VirtualGameModel{
-    public void selectedCards(){
+public class VirtualGameModel {
 
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selectedCards) {
+        Gson gson = new Gson();
+        String json = gson.toJson(selectedCards);
+        // TODO: Invia la stringa JSON agli altri giocatori
     }
 
-    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex){
-
+    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex) {
+        Gson gson = new Gson();
+        String jsonSelCards = gson.toJson(selCards);
+        String jsonColIndex = gson.toJson(colIndex);
+        // TODO: Invia le due stringhe JSON agli altri giocatori
     }
 
-    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected){
-
+    public void selectedCards() {
+        // TODO: Implementa la logica per la selezione di più carte
     }
 
-    public void acceptFinishedGame(String fromPlayer){
-
+    public void acceptFinishedGame(String fromPlayer) {
+        // TODO: Implementa la logica per accettare una partita conclusa
+        // e.g. aggiorna lo stato del gioco per riflettere che la partita è finita e registra chi l'ha accettata
     }
 }
