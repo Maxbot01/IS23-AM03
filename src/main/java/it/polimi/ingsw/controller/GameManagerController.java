@@ -12,19 +12,19 @@ import it.polimi.ingsw.view.View;
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
     private VirtualGameManager virtualGameManager;
 
-    GameManagerController(View view, VirtualGameManager virtualGameManager) {
+    public GameManagerController(View view, VirtualGameManager virtualGameManager) {
         super(view);
         this.virtualGameManager = virtualGameManager;
     }
 
     @Override
-    public void onSelectGame() {
-
+    public void onSelectGame(String gameId) {
+        //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
     }
 
     @Override
     public void onCreateGame(int numOfPlayers) {
-
+        //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
     }
 
     @Override

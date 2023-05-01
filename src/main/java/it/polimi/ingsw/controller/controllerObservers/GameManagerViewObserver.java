@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.controllerObservers;
 
 public interface GameManagerViewObserver {
-    void onSelectGame();
+    void onSelectGame(String gameId);
     void onCreateGame(int numOfPlayers);
 }

@@ -180,7 +180,7 @@ public class Game extends GameObservable{
     public ArrayList<Player> getPlayers(){
         return new ArrayList<>(players);
     }
-
+    public LivingRoom getLivingRoom(){ return this.livingRoom;}
 
     /**
      * Support method that locates and returns the next player in the game

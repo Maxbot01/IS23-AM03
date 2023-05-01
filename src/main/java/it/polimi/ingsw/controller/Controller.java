@@ -10,7 +10,7 @@ import it.polimi.ingsw.view.ViewObservable;
 public abstract class Controller implements Subscriber{
     private View view;
 
-    Controller(View view){
+    public Controller(View view){
         this.view = view;
     }
 }

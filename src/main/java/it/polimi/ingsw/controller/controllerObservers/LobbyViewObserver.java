@@ -5,4 +5,5 @@ public interface LobbyViewObserver{
     void onStartMatch();
     void onGetHost();
     void onGetPlayers();
+    String onGetChatMessage(String msg);
 }
