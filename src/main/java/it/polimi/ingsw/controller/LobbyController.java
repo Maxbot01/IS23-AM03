@@ -9,28 +9,25 @@ import it.polimi.ingsw.view.View;
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 
     private VirtualGameLobby virtualGameLobby;
-    LobbyController(View view, VirtualGameLobby virtualGameLobby ) {
+    public LobbyController(View view, VirtualGameLobby virtualGameLobby ) {
         super(view);
         this.virtualGameLobby = virtualGameLobby;
     }
-
     @Override
     public void onStartMatch() {
-
     }
-
     @Override
     public void onGetHost() {
-
     }
-
     @Override
     public void onGetPlayers() {
-
     }
-
     @Override
     public boolean receiveSubscriberMessages(Message message) {
         return false;
+    }
+    @Override
+    public String onGetChatMessage(String msg){
+        return msg; //TODO: fix this method with the correspondent virtual section
     }
 }

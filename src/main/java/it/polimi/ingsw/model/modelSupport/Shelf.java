@@ -17,7 +17,6 @@ public class Shelf {
     private static final int ROWS_LEN = 6;
     private static final int COLUMNS_LEN = 5;
     private final static BoardCard EMPTY_SPOT_CARD = new BoardCard(colorType.EMPTY_SPOT, ornamentType.A);
-
     /**
      * Constructs a new Shelf object with a 2D array of BoardCard objects. Initially all EMPTY_SPOT card types
      */
@@ -29,7 +28,6 @@ public class Shelf {
             }
         }
     }
-
     /**
      * Returns the maximum number of empty spots in any column.
      *
@@ -44,7 +42,6 @@ public class Shelf {
         }
         return max;
     }
-
     /**
      * Returns the number of empty spots in a specified column.
      *
@@ -60,7 +57,6 @@ public class Shelf {
         }
         return emptySpots;
     }
-
     /**
      * Adds a list of BoardCard objects to a column in the shelf.
      * @param selCards the list of cards to add to the column
@@ -100,8 +96,6 @@ public class Shelf {
             throw new ShelfFullException("Shelf is already full");
         }
     }
-
-
     /**
      * Checks whether the shelf is full.
      * @return true if the shelf is full, false otherwise
