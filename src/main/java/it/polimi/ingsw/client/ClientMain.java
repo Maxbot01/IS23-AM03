@@ -31,6 +31,7 @@ public class ClientMain implements Runnable {
                     break;
                 } else {
                     out.println("Received: " + receivedMessage);
+
                     //receives a json encoded message, decoding is needed
                     out.flush();
                 }

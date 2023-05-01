@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 public class Main {
     public static void main(String[] args) {
+
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player("Max"));
         players.add(new Player("Asso"));
