@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +21,7 @@ public class GameManager extends GameObservable{
 
     private HashMap<String, Game> userMatches;
     private GameManager(){
-        nicknames = new ArrayList<>();
+        nicknames = new HashMap<>();
         currentGames = new HashMap<>();
         userMatches = new HashMap<>();
     }
@@ -38,13 +40,23 @@ public class GameManager extends GameObservable{
 
     }
 
-    public void setUsername(String username, String password){
+    public void setCredentials(String username, String password){
         //check if there was, else send message of erroneus urername set request.
         if(nicknames.containsKey(username)){
             //already exists, checks if psw is right
             if (nicknames.get(username).equals(password)){
-
+                //ok login
+                //sends all the games
+                super.notifyObserver(username, new loginGameMessage(currentGames));
+            }else{
+                //username wrong password
+                //sends error
+                super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword));
             }
+        }else{
+            //new user
+            nicknames.put(username, password);
+            super.notifyObserver(username, new loginGameMessage(currentGames));
         }
     }
 

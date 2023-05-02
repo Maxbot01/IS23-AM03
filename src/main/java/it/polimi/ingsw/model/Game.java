@@ -91,7 +91,7 @@ public class Game extends GameObservable{
             personalGoals.put(p, p.getPersonalGoal());
         }
 
-        super.notifyAllObservers(players, new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players, this.playingPlayer, playersShelves));
+        super.notifyAllObservers(new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players, this.playingPlayer, playersShelves));
     }
 
     public String getID(){
@@ -124,7 +124,7 @@ public class Game extends GameObservable{
             throw new RuntimeException(e);
             //TODO: gestire questo errore
         }
-        super.notifyAllObservers(players, new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer));
+        super.notifyAllObservers(new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer));
     }
 
     /**
@@ -140,7 +140,7 @@ public class Game extends GameObservable{
             playingPlayer.getPlayersShelf().insertInColumn(selCards, colIndex);
         }catch(ColumnNotSelectable e) {
             //can't insert the items in the columns, send error message to client
-            super.notifyObserver(playingPlayer, new SelectedColumnsMessageError(e.getMessage()));
+            super.notifyObserver(playingPlayer.getNickname(), new SelectedColumnsMessageError(e.getMessage()));
             return;
         }catch (ShelfFullException e1){
             //TODO: handle game over
@@ -162,7 +162,7 @@ public class Game extends GameObservable{
                 finalScoreBoard.add(new Pair(pl.getNickname(), pl.getFinalScore()));
             }
             String winnerNickname = finalScoreBoard.stream().reduce((a, b) -> a.getSecond() > b.getSecond() ? a : b).get().getFirst();
-            super.notifyAllObservers(players, new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname));
+            super.notifyAllObservers(new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname));
             return;
         }
         //refill board if needed
@@ -172,7 +172,7 @@ public class Game extends GameObservable{
             this.gameState = GameStateType.LAST_ROUND;
         }
         //se il game non è finito posso procedere ed inviare l'update a tutti
-        super.notifyAllObservers(players, new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()));
+        super.notifyAllObservers(new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()));
         this.playingPlayer = getNextPlayer();
     }
 

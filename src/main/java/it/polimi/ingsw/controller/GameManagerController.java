@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
+import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
@@ -12,6 +13,8 @@ import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessag
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.view.View;
+
+import java.util.ArrayList;
 
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
     private VirtualGameManager virtualGameManager;
@@ -52,12 +55,9 @@ public class GameManagerController extends Controller implements GameManagerView
                 default:
                     break;
             }
-        }else if(message instanceof MatchStateMessage){
-
-        }else if(message instanceof SelectedCardsMessage){
-
-        }else if(message instanceof SelectedColumnsMessage){
-
+        }else if(message instanceof loginGameMessage){
+            //user can go in
+            ClientManager.view.launchGameManager(new ArrayList<>(((loginGameMessage)message).currentGames.keySet()));
         }
         return true;
     }
