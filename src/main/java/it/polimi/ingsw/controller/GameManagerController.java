@@ -19,22 +19,20 @@ public class GameManagerController extends Controller implements GameManagerView
     }
     @Override
     public void onSetUsername(String username){
-        // TODO: insert virtualGameManager method for username setting
+        virtualGameManager.setUsername(username);
     }
     @Override
     public void onSetPassword(String password){
-        // TODO: insert virtualGameManager method for password setting
+        virtualGameManager.setPassword(password);
     }
     @Override
     public void onSelectGame(String gameId) {
-        //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
+        virtualGameManager.selectGame(gameId);
     }
-
     @Override
     public void onCreateGame(int numOfPlayers) {
-        //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
+        virtualGameManager.createGame(numOfPlayers);
     }
-
     @Override
     public boolean receiveSubscriberMessages(Message message) {
         return false;
