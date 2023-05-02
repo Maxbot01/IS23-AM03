@@ -5,7 +5,7 @@ public class VirtualGameManager extends VirtualGameModel{
     public void ping(){
 
     }
-    public void setUsername(String username, String password){
+    public void setCredentials(String username, String password){
 
     }
     public void selectGame(String gameID){

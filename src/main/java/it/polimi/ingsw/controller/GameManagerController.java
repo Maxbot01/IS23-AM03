@@ -26,10 +26,9 @@ public class GameManagerController extends Controller implements GameManagerView
 
 
     @Override
-    public void onSetUsername(String username, String password) {
-        virtualGameManager.setUsername(username, password);
+    public void onSetCredentials(String username, String password) {
+        virtualGameManager.setCredentials(username, password);
     }
-
 
     @Override
     public void onSelectGame(String gameId) {
@@ -48,7 +47,7 @@ public class GameManagerController extends Controller implements GameManagerView
             //this message holds Messages useful for network
             switch (((NetworkMessage) message).message){
                 case "pong":
-                    ClientManager.view.requestUsername();
+                    ClientManager.view.requestCredentials();
                     break;
                 default:
                     break;

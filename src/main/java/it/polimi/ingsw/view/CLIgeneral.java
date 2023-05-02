@@ -145,21 +145,13 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public void requestUsername(){
+    public void requestCredentials(){
         System.out.println("Insert Username and a Password, that you will need in case of disconnection.\n" +
-                "If you are reconnecting use your previously inserted password.\n" +
-                "If you don't remember it you are DUMB");
+                "If you are reconnecting use your previously inserted password:");
         Scanner in = new Scanner(System.in);
         String username = in.next();
         String password = in.next();
-        super.gameManagerController.onSetUsername(s);
-     }
-    @Override
-    public void requestPassword() {
-        System.out.println("Insert Password:");
-        Scanner in = new Scanner(System.in);
-        String s = in.next();
-        super.gameManagerController.onSetPassword(s);
+        super.gameManagerController.onSetCredentials(username, password);
     }
     @Override
     public void launchGameManager(List<GameLobby> availableGames){

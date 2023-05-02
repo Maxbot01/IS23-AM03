@@ -38,12 +38,7 @@ public interface UpdateHandler {
      * Requests Username from Command Line
      * @return String
      */
-    void requestUsername();
-    /**
-     * Requests Password from Command Line
-     * @return String
-     */
-    void requestPassword();
+    void requestCredentials();
     /**
      * Calls the command section of GameManager, enabling the user to write which command to execute
      * @param availableGames
