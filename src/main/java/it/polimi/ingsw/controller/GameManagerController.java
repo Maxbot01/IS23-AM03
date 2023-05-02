@@ -33,7 +33,6 @@ public class GameManagerController extends Controller implements GameManagerView
         virtualGameManager.setCredentials(username, password);
     }
 
-
     @Override
     public void onSelectGame(String gameId) {
         //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
