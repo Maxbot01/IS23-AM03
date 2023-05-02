@@ -38,12 +38,12 @@ public interface UpdateHandler {
      * Requests Username from Command Line
      * @return String
      */
-    String requestUsername();
+    void requestUsername();
     /**
      * Requests Password from Command Line
      * @return String
      */
-    String requestPassword();
+    void requestPassword();
     /**
      * Calls the command section of GameManager, enabling the user to write which command to execute
      * @param availableGames

@@ -1,10 +1,16 @@
 package it.polimi.ingsw.model.virtual_model;
 
 public class VirtualGameManager extends VirtualGameModel{
-    void selectGame(){
+    public void setUsername(String username){
 
     }
-    void createGame(int numPlayers){
+    public void setPassword(String password){
+
+    }
+    public void selectGame(String gameID){
+
+    }
+    public void createGame(int numPlayers){
 
     }
 }

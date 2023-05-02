@@ -148,7 +148,6 @@ public class Main {
             shelves.add(tmp.getShelfCards());
         }
         CommonGoals commonGoals = new CommonGoals();
-
         LivingRoom livingRoom = myGame.getLivingRoom();
         CLIgeneral cligeneral = new CLIgeneral();
         Boolean[][] selectables = livingRoom.calculateSelectable();

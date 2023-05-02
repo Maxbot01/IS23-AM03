@@ -145,18 +145,18 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public String requestUsername(){
+    public void requestUsername(){
         System.out.println("Insert Username:");
         Scanner in = new Scanner(System.in);
         String s = in.next();
-        return s;
-    }
+        super.gameManagerController.onSetUsername(s);
+     }
     @Override
-    public String requestPassword() {
+    public void requestPassword() {
         System.out.println("Insert Password:");
         Scanner in = new Scanner(System.in);
         String s = in.next();
-        return s;
+        super.gameManagerController.onSetPassword(s);
     }
     @Override
     public void launchGameManager(List<GameLobby> availableGames){
@@ -194,10 +194,18 @@ public class CLIgeneral extends View{
                 Integer numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
                 host = true;
                 super.gameManagerController.onCreateGame(numOfPlayers);
+                System.out.println("You have entered the lobby\n"+"Lobby players:"); // printing lobby and lobby players
+                for(int i = 0; i < players.size(); i++){
+                    System.out.println(players.get(i).getNickname());
+                }
             } else if (cmd.hasOption(select_game)) {
                 String gameSelectedId = cmd.getOptionValue(select_game);
                 host = false;
                 super.gameManagerController.onSelectGame(gameSelectedId);
+                System.out.println("You have entered the lobby\n"+"Lobby players:"); // printing lobby and lobby players
+                for(int i = 0; i < players.size(); i++){
+                    System.out.println(players.get(i).getNickname());
+                }
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
