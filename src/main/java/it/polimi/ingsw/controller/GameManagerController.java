@@ -7,6 +7,7 @@ import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.virtual_model.VirtualGameLobby;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
+import it.polimi.ingsw.view.CLIgeneral;
 import it.polimi.ingsw.view.View;
 
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
@@ -16,7 +17,14 @@ public class GameManagerController extends Controller implements GameManagerView
         super(view);
         this.virtualGameManager = virtualGameManager;
     }
-
+    @Override
+    public void onSetUsername(String username){
+        // TODO: insert virtualGameManager method for username setting
+    }
+    @Override
+    public void onSetPassword(String password){
+        // TODO: insert virtualGameManager method for password setting
+    }
     @Override
     public void onSelectGame(String gameId) {
         //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore

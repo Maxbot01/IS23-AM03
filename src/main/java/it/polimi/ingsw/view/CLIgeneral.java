@@ -145,18 +145,18 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public String requestUsername(){
+    public void requestUsername(){
         System.out.println("Insert Username:");
         Scanner in = new Scanner(System.in);
         String s = in.next();
-        return s;
-    }
+        super.gameManagerController.onSetUsername(s);
+     }
     @Override
-    public String requestPassword() {
+    public void requestPassword() {
         System.out.println("Insert Password:");
         Scanner in = new Scanner(System.in);
         String s = in.next();
-        return s;
+        super.gameManagerController.onSetPassword(s);
     }
     @Override
     public void launchGameManager(List<GameLobby> availableGames){
