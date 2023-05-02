@@ -5,5 +5,5 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 
 import java.util.ArrayList;
 
-public class VirtualGameModel{
+public abstract class VirtualGameModel{
 }
