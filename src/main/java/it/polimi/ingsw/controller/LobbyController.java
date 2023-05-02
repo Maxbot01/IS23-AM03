@@ -1,7 +1,10 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.client.ClientMain;
+import it.polimi.ingsw.client.MessageReceiver;
 import it.polimi.ingsw.controller.controllerObservers.LobbyViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
+import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.virtual_model.VirtualGameLobby;
 import it.polimi.ingsw.view.View;
@@ -12,6 +15,7 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
     public LobbyController(View view, VirtualGameLobby virtualGameLobby ) {
         super(view);
         this.virtualGameLobby = virtualGameLobby;
+        MessageReceiver.pubsub.addSubscriber(TopicType.lobbyState, this);
     }
     @Override
     public void onStartMatch() {

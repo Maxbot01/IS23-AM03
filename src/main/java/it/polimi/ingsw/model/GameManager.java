@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -12,7 +13,28 @@ public class GameManager extends GameObservable{
 
     //hash map with the game lobby and the relative games
     private HashMap<GameLobby, Game> currentGames;
-    private GameManager(){}
+    private ArrayList<String> nicknames;
+
+    private HashMap<String, Game> userMatches;
+    private GameManager(){
+        nicknames = new ArrayList<>();
+        currentGames = new HashMap<>();
+        userMatches = new HashMap<>();
+    }
+
+    public void selectGame(String ID){
+
+    }
+
+    public void createGame(int numPlayers){
+
+    }
+
+    public void setUsername(String username){
+        //check if there was, else send message of erroneus urername set request.
+
+
+    }
 
     /*
     Thread safe GameManager instance creator
