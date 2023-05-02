@@ -4,6 +4,5 @@ public enum ErrorType {
     selectedColumnsError,
     acceptFinishedGameError,
     selectedCardsMessageError,
-    wrongPassword,
-    usernameAlreadyExists
+    wrongPassword
 }
