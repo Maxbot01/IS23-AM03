@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.messageModel.NetworkMessage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +15,7 @@ public class GameManager extends GameObservable{
 
     //hash map with the game lobby and the relative games
     private HashMap<GameLobby, Game> currentGames;
-    private ArrayList<String> nicknames;
+    private HashMap<String, String> nicknames;
 
     private HashMap<String, Game> userMatches;
     private GameManager(){
@@ -26,14 +28,24 @@ public class GameManager extends GameObservable{
 
     }
 
+    public void ping(){
+        //received ping message
+        //send pong
+        //TODO: server.send(new NetworkMessage("pong"));
+    }
+
     public void createGame(int numPlayers){
 
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username, String password){
         //check if there was, else send message of erroneus urername set request.
+        if(nicknames.containsKey(username)){
+            //already exists, checks if psw is right
+            if (nicknames.get(username).equals(password)){
 
-
+            }
+        }
     }
 
     /*
