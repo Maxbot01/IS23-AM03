@@ -146,9 +146,12 @@ public class CLIgeneral extends View{
     }
     @Override
     public void requestUsername(){
-        System.out.println("Insert Username:");
+        System.out.println("Insert Username and a Password, that you will need in case of disconnection.\n" +
+                "If you are reconnecting use your previously inserted password.\n" +
+                "If you don't remember it you are DUMB");
         Scanner in = new Scanner(System.in);
-        String s = in.next();
+        String username = in.next();
+        String password = in.next();
         super.gameManagerController.onSetUsername(s);
      }
     @Override
