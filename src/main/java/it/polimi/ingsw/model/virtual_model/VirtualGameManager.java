@@ -8,10 +8,10 @@ public class VirtualGameManager extends VirtualGameModel{
     public void setCredentials(String username, String password){
 
     }
-    public void selectGame(String gameID){
+    public void selectGame(String gameID, String user){
 
     }
-    public void createGame(int numPlayers){
+    public void createGame(int numPlayers, String user){
 
     }
 }

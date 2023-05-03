@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 
@@ -31,6 +32,7 @@ public class GameLobby extends GameObservable {
             throw new LobbyFullException();
         }else{
             players.add(player);
+            super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players));
         }
     }
 

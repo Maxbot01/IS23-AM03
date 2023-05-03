@@ -28,13 +28,13 @@ public class GameManager extends GameObservable{
         userMatches = new HashMap<>();
     }
 
-    public void selectGame(String ID, String fromUsername){
+    public void selectGame(String ID, String user){
         //currentGames.put(new GameLobby());
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
                 //joins this lobby
                 try {
-                    x.addPlayer(fromUsername);
+                    x.addPlayer(user);
                 }catch(LobbyFullException e){
                     //lobby is full, returns error
 

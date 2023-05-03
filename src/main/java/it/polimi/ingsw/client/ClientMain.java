@@ -1,26 +1,10 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.controller.GameManagerController;
-import it.polimi.ingsw.controller.LobbyController;
-import it.polimi.ingsw.controller.pubSub.PubSubService;
-import it.polimi.ingsw.controller.pubSub.TopicType;
-import it.polimi.ingsw.model.GameManager;
-import it.polimi.ingsw.model.messageModel.GameManagerMessage;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.messageModel.NetworkMessage;
-import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.LobbyMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
-import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
-import it.polimi.ingsw.view.CLIgeneral;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 

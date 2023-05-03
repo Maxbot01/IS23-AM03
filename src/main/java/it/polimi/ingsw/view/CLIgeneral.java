@@ -188,7 +188,7 @@ public class CLIgeneral extends View{
             if (cmd.hasOption(create_game)) {
                 Integer numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
                 host = true;
-                super.gameManagerController.onCreateGame(numOfPlayers);
+                super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
                 System.out.println("You have entered the lobby\n"+"Lobby players:"); // printing lobby and lobby players
                 for(int i = 0; i < players.size(); i++){
                     System.out.println(players.get(i).getNickname());
@@ -196,7 +196,7 @@ public class CLIgeneral extends View{
             } else if (cmd.hasOption(select_game)) {
                 String gameSelectedId = cmd.getOptionValue(select_game);
                 host = false;
-                super.gameManagerController.onSelectGame(gameSelectedId);
+                super.gameManagerController.onSelectGame(gameSelectedId, userPlayer.getNickname());
                 System.out.println("You have entered the lobby\n"+"Lobby players:"); // printing lobby and lobby players
                 for(int i = 0; i < players.size(); i++){
                     System.out.println(players.get(i).getNickname());

@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.messageModel.GameManagerMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.LobbyMessage;
+import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.model.virtual_model.VirtualGameLobby;
@@ -44,7 +44,9 @@ public class ClientManager {
     public static void createdControllers(String ID){
         //GameManagerController sees that a game has been created with an ID, the game controller gets instantiated
         gameController = new GameController(view, new VirtualGame(), ID);
+        pubsub.addSubscriber(TopicType.matchState, gameController);
         lobbyController = new LobbyController(view, new VirtualGameLobby());
+        pubsub.addSubscriber(TopicType.lobbyState, lobbyController);
     }
 
     //accessible from ClientMain (socket) and RMI
@@ -56,7 +58,7 @@ public class ClientManager {
             pubsub.publishMessage(TopicType.gameManagerState, receivedMessageDecoded);
         }else if(receivedMessageDecoded instanceof ErrorMessage){
             //ssss
-        }else if(receivedMessageDecoded instanceof LobbyMessage){
+        }else if(receivedMessageDecoded instanceof LobbyInfoMessage){
             pubsub.publishMessage(TopicType.lobbyState, receivedMessageDecoded);
         }else if(receivedMessageDecoded instanceof MatchStateMessage){
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
