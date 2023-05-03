@@ -21,11 +21,11 @@ public class VirtualGameModel {
     }
 
     public void selectedCards() {
-        // TODO: Implementa la logica per la selezione di più carte
+        // ?????
     }
 
     public void acceptFinishedGame(String fromPlayer) {
-        // TODO: Implementa la logica per accettare una partita conclusa
+        // ??????
         // e.g. aggiorna lo stato del gioco per riflettere che la partita è finita e registra chi l'ha accettata
     }
 }
