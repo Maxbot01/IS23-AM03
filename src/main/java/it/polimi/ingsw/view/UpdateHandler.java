@@ -38,12 +38,7 @@ public interface UpdateHandler {
      * Requests Username from Command Line
      * @return String
      */
-    String requestUsername();
-    /**
-     * Requests Password from Command Line
-     * @return String
-     */
-    String requestPassword();
+    void requestCredentials();
     /**
      * Calls the command section of GameManager, enabling the user to write which command to execute
      * @param availableGames
@@ -53,7 +48,7 @@ public interface UpdateHandler {
      * Calls the command section of GameLobby, enabling the user to write which command to execute.
      * It is sent only to the
      */
-    void launchGameLobby(String gameId); // The check of whether the user is the host is done inside the method, there's no need to give info
+    void launchGameLobby(String gameId, ArrayList<String> players, String host); // The check of whether the user is the host is done inside the method, there's no need to give info
     /**
      * Calls the game sequence where the CLI user chooses the cards from the living room and places them in his shelf
      * @throws UnselectableCardException

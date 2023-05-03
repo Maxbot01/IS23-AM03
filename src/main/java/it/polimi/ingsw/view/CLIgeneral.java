@@ -145,18 +145,13 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public String requestUsername(){
-        System.out.println("Insert Username:");
+    public void requestCredentials(){
+        System.out.println("Insert Username and a Password, that you will need in case of disconnection.\n" +
+                "If you are reconnecting use your previously inserted password:");
         Scanner in = new Scanner(System.in);
-        String s = in.next();
-        return s;
-    }
-    @Override
-    public String requestPassword() {
-        System.out.println("Insert Password:");
-        Scanner in = new Scanner(System.in);
-        String s = in.next();
-        return s;
+        String username = in.next();
+        String password = in.next();
+        super.gameManagerController.onSetCredentials(username, password);
     }
     @Override
     public void launchGameManager(List<GameLobby> availableGames){
@@ -191,13 +186,13 @@ public class CLIgeneral extends View{
                 }
             }
             if (cmd.hasOption(create_game)) {
-                Integer numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
+                int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
                 host = true;
-                super.gameManagerController.onCreateGame(numOfPlayers);
+                super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
             } else if (cmd.hasOption(select_game)) {
                 String gameSelectedId = cmd.getOptionValue(select_game);
                 host = false;
-                super.gameManagerController.onSelectGame(gameSelectedId);
+                super.gameManagerController.onSelectGame(gameSelectedId, userPlayer.getNickname());
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
@@ -206,8 +201,12 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public void launchGameLobby(String gameID){
+    public void launchGameLobby(String gameID, ArrayList<String> lobbyPlayers, String lobbyHost){
         this.gameID = gameID;
+        System.out.println("You have entered the lobby\n"+"Lobby host: "+lobbyHost+"\nLobby players:"); // printing lobby and lobby players
+        for(int i = 0; i < lobbyPlayers.size(); i++){
+            System.out.println(lobbyPlayers.get(i));
+        }
         Options options = new Options();
         options.addOption(show_gameId);
         options.addOption(chat);
