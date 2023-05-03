@@ -64,7 +64,7 @@ public class GameManager extends GameObservable{
             }else{
                 //username wrong password
                 //sends error
-                super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword));
+                //super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword));
             }
         }else{
             //new user
