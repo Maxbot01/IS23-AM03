@@ -186,21 +186,13 @@ public class CLIgeneral extends View{
                 }
             }
             if (cmd.hasOption(create_game)) {
-                Integer numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
+                int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
                 host = true;
                 super.gameManagerController.onCreateGame(numOfPlayers);
-                System.out.println("You have entered the lobby\n"+"Lobby players:"); // printing lobby and lobby players
-                for(int i = 0; i < players.size(); i++){
-                    System.out.println(players.get(i).getNickname());
-                }
             } else if (cmd.hasOption(select_game)) {
                 String gameSelectedId = cmd.getOptionValue(select_game);
                 host = false;
                 super.gameManagerController.onSelectGame(gameSelectedId);
-                System.out.println("You have entered the lobby\n"+"Lobby players:"); // printing lobby and lobby players
-                for(int i = 0; i < players.size(); i++){
-                    System.out.println(players.get(i).getNickname());
-                }
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
@@ -209,8 +201,12 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public void launchGameLobby(String gameID){
+    public void launchGameLobby(String gameID, ArrayList<String> lobbyPlayers, String lobbyHost){
         this.gameID = gameID;
+        System.out.println("You have entered the lobby\n"+"Lobby host: "+lobbyHost+"\nLobby players:"); // printing lobby and lobby players
+        for(int i = 0; i < lobbyPlayers.size(); i++){
+            System.out.println(lobbyPlayers.get(i));
+        }
         Options options = new Options();
         options.addOption(show_gameId);
         options.addOption(chat);
