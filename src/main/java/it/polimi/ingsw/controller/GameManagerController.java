@@ -36,11 +36,15 @@ public class GameManagerController extends Controller implements GameManagerView
     @Override
     public void onSelectGame(String gameId) {
         //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
+        ClientManager.createdControllers(gameId);
+        virtualGameManager.selectGame(gameId);
+
     }
 
     @Override
     public void onCreateGame(int numOfPlayers) {
         //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
+
     }
 
     @Override
@@ -56,7 +60,7 @@ public class GameManagerController extends Controller implements GameManagerView
                     break;
             }
         }else if(message instanceof loginGameMessage){
-            //user can go in
+            //user can go in, launchGameManager phase
             ClientManager.view.launchGameManager(new ArrayList<>(((loginGameMessage)message).currentGames.keySet()));
         }
         return true;

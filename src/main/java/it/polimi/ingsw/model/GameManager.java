@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
+import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +28,19 @@ public class GameManager extends GameObservable{
         userMatches = new HashMap<>();
     }
 
-    public void selectGame(String ID){
+    public void selectGame(String ID, String fromUsername){
+        //currentGames.put(new GameLobby());
+        for(GameLobby x: currentGames.keySet()){
+            if(x.getID().equals(ID)){
+                //joins this lobby
+                try {
+                    x.addPlayer(fromUsername);
+                }catch(LobbyFullException e){
+                    //lobby is full, returns error
 
+                }
+            }
+        }
     }
 
     public void ping(){
