@@ -36,7 +36,8 @@ public class ClientMain implements Runnable {
                      */
                     //TODO: decode message here and give it to a variable called receivedMessageDecoded: Message
                     //TODO: BE SURE TO RECEIVE MESSAGES FOR THIS CLIENT:
-                    Message receivedMessageDecoded;
+                    //check if right user only if it's not NetworkMessage
+                    //Message receivedMessageDecoded;
                     //ClientManager.clientReceiveMessage(receivedMessageDecoded);
                     out.flush();
                 }

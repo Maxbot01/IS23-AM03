@@ -30,6 +30,8 @@ public class ClientManager {
 
     public static VirtualGameManager virtualGameManager;
 
+    public static String userNickname;
+
     public ClientManager(boolean isCLI){
         pubsub = new PubSubService();
         if(isCLI){

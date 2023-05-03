@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.virtual_model;
 
+import it.polimi.ingsw.client.ClientMain;
+
 public class VirtualGameManager extends VirtualGameModel{
 
     public void ping(){
