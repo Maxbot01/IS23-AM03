@@ -10,21 +10,28 @@ import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InitStateMessage extends MatchStateMessage {
 
-    private BoardCard[][] pieces;
-    private Boolean[][] selecectables;
-    private CommonGoals commonGoals;
-    private HashMap<Player, PersonalGoal> personalGoals;
-    private ArrayList<Player> players;
-    private Player chairedPlayer;
+    public BoardCard[][] pieces;
+    public Boolean[][] selecectables;
+    public CommonGoals commonGoals;
+    public HashMap<String, PersonalGoal> personalGoals;
+    public List<String> players;
+    public String chairedPlayer;
 
-    private ArrayList<Pair<Player, BoardCard[][]>> playersShelves;
+    public String matchID;
 
-    public InitStateMessage(GameStateType gameState, String matchID, BoardCard[][] pieces, Boolean[][] selecectables, CommonGoals commonGoals, HashMap<Player, PersonalGoal> personalGoals, ArrayList<Player> players, Player chairedPlayer, ArrayList<Pair<Player, BoardCard[][]>> playersShelves){
+    public GameStateType gameState;
+
+    public ArrayList<Pair<String, BoardCard[][]>> playersShelves;
+
+    public InitStateMessage(GameStateType gameState, String matchID, BoardCard[][] pieces, Boolean[][] selecectables, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, List<String> players, String chairedPlayer, ArrayList<Pair<String, BoardCard[][]>> playersShelves){
         super(gameState, matchID);
+        this.gameState = gameState;
+        this.matchID = matchID;
         this.pieces = pieces;
         this.selecectables = selecectables;
         this.commonGoals = commonGoals;
@@ -33,7 +40,7 @@ public class InitStateMessage extends MatchStateMessage {
         this.chairedPlayer = chairedPlayer;
         this.playersShelves = playersShelves;
     }
-
+/*
     public void printMessage() {
         System.out.println("InitStateMessage:");
         System.out.println("GameStateType: " + super.gameState);
@@ -79,7 +86,7 @@ public class InitStateMessage extends MatchStateMessage {
             }
         }
     }
-
+*/
 
 
 }

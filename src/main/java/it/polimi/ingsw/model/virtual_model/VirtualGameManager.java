@@ -14,4 +14,14 @@ public class VirtualGameManager extends VirtualGameModel{
     public void createGame(int numPlayers, String user){
 
     }
+    /*
+    Lobby methods
+     */
+    public void startMatch(String ID, String user){
+
+    }
+
+    /*
+    Game methods
+     */
 }

@@ -10,6 +10,8 @@ import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
+import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
+import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.model.virtual_model.VirtualGameLobby;
@@ -26,12 +28,15 @@ public class ClientManager {
     private static GameManagerController gameManagerController;
     private static LobbyController lobbyController;
 
+    public static VirtualGameManager virtualGameManager;
+
     public ClientManager(boolean isCLI){
         pubsub = new PubSubService();
         if(isCLI){
             //cli mode
             view = new CLIgeneral();
-            gameManagerController = new GameManagerController(view, new VirtualGameManager());
+            virtualGameManager = new VirtualGameManager();
+            gameManagerController = new GameManagerController(view, virtualGameManager);
             pubsub.addSubscriber(TopicType.gameManagerState, gameManagerController);
             pubsub.addSubscriber(TopicType.networkMessageState, gameManagerController);
             //gameController = new GameController(new CLIgeneral(), new VirtualGame());
@@ -45,7 +50,7 @@ public class ClientManager {
         //GameManagerController sees that a game has been created with an ID, the game controller gets instantiated
         gameController = new GameController(view, new VirtualGame(), ID);
         pubsub.addSubscriber(TopicType.matchState, gameController);
-        lobbyController = new LobbyController(view, new VirtualGameLobby());
+        lobbyController = new LobbyController(view);
         pubsub.addSubscriber(TopicType.lobbyState, lobbyController);
     }
 
@@ -60,7 +65,11 @@ public class ClientManager {
             //ssss
         }else if(receivedMessageDecoded instanceof LobbyInfoMessage){
             pubsub.publishMessage(TopicType.lobbyState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof MatchStateMessage){
+        }else if(receivedMessageDecoded instanceof InitStateMessage){
+            //message with all the info about the game
+            pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
+        }else if(receivedMessageDecoded instanceof GameStateMessage){
+            //message with all the info about the game
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
         }
     }

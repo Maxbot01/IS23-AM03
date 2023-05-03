@@ -125,12 +125,10 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public void updatedMatchDetails(LivingRoom livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
-                                    String gameID, GameStateType gameState) {
+    public void updatedMatchDetails(LivingRoom livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves, GameStateType gameState) {
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
-        this.gameID = gameID;
         for(int i = 0; i < players.size(); i++){ // With the first two for cycles I avoid possible differences in the players' order between the old ArrayList and the updated
             for(int j = 0; j < players.size(); j++){
                 if(players.get(i).getNickname().equals(playersShelves.get(j).getFirst())){
@@ -239,7 +237,7 @@ public class CLIgeneral extends View{
                 }
             }
             if (cmd.hasOption(start_match)) {
-                    super.lobbyController.onStartMatch();
+                    super.lobbyController.onStartMatch(gameID, userPlayer.getNickname());
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
