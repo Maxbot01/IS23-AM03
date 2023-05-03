@@ -41,14 +41,14 @@ public class ClientManager {
     }
 
 
-    public void createdGame(String ID){
+    public static void createdControllers(String ID){
         //GameManagerController sees that a game has been created with an ID, the game controller gets instantiated
         gameController = new GameController(view, new VirtualGame(), ID);
         lobbyController = new LobbyController(view, new VirtualGameLobby());
     }
 
     //accessible from ClientMain (socket) and RMI
-    public void clientReceiveMessage(Message receivedMessageDecoded){
+    public static void clientReceiveMessage(Message receivedMessageDecoded){
         if(receivedMessageDecoded instanceof NetworkMessage){
             //received a network message (like ping or request of username)
             pubsub.publishMessage(TopicType.networkMessageState, receivedMessageDecoded);
