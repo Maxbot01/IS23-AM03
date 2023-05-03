@@ -188,11 +188,11 @@ public class CLIgeneral extends View{
             if (cmd.hasOption(create_game)) {
                 int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
                 host = true;
-                super.gameManagerController.onCreateGame(numOfPlayers);
+                super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
             } else if (cmd.hasOption(select_game)) {
                 String gameSelectedId = cmd.getOptionValue(select_game);
                 host = false;
-                super.gameManagerController.onSelectGame(gameSelectedId);
+                super.gameManagerController.onSelectGame(gameSelectedId, userPlayer.getNickname());
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
