@@ -15,14 +15,14 @@ import java.util.ArrayList;
 
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 
-    private VirtualGameLobby virtualGameLobby;
-    public LobbyController(View view, VirtualGameLobby virtualGameLobby ) {
+    public LobbyController(View view) {
         super(view);
-        this.virtualGameLobby = virtualGameLobby;
         ClientManager.pubsub.addSubscriber(TopicType.lobbyState, this);
     }
     @Override
-    public void onStartMatch() {
+    public void onStartMatch(String ID, String user) {
+        //virtualGameLobby.startMatch(ID, user);
+        ClientManager.virtualGameManager.startMatch(ID, user);
     }
     @Override
     public void onGetHost() {

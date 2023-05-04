@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualGameLobby extends VirtualGameModel{
-    public void startMatch(){
+    public void startMatch(String ID, String user){
 
     }
 }

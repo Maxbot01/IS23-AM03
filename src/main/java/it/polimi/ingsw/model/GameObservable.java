@@ -7,11 +7,13 @@ import java.util.ArrayList;
 
 public abstract class GameObservable {
 
-    protected void notifyObserver(String toPlayer, Message withMessage){
+    protected void notifyObserver(String toPlayer, Message withMessage, boolean inLobbyOrGame, String ID){
+        //if we are in a lobby or in a game needs to send the id of the lobby/game
+
         System.out.println("Arrived message to " + toPlayer + withMessage.toString());
         withMessage.printMessage();
     }
-    protected void notifyAllObservers(Message withMessage){
+    protected void notifyAllObservers(Message withMessage, boolean inLobbyOrGame, String ID){
         //send the message
         System.out.println("Arrived message" + withMessage.toString());
 

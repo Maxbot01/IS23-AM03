@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.client.ClientMain;
+import it.polimi.ingsw.model.GameManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -31,6 +32,11 @@ public class ServerMain {
             }
         }
         executor.shutdown();
+    }
+
+
+    private void decodeAndCall(){
+        //GameManager.getInstance().setCredentials();
     }
 
     public static void main(String[] args) {

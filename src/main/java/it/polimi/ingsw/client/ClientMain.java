@@ -15,6 +15,9 @@ public class ClientMain implements Runnable {
         //the client starts, lets set the pub/sub environment.
         this.socket = socket;
     }
+
+    //private playerNickname;
+
     public void run() {
         try {
             Scanner in = new Scanner(socket.getInputStream());
@@ -31,10 +34,11 @@ public class ClientMain implements Runnable {
                     - CONNECTION 'acks and ping pongs ecc..' -> NetworkMessage
                     - MESSAGE 'big messages defined in the model' -> other message types
                      */
-                    //TODO: decode messahe here and give it to a variable called receivedMessageDecoded: Message
-
-                    Message receivedMessageDecoded;
-
+                    //TODO: decode message here and give it to a variable called receivedMessageDecoded: Message
+                    //TODO: BE SURE TO RECEIVE MESSAGES FOR THIS CLIENT:
+                    //check if right user only if it's not NetworkMessage
+                    //Message receivedMessageDecoded;
+                    //ClientManager.clientReceiveMessage(receivedMessageDecoded);
                     out.flush();
                 }
             }
