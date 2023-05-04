@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable,SelectedColumnsMessageError" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="changes to controller, receiver, pubsub, EVERYTHING">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -350,21 +353,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683121787917</updated>
     </task>
-    <task id="LOCAL-00038" summary="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable.java">
-      <created>1683211524589</created>
+    <task id="LOCAL-00038" summary="changes to controller, receiver, pubsub, EVERYTHING">
+      <created>1683125869822</created>
       <option name="number" value="00038" />
       <option name="presentableId" value="LOCAL-00038" />
       <option name="project" value="LOCAL" />
-      <updated>1683211524589</updated>
+      <updated>1683125869822</updated>
     </task>
-    <task id="LOCAL-00039" summary="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable,SelectedColumnsMessageError">
-      <created>1683217901233</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1683217901233</updated>
-    </task>
-    <option name="localTasksCounter" value="40" />
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -428,9 +424,6 @@
     <MESSAGE value="changes to controller, receiver, pubsub" />
     <MESSAGE value="fixed stuff and some forbidden tests" />
     <MESSAGE value="changes to controller, receiver, pubsub, EVERYTHING" />
-    <MESSAGE value="MessageSerializer, MessageSerializerTest" />
-    <MESSAGE value="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable.java" />
-    <MESSAGE value="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable,SelectedColumnsMessageError" />
-    <option name="LAST_COMMIT_MESSAGE" value="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable,SelectedColumnsMessageError" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes to controller, receiver, pubsub, EVERYTHING" />
   </component>
 </project>

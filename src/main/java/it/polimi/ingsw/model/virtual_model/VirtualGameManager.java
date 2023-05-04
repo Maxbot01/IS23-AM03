@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.virtual_model;
 
 import it.polimi.ingsw.client.ClientMain;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameManager;
 
 public class VirtualGameManager extends VirtualGameModel{
 
