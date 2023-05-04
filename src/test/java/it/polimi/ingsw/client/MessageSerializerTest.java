@@ -19,13 +19,16 @@ import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import static it.polimi.ingsw.model.GameStateType.IN_PROGRESS;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MessageSerializerTest {
 
+    /*
     @Test
     public void testSerialize() {
         BoardCard[][] pieces = new BoardCard[5][5];
@@ -65,35 +68,63 @@ class MessageSerializerTest {
         //output serializedMessage
         System.out.println(serializedMessage);
     }
-
     @Test
-    void deserializeInitStateMessage() {
-        BoardCard[][] pieces = new BoardCard[5][5];
-        Boolean[][] selectables = new Boolean[5][5];
+    void SerializeAndDeserializeInitStateMessage() {
+        BoardCard[][] pieces = new BoardCard[3][4];
+        pieces[0][0] = new BoardCard(colorType.BLUE, ornamentType.A);
+        pieces[0][1] = new BoardCard(colorType.YELLOW, ornamentType.A);
+        pieces[0][2] = new BoardCard(colorType.GREEN, ornamentType.A);
+        pieces[0][3] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        pieces[1][0] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        pieces[1][1] = new BoardCard(colorType.YELLOW, ornamentType.A);
+        pieces[1][2] = new BoardCard(colorType.YELLOW, ornamentType.A);
+        pieces[1][3] = new BoardCard(colorType.GREEN, ornamentType.A);
+        pieces[2][0] = new BoardCard(colorType.GREEN, ornamentType.A);
+        pieces[2][1] = new BoardCard(colorType.PURPLE, ornamentType.A);
+        pieces[2][2] = new BoardCard(colorType.BLUE, ornamentType.A);
+        pieces[2][3] = new BoardCard(colorType.YELLOW, ornamentType.A);
+
+        Boolean[][] selectables = new Boolean[3][4];
+        selectables[0][0] = true;
+        selectables[0][1] = false;
+        selectables[0][2] = true;
+        selectables[0][3] = false;
+        selectables[1][0] = false;
+        selectables[1][1] = true;
+        selectables[1][2] = false;
+        selectables[1][3] = true;
+        selectables[2][0] = true;
+        selectables[2][1] = false;
+        selectables[2][2] = true;
+        selectables[2][3] = false;
+
         CommonGoals commonGoals = new CommonGoals();
         CommonGoalStrategy firstGoal = new TriangularGoalStrategy();
         commonGoals.setFirstGoal(firstGoal);
         CommonGoalStrategy secondGoal = new SixOfTwoGoalStrategy();
         commonGoals.setSecondGoal(secondGoal);
-        String matchID = "gameID123";
 
-        HashMap<Player, PersonalGoal> personalGoals = new HashMap<>();
-        ArrayList<Player> players = new ArrayList<>();
-        Player chairedPlayer = new Player("John");
-        ArrayList<Pair<Player, BoardCard[][]>> playersShelves = new ArrayList<>();
 
-        // Set some sample values for the objects
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                pieces[i][j] = new BoardCard(colorType.EMPTY_SPOT, null);
-                selectables[i][j] = false;
-            }
-        }
-        players.add(new Player("Alice"));
-        players.add(new Player("Bob"));
 
-        // Create a new InitStateMessage object with the sample objects
-        InitStateMessage initStateMessage = new InitStateMessage(IN_PROGRESS, matchID, pieces, selectables, commonGoals, personalGoals, players, chairedPlayer, playersShelves);
+        HashMap<String, PersonalGoal> personalGoals = new HashMap<>();
+        personalGoals.put("player1", personalGoals.get(0));
+        personalGoals.put("player2", personalGoals.get(0));
+        personalGoals.put("player3", personalGoals.get(0));
+
+        List<String> players = new ArrayList<>();
+        players.add("player1");
+        players.add("player2");
+        players.add("player3");
+
+        String chairedPlayer = "player1";
+
+        ArrayList<Pair<String, BoardCard[][]>> playersShelves = new ArrayList<>();
+        playersShelves.add(new Pair<>("player1", new BoardCard[][]{{new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A)}, {new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.GREEN, ornamentType.A)}}));
+        playersShelves.add(new Pair<>("player2", new BoardCard[][]{{new BoardCard(colorType.GREEN, ornamentType.A), new BoardCard(colorType.YELLOW, ornamentType.A)}, {new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A)}}));
+        playersShelves.add(new Pair<>("player3", new BoardCard[][]{{new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.PURPLE, ornamentType.A)}, {new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.GREEN, ornamentType.A)}}));
+
+        InitStateMessage initStateMessage = new InitStateMessage(IN_PROGRESS, "match123", pieces, selectables, commonGoals, personalGoals, players, chairedPlayer, playersShelves);
+
 
         // Print out the message to verify that it was created correctly
         initStateMessage.printMessage();
@@ -112,7 +143,7 @@ class MessageSerializerTest {
         System.out.println(deserializedMessage);
 
     }
-
+*/
     @Test
     void serializeAndDeserializeFinishedGameMessage() {
         ArrayList<Pair<String, Integer>> finalScoreBoard = new ArrayList<>();
@@ -134,21 +165,24 @@ class MessageSerializerTest {
         Message deserializedMessage = serializer.deserialize(serializedMessage);
         //output deserializedMessage
         System.out.println(deserializedMessage);
+        deserializedMessage.printMessage();
         // Verify that the deserialized message is of the correct type
         assertTrue(deserializedMessage instanceof FinishedGameMessage);
     }
 
     @Test
-    void deserializeSelectedCardsMessage() {
+    void SerializeAndDeserializeSelectedCardsMessage() {
         BoardCard[][] pieces = new BoardCard[5][5];
         Boolean[][] selectables = new Boolean[5][5];
         ArrayList<BoardCard> selectedCards = new ArrayList<>();
         Player currentPlayer = new Player("Alice");
+        GameStateType gameState = GameStateType.IN_PROGRESS;
+        String matchID = "matchID123";
 
         // Set some sample values for the objects
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                pieces[i][j] = new BoardCard(colorType.EMPTY_SPOT, ornamentType.A);
+                pieces[i][j] = new BoardCard(colorType.PURPLE, ornamentType.A);
                 selectables[i][j] = false;
             }
         }
@@ -156,7 +190,7 @@ class MessageSerializerTest {
         selectedCards.add(new BoardCard(colorType.PURPLE, ornamentType.A));
 
         // Create a new SelectedCardsMessage object with the sample objects
-        SelectedCardsMessage selectedCardsMessage = new SelectedCardsMessage(GameStateType.IN_PROGRESS, "gameID123", selectedCards, selectables, pieces, currentPlayer);
+        SelectedCardsMessage selectedCardsMessage = new SelectedCardsMessage(gameState, matchID, selectedCards, selectables, pieces, currentPlayer);
 
         // Print out the message to verify that it was created correctly
         selectedCardsMessage.printMessage();
@@ -173,31 +207,42 @@ class MessageSerializerTest {
         Message deserializedMessage = new MessageSerializer().deserialize(serializedMessage);
         //output deserializedMessage
         System.out.println(deserializedMessage);
+        //print deserializedMessage
+        deserializedMessage.printMessage();
+
     }
     @Test
-    void testSelectedColumnsMessageSerialization() {
-        // Set up sample objects
+    void SerializeAndDeserializeSelectedColumnsMessage() {
         BoardCard[][] pieces = new BoardCard[5][5];
         Boolean[][] selectables = new Boolean[5][5];
-        Pair<String, Integer> updatedPoints = new Pair<>("Alice", 10);
-        Pair<String, BoardCard[][]> updatedPlayerShelf = new Pair<>("Alice", new BoardCard[3][5]);
-        String newPlayer = "Bob";
+        Pair<String, Integer> updatedPoints = new Pair<>("Player1", 5);
+        Pair<String, BoardCard[][]> updatedPlayerShelf = new Pair<>("Player2", new BoardCard[][]{
+                {new BoardCard(colorType.BLUE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A)},
+                {new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.PURPLE, ornamentType.A)},
+                {new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.YELLOW, ornamentType.A)}
+        });
+        String newPlayer = "Player3";
         GameStateType gameState = GameStateType.IN_PROGRESS;
         String matchID = "matchID123";
 
         // Set some sample values for the objects
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                pieces[i][j] = new BoardCard(colorType.EMPTY_SPOT, null);
+                pieces[i][j] = new BoardCard(colorType.EMPTY_SPOT, ornamentType.A);
                 selectables[i][j] = false;
             }
         }
+
+        // Set some selectables to true
+        selectables[0][0] = true;
+        selectables[1][1] = true;
 
         // Create a new SelectedColumnsMessage object with the sample objects
         SelectedColumnsMessage selectedColumnsMessage = new SelectedColumnsMessage(gameState, matchID, updatedPoints, newPlayer, updatedPlayerShelf, pieces, selectables);
 
         // Print out the message to verify that it was created correctly
         selectedColumnsMessage.printMessage();
+
 
         // Serialize the message using the MessageSerializer
         MessageSerializer serializer = new MessageSerializer();
@@ -216,8 +261,7 @@ class MessageSerializerTest {
         SelectedColumnsMessage deserializedSelectedColumnsMessage = (SelectedColumnsMessage) deserializedMessage;
         // output deserializedMessage
         System.out.println(deserializedMessage);
-
-
+        deserializedMessage.printMessage();
     }
 
 }

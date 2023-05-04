@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.messageModel.Message;
+import it.polimi.ingsw.model.messageModel.NetworkMessage;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,8 +38,11 @@ public class ClientMain implements Runnable {
                     //TODO: decode message here and give it to a variable called receivedMessageDecoded: Message
                     //TODO: BE SURE TO RECEIVE MESSAGES FOR THIS CLIENT:
                     //check if right user only if it's not NetworkMessage
-                    //Message receivedMessageDecoded;
-                    //ClientManager.clientReceiveMessage(receivedMessageDecoded);
+                    Message receivedMessageDecoded = new MessageSerializer().deserialize(receivedMessage);
+                    if(receivedMessageDecoded.getClass() != NetworkMessage.class){
+
+                    }
+                    ClientManager.clientReceiveMessage(receivedMessageDecoded);
                     out.flush();
                 }
             }

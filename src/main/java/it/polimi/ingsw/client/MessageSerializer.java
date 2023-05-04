@@ -4,6 +4,7 @@ import com.google.gson.*;
 import it.polimi.ingsw.model.CommonGoals.Strategy.CommonGoalStrategy;
 import it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy;
 import it.polimi.ingsw.model.messageModel.Message;
+import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
@@ -18,7 +19,6 @@ public class MessageSerializer {
     public MessageSerializer() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Message.class, new MessageDeserializer());
-        gsonBuilder.registerTypeAdapter(CommonGoalStrategy.class, new CommonGoalStrategyInstanceCreator()); // Aggiungi questa riga
         gson = gsonBuilder.create();
     }
 
@@ -28,7 +28,6 @@ public class MessageSerializer {
         jsonObject.addProperty("messageType", message.getClass().getSimpleName());
         jsonObject.add("messageData", gson.toJsonTree(message));
         return jsonObject.toString();
-
     }
 
     public Message deserialize(String json) {
@@ -50,6 +49,8 @@ public class MessageSerializer {
                     return new Gson().fromJson(messageData, SelectedCardsMessage.class);
                 case "SelectedColumnsMessage":
                     return new Gson().fromJson(messageData, SelectedColumnsMessage.class);
+                case "NetworkMessage":
+                    return new Gson().fromJson(messageData, NetworkMessage.class);
 
                 // Aggiungere altri casi per i diversi tipi di messaggio che si vogliono deserializzare
                 default:
@@ -58,11 +59,4 @@ public class MessageSerializer {
         }
     }
 
-    private static class CommonGoalStrategyInstanceCreator implements InstanceCreator<CommonGoalStrategy> {
-        @Override
-        public CommonGoalStrategy createInstance(Type type) {
-            // Qui puoi istanziare l'implementazione specifica di CommonGoalStrategy che desideri
-            return new TriangularGoalStrategy();
-        }
-    }
 }
