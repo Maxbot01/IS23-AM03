@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessag
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class MessageSerializer {
 
@@ -22,10 +23,11 @@ public class MessageSerializer {
         gson = gsonBuilder.create();
     }
 
-
-    public String serialize(Message message) {
+    public String serialize(Message message, String toPlayer, String ID) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("messageType", message.getClass().getSimpleName());
+        jsonObject.addProperty("toPlayer", toPlayer);
+        jsonObject.addProperty("id", ID);
         jsonObject.add("messageData", gson.toJsonTree(message));
         return jsonObject.toString();
     }
@@ -34,11 +36,27 @@ public class MessageSerializer {
         return gson.fromJson(json, Message.class);
     }
 
+    public String getMatchID(String json) {
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+        return jsonObject.get("id").getAsString();
+    }
+
+
+    public ArrayList<String> deserializeToPlayersList(String json) {
+        ArrayList<String> toPlayersList = new ArrayList<String>();
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        toPlayersList.add(jsonObject.get("toPlayer").getAsString());
+        return toPlayersList;
+    }
+
+
     private static class MessageDeserializer implements JsonDeserializer<Message> {
         @Override
         public Message deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             String messageType = jsonObject.get("messageType").getAsString();
+            String toPlayer = jsonObject.get("toPlayer").getAsString();
+            String id = jsonObject.get("id").getAsString();
             JsonObject messageData = jsonObject.get("messageData").getAsJsonObject();
             switch (messageType) {
                 case "InitStateMessage":
@@ -52,11 +70,12 @@ public class MessageSerializer {
                 case "NetworkMessage":
                     return new Gson().fromJson(messageData, NetworkMessage.class);
 
+                //TODO: add other cases for other message types that you want to deserialize
+
                 // Aggiungere altri casi per i diversi tipi di messaggio che si vogliono deserializzare
                 default:
                     throw new JsonParseException("Unknown message type: " + messageType);
             }
         }
     }
-
 }

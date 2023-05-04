@@ -156,7 +156,7 @@ class MessageSerializerTest {
         finishedGameMessage.printMessage();
         // Serialize the message
         MessageSerializer serializer = new MessageSerializer();
-        String serializedMessage = serializer.serialize(finishedGameMessage);
+        String serializedMessage = serializer.serialize(finishedGameMessage,"Alice","gameID123");
         //output serializedMessage
         System.out.println(serializedMessage);
 
@@ -197,7 +197,7 @@ class MessageSerializerTest {
 
         // Serialize the message using the MessageSerializer
         MessageSerializer serializer = new MessageSerializer();
-        String serializedMessage = serializer.serialize(selectedCardsMessage);
+        String serializedMessage = serializer.serialize(selectedCardsMessage,"Alice","gameID123");
 
         // Verify that the serialized string is not empty and contains the correct message type
         assertNotNull(serializedMessage);
@@ -246,7 +246,7 @@ class MessageSerializerTest {
 
         // Serialize the message using the MessageSerializer
         MessageSerializer serializer = new MessageSerializer();
-        String serializedMessage = serializer.serialize(selectedColumnsMessage);
+        String serializedMessage = serializer.serialize(selectedColumnsMessage,"Alice","gameID123");
 
         // Verify that the serialized string is not empty and contains the correct message type
         assertNotNull(serializedMessage);
@@ -262,6 +262,19 @@ class MessageSerializerTest {
         // output deserializedMessage
         System.out.println(deserializedMessage);
         deserializedMessage.printMessage();
+
+        //getMatchID
+        String matchID1 = serializer.getMatchID(serializedMessage);
+        System.out.println(matchID1);
+
+        //getToPlayer
+        ArrayList <String> toPlayer = serializer.deserializeToPlayersList(serializedMessage);
+        //print arraylist
+        System.out.println(toPlayer);
+
+
     }
+
+
 
 }

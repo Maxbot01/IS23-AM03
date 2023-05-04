@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -17,7 +18,7 @@ public class ClientMain implements Runnable {
         this.socket = socket;
     }
 
-    //private playerNickname;
+    private String playerNickname;
 
     public void run() {
         try {
@@ -35,13 +36,17 @@ public class ClientMain implements Runnable {
                     - CONNECTION 'acks and ping pongs ecc..' -> NetworkMessage
                     - MESSAGE 'big messages defined in the model' -> other message types
                      */
-                    //TODO: decode message here and give it to a variable called receivedMessageDecoded: Message
+                    //decode message here and give it to a variable called receivedMessageDecoded: Message
                     //TODO: BE SURE TO RECEIVE MESSAGES FOR THIS CLIENT:
                     //check if right user only if it's not NetworkMessage
                     Message receivedMessageDecoded = new MessageSerializer().deserialize(receivedMessage);
                     if(receivedMessageDecoded.getClass() != NetworkMessage.class){
-
+                        ArrayList<String> toPlayersList = new MessageSerializer().deserializeToPlayersList(receivedMessage);
+                        if(toPlayersList.contains(playerNickname)){
+                            //TODO: send the message to the right client
+                        }
                     }
+                    //if you need matchID : MessageSerializer().getMatchID(receivedMessage);
                     ClientManager.clientReceiveMessage(receivedMessageDecoded);
                     out.flush();
                 }
