@@ -22,9 +22,6 @@ public class InitStateMessage extends MatchStateMessage {
     public List<String> players;
     public String chairedPlayer;
 
-    public String matchID;
-
-    public GameStateType gameState;
 
     public ArrayList<Pair<String, BoardCard[][]>> playersShelves;
 
