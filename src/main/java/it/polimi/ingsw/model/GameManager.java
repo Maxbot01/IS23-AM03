@@ -76,6 +76,10 @@ public class GameManager extends GameObservable{
     }
 
 
+
+
+    //LOBBY METHODS
+
     /**
      * Gets all the lobbies that have not been tombstoned (joinable)
      * @return
