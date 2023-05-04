@@ -51,7 +51,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
         if(message instanceof InitStateMessage){
             InitStateMessage mess = (InitStateMessage)message;
             ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals, mess.chairedPlayer);
-            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.matchID, mess.gameState);
+            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState);
         }else if(message instanceof GameStateMessage){
             //received info aboiut the match
 

@@ -71,11 +71,12 @@ public class CLIgeneral extends View{
             .required(false)
             .build();
     @Override
-    public void initializeGame(ArrayList<Player> players, CommonGoals commonGoals, PersonalGoal personalGoal, Player userPlayer){
-        this.players = players;
+    public void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, String userPlayer){
+        //TODO: uncomment and fix
+        //this.players = players;
         this.commonGoals = commonGoals;
         this.personalGoal = personalGoal;
-        this.userPlayer = userPlayer;
+        //this.userPlayer = userPlayer;
     }
     @Override
     public void waitingCommands(){
@@ -125,8 +126,9 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public void updatedMatchDetails(LivingRoom livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves, GameStateType gameState) {
-        this.livingRoom = livingRoom;
+    public void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves, GameStateType gameState) {
+        //TODO: togliere il commento qui sotto e fixare!!!
+        //this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
         for(int i = 0; i < players.size(); i++){ // With the first two for cycles I avoid possible differences in the players' order between the old ArrayList and the updated

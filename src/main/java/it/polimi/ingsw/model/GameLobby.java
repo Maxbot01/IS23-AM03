@@ -40,7 +40,7 @@ public class GameLobby extends GameObservable {
             throw new LobbyFullException();
         }else{
             players.add(player);
-            super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players));
+            super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
         }
     }
 
