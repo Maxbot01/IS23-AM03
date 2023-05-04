@@ -40,13 +40,13 @@ public class ClientMain implements Runnable {
                     //TODO: BE SURE TO RECEIVE MESSAGES FOR THIS CLIENT:
                     //check if right user only if it's not NetworkMessage
                     Message receivedMessageDecoded = new MessageSerializer().deserialize(receivedMessage);
+                    ArrayList<String> toPlayersList = new MessageSerializer().deserializeToPlayersList(receivedMessage);
+                    //String matchID1 = new MessageSerializer().getMatchID(receivedMessage);
                     if(receivedMessageDecoded.getClass() != NetworkMessage.class){
-                        ArrayList<String> toPlayersList = new MessageSerializer().deserializeToPlayersList(receivedMessage);
                         if(toPlayersList.contains(playerNickname)){
                             //TODO: send the message to the right client
                         }
                     }
-                    //if you need matchID : MessageSerializer().getMatchID(receivedMessage);
                     ClientManager.clientReceiveMessage(receivedMessageDecoded);
                     out.flush();
                 }
