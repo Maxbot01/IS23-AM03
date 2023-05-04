@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface UpdateHandler {
@@ -18,10 +19,10 @@ public interface UpdateHandler {
      * It initializes the game main parameters
      * @param players
      * @param commonGoals
-     * @param personalGoal
+     * @param personalGoals
      * @param userPlayer
      */
-    void initializeGame(ArrayList<Player> players, CommonGoals commonGoals, PersonalGoal personalGoal, Player userPlayer);
+    void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, String userPlayer);
     /**
      * It contains all the available command the CLI user can call while waiting for his turn
      */
@@ -32,7 +33,7 @@ public interface UpdateHandler {
      * @param selectables
      * @param playersShelves
      */
-    void updatedMatchDetails(LivingRoom livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves, GameStateType gameState);
+    void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves, GameStateType gameState);
     /**
      * Requests Username from Command Line
      * @return String
