@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable.java">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/MessageSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/MessageSerializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameLobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameLobby.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/errorMessages/SelectedColumnsMessageError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/errorMessages/SelectedColumnsMessageError.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/client/MessageSerializerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/client/MessageSerializerTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable,SelectedColumnsMessageError" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -367,7 +357,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683211524589</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable,SelectedColumnsMessageError">
+      <created>1683217901233</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1683217901233</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -433,6 +430,7 @@
     <MESSAGE value="changes to controller, receiver, pubsub, EVERYTHING" />
     <MESSAGE value="MessageSerializer, MessageSerializerTest" />
     <MESSAGE value="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable.java" />
+    <MESSAGE value="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable,SelectedColumnsMessageError" />
+    <option name="LAST_COMMIT_MESSAGE" value="MessageSerializer, MessageSerializerTest, ClientMain, GameObservable,SelectedColumnsMessageError" />
   </component>
 </project>
