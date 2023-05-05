@@ -32,7 +32,7 @@ public interface UpdateHandler {
      * @param selectables
      * @param playersShelves
      */
-    void updatedMatchDetails(LivingRoom livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
+    void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
                              String gameID, GameStateType gameState);
     /**
      * Requests Username from Command Line

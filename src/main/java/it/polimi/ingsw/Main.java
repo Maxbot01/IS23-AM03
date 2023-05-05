@@ -156,7 +156,7 @@ public class Main {
             playersShelves.add(new Pair<>(players.get(i).getNickname(),shelves.get(i)));
         }
         cligeneral.initializeGame(players,commonGoals,players.get(2).getPersonalGoal(),players.get(2));
-        cligeneral.updatedMatchDetails(livingRoom,selectables,playersShelves,"1.1", GameStateType.IN_PROGRESS);
+        cligeneral.updatedMatchDetails(livingRoom.getPieces(),selectables,playersShelves,"1.1", GameStateType.IN_PROGRESS);
         cligeneral.printLivingRoomAndShelves();
 
         /* inizio assegnamento testing con printf di calculateAdiacentPoint nella shelf */
