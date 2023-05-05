@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class GameController extends Controller implements GameViewObserver, Subscriber {
     private VirtualGame virtualGame;
+
+    private InitStateMessage latestInit;
     private String gameID;
     public GameController(View view, VirtualGame virtualGame, String gameID) {
         super(view);
@@ -26,9 +28,24 @@ public class GameController extends Controller implements GameViewObserver, Subs
     }
 
     @Override
-    public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected) {
+    public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
         //view has selected cards
+        //check if selection was correct
+        if(isSelectionPossible(selected)){
+            //ClientManager.view.chooseColumn();
+            ClientManager.virtualGameManager.selectedCards(selected, user, gameID);
+        }else{
+            ClientManager.view.showErrorMessage("Selezione non corretta");
+            ClientManager.view.chooseCards();
+        }
         virtualGame.selectedCards(selected);
+    }
+
+    //TODO: make this!!!
+    private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected){
+        //TODO: check if is the selection is right
+        //latestInit.selecex
+        return true;
     }
 
     @Override
@@ -56,23 +73,16 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState);
 
             if (mess.chairedPlayer.equals(ClientManager.userNickname)){
+                latestInit = mess;
                 ClientManager.virtualGameManager.sendAck();
-                boolean selectionDone = false;
-                while(!selectionDone){
-                    try{
-                        ClientManager.view.startGameSequence();
-                    }catch (UnselectableCardException e){
-                        //not selectable
-                        break;
-                    }
-                    selectionDone = true;
-                }
+                ClientManager.view.chooseCards();
             }
 
         }else if(message instanceof GameStateMessage){
             //received info aboiut the match
 
         }else if(message instanceof SelectedCardsMessage){
+            ClientManager.view.chooseColumn();
 
         }else if(message instanceof SelectedColumnsMessage){
 

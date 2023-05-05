@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
+import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.view.CLIgeneral;
@@ -78,6 +79,8 @@ public class ClientManager {
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
         }else if(receivedMessageDecoded instanceof GameStateMessage){
             //message with all the info about the game
+            pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
+        }else if(receivedMessageDecoded instanceof SelectedCardsMessage){
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
         }
     }

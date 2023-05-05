@@ -273,8 +273,6 @@ public class LivingRoom{
             return inRow(coordA,coordB) && inRow(coordB,coordC);
         }
 
-
-
     }
 }
 

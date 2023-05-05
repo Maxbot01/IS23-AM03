@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.virtual_model;
 import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
+import it.polimi.ingsw.model.helpers.Pair;
+
+import java.util.ArrayList;
 
 public class VirtualGameManager extends VirtualGameModel{
 
@@ -32,4 +35,8 @@ public class VirtualGameManager extends VirtualGameModel{
     /*
     Game methods
      */
+
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
+
+    }
 }

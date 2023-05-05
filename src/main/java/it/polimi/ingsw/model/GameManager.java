@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
 import it.polimi.ingsw.model.modelSupport.Player;
+import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 
 import java.util.ArrayList;
@@ -123,6 +125,11 @@ public class GameManager extends GameObservable{
     }
 
 
+    //TODO: to do!!
+    public void receiveAck(){
+
+    }
+
 
     /*
     Gest methods LOBBIES and forward them to the exact game and lobby
@@ -136,6 +143,22 @@ public class GameManager extends GameObservable{
         }
     }
 
+
+    /*
+    GAME methods
+     */
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
+        for(Game x: currentGames.values()){
+            if(x.getID().equals(gameID)){
+                try{
+                    x.selectedCards(selected, user);
+                }catch (UnselectableCardException e){
+                    //TODO: manage exception
+                }
+
+            }
+        }
+    }
     /*
     Thread safe GameManager instance creator
      */
