@@ -14,9 +14,10 @@ import java.util.UUID;
 public class ClientMain implements Runnable {
     private Socket socket;
 
-    public ClientMain(Socket socket) {
+    public ClientMain(Socket socket, boolean isCli){
         //the client starts, lets set the pub/sub environment.
         this.socket = socket;
+        ClientManager cl = new ClientManager(isCli);
         ClientManager.userUID = UUID.randomUUID().toString();
     }
 

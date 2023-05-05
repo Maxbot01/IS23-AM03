@@ -51,14 +51,22 @@ public interface UpdateHandler {
      */
     void launchGameLobby(String gameId, ArrayList<String> players, String host); // The check of whether the user is the host is done inside the method, there's no need to give info
     /**
-     * Calls the game sequence where the CLI user chooses the cards from the living room and places them in his shelf
+     * Calls the game sequence where the CLI user chooses the cards from the living room
      * @throws UnselectableCardException
      */
-    void startGameSequence() throws UnselectableCardException;
+    void chooseCards() throws UnselectableCardException;
+
+    /**
+     * Calls the game sequence where the CLI user chooses the column of his shelf
+     */
+    void chooseColumn();
     /**
      * It prints the living room and shelves on the terminal
      */
     void printLivingRoomAndShelves();
-
-    void showErrorMessage(String toString);
+    /**
+     * Prints error type on command line
+     * @param error
+     */
+    void showErrorMessage(String error);
 }
