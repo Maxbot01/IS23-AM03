@@ -59,4 +59,6 @@ public interface UpdateHandler {
      * It prints the living room and shelves on the terminal
      */
     void printLivingRoomAndShelves();
+
+    void showErrorMessage(String toString);
 }

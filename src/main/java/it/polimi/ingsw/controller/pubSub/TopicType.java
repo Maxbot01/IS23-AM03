@@ -4,5 +4,6 @@ public enum TopicType {
     matchState,
     lobbyState,
     gameManagerState,
-    networkMessageState
+    networkMessageState,
+    errorMessageState
 }

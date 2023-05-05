@@ -4,5 +4,8 @@ public enum ErrorType {
     selectedColumnsError,
     acceptFinishedGameError,
     selectedCardsMessageError,
-    wrongPassword
+    wrongPassword,
+    notEnoughPlayers,
+    lobbyIsFull,
+    onlyHostCanStartMatch
 }

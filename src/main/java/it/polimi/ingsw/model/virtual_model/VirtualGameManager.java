@@ -18,6 +18,10 @@ public class VirtualGameManager extends VirtualGameModel{
     public void createGame(int numPlayers, String user){
 
     }
+
+    public void sendAck(){
+
+    }
     /*
     Lobby methods
      */

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
@@ -18,10 +20,13 @@ public class GameLobby extends GameObservable {
     }
 
     public void startMatch(String user){
-        if(user.equals(host)){
+        if(user.equals(host) && numOfPlayers == players.size()){
             GameManager.getInstance().createMatchFromLobby(ID, players);
-        }else{
-            //send wrong request error
+        }else if (numOfPlayers < players.size()){
+            //TODO: send wrong request error
+            super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers), false, "-");
+        }else if(!user.equals(host)){
+            super.notifyObserver(user, new ErrorMessage(ErrorType.onlyHostCanStartMatch), false, "-");
         }
     }
 
@@ -33,6 +38,9 @@ public class GameLobby extends GameObservable {
         this.ID = ID;
         this.host = host;
         this.numOfPlayers = numOfPlayers;
+        players = new ArrayList<>();
+        players.add(host);
+        super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players), false, ID);
     }
 
     public void addPlayer(String player) throws LobbyFullException {

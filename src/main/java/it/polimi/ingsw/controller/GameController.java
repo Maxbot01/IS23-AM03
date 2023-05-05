@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
+import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.view.View;
 
@@ -50,8 +51,24 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //after it receives it, updates the view accordingly
         if(message instanceof InitStateMessage){
             InitStateMessage mess = (InitStateMessage)message;
+            //if the message was for this client send ack
             ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals, mess.chairedPlayer);
             ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState);
+
+            if (mess.chairedPlayer.equals(ClientManager.userNickname)){
+                ClientManager.virtualGameManager.sendAck();
+                boolean selectionDone = false;
+                while(!selectionDone){
+                    try{
+                        ClientManager.view.startGameSequence();
+                    }catch (UnselectableCardException e){
+                        //not selectable
+                        break;
+                    }
+                    selectionDone = true;
+                }
+            }
+
         }else if(message instanceof GameStateMessage){
             //received info aboiut the match
 
