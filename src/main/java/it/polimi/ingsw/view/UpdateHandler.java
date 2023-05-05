@@ -54,7 +54,7 @@ public interface UpdateHandler {
      * Calls the game sequence where the CLI user chooses the cards from the living room
      * @throws UnselectableCardException
      */
-    void chooseCards() throws UnselectableCardException;
+    void chooseCards();
 
     /**
      * Calls the game sequence where the CLI user chooses the column of his shelf

@@ -254,7 +254,7 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public void chooseCards() throws UnselectableCardException {
+    public void chooseCards(){
         ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
         ArrayList<BoardCard> selected = new ArrayList<>();
 
@@ -286,7 +286,7 @@ public class CLIgeneral extends View{
             selected.add(livingRoom[coord.get(i).getFirst()][coord.get(i).getSecond()]);
         }
         this.selectedCards = selected;
-        super.gameController.onSelectedCards(coord);
+        super.gameController.onSelectedCards(coord, userPlayer.getNickname());
     }
     public void chooseColumn(){
         System.out.println("Insert the shelf's column for the selected cards. From 0 to 4.");
