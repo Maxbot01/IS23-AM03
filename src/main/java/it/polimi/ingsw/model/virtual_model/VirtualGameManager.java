@@ -1,35 +1,45 @@
 package it.polimi.ingsw.model.virtual_model;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.client.ClientMain;
+import it.polimi.ingsw.client.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.helpers.Pair;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.client.VirtualGameManagerSerializer.serializeMethod;
+
 public class VirtualGameManager extends VirtualGameModel{
 
     public void ping(){
-
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("ping", new Object[]{});
+        serializeMethod(serializedGameManager);
     }
     public void setCredentials(String username, String password){
-
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password});
+        serializeMethod(serializedGameManager);
     }
     public void selectGame(String gameID, String user){
-
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("selectGame", new Object[]{gameID, user});
+        serializeMethod(serializedGameManager);
     }
     public void createGame(int numPlayers, String user){
-
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("createGame", new Object[]{numPlayers, user});
+        serializeMethod(serializedGameManager);
     }
 
     public void sendAck(){
-
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("sendAck", new Object[]{});
+        serializeMethod(serializedGameManager);
     }
     /*
     Lobby methods
      */
     public void startMatch(String ID, String user){
-
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("startMatch", new Object[]{ID, user});
+        serializeMethod(serializedGameManager);
     }
 
     /*
@@ -37,6 +47,7 @@ public class VirtualGameManager extends VirtualGameModel{
      */
 
     public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
-
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("selectedCards", new Object[]{selected, user, gameID});
+        serializeMethod(serializedGameManager);
     }
 }
