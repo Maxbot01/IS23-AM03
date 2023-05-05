@@ -19,7 +19,7 @@ public class CLIgeneral extends View{
     private CommonGoals commonGoals;
     private PersonalGoal personalGoal;
     private ArrayList<Player> players;
-    private Player userPlayer; //fix as string
+    private Player userPlayer;
     private boolean host;
 
 // COMMANDS INITIALIZATION
@@ -71,12 +71,14 @@ public class CLIgeneral extends View{
             .required(false)
             .build();
     @Override
-    public void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, String userPlayer){
-        //TODO: uncomment and fix
-        //this.players = players;
+    public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals, String userPlayer){
+        for(String s: playersNick){
+            Player p = new Player(s);
+            this.players.add(p);
+        }
         this.commonGoals = commonGoals;
-        this.personalGoal = personalGoal;
-        //this.userPlayer = userPlayer;
+        this.userPlayer = new Player(userPlayer);
+        this.personalGoal = personalGoals.get(userPlayer);
     }
     @Override
     public void waitingCommands(){
@@ -127,11 +129,10 @@ public class CLIgeneral extends View{
     }
     @Override
     public void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
-                                    String gameID, GameStateType gameState) {
+                                    GameStateType gameState) {
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
-        this.gameID = gameID;
         for(int i = 0; i < players.size(); i++){ // With the first two for cycles I avoid possible differences in the players' order between the old ArrayList and the updated
             for(int j = 0; j < players.size(); j++){
                 if(players.get(i).getNickname().equals(playersShelves.get(j).getFirst())){

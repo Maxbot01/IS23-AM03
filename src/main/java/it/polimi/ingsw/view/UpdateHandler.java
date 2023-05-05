@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface UpdateHandler {
@@ -33,8 +34,7 @@ public interface UpdateHandler {
      * @param playersShelves
      */
     void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
-                             String gameID, GameStateType gameState);
-    void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves, GameStateType gameState);
+                             GameStateType gameState);
     /**
      * Requests Username from Command Line
      * @return String
