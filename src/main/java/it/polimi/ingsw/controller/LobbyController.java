@@ -10,8 +10,10 @@ import it.polimi.ingsw.view.View;
 
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 
-    public LobbyController(View view) {
+    private String ID;
+    public LobbyController(View view, String ID) {
         super(view);
+        this.ID = ID;
         ClientManager.pubsub.addSubscriber(TopicType.lobbyState, this);
     }
     @Override
