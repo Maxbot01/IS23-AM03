@@ -14,7 +14,7 @@ import java.util.*;
 public class CLIgeneral extends View{
     private GameStateType gameState;
     private String gameID;
-    private LivingRoom livingRoom;
+    private BoardCard[][] livingRoom;
     private Boolean[][] selectables;
     private CommonGoals commonGoals;
     private PersonalGoal personalGoal;
@@ -71,12 +71,14 @@ public class CLIgeneral extends View{
             .required(false)
             .build();
     @Override
-    public void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, String userPlayer){
-        //TODO: uncomment and fix
-        //this.players = players;
+    public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals, String userPlayer){
+        for(String s: playersNick){
+            Player p = new Player(s);
+            this.players.add(p);
+        }
         this.commonGoals = commonGoals;
-        this.personalGoal = personalGoal;
-        //this.userPlayer = userPlayer;
+        this.userPlayer = new Player(userPlayer);
+        this.personalGoal = personalGoals.get(userPlayer);
     }
     @Override
     public void waitingCommands(){
@@ -86,10 +88,12 @@ public class CLIgeneral extends View{
         options.addOption(show_commonGoals);
         options.addOption(show_personalGoal);
         options.addOption(help);
+        // Printing section commands
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Section Commands", options);
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
-
         try{
             cmd = parser.parse(options, scanf());
             while(!options.hasOption(cmd.getOptions()[0].getOpt())){ // Until it receives a possible command, it continues to scan
@@ -111,7 +115,6 @@ public class CLIgeneral extends View{
                 System.out.println("Your personal goal is:");
                 printShelf(personalGoalShelf);
             } else if (cmd.hasOption(help)) {
-                HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp("Available Commands", options);
             } else if (cmd.hasOption(chat)) { // Example of chat implementation
                 Scanner scan = new Scanner(System.in);
@@ -121,14 +124,13 @@ public class CLIgeneral extends View{
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
-            HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Section Commands", options);
         }
     }
     @Override
-    public void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves, GameStateType gameState) {
-        //TODO: togliere il commento qui sotto e fixare!!!
-        //this.livingRoom = livingRoom;
+    public void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
+                                    GameStateType gameState) {
+        this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
         for(int i = 0; i < players.size(); i++){ // With the first two for cycles I avoid possible differences in the players' order between the old ArrayList and the updated
@@ -160,6 +162,9 @@ public class CLIgeneral extends View{
         options.addOption(create_game);
         options.addOption(select_game);
         options.addOption(help);
+        // Printing section commands
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Section Commands", options);
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
@@ -180,7 +185,6 @@ public class CLIgeneral extends View{
                     cmd = parser.parse(options, scanf());
                 }
                 while(cmd.hasOption(help)){
-                    HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("Section Commands", options);
                     cmd = parser.parse(options, scanf());
                 }
@@ -196,7 +200,6 @@ public class CLIgeneral extends View{
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
-            HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Section Commands", options);
         }
     }
@@ -214,6 +217,9 @@ public class CLIgeneral extends View{
         if(host){
             options.addOption(start_match);
         }
+        // Printing section commands
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Section Commands", options);
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
 
@@ -226,7 +232,6 @@ public class CLIgeneral extends View{
                     cmd = parser.parse(options, scanf());
                 }
                 while(cmd.hasOption(help)){
-                    HelpFormatter formatter = new HelpFormatter();
                     formatter.printHelp("Section Commands", options);
                     cmd = parser.parse(options, scanf());
                 }
@@ -243,7 +248,6 @@ public class CLIgeneral extends View{
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
-            HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("Section Commands", options);
         }
     }
@@ -255,42 +259,44 @@ public class CLIgeneral extends View{
         System.out.println("Select Cards in couples of coordinates.\nExample: 5 4 5 5 5 6\twhere 5-4 is the first couple and so on");
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
-        if(s.length() == 11 || s.length() == 3 || s.length() == 7){
-            for(int i = 0; i < s.length(); i+=4){
-                Pair<Integer,Integer> tmp = new Pair<>(Character.getNumericValue(s.charAt(i)),Character.getNumericValue(s.charAt(i+2)));
-                coord.add(tmp);
-            }
-        }else{
-            System.out.println("Insert coordinates through the right pattern\n"+"Example: '5 5 5 6 5 7' where 5 5 is the first couple");
+        while(s.length() != 11 && s.length() != 3 && s.length() != 7)
+        {
+            System.out.println("Insert coordinates through the right pattern\n" + "Example: '5 5 5 6 5 7' where 5 5 is the first couple");
+            s = in.nextLine();
+        }
+        for(int i = 0; i < s.length(); i+=4){
+            Pair<Integer,Integer> tmp = new Pair<>(Character.getNumericValue(s.charAt(i)),Character.getNumericValue(s.charAt(i+2)));
+            coord.add(tmp);
         }
         System.out.println("Choose order for the selected cards.\nExample: '132' -> first card, third card, second card.");
         Scanner in2 = new Scanner(System.in);
         s = in2.next();
-        if(s.length() == coord.size()){
-            ArrayList<Pair<Integer,Integer>> copy = new ArrayList<>();
-            for(int i = 0; i < s.length(); i++){
-                copy.add(coord.get(Character.getNumericValue(s.charAt(i))-1));
-            }
-            coord = copy;
-            for(int i = 0; i < coord.size(); i++){
-                selected.add(livingRoom.getBoardCardAt(coord.get(i)));
-            }
-            super.gameController.onSelectedCards(coord);
-        }else{
+        while(s.length() != coord.size()){
             System.out.println("The chosen order must be of the same size of the cards selected.");
+            s = in2.next();
         }
+        ArrayList<Pair<Integer,Integer>> copy = new ArrayList<>();
+        for(int i = 0; i < s.length(); i++){
+            copy.add(coord.get(Character.getNumericValue(s.charAt(i))-1));
+        }
+        coord = copy;
+        for(int i = 0; i < coord.size(); i++){
+            selected.add(livingRoom[coord.get(i).getFirst()][coord.get(i).getSecond()]);
+        }
+        super.gameController.onSelectedCards(coord);
+
         System.out.println("Insert the shelf's column for the selected cards. From 0 to 4.");
         Scanner in3 = new Scanner(System.in);
         int column = Integer.parseInt(in3.next());
-        if(column >= 0 && column <= 4){
-            super.gameController.onSelectedColumn(selected,column);
-        }else{
+        while(column < 0 || column > 4){
             System.out.println("Select a column within range, from 0 to 4.");
+            column = Integer.parseInt(in3.next());
         }
+        super.gameController.onSelectedColumn(selected,column);
     }
     @Override
     public void printLivingRoomAndShelves(){
-        BoardCard[][] pieces = livingRoom.getPieces();
+        BoardCard[][] pieces = livingRoom;
         System.out.println("Game state: "+gameState.toString()+"\n");
         System.out.print("  0");
         for(int j = 1; j < pieces[0].length; j++){

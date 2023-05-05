@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 
+import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
@@ -61,6 +62,7 @@ public class GameManagerController extends Controller implements GameManagerView
             }
         }else if(message instanceof loginGameMessage){
             //user can go in, launchGameManager phase
+            ClientManager.userNickname = ((loginGameMessage)message).username;
             ClientManager.view.launchGameManager(new ArrayList<>(((loginGameMessage)message).currentGames.keySet()));
         }
         return true;
