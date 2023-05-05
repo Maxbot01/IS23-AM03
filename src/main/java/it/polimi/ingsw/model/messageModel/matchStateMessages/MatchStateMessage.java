@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.messageModel.Message;
 
 public abstract class MatchStateMessage extends Message {
 
-    protected GameStateType gameState;
+    public GameStateType gameState;
     protected String matchID;
 
     MatchStateMessage(GameStateType gameState, String matchID){

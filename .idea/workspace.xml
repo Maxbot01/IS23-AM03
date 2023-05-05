@@ -4,8 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="changes to controller, receiver, pubsub, EVERYTHING">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="stuff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameManagerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/GameManagerMessages/loginGameMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/GameManagerMessages/loginGameMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/NetworkMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/NetworkMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/matchStateMessages/MatchStateMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/matchStateMessages/MatchStateMessage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +100,7 @@
       <workItem from="1680683043593" duration="6041000" />
       <workItem from="1681661874501" duration="270000" />
       <workItem from="1682952749284" duration="16316000" />
-      <workItem from="1683215185065" duration="4030000" />
+      <workItem from="1683215185065" duration="9231000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1678903177375</created>
@@ -381,7 +389,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683222050498</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="stuff">
+      <created>1683223553143</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1683223553143</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -398,7 +413,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="server_side" />
+                        <option value="HEAD" />
                       </list>
                     </value>
                   </entry>
@@ -445,6 +460,7 @@
     <MESSAGE value="changes to controller, receiver, pubsub" />
     <MESSAGE value="fixed stuff and some forbidden tests" />
     <MESSAGE value="changes to controller, receiver, pubsub, EVERYTHING" />
-    <option name="LAST_COMMIT_MESSAGE" value="changes to controller, receiver, pubsub, EVERYTHING" />
+    <MESSAGE value="stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="stuff" />
   </component>
 </project>

@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.UUID;
 
 
 public class ClientMain implements Runnable {
@@ -16,9 +17,9 @@ public class ClientMain implements Runnable {
     public ClientMain(Socket socket) {
         //the client starts, lets set the pub/sub environment.
         this.socket = socket;
+        ClientManager.userUID = UUID.randomUUID().toString();
     }
 
-    private String playerNickname;
 
     public void run() {
         try {
@@ -43,7 +44,7 @@ public class ClientMain implements Runnable {
                     ArrayList<String> toPlayersList = new MessageSerializer().deserializeToPlayersList(receivedMessage);
                     //String matchID1 = new MessageSerializer().getMatchID(receivedMessage);
                     if(receivedMessageDecoded.getClass() != NetworkMessage.class){
-                        if(toPlayersList.contains(playerNickname)){
+                        if(toPlayersList.contains(ClientManager.userUID)){
                             //TODO: send the message to the right client
                         }
                     }
