@@ -26,7 +26,7 @@ public class MessageSerializer {
     public String serialize(Message message, String toPlayer, String ID) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("messageType", message.getClass().getSimpleName());
-        jsonObject.addProperty("toPlayer", toPlayer);
+        jsonObject.addProperty("toPlayerORtoUid", toPlayer);
         jsonObject.addProperty("id", ID);
         jsonObject.add("messageData", gson.toJsonTree(message));
         return jsonObject.toString();
@@ -44,7 +44,7 @@ public class MessageSerializer {
     public ArrayList<String> deserializeToPlayersList(String json) {
         ArrayList<String> toPlayersList = new ArrayList<String>();
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        toPlayersList.add(jsonObject.get("toPlayer").getAsString());
+        toPlayersList.add(jsonObject.get("toPlayerORtoUid").getAsString());
         return toPlayersList;
     }
 
@@ -54,7 +54,7 @@ public class MessageSerializer {
         public Message deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             String messageType = jsonObject.get("messageType").getAsString();
-            String toPlayer = jsonObject.get("toPlayer").getAsString();
+            String toPlayer = jsonObject.get("toPlayerORtoUid").getAsString();
             String id = jsonObject.get("id").getAsString();
             JsonObject messageData = jsonObject.get("messageData").getAsJsonObject();
             switch (messageType) {

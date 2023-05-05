@@ -11,20 +11,14 @@ public abstract class GameObservable {
     protected void notifyObserver(String toPlayer, Message withMessage, boolean inLobbyOrGame, String ID){
         //if we are in a lobby or in a game needs to send the id of the lobby/game
         MessageSerializer messageSerializer = new MessageSerializer();
-        String serializedMessage = messageSerializer.serialize(withMessage, GameManager.getInstance().getUID(toPlayer), ID);
 
         if(inLobbyOrGame){
-            //toPlayer è nome utente
-            //GameManager.getInstance().getUID(toPlayer)
-            //String serializedMessage = messageSerializer.serialize(withMessage, GameManager.getInstance().getUID(toPlayer), ID);
-
+            String serializedMessage = messageSerializer.serialize(withMessage, GameManager.getInstance().getUID(toPlayer), ID);
+            System.out.println("Arrived message to " + toPlayer + serializedMessage.toString());
         }else{
-            //toPlayer è UID
-            //toPlayer
-            //String serializedMessage = messageSerializer.serialize(withMessage, toPlayer, ID);
+            String serializedMessage = messageSerializer.serialize(withMessage, toPlayer, ID);
+            System.out.println("Arrived message to " + toPlayer + serializedMessage.toString());
         }
-
-        System.out.println("Arrived message to " + toPlayer + serializedMessage.toString());
         withMessage.printMessage();
     }
     protected void notifyAllObservers(Message withMessage, boolean inLobbyOrGame, String ID){
