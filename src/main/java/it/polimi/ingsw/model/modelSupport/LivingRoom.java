@@ -34,7 +34,7 @@ public class LivingRoom{
     /**
      * Integer matrix that represents the "footprint" of generic the four-players game, {x,z} where x is the starting column and z the number of items in the row
      */
-    private final static Integer[][] fp4 = {{3,2}, {3,3}, {2,5}, {1,8}, {0,9}, {0,8}, {2, 5}, {3,3}, {4,2}};
+    private final static Integer[][] fp4 = {{3,2}, {3,3}, {2,5}, {1,7}, {0,9}, {0,8}, {2, 5}, {3,3}, {4,2}};
 
     private final static ArrayList<Integer[][]> posItms = new ArrayList<>();
 
@@ -59,6 +59,7 @@ public class LivingRoom{
     public LivingRoom(int numOfPLayers) {
 
         //preparo due vettori da cui prendere le tipologie carte da aggiungere al bag
+        List<BoardCard> bag = new ArrayList<BoardCard>();
         colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
         ornamentType[] ornaments = {ornamentType.A, ornamentType.B, ornamentType.C};
 
@@ -159,12 +160,12 @@ public class LivingRoom{
     }
 
 
-    public BoardCard[][] updateBoard(ArrayList<Pair<Integer,Integer>> selected ) throws UnselectableCardException {
+    public BoardCard[][] updateBoard(ArrayList<Pair<Integer ,Integer>> selected ) throws UnselectableCardException {
         for (Pair<Integer, Integer> coordinates : selected) {
             int i = coordinates.getFirst();
             int j = coordinates.getSecond();
-            if (!(isPresent(i, j) && freeCorner(i, j) && consecutive(selected))) {
-                throw new UnselectableCardException("card is not selectable");
+            if (!(isPresent(i, j) && freeCorner(i, j))) {
+                throw new UnselectableCardException();
             }
         }
         for (Pair<Integer, Integer> coordinates : selected) {
@@ -247,54 +248,31 @@ public class LivingRoom{
         return ((i+j) % DIM - 1 == 0 && (i == 0 || i == DIM - 1));
     }
 
-    private boolean consecutive(ArrayList<Pair<Integer, Integer>> cards) {
-        int size = cards.size();
-        if (size == 1) return true;
-        else if (size == 2) {
-            int xA = cards.get(0).getFirst();
-            int yA = cards.get(0).getSecond();
-            int xB = cards.get(1).getSecond();
-            int xC = cards.get(1).getSecond();
-            return inRow(cards.get(0), cards.get(1));
+    private boolean inRow(Pair<Integer,Integer> coordA, Pair<Integer,Integer> coordB){
+        int xA = coordA.getFirst();
+        int yA = coordA.getSecond();
+        int xB = coordB.getFirst();
+        int yB = coordB.getSecond();
+
+        if(xA == xB && (yA == yB+1 || yB == yA+1)){
+            return true;
         }
+        else return yA == yB && (xA == xB + 1 || xB == xA + 1);
+
+    }
+    private boolean inRow(Pair<Integer,Integer> coordA, Pair<Integer,Integer> coordB, Pair<Integer,Integer> coordC){
+        int xA = coordA.getFirst();
+        int yA = coordA.getSecond();
+        int xB = coordB.getFirst();
+        int yB = coordB.getSecond();
+        int xC = coordC.getFirst();
+        int yC = coordC.getSecond();
+        if(!((xA==xB && xB==xC) || (yA == yB && yB == yC)))
+            return false;
         else {
-            int fixedX = cards.get(0).getFirst();
-            int fixedY = cards.get(0).getFirst();
-            if (!((cards.get(1).getFirst() == fixedX && cards.get(2).getFirst() == fixedX)) || (cards.get(1).getSecond() == fixedY && cards.get(2).getSecond() == fixedY))
-                return false;
-            else {
-                boolean passed = (inRow(cards.get(0), cards.get(1)) && inRow(cards.get(1), cards.get(2))) ||
-                        (inRow(cards.get(0), cards.get(2)) && inRow(cards.get(1), cards.get(2))) ||
-                        (inRow(cards.get(0), cards.get(2)) && inRow(cards.get(1), cards.get(2)));
-                return passed;
-            }
+            return inRow(coordA,coordB) && inRow(coordB,coordC);
         }
-    }
-        private boolean inRow(Pair<Integer,Integer> coordA, Pair<Integer,Integer> coordB){
-            int xA = coordA.getFirst();
-            int yA = coordA.getSecond();
-            int xB = coordB.getFirst();
-            int yB = coordB.getSecond();
 
-            if(xA == xB && (yA == yB+1 || yB == yA+1)){
-                return true;
-            }
-            else return yA == yB && (xA == xB + 1 || xB == xA + 1);
-
-    }
-
-
-    private boolean selectableCards(ArrayList<Pair<Integer, Integer>> cards){
-        boolean accept = true;
-        int dim = cards.size();
-        for(int i = 0; i<dim && accept; i++){
-            int x = cards.get(i).getFirst();
-            int y = cards.get(i).getSecond();
-            if(!cardIsSelectable(x,y)) {
-                accept = false;
-            }
-        }
-        return consecutive(cards) && accept;
     }
 }
 

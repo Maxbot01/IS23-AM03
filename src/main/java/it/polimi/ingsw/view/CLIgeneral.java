@@ -21,8 +21,10 @@ public class CLIgeneral extends View{
     private ArrayList<Player> players;
     private Player userPlayer;
     private boolean host;
+    ArrayList<BoardCard> selectedCards;
 
-// COMMANDS INITIALIZATION
+
+    // COMMANDS INITIALIZATION
     private final Option show_games = Option.builder("show_games")
             .hasArg(false)
             .desc("shows all the games available")
@@ -252,7 +254,7 @@ public class CLIgeneral extends View{
         }
     }
     @Override
-    public void startGameSequence() throws UnselectableCardException {
+    public void chooseCards(){
         ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
         ArrayList<BoardCard> selected = new ArrayList<>();
 
@@ -283,8 +285,10 @@ public class CLIgeneral extends View{
         for(int i = 0; i < coord.size(); i++){
             selected.add(livingRoom[coord.get(i).getFirst()][coord.get(i).getSecond()]);
         }
-        super.gameController.onSelectedCards(coord);
-
+        this.selectedCards = selected;
+        super.gameController.onSelectedCards(coord, userPlayer.getNickname());
+    }
+    public void chooseColumn(){
         System.out.println("Insert the shelf's column for the selected cards. From 0 to 4.");
         Scanner in3 = new Scanner(System.in);
         int column = Integer.parseInt(in3.next());
@@ -292,7 +296,7 @@ public class CLIgeneral extends View{
             System.out.println("Select a column within range, from 0 to 4.");
             column = Integer.parseInt(in3.next());
         }
-        super.gameController.onSelectedColumn(selected,column);
+        super.gameController.onSelectedColumn(selectedCards,column);
     }
     @Override
     public void printLivingRoomAndShelves(){
@@ -333,6 +337,10 @@ public class CLIgeneral extends View{
                 printShelf(players.get(i).getPlayersShelf());
             }
         }
+    }
+    @Override
+    public void showErrorMessage(String error){
+        System.out.println(error);
     }
     private Pair<String,Character> getColor(BoardCard tmp){
         String colorHighlight;

@@ -1,15 +1,18 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
 import it.polimi.ingsw.model.modelSupport.Player;
+import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Singleton with all the current games and the needed methods to create or join a game
@@ -22,7 +25,7 @@ public class GameManager extends GameObservable{
     //hash map with the game lobby and the relative games
     private HashMap<GameLobby, Game> currentGames;
     private HashMap<String, String> nicknames;
-
+    private HashMap<String, String> userIDs;
     private HashMap<String, Game> userMatches;
     private GameManager(){
         nicknames = new HashMap<>();
@@ -39,12 +42,23 @@ public class GameManager extends GameObservable{
                     x.addPlayer(user);
                 }catch(LobbyFullException e){
                     //lobby is full, returns error
-
+                    super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull), false, "-");
                 }
             }
         }
     }
 
+    public void createGame(int numPlayers, String username){
+        //creates game
+        currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
+
+    }
+
+
+
+    public String getUID(String fromUsername){
+        return userIDs.get(fromUsername);
+    }
 
     public void createMatchFromLobby(String withID, ArrayList<String> withPlayers){
         if(!currentGames.containsKey(withID)){
@@ -65,17 +79,12 @@ public class GameManager extends GameObservable{
 
     }
 
-    public void ping(){
+    public void ping(String fromClientUID){
         //received ping message
         //send pong
         //TODO: server.send(new NetworkMessage("pong"));
+        super.notifyObserver(fromClientUID, new NetworkMessage("pong"), false, "-");
     }
-
-    public void createGame(int numPlayers){
-
-    }
-
-
 
 
     //LOBBY METHODS
@@ -94,26 +103,62 @@ public class GameManager extends GameObservable{
         return out;
     }
 
-    public void setCredentials(String username, String password){
+    public void setCredentials(String username, String password, String UID){
         //check if there was, else send message of erroneus urername set request.
         if(nicknames.containsKey(username)){
             //already exists, checks if psw is right
             if (nicknames.get(username).equals(password)){
                 //ok login
                 //sends all the games
-                super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies()), false, "-");
+                userIDs.put(username, UID);
+                super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
             }else{
                 //username wrong password
                 //sends error
-                //super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword));
+                super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword), false, "-");
             }
         }else{
             //new user
             nicknames.put(username, password);
-            super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies()), false, "-");
+            super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
         }
     }
 
+
+    //TODO: to do!!
+    public void receiveAck(){
+
+    }
+
+
+    /*
+    Gest methods LOBBIES and forward them to the exact game and lobby
+     */
+
+    public void startMatch(String ID, String user){
+        for(GameLobby x: currentGames.keySet()){
+            if(x.getID().equals(ID)){
+                x.startMatch(user);
+            }
+        }
+    }
+
+
+    /*
+    GAME methods
+     */
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
+        for(Game x: currentGames.values()){
+            if(x.getID().equals(gameID)){
+                try{
+                    x.selectedCards(selected, user);
+                }catch (UnselectableCardException e){
+                    //TODO: manage exception
+                }
+
+            }
+        }
+    }
     /*
     Thread safe GameManager instance creator
      */
@@ -132,18 +177,6 @@ public class GameManager extends GameObservable{
     }
      */
 
-
-    /*
-    Gest methods LOBBIES and forward them to the exact game and lobby
-     */
-
-    public void startMatch(String ID, String user){
-        for(GameLobby x: currentGames.keySet()){
-            if(x.getID().equals(ID)){
-                x.startMatch(user);
-            }
-        }
-    }
 
 
 }
