@@ -57,6 +57,4 @@ public class SelectedColumnsMessage extends MatchStateMessage{
         System.out.println("Game State: " + gameState);
         System.out.println("Match ID: " + matchID);
     }
-
-
 }

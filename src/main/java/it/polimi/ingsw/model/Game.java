@@ -4,10 +4,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.errorMessages.SelectedColumnsMessageError;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
+import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.*;
 import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
 import it.polimi.ingsw.model.modelSupport.enums.TurnStateType;
@@ -84,14 +81,15 @@ public class Game extends GameObservable{
         this.playingPlayer = players.get(ranPlayerIndx);
         this.gameState = GameStateType.IN_PROGRESS;
         //init done, can update the clients with all the needed data
-        HashMap<Player, PersonalGoal> personalGoals = new HashMap<>();
-        ArrayList<Pair<Player, BoardCard[][]>> playersShelves = new ArrayList<>();
+        HashMap<String, PersonalGoal> personalGoals = new HashMap<>();
+        ArrayList<Pair<String, BoardCard[][]>> playersShelves = new ArrayList<>();
         for (Player p: this.players) {
-            playersShelves.add(new Pair<>(p, p.getPlayersShelf().getShelfCards()));
-            personalGoals.put(p, p.getPersonalGoal());
+            playersShelves.add(new Pair<>(p.getNickname(), p.getPlayersShelf().getShelfCards()));
+            personalGoals.put(p.getNickname(), p.getPersonalGoal());
         }
 
-        super.notifyAllObservers(players, new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players, this.playingPlayer, playersShelves));
+        BoardCard[] cur = {};
+        super.notifyAllObservers(new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players.stream().map(x -> x.getNickname()).collect(Collectors.toList()), this.playingPlayer.getNickname(), playersShelves), true, this.ID);
     }
 
     public String getID(){
@@ -124,7 +122,7 @@ public class Game extends GameObservable{
             throw new RuntimeException(e);
             //TODO: gestire questo errore
         }
-        super.notifyAllObservers(players, new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer));
+        super.notifyAllObservers(new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
     }
 
     /**
@@ -140,7 +138,7 @@ public class Game extends GameObservable{
             playingPlayer.getPlayersShelf().insertInColumn(selCards, colIndex);
         }catch(ColumnNotSelectable e) {
             //can't insert the items in the columns, send error message to client
-            super.notifyObserver(playingPlayer, new SelectedColumnsMessageError(e.getMessage()));
+            super.notifyObserver(playingPlayer.getNickname(), new SelectedColumnsMessageError(e.getMessage()), true, this.ID);
             return;
         }catch (ShelfFullException e1){
             //TODO: handle game over
@@ -162,7 +160,7 @@ public class Game extends GameObservable{
                 finalScoreBoard.add(new Pair(pl.getNickname(), pl.getFinalScore()));
             }
             String winnerNickname = finalScoreBoard.stream().reduce((a, b) -> a.getSecond() > b.getSecond() ? a : b).get().getFirst();
-            super.notifyAllObservers(players, new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname));
+            super.notifyAllObservers(new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname), true, this.ID);
             return;
         }
         //refill board if needed
@@ -172,7 +170,7 @@ public class Game extends GameObservable{
             this.gameState = GameStateType.LAST_ROUND;
         }
         //se il game non è finito posso procedere ed inviare l'update a tutti
-        super.notifyAllObservers(players, new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()));
+        super.notifyAllObservers(new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()), true, this.ID);
         this.playingPlayer = getNextPlayer();
     }
 
@@ -180,7 +178,7 @@ public class Game extends GameObservable{
     public ArrayList<Player> getPlayers(){
         return new ArrayList<>(players);
     }
-
+    public LivingRoom getLivingRoom(){ return this.livingRoom;}
 
     /**
      * Support method that locates and returns the next player in the game
@@ -190,6 +188,7 @@ public class Game extends GameObservable{
         int indx = players.indexOf(playingPlayer);
         return indx+1 == players.size() ? players.get(0) : players.get(indx+1);
     }
+
 
 
 }

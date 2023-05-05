@@ -8,5 +8,5 @@ public interface CommonGoalStrategy {
      * @param Mat
      * @return boolean
      */
-    public boolean goalCompleted(BoardCard[][] Mat);
+    boolean goalCompleted(BoardCard[][] Mat);
 }

@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="controller, view">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="changes to controller, receiver, pubsub, EVERYTHING">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/CLIgeneral.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/CLIgeneral.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/UpdateHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/UpdateHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,9 +17,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
-        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -67,7 +69,7 @@
   <component name="RunManager">
     <configuration name="Testing_Common_Goals_Finale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.Main" />
-      <module name="AM03" />
+      <module name="ProgettoIDS23" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -91,6 +93,8 @@
       <workItem from="1680608800383" duration="1801000" />
       <workItem from="1680683043593" duration="6041000" />
       <workItem from="1681661874501" duration="270000" />
+      <workItem from="1682952749284" duration="16316000" />
+      <workItem from="1683215185065" duration="2668000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1678903177375</created>
@@ -295,7 +299,84 @@
       <option name="project" value="LOCAL" />
       <updated>1682328968099</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="changes to model">
+      <created>1682329899967</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1682329899967</updated>
+    </task>
+    <task id="LOCAL-00031" summary="changes to model">
+      <created>1682953088340</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1682953088340</updated>
+    </task>
+    <task id="LOCAL-00032" summary="changes to controller, receiver, pubsub">
+      <created>1683031709327</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1683031709327</updated>
+    </task>
+    <task id="LOCAL-00033" summary="fixed stuff and some forbidden tests">
+      <created>1683033957404</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1683033957404</updated>
+    </task>
+    <task id="LOCAL-00034" summary="changes to controller, receiver, pubsub, EVERYTHING">
+      <created>1683106367784</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1683106367784</updated>
+    </task>
+    <task id="LOCAL-00035" summary="changes to controller, receiver, pubsub, EVERYTHING">
+      <created>1683108673171</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1683108673171</updated>
+    </task>
+    <task id="LOCAL-00036" summary="changes to controller, receiver, pubsub, EVERYTHING">
+      <created>1683108747083</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1683108747083</updated>
+    </task>
+    <task id="LOCAL-00037" summary="changes to controller, receiver, pubsub, EVERYTHING">
+      <created>1683121787917</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1683121787917</updated>
+    </task>
+    <task id="LOCAL-00038" summary="changes to controller, receiver, pubsub, EVERYTHING">
+      <created>1683125869822</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1683125869822</updated>
+    </task>
+    <task id="LOCAL-00039" summary="changes to controller, receiver, pubsub, EVERYTHING">
+      <created>1683215199613</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1683215199613</updated>
+    </task>
+    <task id="LOCAL-00040" summary="changes to controller, receiver, pubsub, EVERYTHING">
+      <created>1683221300584</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1683221300584</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -312,7 +393,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/main" />
+                        <option value="server_side" />
                       </list>
                     </value>
                   </entry>
@@ -352,10 +433,14 @@
     <MESSAGE value="empty piece instead of null in boards" />
     <MESSAGE value="finished common goal" />
     <MESSAGE value="finished common goal with maximus" />
-    <MESSAGE value="fixed stuff and some forbidden tests" />
     <MESSAGE value="gitignore updated with no javadoc" />
     <MESSAGE value="some networking" />
     <MESSAGE value="controller, view" />
-    <option name="LAST_COMMIT_MESSAGE" value="controller, view" />
+    <MESSAGE value="changes to model" />
+    <MESSAGE value="changes to controller, receiver, pubsub" />
+    <MESSAGE value="fixed stuff and some forbidden tests" />
+    <MESSAGE value="changes to controller, receiver, pubsub, EVERYTHING" />
+    <MESSAGE value="Cli fixed some errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cli fixed some errors" />
   </component>
 </project>

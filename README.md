@@ -22,4 +22,11 @@ RMI:<br />
 ![0%](https://progress-bar.dev/0)
 
 Chat:<br />
+![10%](https://progress-bar.dev/10)
+
+CLI:<br />
+![90%](https://progress-bar.dev/90)
+
+GUI:<br />
 ![0%](https://progress-bar.dev/0)
+

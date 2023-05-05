@@ -1,25 +1,25 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.controller.pubSub.PubSubService;
+import it.polimi.ingsw.model.messageModel.Message;
+import it.polimi.ingsw.model.messageModel.NetworkMessage;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
 public class ClientMain implements Runnable {
     private Socket socket;
-    private static PubSubService pubsub;
 
     public ClientMain(Socket socket) {
         //the client starts, lets set the pub/sub environment.
         this.socket = socket;
-        pubsub = new PubSubService();
     }
+
+    private String playerNickname;
+
     public void run() {
         try {
             Scanner in = new Scanner(socket.getInputStream());
@@ -32,6 +32,22 @@ public class ClientMain implements Runnable {
                 } else {
                     out.println("Received: " + receivedMessage);
                     //receives a json encoded message, decoding is needed
+                    /*the received json message can be of types:
+                    - CONNECTION 'acks and ping pongs ecc..' -> NetworkMessage
+                    - MESSAGE 'big messages defined in the model' -> other message types
+                     */
+                    //decode message here and give it to a variable called receivedMessageDecoded: Message
+                    //TODO: BE SURE TO RECEIVE MESSAGES FOR THIS CLIENT:
+                    //check if right user only if it's not NetworkMessage
+                    Message receivedMessageDecoded = new MessageSerializer().deserialize(receivedMessage);
+                    ArrayList<String> toPlayersList = new MessageSerializer().deserializeToPlayersList(receivedMessage);
+                    //String matchID1 = new MessageSerializer().getMatchID(receivedMessage);
+                    if(receivedMessageDecoded.getClass() != NetworkMessage.class){
+                        if(toPlayersList.contains(playerNickname)){
+                            //TODO: send the message to the right client
+                        }
+                    }
+                    ClientManager.clientReceiveMessage(receivedMessageDecoded);
                     out.flush();
                 }
             }

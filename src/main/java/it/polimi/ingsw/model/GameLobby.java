@@ -1,13 +1,58 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
+import it.polimi.ingsw.model.modelSupport.Player;
+import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
+
+import java.util.ArrayList;
+
 public class GameLobby extends GameObservable {
 
     private String ID;
-    GameLobby(){
+    private String host;
+    private int numOfPlayers;
+    private ArrayList<String> players;
 
+    public ArrayList<String> getPlayers(){
+        return players;
+    }
+
+    public void startMatch(String user){
+        if(user.equals(host)){
+            GameManager.getInstance().createMatchFromLobby(ID, players);
+        }else{
+            //send wrong request error
+        }
     }
 
     public String getID(){
         return ID;
+    }
+
+    GameLobby(String ID, String host, int numOfPlayers){
+        this.ID = ID;
+        this.host = host;
+        this.numOfPlayers = numOfPlayers;
+    }
+
+    public void addPlayer(String player) throws LobbyFullException {
+        if(players.size() + 1 > numOfPlayers){
+            throw new LobbyFullException();
+        }else{
+            players.add(player);
+            super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
+        }
+    }
+
+    public void setNumOfPlayers(int numOfPlayers){
+        this.numOfPlayers = numOfPlayers;
+    }
+
+    public void killLobby() {
+        this.ID = "TOMB";
+    }
+
+    public boolean isKilled(){
+        return this.ID.equals("TOMB");
     }
 }
