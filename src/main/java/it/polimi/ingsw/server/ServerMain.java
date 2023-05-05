@@ -26,7 +26,7 @@ public class ServerMain {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                executor.submit(new ClientMain(socket));
+                executor.submit(new ClientMain(socket, true));
             } catch(IOException e) {
                 break; // Entrerei qui se serverSocket venisse chiuso
             }
