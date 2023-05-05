@@ -41,7 +41,6 @@ public class MessageSerializer {
         return jsonObject.get("id").getAsString();
     }
 
-
     public ArrayList<String> deserializeToPlayersList(String json) {
         ArrayList<String> toPlayersList = new ArrayList<String>();
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
