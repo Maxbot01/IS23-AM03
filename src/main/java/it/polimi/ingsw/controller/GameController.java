@@ -6,10 +6,7 @@ import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
+import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.view.View;
@@ -52,8 +49,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //should receive matchStateMessages only
         //after it receives it, updates the view accordingly
         if(message instanceof InitStateMessage){
-
-        }else if(message instanceof MatchStateMessage){
+            InitStateMessage mess = (InitStateMessage)message;
+            ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals, mess.chairedPlayer);
+            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState);
+        }else if(message instanceof GameStateMessage){
+            //received info aboiut the match
 
         }else if(message instanceof SelectedCardsMessage){
 

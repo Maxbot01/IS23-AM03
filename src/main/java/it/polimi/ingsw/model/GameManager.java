@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
+import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
+import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class GameManager extends GameObservable{
     public void selectGame(String ID, String user){
         //currentGames.put(new GameLobby());
         for(GameLobby x: currentGames.keySet()){
-            if(x.getID().equals(ID)){
+            if(x.getID().equals(ID) && !x.isKilled()){
                 //joins this lobby
                 try {
                     x.addPlayer(user);
@@ -41,6 +43,26 @@ public class GameManager extends GameObservable{
                 }
             }
         }
+    }
+
+
+    public void createMatchFromLobby(String withID, ArrayList<String> withPlayers){
+        if(!currentGames.containsKey(withID)){
+            //handle error id so not exist
+            return;
+        }
+        for(GameLobby x: currentGames.keySet()){
+            if(x.getID().equals(withID)){
+                ArrayList<Player> players = new ArrayList<>();
+                for(String p: withPlayers){
+                    players.add(new Player(p));
+                }
+                currentGames.put(x, new Game(players, withID));
+                x.killLobby();
+                //game has been created
+            }
+        }
+
     }
 
     public void ping(){
@@ -53,6 +75,25 @@ public class GameManager extends GameObservable{
 
     }
 
+
+
+
+    //LOBBY METHODS
+
+    /**
+     * Gets all the lobbies that have not been tombstoned (joinable)
+     * @return
+     */
+    private HashMap<GameLobby, Game> getAllCurrentJoinableLobbies(){
+        HashMap<GameLobby, Game> out = new HashMap<>();
+        for(GameLobby x: this.currentGames.keySet()){
+            if(!x.isKilled()){
+                out.put(x, this.currentGames.get(x));
+            }
+        }
+        return out;
+    }
+
     public void setCredentials(String username, String password){
         //check if there was, else send message of erroneus urername set request.
         if(nicknames.containsKey(username)){
@@ -60,7 +101,7 @@ public class GameManager extends GameObservable{
             if (nicknames.get(username).equals(password)){
                 //ok login
                 //sends all the games
-                super.notifyObserver(username, new loginGameMessage(currentGames));
+                super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies()), false, "-");
             }else{
                 //username wrong password
                 //sends error
@@ -69,7 +110,7 @@ public class GameManager extends GameObservable{
         }else{
             //new user
             nicknames.put(username, password);
-            super.notifyObserver(username, new loginGameMessage(currentGames));
+            super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies()), false, "-");
         }
     }
 
@@ -90,6 +131,19 @@ public class GameManager extends GameObservable{
 
     }
      */
+
+
+    /*
+    Gest methods LOBBIES and forward them to the exact game and lobby
+     */
+
+    public void startMatch(String ID, String user){
+        for(GameLobby x: currentGames.keySet()){
+            if(x.getID().equals(ID)){
+                x.startMatch(user);
+            }
+        }
+    }
 
 
 }

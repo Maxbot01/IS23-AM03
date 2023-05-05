@@ -4,25 +4,20 @@ import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.LobbyViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
-import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
-import it.polimi.ingsw.model.virtual_model.VirtualGameLobby;
 import it.polimi.ingsw.view.View;
-
-import java.util.ArrayList;
 
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 
-    private VirtualGameLobby virtualGameLobby;
-    public LobbyController(View view, VirtualGameLobby virtualGameLobby ) {
+    public LobbyController(View view) {
         super(view);
-        this.virtualGameLobby = virtualGameLobby;
         ClientManager.pubsub.addSubscriber(TopicType.lobbyState, this);
     }
     @Override
-    public void onStartMatch() {
+    public void onStartMatch(String ID, String user) {
+        //virtualGameLobby.startMatch(ID, user);
+        ClientManager.virtualGameManager.startMatch(ID, user);
     }
     @Override
     public void onGetHost() {

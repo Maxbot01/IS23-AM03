@@ -71,11 +71,12 @@ public class CLIgeneral extends View{
             .required(false)
             .build();
     @Override
-    public void initializeGame(ArrayList<Player> players, CommonGoals commonGoals, PersonalGoal personalGoal, Player userPlayer){
-        this.players = players;
+    public void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, String userPlayer){
+        //TODO: uncomment and fix
+        //this.players = players;
         this.commonGoals = commonGoals;
         this.personalGoal = personalGoal;
-        this.userPlayer = userPlayer;
+        //this.userPlayer = userPlayer;
     }
     @Override
     public void waitingCommands(){
@@ -242,7 +243,7 @@ public class CLIgeneral extends View{
                 }
             }
             if (cmd.hasOption(start_match)) {
-                    super.lobbyController.onStartMatch();
+                    super.lobbyController.onStartMatch(gameID, userPlayer.getNickname());
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");

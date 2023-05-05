@@ -17,6 +17,14 @@ public class GameLobby extends GameObservable {
         return players;
     }
 
+    public void startMatch(String user){
+        if(user.equals(host)){
+            GameManager.getInstance().createMatchFromLobby(ID, players);
+        }else{
+            //send wrong request error
+        }
+    }
+
     public String getID(){
         return ID;
     }
@@ -32,7 +40,7 @@ public class GameLobby extends GameObservable {
             throw new LobbyFullException();
         }else{
             players.add(player);
-            super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players));
+            super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
         }
     }
 
@@ -40,4 +48,11 @@ public class GameLobby extends GameObservable {
         this.numOfPlayers = numOfPlayers;
     }
 
+    public void killLobby() {
+        this.ID = "TOMB";
+    }
+
+    public boolean isKilled(){
+        return this.ID.equals("TOMB");
+    }
 }
