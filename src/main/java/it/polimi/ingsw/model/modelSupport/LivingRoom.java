@@ -282,6 +282,20 @@ public class LivingRoom{
             else return yA == yB && (xA == xB + 1 || xB == xA + 1);
 
     }
+
+
+    private boolean selectableCards(ArrayList<Pair<Integer, Integer>> cards){
+        boolean accept = true;
+        int dim = cards.size();
+        for(int i = 0; i<dim && accept; i++){
+            int x = cards.get(i).getFirst();
+            int y = cards.get(i).getSecond();
+            if(!cardIsSelectable(x,y)) {
+                accept = false;
+            }
+        }
+        return consecutive(cards) && accept;
+    }
 }
 
 
