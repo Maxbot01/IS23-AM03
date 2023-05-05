@@ -44,7 +44,6 @@ public class GameManagerController extends Controller implements GameManagerView
 
     @Override
     public void onCreateGame(int numOfPlayers, String user) {
-        //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
 
     }
 
