@@ -69,4 +69,10 @@ public interface UpdateHandler {
      * @param error
      */
     void showErrorMessage(String error);
+
+    /**
+     * Prints the playing player
+     * @param playingPlayer
+     */
+    void showPlayingPlayer(String playingPlayer);
 }

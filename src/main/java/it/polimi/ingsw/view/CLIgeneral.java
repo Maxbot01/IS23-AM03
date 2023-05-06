@@ -288,6 +288,7 @@ public class CLIgeneral extends View{
         this.selectedCards = selected;
         super.gameController.onSelectedCards(coord, userPlayer.getNickname());
     }
+    @Override
     public void chooseColumn(){
         System.out.println("Insert the shelf's column for the selected cards. From 0 to 4.");
         Scanner in3 = new Scanner(System.in);
@@ -342,6 +343,8 @@ public class CLIgeneral extends View{
     public void showErrorMessage(String error){
         System.out.println(error);
     }
+    @Override
+    public void showPlayingPlayer(String playingPlayer){ Sys}
     private Pair<String,Character> getColor(BoardCard tmp){
         String colorHighlight;
         char colorValue;

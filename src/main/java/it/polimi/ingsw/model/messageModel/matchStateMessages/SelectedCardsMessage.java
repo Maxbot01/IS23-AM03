@@ -22,7 +22,7 @@ public class SelectedCardsMessage extends MatchStateMessage {
         super(gameState, matchID);
         this.selectedCards = selectedCards;
         this.selectables = selectables;
-        this. pieces = pieces;
+        this.pieces = pieces;
         this.currentPlayer = currentPlayer;
     }
 

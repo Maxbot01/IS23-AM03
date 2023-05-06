@@ -35,7 +35,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             //ClientManager.view.chooseColumn();
             ClientManager.virtualGameManager.selectedCards(selected, user, gameID);
         }else{
-            ClientManager.view.showErrorMessage("Selezione non corretta");
+            ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least another chosen card");
             ClientManager.view.chooseCards();
         }
         virtualGame.selectedCards(selected);
@@ -72,20 +72,25 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals, mess.chairedPlayer);
             ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState);
 
+            ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
             if (mess.chairedPlayer.equals(ClientManager.userNickname)){
                 latestInit = mess;
                 ClientManager.virtualGameManager.sendAck();
                 ClientManager.view.chooseCards();
+            }else{
+                ClientManager.view.waitingCommands();
             }
 
         }else if(message instanceof GameStateMessage){
-            //received info aboiut the match
+            //received info about the match
 
         }else if(message instanceof SelectedCardsMessage){
             ClientManager.view.chooseColumn();
 
         }else if(message instanceof SelectedColumnsMessage){
-
+            SelectedColumnsMessage mess = (SelectedColumnsMessage)message;
+            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selectables, mess.updatedPlayerShelf, mess.gameState, mess.updatedPoints);
+            ClientManager.view.showPlayingPlayer(mess.newPlayer);
         }
         return true;
     }
