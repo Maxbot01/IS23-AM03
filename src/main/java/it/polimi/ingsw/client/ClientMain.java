@@ -2,9 +2,13 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
+import it.polimi.ingsw.server.ServerMain;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,6 +18,7 @@ import static java.lang.System.out;
 
 
 public class ClientMain implements Runnable {
+
     private Socket socket;
 
     public ClientMain(Socket socket, boolean isCli){
@@ -28,6 +33,7 @@ public class ClientMain implements Runnable {
         out.println(json);
         out.flush();
     }
+
 
 
     public void run() {
@@ -49,6 +55,7 @@ public class ClientMain implements Runnable {
                     //decode message here and give it to a variable called receivedMessageDecoded: Message
                     //TODO: BE SURE TO RECEIVE MESSAGES FOR THIS CLIENT:
                     //check if right user only if it's not NetworkMessage
+                    /*
                     Message receivedMessageDecoded = new MessageSerializer().deserialize(receivedMessage);
                     ArrayList<String> toPlayersList = new MessageSerializer().deserializeToPlayersList(receivedMessage);
                     String matchID = new MessageSerializer().getMatchID(receivedMessage);
@@ -58,7 +65,7 @@ public class ClientMain implements Runnable {
                             sendMessage(receivedMessageDecoded, toPlayersList.get(0), matchID);
                         }
                     }
-                    ClientManager.clientReceiveMessage(receivedMessageDecoded);
+                    ClientManager.clientReceiveMessage(receivedMessageDecoded);*/
                     out.flush();
                 }
             }
@@ -70,5 +77,19 @@ public class ClientMain implements Runnable {
             System.err.println(e.getMessage());
         }
     }
+
+    public static void main(String[] args) throws IOException {
+        String hostName = "127.0.0.1";
+        int portNumber = 1234;
+        InetAddress host = InetAddress.getLocalHost();
+        Socket socket = new Socket(host.getHostName(), 1234);
+        ClientMain cl = new ClientMain(socket, true);
+        cl.run();
+        cl.sendMessage(new ErrorMessage(ErrorType.notEnoughPlayers), "dd", "ddd");
+        cl.sendMessage(new ErrorMessage(ErrorType.notEnoughPlayers), "dd", "ddd");
+        cl.sendMessage(new ErrorMessage(ErrorType.notEnoughPlayers), "dd", "ddd");
+    }
+
+
 }
 
