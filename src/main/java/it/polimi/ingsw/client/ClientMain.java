@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
+import it.polimi.ingsw.server.ServerMain;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,6 +21,7 @@ public class ClientMain implements Runnable {
         ClientManager cl = new ClientManager(isCli);
         ClientManager.userUID = UUID.randomUUID().toString();
     }
+
 
 
     public void run() {
@@ -60,6 +62,10 @@ public class ClientMain implements Runnable {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public static void main(String[] args) {
+
     }
 }
 

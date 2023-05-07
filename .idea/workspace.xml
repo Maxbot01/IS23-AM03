@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="flow">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +65,21 @@
       <recent name="it.polimi.ingsw.controller.pubSub" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Client">
+    <configuration name="Client" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.client.ClientMain" />
+      <module name="ProgettoIDS23" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Server" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.server.ServerMain" />
+      <module name="ProgettoIDS23" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Testing_Common_Goals_Finale" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.Main" />
       <module name="ProgettoIDS23" />
@@ -72,6 +87,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Testing_Common_Goals_Finale" />
+      <item itemvalue="Application.Server" />
+      <item itemvalue="Application.Client" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -93,7 +113,7 @@
       <workItem from="1681661874501" duration="270000" />
       <workItem from="1682952749284" duration="16316000" />
       <workItem from="1683215185065" duration="13665000" />
-      <workItem from="1683368477901" duration="3298000" />
+      <workItem from="1683368477901" duration="3900000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1678903177375</created>
@@ -424,7 +444,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683368572336</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="flow">
+      <created>1683480154267</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1683480154268</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
