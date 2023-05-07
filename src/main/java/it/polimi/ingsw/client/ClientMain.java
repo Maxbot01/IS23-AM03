@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
+import static java.lang.System.out;
+
 
 public class ClientMain implements Runnable {
     private Socket socket;
@@ -19,6 +21,12 @@ public class ClientMain implements Runnable {
         this.socket = socket;
         ClientManager cl = new ClientManager(isCli);
         ClientManager.userUID = UUID.randomUUID().toString();
+    }
+
+    public void sendMessage(Message message, String toPlayer, String ID) {
+        String json = new MessageSerializer().serialize(message, toPlayer, ID);
+        out.println(json);
+        out.flush();
     }
 
 
@@ -43,10 +51,11 @@ public class ClientMain implements Runnable {
                     //check if right user only if it's not NetworkMessage
                     Message receivedMessageDecoded = new MessageSerializer().deserialize(receivedMessage);
                     ArrayList<String> toPlayersList = new MessageSerializer().deserializeToPlayersList(receivedMessage);
-                    //String matchID1 = new MessageSerializer().getMatchID(receivedMessage);
+                    String matchID = new MessageSerializer().getMatchID(receivedMessage);
                     if(receivedMessageDecoded.getClass() != NetworkMessage.class){
                         if(toPlayersList.contains(ClientManager.userUID)){
                             //TODO: send the message to the right client
+                            sendMessage(receivedMessageDecoded, toPlayersList.get(0), matchID);
                         }
                     }
                     ClientManager.clientReceiveMessage(receivedMessageDecoded);
