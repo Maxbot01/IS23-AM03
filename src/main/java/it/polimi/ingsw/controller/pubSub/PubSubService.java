@@ -13,6 +13,10 @@ public class PubSubService {
      */
     HashMap<TopicType, ArrayList<Subscriber>> topicSubMap;
 
+    public PubSubService(){
+        topicSubMap = new HashMap<>();
+    }
+
     public void addSubscriber(TopicType topic, Subscriber subscriber){
         if(topicSubMap.containsKey(topic)){
             ArrayList<Subscriber> subs = topicSubMap.get(topic);
