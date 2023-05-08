@@ -1,95 +1,116 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.controller.GameManagerController;
+import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
+import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.server.ServerMain;
+import it.polimi.ingsw.view.CLIgeneral;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
+import static it.polimi.ingsw.client.VirtualGameManagerSerializer.serializeMethod;
 import static java.lang.System.out;
 
 
-public class ClientMain implements Runnable {
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+public class ClientMain {
 
     private Socket socket;
+    private static ObjectOutputStream output;
+    private ObjectInputStream input;
+    private static boolean isRunning;
 
-    public ClientMain(Socket socket, boolean isCli){
-        //the client starts, lets set the pub/sub environment.
+    public ClientMain(Socket socket) {
         this.socket = socket;
-        ClientManager cl = new ClientManager(isCli);
-        ClientManager.userUID = UUID.randomUUID().toString();
-    }
 
-    public void sendMessage(Message message, String toPlayer, String ID) {
-        String json = new MessageSerializer().serialize(message, toPlayer, ID);
-        out.println(json);
-        out.flush();
-    }
-
-
-
-    public void run() {
         try {
-            Scanner in = new Scanner(socket.getInputStream());
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
-            // Leggo e scrivo nella connessione finche' non ricevo "quit"
-            while (true) {
-                String receivedMessage = in.nextLine();
-                if (receivedMessage.equals("quit")) {
-                    break;
-                } else {
-                    out.println("Received: " + receivedMessage);
-                    //receives a json encoded message, decoding is needed
-                    /*the received json message can be of types:
-                    - CONNECTION 'acks and ping pongs ecc..' -> NetworkMessage
-                    - MESSAGE 'big messages defined in the model' -> other message types
-                     */
-                    //decode message here and give it to a variable called receivedMessageDecoded: Message
-                    //TODO: BE SURE TO RECEIVE MESSAGES FOR THIS CLIENT:
-                    //check if right user only if it's not NetworkMessage
-                    /*
-                    Message receivedMessageDecoded = new MessageSerializer().deserialize(receivedMessage);
-                    ArrayList<String> toPlayersList = new MessageSerializer().deserializeToPlayersList(receivedMessage);
-                    String matchID = new MessageSerializer().getMatchID(receivedMessage);
-                    if(receivedMessageDecoded.getClass() != NetworkMessage.class){
-                        if(toPlayersList.contains(ClientManager.userUID)){
-                            //TODO: send the message to the right client
-                            sendMessage(receivedMessageDecoded, toPlayersList.get(0), matchID);
-                        }
-                    }
-                    ClientManager.clientReceiveMessage(receivedMessageDecoded);*/
-                    out.flush();
+            output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(socket.getInputStream());
+            isRunning = true;
+        } catch (IOException e) {
+            System.out.println("Error creating client I/O streams: " + e.getMessage());
+            isRunning = false;
+        }
+        ClientManager.userUID = UUID.randomUUID().toString();
+        ClientManager cl = new ClientManager(true);
+    }
+
+    public static void sendMessage(String message) {
+        try {
+            output.writeObject(message);
+            output.flush();
+        } catch (IOException e) {
+            System.out.println("Error sending message to server: " + e.getMessage());
+            isRunning = false;
+        }
+    }
+
+    public void receiveMessages() {
+        try {
+            while (isRunning) {
+                String message = (String) input.readObject();
+                System.out.println("Received message from server: " + message);
+                MessageSerializer messageSerializer = new MessageSerializer();
+                Message serializedMessage = messageSerializer.deserialize(message);
+                if(serializedMessage != null){
+                    //if it's meant for us
+                    //TODO: add exception to handle wrongly received message to react accordingly
+                    ClientManager.clientReceiveMessage(serializedMessage);
                 }
             }
-            // Chiudo gli stream e il socket
-            in.close();
-            out.close();
+        } catch (IOException e) {
+            System.out.println("Error receiving message from server: " + e.getMessage());
+            isRunning = false;
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error parsing message from server: " + e.getMessage());
+            isRunning = false;
+        }
+    }
+
+    public void stop() {
+        isRunning = false;
+        try {
+            output.close();
+            input.close();
             socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.out.println("Error stopping client: " + e.getMessage());
         }
     }
 
     public static void main(String[] args) throws IOException {
-        String hostName = "127.0.0.1";
-        int portNumber = 1234;
-        InetAddress host = InetAddress.getLocalHost();
-        Socket socket = new Socket(host.getHostName(), 1234);
-        ClientMain cl = new ClientMain(socket, true);
-        cl.run();
-        cl.sendMessage(new ErrorMessage(ErrorType.notEnoughPlayers), "dd", "ddd");
-        cl.sendMessage(new ErrorMessage(ErrorType.notEnoughPlayers), "dd", "ddd");
-        cl.sendMessage(new ErrorMessage(ErrorType.notEnoughPlayers), "dd", "ddd");
+        CLIgeneral cli = new CLIgeneral();
+        Socket socket = new Socket("localhost", 1234);
+        ClientMain client = new ClientMain(socket);
+
+// Send a message to the server
+        //client.sendMessage("Hello, server!");
+
+// Receive messages from the server until the client is stopped
+        client.receiveMessages();
+
+// Stop the client
+        client.stop();
     }
-
-
 }
+
+
+
 

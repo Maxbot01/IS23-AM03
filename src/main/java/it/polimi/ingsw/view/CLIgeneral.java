@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.GameStateType;
@@ -82,6 +83,8 @@ public class CLIgeneral extends View{
         this.userPlayer = new Player(userPlayer);
         this.personalGoal = personalGoals.get(userPlayer);
     }
+
+
     @Override
     public void waitingCommands(){
         Options options = new Options();
@@ -155,7 +158,7 @@ public class CLIgeneral extends View{
         Scanner in = new Scanner(System.in);
         String username = in.next();
         String password = in.next();
-        super.gameManagerController.onSetCredentials(username, password);
+        ClientManager.gameManagerController.onSetCredentials(username, password);
     }
     @Override
     public void launchGameManager(List<GameLobby> availableGames){
@@ -174,8 +177,10 @@ public class CLIgeneral extends View{
             System.out.println(options.getOptions().toArray()[i].toString());
         }
         try{
+
             cmd = parser.parse(options, scanf());
-            while(!options.hasOption(cmd.getOptions()[0].getOpt())){ // Until it receives a possible command, it continues to scan
+
+            while(cmd.getOptions().length == 0 || !options.hasOption(cmd.getOptions()[0].getOpt())){ // Until it receives a possible command, it continues to scan
                 cmd = parser.parse(options, scanf());
                 while(cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
                     for (int i = 0; i < availableGames.size(); i++) {
@@ -298,6 +303,12 @@ public class CLIgeneral extends View{
         }
         super.gameController.onSelectedColumn(selectedCards,column);
     }
+
+    @Override
+    public void setNickname(String nick) {
+        userPlayer = new Player(nick);
+    }
+
     @Override
     public void printLivingRoomAndShelves(){
         BoardCard[][] pieces = livingRoom;

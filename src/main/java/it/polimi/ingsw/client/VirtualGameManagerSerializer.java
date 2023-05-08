@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.helpers.*;
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
@@ -38,18 +39,20 @@ public class VirtualGameManagerSerializer {
     }
 
     public static void deserializeMethod(String jsonString) {
-        VirtualGameManager gameManager = new VirtualGameManager();
+        GameManager gameManager = GameManager.getInstance();
         Gson gson = new Gson();
         VirtualGameManagerSerializer virtualGameManagerSerializer = gson.fromJson(jsonString, VirtualGameManagerSerializer.class);
 
         switch(virtualGameManagerSerializer.getMethod()) {
             case "ping":
-                gameManager.ping();
+                String uid = (String) virtualGameManagerSerializer.getArgs()[0];
+                gameManager.ping(uid);
                 break;
             case "setCredentials":
                 String username = (String) virtualGameManagerSerializer.getArgs()[0];
                 String password = (String) virtualGameManagerSerializer.getArgs()[1];
-                gameManager.setCredentials(username, password);
+                uid = (String) virtualGameManagerSerializer.getArgs()[2];
+                gameManager.setCredentials(username, password, uid);
                 break;
             case "selectGame":
                 String gameID = (String) virtualGameManagerSerializer.getArgs()[0];
@@ -57,7 +60,8 @@ public class VirtualGameManagerSerializer {
                 gameManager.selectGame(gameID, user);
                 break;
             case "createGame":
-                int numPlayers = (int) virtualGameManagerSerializer.getArgs()[0];
+                Double numPlayersDouble = (Double) virtualGameManagerSerializer.getArgs()[0];
+                int numPlayers = numPlayersDouble.intValue();
                 String user1 = (String) virtualGameManagerSerializer.getArgs()[1];
                 gameManager.createGame(numPlayers, user1);
                 break;
