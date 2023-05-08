@@ -3,8 +3,10 @@ package it.polimi.ingsw.client;
 import com.google.gson.*;
 import it.polimi.ingsw.model.CommonGoals.Strategy.CommonGoalStrategy;
 import it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy;
+import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
+import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
@@ -26,7 +28,7 @@ public class MessageSerializer {
     public String serialize(Message message, String toPlayer, String ID) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("messageType", message.getClass().getSimpleName());
-        jsonObject.addProperty("toPlayer", toPlayer);
+        jsonObject.addProperty("toPlayerORtoUid", toPlayer);
         jsonObject.addProperty("id", ID);
         jsonObject.add("messageData", gson.toJsonTree(message));
         return jsonObject.toString();
@@ -41,26 +43,37 @@ public class MessageSerializer {
         return jsonObject.get("id").getAsString();
     }
 
-
     public ArrayList<String> deserializeToPlayersList(String json) {
         ArrayList<String> toPlayersList = new ArrayList<String>();
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        toPlayersList.add(jsonObject.get("toPlayer").getAsString());
+        toPlayersList.add(jsonObject.get("toPlayerORtoUid").getAsString());
         return toPlayersList;
     }
 
 
     private static class MessageDeserializer implements JsonDeserializer<Message> {
+        //WE KNOW THAT THE DESERIALIZER WILL BE CALLED BY THE CLIENT SO WE CAN CHECK ID
         @Override
         public Message deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             String messageType = jsonObject.get("messageType").getAsString();
-            String toPlayer = jsonObject.get("toPlayer").getAsString();
+            String toPlayer = jsonObject.get("toPlayerORtoUid").getAsString();
             String id = jsonObject.get("id").getAsString();
+            if(!(toPlayer.equals(ClientManager.userUID) || toPlayer.equals(ClientManager.userNickname))){
+                //not directed to this client, return a null
+                System.out.println("not directed to me, got " + toPlayer + " but have "+ ClientManager.userUID + " | " + ClientManager.userNickname);
+                return null;
+            }
             JsonObject messageData = jsonObject.get("messageData").getAsJsonObject();
             switch (messageType) {
                 case "InitStateMessage":
                     return new Gson().fromJson(messageData, InitStateMessage.class);
+                case "LobbyInfoMessage":
+                    return new Gson().fromJson(messageData, LobbyInfoMessage.class);
+                case "ErrorMessage":
+                    return new Gson().fromJson(messageData, LobbyInfoMessage.class);
+                case "loginGameMessage":
+                    return new Gson().fromJson(messageData, loginGameMessage.class);
                 case "FinishedGameMessage":
                     return new Gson().fromJson(messageData, FinishedGameMessage.class);
                 case "SelectedCardsMessage":

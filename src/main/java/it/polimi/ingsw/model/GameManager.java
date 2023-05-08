@@ -48,10 +48,10 @@ public class GameManager extends GameObservable{
         }
     }
 
-    public void createGame(int numPlayers, String username){
+    public void createGame(Integer numPlayers, String username){
         //creates game
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
-
+        System.out.println("new current games: " + currentGames.keySet());
     }
 
 
@@ -62,22 +62,21 @@ public class GameManager extends GameObservable{
 
     public void createMatchFromLobby(String withID, ArrayList<String> withPlayers){
         if(!currentGames.containsKey(withID)){
-            //handle error id so not exist. Non dovrebbe essere possibile che sia sbagliato
+            //handle error id so not exist
             return;
-        }else{
-            for(GameLobby x: currentGames.keySet()){
-                if(x.getID().equals(withID)){
-                    ArrayList<Player> players = new ArrayList<>();
-                    for(String p: withPlayers){
-                        players.add(new Player(p));
-                    }
-                    currentGames.put(x, new Game(players, withID));
-                    x.killLobby();
-                    //game has been created
+        }
+        for(GameLobby x: currentGames.keySet()){
+            if(x.getID().equals(withID)){
+                System.out.println("inside create");
+                ArrayList<Player> players = new ArrayList<>();
+                for(String p: withPlayers){
+                    players.add(new Player(p));
                 }
+                currentGames.put(x, new Game(players, withID));
+                x.killLobby();
+                //game has been created
             }
         }
-
 
     }
 
@@ -85,6 +84,7 @@ public class GameManager extends GameObservable{
         //received ping message
         //send pong
         //TODO: server.send(new NetworkMessage("pong"));
+        System.out.println("called ping() on server");
         super.notifyObserver(fromClientUID, new NetworkMessage("pong"), false, "-");
     }
 
@@ -108,21 +108,24 @@ public class GameManager extends GameObservable{
     public void setCredentials(String username, String password, String UID){
         //check if there was, else send message of erroneus urername set request.
         if(nicknames.containsKey(username)){
-            //already exists, checks if password is right
+            //already exists, checks if psw is right
             if (nicknames.get(username).equals(password)){
                 //ok login
                 //sends all the games
                 userIDs.put(username, UID);
+                System.out.println(username + "connected with UID: " + UID);
+                System.out.println("current games: " + getAllCurrentJoinableLobbies());
                 super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
             }else{
-                //username with wrong password
+                //username wrong password
                 //sends error
                 super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword), false, "-");
             }
         }else{
             //new user
+            System.out.println(username + "connected");
+            System.out.println("current games: " + getAllCurrentJoinableLobbies());
             nicknames.put(username, password);
-            userIDs.put(username, UID);
             super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
         }
     }
@@ -139,9 +142,20 @@ public class GameManager extends GameObservable{
      */
 
     public void startMatch(String ID, String user){
+        System.out.println("match start "+ ID + " user: " + user);
+
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
-                x.startMatch(user);
+                //TODO:REMOVE!!! before return
+                System.out.println("inside create");
+                ArrayList<Player> players = new ArrayList<>();
+                for(String p: x.getPlayers()){
+                    players.add(new Player(p));
+                }
+                currentGames.put(x, new Game(players, ID));
+                x.killLobby();
+                return;
+                //x.startMatch(user);
             }
         }
     }
@@ -172,6 +186,9 @@ public class GameManager extends GameObservable{
                 }
             }
         return instance;
+    }
+
+    public void sendAck() {
     }
 
     /*

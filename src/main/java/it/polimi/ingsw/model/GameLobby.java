@@ -20,6 +20,7 @@ public class GameLobby extends GameObservable {
     }
 
     public void startMatch(String user){
+        System.out.println("om start in");
         if(user.equals(host) && numOfPlayers == players.size()){
             GameManager.getInstance().createMatchFromLobby(ID, players);
         }else if (numOfPlayers < players.size()){
@@ -48,7 +49,8 @@ public class GameLobby extends GameObservable {
             throw new LobbyFullException();
         }else{
             players.add(player);
-            super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
+            super.notifyAllObservers(players, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
+            //super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
         }
     }
 

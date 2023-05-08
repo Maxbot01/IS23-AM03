@@ -62,6 +62,8 @@ public interface UpdateHandler {
     /**
      * It prints the living room and shelves on the terminal
      */
+
+    void setNickname(String nick);
     void printLivingRoomAndShelves();
     /**
      * Prints error type on command line
