@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="flow">
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/controllerObservers/GameViewObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/controllerObservers/GameViewObserver.java" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="selectableCards">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/Method.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/MethodSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/MethodSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -409,7 +412,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683285677692</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="selectableCards">
+      <created>1683291264481</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1683291264482</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,6 +485,7 @@
     <MESSAGE value="changes to controller, receiver, pubsub, EVERYTHING" />
     <MESSAGE value="stuff" />
     <MESSAGE value="flow" />
-    <option name="LAST_COMMIT_MESSAGE" value="flow" />
+    <MESSAGE value="selectableCards" />
+    <option name="LAST_COMMIT_MESSAGE" value="selectableCards" />
   </component>
 </project>

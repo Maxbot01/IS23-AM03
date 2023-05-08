@@ -5,9 +5,10 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.helpers.Pair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class VirtualGameManager extends VirtualGameModel{
+public class VirtualGameManager extends VirtualGameModel implements Serializable {
 
     public void ping(){
 

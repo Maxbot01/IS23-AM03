@@ -1,8 +1,7 @@
 package it.polimi.ingsw.client;
-
 import com.google.gson.*;
-import it.polimi.ingsw.model.CommonGoals.Strategy.CommonGoalStrategy;
-import it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy;
+
+import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
@@ -13,27 +12,26 @@ import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMess
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+
+private final Gson gson;
+
 public class MethodSerializer {
-
-    private final Gson gson;
-
     public MethodSerializer() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Message.class, new MethodDeserializer());
+        gsonBuilder.registerTypeAdapter(Method.class, new MethodSerializer.MethodDeserializer());
         gson = gsonBuilder.create();
     }
 
-    public String serialize(Message message, String toPlayer, String ID) {
+    public String serialize(Method method, String toPlayer, String ID) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("messageType", message.getClass().getSimpleName());
+        jsonObject.addProperty("methodname", method.getMethodName();
         jsonObject.addProperty("toPlayer", toPlayer);
         jsonObject.addProperty("id", ID);
-        jsonObject.add("messageData", gson.toJsonTree(message));
         return jsonObject.toString();
     }
 
-    public Message deserialize(String json) {
-        return gson.fromJson(json, Message.class);
+    public Method deserialize(String json) {
+        return gson.fromJson(json, Method.class);
     }
 
     public String getMatchID(String json) {
@@ -41,41 +39,29 @@ public class MethodSerializer {
         return jsonObject.get("id").getAsString();
     }
 
-
-    public ArrayList<String> deserializeToPlayersList(String json) {
-        ArrayList<String> toPlayersList = new ArrayList<String>();
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        toPlayersList.add(jsonObject.get("toPlayer").getAsString());
-        return toPlayersList;
-    }
-
-
-    private static class MessageDeserializer implements JsonDeserializer<Message> {
+    private static class MethodDeserializer implements JsonDeserializer<Method> {
         @Override
-        public Message deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        public Method deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            String messageType = jsonObject.get("messageType").getAsString();
+            String methodname = jsonObject.get("methodname").getAsString();
             String toPlayer = jsonObject.get("toPlayer").getAsString();
             String id = jsonObject.get("id").getAsString();
-            JsonObject messageData = jsonObject.get("messageData").getAsJsonObject();
-            switch (messageType) {
-                case "InitStateMessage":
+            switch (methodname) {
+                case "setCredentials":
                     return new Gson().fromJson(messageData, InitStateMessage.class);
-                case "FinishedGameMessage":
+                case "selectGame":
                     return new Gson().fromJson(messageData, FinishedGameMessage.class);
-                case "SelectedCardsMessage":
+                case "createGame":
                     return new Gson().fromJson(messageData, SelectedCardsMessage.class);
-                case "SelectedColumnsMessage":
+                case "sendAck":
                     return new Gson().fromJson(messageData, SelectedColumnsMessage.class);
-                case "NetworkMessage":
+                case "startMatch":
                     return new Gson().fromJson(messageData, NetworkMessage.class);
-
-                //TODO: add other cases for other message types that you want to deserialize
-
-                // Aggiungere altri casi per i diversi tipi di messaggio che si vogliono deserializzare
-                default:
-                    throw new JsonParseException("Unknown message type: " + messageType);
+                case "selectedCards":
+                    return new Gson().fromJson(messageData, NetworkMessage.class);
             }
+
+
         }
     }
 }
