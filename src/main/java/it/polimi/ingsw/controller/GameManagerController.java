@@ -28,18 +28,19 @@ public class GameManagerController extends Controller implements GameManagerView
         ClientManager.pubsub.addSubscriber(TopicType.gameManagerState, this);
         ClientManager.pubsub.addSubscriber(TopicType.errorMessageState, this);
         ClientManager.pubsub.addSubscriber(TopicType.networkMessageState, this);
-        virtualGameManager.ping();
+        virtualGameManager.ping(ClientManager.userUID);
     }
 
 
     @Override
     public void onSetCredentials(String username, String password) {
-        virtualGameManager.setCredentials(username, password);
+        virtualGameManager.setCredentials(username, password, ClientManager.userUID);
     }
 
     @Override
     public void onSelectGame(String gameId, String user) {
         //dovrà chiamare la print della nuova lobby per la cli, così da mostrarlo al giocatore
+        System.out.println("selected a game");
         virtualGameManager.selectGame(gameId, user);
 
     }
@@ -67,6 +68,7 @@ public class GameManagerController extends Controller implements GameManagerView
         }else if(message instanceof loginGameMessage){
             //user can go in, launchGameManager phase
             ClientManager.userNickname = ((loginGameMessage)message).username;
+            ClientManager.view.setNickname(((loginGameMessage)message).username);
             ClientManager.view.launchGameManager(new ArrayList<>(((loginGameMessage)message).currentGames.keySet()));
         }
         return true;

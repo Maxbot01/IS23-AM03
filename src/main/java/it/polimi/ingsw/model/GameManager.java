@@ -48,10 +48,10 @@ public class GameManager extends GameObservable{
         }
     }
 
-    public void createGame(int numPlayers, String username){
+    public void createGame(Integer numPlayers, String username){
         //creates game
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
-
+        System.out.println("new current games: " + currentGames.keySet());
     }
 
 
@@ -67,6 +67,7 @@ public class GameManager extends GameObservable{
         }
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(withID)){
+                System.out.println("inside create");
                 ArrayList<Player> players = new ArrayList<>();
                 for(String p: withPlayers){
                     players.add(new Player(p));
@@ -83,6 +84,7 @@ public class GameManager extends GameObservable{
         //received ping message
         //send pong
         //TODO: server.send(new NetworkMessage("pong"));
+        System.out.println("called ping() on server");
         super.notifyObserver(fromClientUID, new NetworkMessage("pong"), false, "-");
     }
 
@@ -111,6 +113,8 @@ public class GameManager extends GameObservable{
                 //ok login
                 //sends all the games
                 userIDs.put(username, UID);
+                System.out.println(username + "connected with UID: " + UID);
+                System.out.println("current games: " + getAllCurrentJoinableLobbies());
                 super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
             }else{
                 //username wrong password
@@ -119,6 +123,8 @@ public class GameManager extends GameObservable{
             }
         }else{
             //new user
+            System.out.println(username + "connected");
+            System.out.println("current games: " + getAllCurrentJoinableLobbies());
             nicknames.put(username, password);
             super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
         }
@@ -136,9 +142,20 @@ public class GameManager extends GameObservable{
      */
 
     public void startMatch(String ID, String user){
+        System.out.println("match start "+ ID + " user: " + user);
+
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
-                x.startMatch(user);
+                //TODO:REMOVE!!! before return
+                System.out.println("inside create");
+                ArrayList<Player> players = new ArrayList<>();
+                for(String p: x.getPlayers()){
+                    players.add(new Player(p));
+                }
+                currentGames.put(x, new Game(players, ID));
+                x.killLobby();
+                return;
+                //x.startMatch(user);
             }
         }
     }
@@ -169,6 +186,9 @@ public class GameManager extends GameObservable{
                 }
             }
         return instance;
+    }
+
+    public void sendAck() {
     }
 
     /*
