@@ -67,7 +67,8 @@ class MessageSerializerTest {
         assertNotNull(serializedMessage);
         //output serializedMessage
         System.out.println(serializedMessage);
-    }
+    }*/
+    /*
     @Test
     void SerializeAndDeserializeInitStateMessage() {
         BoardCard[][] pieces = new BoardCard[3][4];
@@ -105,18 +106,18 @@ class MessageSerializerTest {
         commonGoals.setSecondGoal(secondGoal);
 
 
-
-        HashMap<String, PersonalGoal> personalGoals = new HashMap<>();
-        personalGoals.put("player1", personalGoals.get(0));
-        personalGoals.put("player2", personalGoals.get(0));
-        personalGoals.put("player3", personalGoals.get(0));
-
         List<String> players = new ArrayList<>();
         players.add("player1");
         players.add("player2");
         players.add("player3");
 
         String chairedPlayer = "player1";
+
+        HashMap<String, PersonalGoal> personalGoals = new HashMap<>();
+        personalGoals.put("player1", personalGoals.get(0));
+        personalGoals.put("player2", personalGoals.get(0));
+        personalGoals.put("player3", personalGoals.get(0));
+
 
         ArrayList<Pair<String, BoardCard[][]>> playersShelves = new ArrayList<>();
         playersShelves.add(new Pair<>("player1", new BoardCard[][]{{new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A)}, {new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.GREEN, ornamentType.A)}}));
@@ -131,7 +132,7 @@ class MessageSerializerTest {
 
         // Serializziamo il messaggio usando il MessageSerializer
         MessageSerializer serializer = new MessageSerializer();
-        String serializedMessage = serializer.serialize(initStateMessage);
+        String serializedMessage = serializer.serialize(initStateMessage, "Alice", "1234");
 
         // Verifichiamo che la stringa serializzata non sia vuota e che contenga il tipo di messaggio corretto
         assertNotNull(serializedMessage);
@@ -142,8 +143,8 @@ class MessageSerializerTest {
         //output deserializedMessage
         System.out.println(deserializedMessage);
 
-    }
-*/
+    }*/
+
     @Test
     void serializeAndDeserializeFinishedGameMessage() {
         ArrayList<Pair<String, Integer>> finalScoreBoard = new ArrayList<>();

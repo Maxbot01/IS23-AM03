@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.LobbyController;
 import it.polimi.ingsw.controller.pubSub.PubSubService;
 import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.messageModel.GameManagerMessage;
+import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
@@ -24,7 +25,7 @@ public class ClientManager {
     public static PubSubService pubsub;
     public static View view;
     private static GameController gameController;
-    private static GameManagerController gameManagerController;
+    public static GameManagerController gameManagerController;
     private static LobbyController lobbyController;
 
     public static VirtualGameManager virtualGameManager;
@@ -41,6 +42,7 @@ public class ClientManager {
             view = new CLIgeneral();
             virtualGameManager = new VirtualGameManager();
             gameManagerController = new GameManagerController(view, virtualGameManager);
+            view.registerObserver(gameManagerController, null, null);
             //gameController = new GameController(new CLIgeneral(), new VirtualGame());
         }else{
 
@@ -60,6 +62,7 @@ public class ClientManager {
         }
         gameController = new GameController(view, new VirtualGame(), ID);
         lobbyController = new LobbyController(view, ID);
+        view.registerObserver(gameManagerController, lobbyController, gameController);
     }
 
     //accessible from ClientMain (socket) and RMI
@@ -82,6 +85,8 @@ public class ClientManager {
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
         }else if(receivedMessageDecoded instanceof SelectedCardsMessage){
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
+        }else if(receivedMessageDecoded instanceof loginGameMessage){
+            pubsub.publishMessage(TopicType.gameManagerState, receivedMessageDecoded);
         }
     }
 }

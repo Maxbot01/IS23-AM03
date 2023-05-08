@@ -27,7 +27,7 @@ public class SelectedCardsMessage extends MatchStateMessage {
     }
 
     public void printMessage() {
-        System.out.println("InitStateMessage:");
+        System.out.println("SelectedCardsMessage:");
         System.out.println("GameStateType: " + super.gameState);
         System.out.println("MatchID: " + super.matchID);
         System.out.println("Pieces:");

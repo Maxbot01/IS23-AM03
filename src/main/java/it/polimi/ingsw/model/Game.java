@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -89,7 +90,8 @@ public class Game extends GameObservable{
         }
 
         BoardCard[] cur = {};
-        super.notifyAllObservers(new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players.stream().map(x -> x.getNickname()).collect(Collectors.toList()), this.playingPlayer.getNickname(), playersShelves), true, this.ID);
+        System.out.println("started match, sending message");
+        super.notifyAllObservers(getAllNicks(), new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players.stream().map(x -> x.getNickname()).collect(Collectors.toList()), this.playingPlayer.getNickname(), playersShelves), true, this.ID);
     }
 
     public String getID(){
@@ -123,7 +125,11 @@ public class Game extends GameObservable{
             throw new RuntimeException(e);
             //TODO: gestire questo errore
         }
-        super.notifyAllObservers(new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
+        super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
+    }
+
+    private List<String> getAllNicks(){
+        return players.stream().map(x -> x.getNickname()).collect(Collectors.toList());
     }
 
     /**
@@ -161,7 +167,7 @@ public class Game extends GameObservable{
                 finalScoreBoard.add(new Pair(pl.getNickname(), pl.getFinalScore()));
             }
             String winnerNickname = finalScoreBoard.stream().reduce((a, b) -> a.getSecond() > b.getSecond() ? a : b).get().getFirst();
-            super.notifyAllObservers(new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname), true, this.ID);
+            super.notifyAllObservers(getAllNicks(), new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname), true, this.ID);
             return;
         }
         //refill board if needed
@@ -171,7 +177,7 @@ public class Game extends GameObservable{
             this.gameState = GameStateType.LAST_ROUND;
         }
         //se il game non è finito posso procedere ed inviare l'update a tutti
-        super.notifyAllObservers(new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()), true, this.ID);
+        super.notifyAllObservers(getAllNicks(), new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()), true, this.ID);
         this.playingPlayer = getNextPlayer();
     }
 
