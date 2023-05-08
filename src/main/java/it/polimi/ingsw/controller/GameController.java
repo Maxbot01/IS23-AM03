@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameController extends Controller implements GameViewObserver, Subscriber {
     private VirtualGame virtualGame;
@@ -69,22 +70,29 @@ public class GameController extends Controller implements GameViewObserver, Subs
         if(message instanceof InitStateMessage){
             InitStateMessage mess = (InitStateMessage)message;
             //if the message was for this client send ack
-            ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals, mess.chairedPlayer);
-            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState);
-
+            ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals);
+            HashMap<String,Integer> playersPoints = new HashMap<>(); // updatedMatchDetails needs an input of points, but all the points are set at 0
+            for(String s: mess.players){
+                playersPoints.put(s,0);
+            }
+            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState, playersPoints);
+            ClientManager.view.printLivingRoomAndShelves();
             ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
             if (mess.chairedPlayer.equals(ClientManager.userNickname)){
                 latestInit = mess;
                 ClientManager.virtualGameManager.sendAck();
                 ClientManager.view.chooseCards();
             }else{
-                ClientManager.view.waitingCommands();
+
+                ClientManager.view.waitingCommands(); // it needs to be sent continuously until it's his turn, or maybe a notify to the cli that blocks a while cycle
             }
 
         }else if(message instanceof GameStateMessage){
             //received info about the match
 
         }else if(message instanceof SelectedCardsMessage){
+            SelectedCardsMessage mess = (SelectedCardsMessage)message;
+            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selectables, );
             ClientManager.view.chooseColumn();
 
         }else if(message instanceof SelectedColumnsMessage){

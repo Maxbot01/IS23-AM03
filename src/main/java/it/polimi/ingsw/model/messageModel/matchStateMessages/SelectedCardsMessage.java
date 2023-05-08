@@ -14,8 +14,8 @@ import java.util.Map;
 public class SelectedCardsMessage extends MatchStateMessage {
 
     private ArrayList<BoardCard> selectedCards;
-    private Boolean[][] selectables;
-    private BoardCard[][] pieces;
+    public Boolean[][] selectables;
+    public BoardCard[][] pieces;
     private Player currentPlayer;
 
     public SelectedCardsMessage(GameStateType gameState, String matchID, ArrayList<BoardCard> selectedCards, Boolean[][] selectables, BoardCard[][] pieces, Player currentPlayer) {

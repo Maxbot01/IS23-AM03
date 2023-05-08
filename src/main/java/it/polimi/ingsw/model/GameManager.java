@@ -62,20 +62,22 @@ public class GameManager extends GameObservable{
 
     public void createMatchFromLobby(String withID, ArrayList<String> withPlayers){
         if(!currentGames.containsKey(withID)){
-            //handle error id so not exist
+            //handle error id so not exist. Non dovrebbe essere possibile che sia sbagliato
             return;
-        }
-        for(GameLobby x: currentGames.keySet()){
-            if(x.getID().equals(withID)){
-                ArrayList<Player> players = new ArrayList<>();
-                for(String p: withPlayers){
-                    players.add(new Player(p));
+        }else{
+            for(GameLobby x: currentGames.keySet()){
+                if(x.getID().equals(withID)){
+                    ArrayList<Player> players = new ArrayList<>();
+                    for(String p: withPlayers){
+                        players.add(new Player(p));
+                    }
+                    currentGames.put(x, new Game(players, withID));
+                    x.killLobby();
+                    //game has been created
                 }
-                currentGames.put(x, new Game(players, withID));
-                x.killLobby();
-                //game has been created
             }
         }
+
 
     }
 
@@ -106,20 +108,21 @@ public class GameManager extends GameObservable{
     public void setCredentials(String username, String password, String UID){
         //check if there was, else send message of erroneus urername set request.
         if(nicknames.containsKey(username)){
-            //already exists, checks if psw is right
+            //already exists, checks if password is right
             if (nicknames.get(username).equals(password)){
                 //ok login
                 //sends all the games
                 userIDs.put(username, UID);
                 super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
             }else{
-                //username wrong password
+                //username with wrong password
                 //sends error
                 super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword), false, "-");
             }
         }else{
             //new user
             nicknames.put(username, password);
+            userIDs.put(username, UID);
             super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
         }
     }

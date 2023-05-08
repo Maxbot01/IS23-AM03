@@ -34,7 +34,7 @@ public class GameManagerController extends Controller implements GameManagerView
 
     @Override
     public void onSetCredentials(String username, String password) {
-        virtualGameManager.setCredentials(username, password);
+        virtualGameManager.setCredentials(username, password, ClientManager.userUID);
     }
 
     @Override

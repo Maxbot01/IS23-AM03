@@ -20,9 +20,8 @@ public interface UpdateHandler {
      * @param players
      * @param commonGoals
      * @param personalGoals
-     * @param userPlayer
      */
-    void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, String userPlayer);
+    void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals);
     /**
      * It contains all the available command the CLI user can call while waiting for his turn
      */
@@ -34,7 +33,7 @@ public interface UpdateHandler {
      * @param playersShelves
      */
     void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
-                             GameStateType gameState);
+                             GameStateType gameState, HashMap<String,Integer> playersPoints);
     /**
      * Requests Username from Command Line
      * @return String

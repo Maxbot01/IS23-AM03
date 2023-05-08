@@ -40,7 +40,7 @@ public class GameLobby extends GameObservable {
         this.numOfPlayers = numOfPlayers;
         players = new ArrayList<>();
         players.add(host);
-        super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players), false, ID);
+        super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players), false, ID); //TODO: non dovrebbe essere true inLobbyorGame?
     }
 
     public void addPlayer(String player) throws LobbyFullException {

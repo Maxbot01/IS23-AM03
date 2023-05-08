@@ -29,7 +29,7 @@ public class ClientManager {
 
     public static VirtualGameManager virtualGameManager;
 
-    public static String userNickname;
+    public static String userNickname; // a cosa gli serve???
     public static String userUID;
 
     public ClientManager(boolean isCLI){
@@ -43,7 +43,7 @@ public class ClientManager {
             gameManagerController = new GameManagerController(view, virtualGameManager);
             //gameController = new GameController(new CLIgeneral(), new VirtualGame());
         }else{
-
+            // gui mode
         }
     }
 
