@@ -8,10 +8,7 @@ import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
+import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -83,6 +80,9 @@ public class MessageSerializer {
                     return new Gson().fromJson(messageData, SelectedColumnsMessage.class);
                 case "NetworkMessage":
                     return new Gson().fromJson(messageData, NetworkMessage.class);
+                case "GameStateMessage":
+                    return new Gson().fromJson(messageData, GameStateMessage.class);
+
 
                 //TODO: add other cases for other message types that you want to deserialize
 
