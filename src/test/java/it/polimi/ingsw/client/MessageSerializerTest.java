@@ -138,6 +138,7 @@ class MessageSerializerTest {
         assertNotNull(serializedMessage);
         //output serializedMessage
         System.out.println(serializedMessage);
+        ClientManager.userNickname = "Alice";
 
         Message deserializedMessage = new MessageSerializer().deserialize(serializedMessage);
         //output deserializedMessage
@@ -160,6 +161,7 @@ class MessageSerializerTest {
         String serializedMessage = serializer.serialize(finishedGameMessage,"Alice","gameID123");
         //output serializedMessage
         System.out.println(serializedMessage);
+        ClientManager.userNickname = "Alice";
 
 
         // Deserialize the message
@@ -204,6 +206,7 @@ class MessageSerializerTest {
         assertNotNull(serializedMessage);
         //output serializedMessage
         System.out.println(serializedMessage);
+        ClientManager.userNickname = "Alice";
 
         Message deserializedMessage = new MessageSerializer().deserialize(serializedMessage);
         //output deserializedMessage
@@ -216,7 +219,7 @@ class MessageSerializerTest {
     void SerializeAndDeserializeSelectedColumnsMessage() {
         BoardCard[][] pieces = new BoardCard[5][5];
         Boolean[][] selectables = new Boolean[5][5];
-        Pair<String, Integer> updatedPoints = new Pair<>("Player1", 5);
+        Pair<String, Integer> updatedPoints = new Pair<>("Alice", 5);
         Pair<String, BoardCard[][]> updatedPlayerShelf = new Pair<>("Player2", new BoardCard[][]{
                 {new BoardCard(colorType.BLUE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A)},
                 {new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.PURPLE, ornamentType.A)},
@@ -253,6 +256,7 @@ class MessageSerializerTest {
         assertNotNull(serializedMessage);
         //output serializedMessage
         System.out.println(serializedMessage);
+        ClientManager.userNickname = "Alice";
 
         // Deserialize the message
         Message deserializedMessage = serializer.deserialize(serializedMessage);
