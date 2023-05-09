@@ -13,7 +13,7 @@ public class VirtualGameManagerTest {
     @Test
     void pingTest() {
         VirtualGameManager virtualGameManager = new VirtualGameManager();
-        virtualGameManager.ping("U21");
+        virtualGameManager.ping("UID");
         VirtualGameManagerSerializer expectedSerializedGameManager = new VirtualGameManagerSerializer("ping", new Object[]{});
         String expectedJson = VirtualGameManagerSerializer.serializeMethod(expectedSerializedGameManager);
         System.out.println(expectedJson);
@@ -22,7 +22,7 @@ public class VirtualGameManagerTest {
     @Test
     void setCredentialsTest() {
         VirtualGameManager virtualGameManager = new VirtualGameManager();
-        virtualGameManager.setCredentials("username", "password", "U21");
+        virtualGameManager.setCredentials("username", "password","UID");
         VirtualGameManagerSerializer expectedSerializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{"username", "password"});
         String expectedJson = VirtualGameManagerSerializer.serializeMethod(expectedSerializedGameManager);
         System.out.println(expectedJson);
