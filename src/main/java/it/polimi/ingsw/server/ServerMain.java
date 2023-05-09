@@ -95,6 +95,7 @@ public class ServerMain {
 
         public void sendMessage(String message) {
             try {
+                System.out.println("Sono in send message del server, con il messaggio:\n"+message);
                 output.writeObject(message);
                 output.flush();
             } catch (IOException e) {

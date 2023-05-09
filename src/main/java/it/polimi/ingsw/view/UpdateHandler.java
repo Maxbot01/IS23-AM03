@@ -46,7 +46,7 @@ public interface UpdateHandler {
      * Calls the command section of GameManager, enabling the user to write which command to execute
      * @param availableGames
      */
-    void launchGameManager(List<GameLobby> availableGames);
+    void launchGameManager(HashMap<String, List<String>> availableGames);
     /**
      * Calls the command section of GameLobby, enabling the user to write which command to execute.
      * It is sent only to the

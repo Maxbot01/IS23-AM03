@@ -126,10 +126,11 @@ public class GameManager extends GameObservable{
             }
         }else{
             //new user
-            System.out.println(username + "connected");
-            System.out.println("current games: " + getAllCurrentJoinableLobbies());
+            HashMap<GameLobby,Game> tmp = getAllCurrentJoinableLobbies();
+            System.out.println(username + " connected");
+            System.out.println("current games: " + tmp.keySet().toString());
             nicknames.put(username, password);
-            super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
+            super.notifyObserver(username, new loginGameMessage(tmp, username), false, "-");
         }
     }
 

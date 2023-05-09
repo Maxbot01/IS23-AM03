@@ -190,7 +190,7 @@ public class CLIgeneral extends View{
         System.out.println(playingPlayer+" is playing");
     }
     @Override
-    public void launchGameManager(List<GameLobby> availableGames){
+    public void launchGameManager(HashMap<String, List<String>> availableGames){
         Options options = new Options();
         options.addOption(show_games);
         options.addOption(create_game);
@@ -207,10 +207,14 @@ public class CLIgeneral extends View{
             cmd = parser.parse(options, scanf());
             while(!cmd.hasOption(create_game) && !cmd.hasOption(select_game)){ // Until it receives a possible command, it continues to scan
                 if(cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
-                    for (int i = 0; i < availableGames.size(); i++) {
-                        System.out.println("GameId: " + availableGames.get(i).getID());
-                        for (int j = 0; j < availableGames.get(i).getPlayers().size(); j++) {
-                            System.out.println("\t\t" + availableGames.get(i).getPlayers().get(j));
+                    if(availableGames.size() == 0){
+                        System.out.println("No games available");
+                    }else {
+                        for(String s: availableGames.keySet()){
+                            System.out.println("GameId: "+s);
+                            for(String player: availableGames.get(s)){
+                                System.out.print(player);
+                            }
                         }
                     }
                 }else if(cmd.hasOption(help)){
@@ -237,10 +241,11 @@ public class CLIgeneral extends View{
     @Override
     public void launchGameLobby(String gameID, ArrayList<String> lobbyPlayers, String lobbyHost){
         this.gameID = gameID;
-        System.out.println("You have entered the lobby\n"+"Lobby host: "+lobbyHost+"\nLobby players:"); // printing lobby and lobby players
+        System.out.print("You have entered the lobby\n"+"Lobby host: "+lobbyHost+"\nLobby players:"); // printing lobby and lobby players
         for(int i = 0; i < lobbyPlayers.size(); i++){
-            System.out.println(lobbyPlayers.get(i));
+            System.out.print(" "+lobbyPlayers.get(i)+"\t");
         }
+        System.out.println("\n");
         Options options = new Options();
         options.addOption(show_gameId);
         options.addOption(chat);

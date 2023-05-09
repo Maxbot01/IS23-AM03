@@ -65,6 +65,7 @@ public class GameManagerController extends Controller implements GameManagerView
             //user can go in, launchGameManager phase
             ClientManager.userNickname = ((loginGameMessage)message).username;
             ClientManager.view.setNickname(((loginGameMessage)message).username); // TODO: Lo devo togliere
+            System.out.println("currentGames check: "+((loginGameMessage)message).currentGames);
             ClientManager.view.launchGameManager(new ArrayList<>(((loginGameMessage)message).currentGames.keySet()));
         }
         return true;

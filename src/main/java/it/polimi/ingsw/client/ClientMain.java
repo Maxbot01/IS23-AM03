@@ -54,6 +54,7 @@ public class ClientMain {
 
     public static void sendMessage(String message) {
         try {
+            System.out.println("sono in send message del client, con il messaggio:\n"+message);
             output.writeObject(message);
             output.flush();
         } catch (IOException e) {
