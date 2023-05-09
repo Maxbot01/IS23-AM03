@@ -71,23 +71,14 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //a message has been received
         //should receive matchStateMessages only
         //after it receives it, updates the view accordingly
-        InitStateMessage mess = null;
-        CommonGoals common = null;
         if (message instanceof InitStateMessage) {
-            mess = (InitStateMessage) message;
-            common = new CommonGoals();
+            InitStateMessage mess = (InitStateMessage)message;
+            CommonGoals common = new CommonGoals();
             //if the message was for this client send ack
             HashMap<String,Integer> playersPoints = new HashMap<>(); // updatedMatchDetails needs an input of points, but all the points are set at 0
             for(String s: mess.players){ //TODO: playersPoints in initStateMessage non serve
                 playersPoints.put(s,0);
-            }ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals, mess.pieces, mess.selecectables,
-                    mess.playersShelves, playersPoints, mess.gameState);
-            //Ho creato 3 update, initialize, update(dopo selectedCards) e update(dopo selectedColumn) perché c'erano problemi. L'altra alternativa era cambiare tutti i messaggi
-            //ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState, playersPoints);
-            ClientManager.view.printLivingRoom();
-            ClientManager.view.printShelves();
-            ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
-            if (mess.chairedPlayer.equals(ClientManager.userNickname)){
+            }
             switch (mess.firstGoal) {
                 case "SixOfTwoGoalStrategy":
                     SixOfTwoGoalStrategy firstGoal = new SixOfTwoGoalStrategy();
@@ -186,10 +177,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
                     TriangularGoalStrategy secondGoal11 = new TriangularGoalStrategy();
                     common.setSecondGoal(secondGoal11);
             }
-
-            ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.chairedPlayer);
-            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState);
-
+            ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.pieces, mess.selecectables,
+                    mess.playersShelves, playersPoints, mess.gameState);
+            //Ho creato 3 update, initialize, update(dopo selectedCards) e update(dopo selectedColumn) perché c'erano problemi. L'altra alternativa era cambiare tutti i messaggi
+            ClientManager.view.printLivingRoom();
+            ClientManager.view.printShelves();
+            ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
             if (mess.chairedPlayer.equals(ClientManager.userNickname)) {
                 latestInit = mess;
                 virtualGameManager.sendAck();
