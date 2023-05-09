@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="Aggiornamento">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="GameStateMessage.java, MessageSerializer.java, MessageSerializerTest.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/MessageSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/MessageSerializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/matchStateMessages/GameStateMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/messageModel/matchStateMessages/GameStateMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/client/MessageSerializerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/client/MessageSerializerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,14 +117,7 @@
       <workItem from="1682952749284" duration="16316000" />
       <workItem from="1683215185065" duration="13665000" />
       <workItem from="1683368477901" duration="37866000" />
-      <workItem from="1683645261758" duration="2282000" />
-    </task>
-    <task id="LOCAL-00007" summary="modified pattern">
-      <created>1679244738224</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1679244738224</updated>
+      <workItem from="1683645261758" duration="5512000" />
     </task>
     <task id="LOCAL-00008" summary="added PersonalGoal and player">
       <created>1679255189842</created>
@@ -464,7 +455,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683636867173</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="GameStateMessage.java, MessageSerializer.java, MessageSerializerTest.java">
+      <created>1683647587733</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1683647587734</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -532,7 +530,8 @@
     <MESSAGE value="flow" />
     <MESSAGE value="client-server" />
     <MESSAGE value="Serializzazione commonGoals" />
-    <option name="LAST_COMMIT_MESSAGE" value="Serializzazione commonGoals" />
+    <MESSAGE value="GameStateMessage.java, MessageSerializer.java, MessageSerializerTest.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="GameStateMessage.java, MessageSerializer.java, MessageSerializerTest.java" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ProgettoIDS23$Client.ic" NAME="Client Coverage Results" MODIFIED="1683507446112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

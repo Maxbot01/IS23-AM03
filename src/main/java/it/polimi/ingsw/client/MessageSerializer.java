@@ -13,16 +13,29 @@ import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+/**
+ * This class is responsible for serializing and deserializing messages exchanged between the client and the server.
+ */
 public class MessageSerializer {
 
     private final Gson gson;
 
+    /**
+     * Constructs a new instance of the MessageSerializer class.
+     */
     public MessageSerializer() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Message.class, new MessageDeserializer());
         gson = gsonBuilder.create();
     }
 
+    /**
+     * Serializes a message to a JSON string.
+     * @param message The message to serialize.
+     * @param toPlayer The recipient of the message.
+     * @param ID The ID of the message.
+     * @return The serialized message as a JSON string.
+     */
     public String serialize(Message message, String toPlayer, String ID) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("messageType", message.getClass().getSimpleName());
@@ -32,15 +45,30 @@ public class MessageSerializer {
         return jsonObject.toString();
     }
 
+    /**
+     * Deserializes a message from a JSON string.
+     * @param json The JSON string to deserialize.
+     * @return The deserialized message.
+     */
     public Message deserialize(String json) {
         return gson.fromJson(json, Message.class);
     }
 
+    /**
+     * Gets the ID of the match from a JSON string.
+     * @param json The JSON string to parse.
+     * @return The ID of the match.
+     */
     public String getMatchID(String json) {
         JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
         return jsonObject.get("id").getAsString();
     }
 
+    /**
+     * Deserializes a list of player names from a JSON string.
+     * @param json The JSON string to deserialize.
+     * @return A list of player names.
+     */
     public ArrayList<String> deserializeToPlayersList(String json) {
         ArrayList<String> toPlayersList = new ArrayList<String>();
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
@@ -48,9 +76,17 @@ public class MessageSerializer {
         return toPlayersList;
     }
 
-
     private static class MessageDeserializer implements JsonDeserializer<Message> {
         //WE KNOW THAT THE DESERIALIZER WILL BE CALLED BY THE CLIENT SO WE CAN CHECK ID
+        /**
+         * Deserializes a JSON element into a {@link Message} object.
+         *
+         * @param jsonElement The JSON element to deserialize.
+         * @param type The type of the object to deserialize.
+         * @param jsonDeserializationContext The JSON deserialization context.
+         * @return A {@link Message} object.
+         * @throws JsonParseException If the JSON element cannot be deserialized into a {@link Message} object.
+         */
         @Override
         public Message deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
