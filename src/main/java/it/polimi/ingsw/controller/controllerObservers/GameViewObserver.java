@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface GameViewObserver {
     //The controller could give an error on this choice
     void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user);
-    void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex);
+    void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user);
     void onAcceptFinishedGame();
     String onGetChatMessage(String msg);
 }

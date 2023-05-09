@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
@@ -61,7 +62,7 @@ public class MessageSerializer {
             String id = jsonObject.get("id").getAsString();
             if(!(toPlayer.equals(ClientManager.userUID) || toPlayer.equals(ClientManager.userNickname))){
                 //not directed to this client, return a null
-                System.out.println("not directed to me, got " + toPlayer + " but have "+ ClientManager.userUID + " | " + ClientManager.userNickname);
+                //System.out.println("not directed to me, got " + toPlayer + " but have "+ ClientManager.userUID + " | " + ClientManager.userNickname);
                 return null;
             }
             JsonObject messageData = jsonObject.get("messageData").getAsJsonObject();
@@ -71,7 +72,7 @@ public class MessageSerializer {
                 case "LobbyInfoMessage":
                     return new Gson().fromJson(messageData, LobbyInfoMessage.class);
                 case "ErrorMessage":
-                    return new Gson().fromJson(messageData, LobbyInfoMessage.class);
+                    return new Gson().fromJson(messageData, ErrorMessage.class);
                 case "loginGameMessage":
                     return new Gson().fromJson(messageData, loginGameMessage.class);
                 case "FinishedGameMessage":

@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.helpers.*;
 import com.google.gson.Gson;
+import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 
 import java.util.ArrayList;
@@ -78,6 +79,11 @@ public class VirtualGameManagerSerializer {
                 String gameID1 = (String) virtualGameManagerSerializer.getArgs()[2];
                 gameManager.selectedCards((ArrayList<Pair<Integer, Integer>>) virtualGameManagerSerializer.getArgs()[0], user3, gameID1);
                 break;
+            case "selectedColumn":
+                String user4 = (String) virtualGameManagerSerializer.getArgs()[2];
+                String gameID2 = (String) virtualGameManagerSerializer.getArgs()[3];
+                gameManager.selectedColumn((ArrayList<BoardCard>) virtualGameManagerSerializer.getArgs()[0], (Integer)
+                                                            virtualGameManagerSerializer.getArgs()[1], user4, gameID2);
 
         }
     }

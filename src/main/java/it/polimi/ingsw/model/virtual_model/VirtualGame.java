@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class VirtualGame extends VirtualGameModel{
 
-    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex){
+    /*public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex){
 
     }
 
@@ -17,5 +17,5 @@ public class VirtualGame extends VirtualGameModel{
 
     public void acceptFinishedGame(String fromPlayer){
 
-    }
+    }*/
 }
