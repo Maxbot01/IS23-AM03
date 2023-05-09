@@ -115,12 +115,13 @@ public class Game extends GameObservable{
             try {
                 selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
             } catch (UnselectableCardException e) {
+                // non dovrebbero esserci errori visto che il check lo facciamo nella view
                 throw new RuntimeException(e);
                 //TODO: manage this exception, send an error message
             }
         }
         try {
-            BoardCard[][] updatedCards = livingRoom.updateBoard(selected);
+            this.livingRoom.updateBoard(selected);
         } catch (UnselectableCardException e) {
             throw new RuntimeException(e);
             //TODO: gestire questo errore
@@ -140,7 +141,7 @@ public class Game extends GameObservable{
      * @param selCards selected cards by the player
      * @param colIndex selected column by the player
      */
-    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex) {
+    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) { //TODO: See if user is necessary
         try {
             playingPlayer.getPlayersShelf().insertInColumn(selCards, colIndex);
         }catch(ColumnNotSelectable e) {
@@ -151,7 +152,7 @@ public class Game extends GameObservable{
             //TODO: handle game over
             //the shelf is full, the state changes to LAST_ROUND
             this.gameState = GameStateType.LAST_ROUND;
-            //the current player gets the bonus point for finishing
+            //the current player gets the bonus point for finishing //TODO: errore, verrebbe dato a tutti, bisogna metterlo all'inserzione delle cards, con un booleano true se è già stato ottenuto, se solo il primo a finirla lo prende il punto
             this.playingPlayer.updateScore(1);
         }
         //the playing players shelf is updated
@@ -177,7 +178,9 @@ public class Game extends GameObservable{
             this.gameState = GameStateType.LAST_ROUND;
         }
         //se il game non è finito posso procedere ed inviare l'update a tutti
-        super.notifyAllObservers(getAllNicks(), new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(), playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname() ,this.playingPlayer.getPlayersShelf().getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()), true, this.ID);
+        super.notifyAllObservers(getAllNicks(), new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(),
+                playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname(),playingPlayer.getPlayersShelf().
+                getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()), true, this.ID);
         this.playingPlayer = getNextPlayer();
     }
 

@@ -21,11 +21,14 @@ public class InitStateMessage extends MatchStateMessage {
     public HashMap<String, PersonalGoal> personalGoals;
     public List<String> players;
     public String chairedPlayer;
+    public HashMap<String, Integer> playersPoints; //TODO: questo non serve
 
 
     public ArrayList<Pair<String, BoardCard[][]>> playersShelves;
 
-    public InitStateMessage(GameStateType gameState, String matchID, BoardCard[][] pieces, Boolean[][] selecectables, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, List<String> players, String chairedPlayer, ArrayList<Pair<String, BoardCard[][]>> playersShelves){
+    public InitStateMessage(GameStateType gameState, String matchID, BoardCard[][] pieces, Boolean[][] selecectables, CommonGoals commonGoals,
+                            HashMap<String, PersonalGoal> personalGoals, List<String> players, String chairedPlayer, ArrayList<Pair<String, BoardCard[][]>>
+                            playersShelves){
         super(gameState, matchID);
         this.gameState = gameState;
         this.matchID = matchID;

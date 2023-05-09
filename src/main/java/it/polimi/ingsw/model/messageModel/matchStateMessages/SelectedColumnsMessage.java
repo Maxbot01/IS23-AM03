@@ -6,19 +6,19 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SelectedColumnsMessage extends MatchStateMessage{
 
-    Pair<String, Integer> updatedPoints;
-    String newPlayer;
+    public Pair<String, Integer> updatedPoints;
+    public String newPlayer;
+    public BoardCard[][] pieces;
+    public Boolean[][] selectables;
+    public Pair<String, BoardCard[][]> updatedPlayerShelf;
 
-    BoardCard[][] pieces;
-
-    Boolean[][] selectables;
-
-    Pair<String, BoardCard[][]> updatedPlayerShelf;
-    public SelectedColumnsMessage(GameStateType gameState, String matchID, Pair<String, Integer> updatedPoints, String newPlayer, Pair<String, BoardCard[][]> updatedPlayerShelf, BoardCard[][] pieces, Boolean[][] selectables) {
+    public SelectedColumnsMessage(GameStateType gameState, String matchID, Pair<String, Integer> updatedPoints, String newPlayer,
+                                  Pair<String, BoardCard[][]> updatedPlayerShelf, BoardCard[][] pieces, Boolean[][] selectables) {
         super(gameState, matchID);
         this.updatedPoints = updatedPoints;
         this.newPlayer = newPlayer;
