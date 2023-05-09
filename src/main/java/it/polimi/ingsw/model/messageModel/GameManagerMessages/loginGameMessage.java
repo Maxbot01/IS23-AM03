@@ -4,12 +4,15 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameLobby;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class loginGameMessage extends GameManagerMessage{
-    public HashMap<GameLobby, Game> currentGames;
+
+    public HashMap<String, List<String>> gamesPlayers;
     public String username;
-    public loginGameMessage(HashMap<GameLobby, Game> currentGames, String username){
-        this.currentGames = currentGames;
+    public loginGameMessage(HashMap<String, List<String>> gamesPlayers, String username){
+
+        this.gamesPlayers = gamesPlayers;
         this.username = username;
     }
 }
