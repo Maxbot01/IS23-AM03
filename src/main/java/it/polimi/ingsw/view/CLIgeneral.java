@@ -40,7 +40,7 @@ public class CLIgeneral extends View{
     private final Option select_game = Option.builder("select_game")
             .argName("gameID")
             .hasArg(true)
-            .desc("selects an available game")
+            .desc("selects an available game, by inserting its ID")
             .required(false)
             .build();
     private final Option show_gameId = Option.builder("show_gameId")
@@ -77,10 +77,12 @@ public class CLIgeneral extends View{
     public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals,
                                BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>>
                                playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState){
+        ArrayList<Player> tmp = new ArrayList<>();
         for(String s: playersNick){
             Player p = new Player(s);
-            this.players.add(p);
+            tmp.add(p);
         }
+        this.players = tmp;
         this.commonGoals = commonGoals;
         this.personalGoal = personalGoals.get(userPlayer);
         this.livingRoom = livingRoom;
@@ -202,6 +204,9 @@ public class CLIgeneral extends View{
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
+
+        HashMap<Integer,String> IDlist = new HashMap<>();
+        int i = 1;
         try{
 
             cmd = parser.parse(options, scanf());
@@ -211,13 +216,15 @@ public class CLIgeneral extends View{
                         System.out.println("No games available");
                     }else {
                         for(String s: availableGames.keySet()){
-                            System.out.println("GameId: "+s);
+                            System.out.println("GameId "+i+": "+s);
                             System.out.print("Players: ");
                             for(String player: availableGames.get(s)){
                                 System.out.print(player+"\t");
                             }
                             System.out.println();
+                            IDlist.put(i,s);
                         }
+                        i++;
                     }
                 }else if(cmd.hasOption(help)){
                     formatter.printHelp("Section Commands", options);
@@ -231,9 +238,13 @@ public class CLIgeneral extends View{
                 host = true;
                 super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
             } else if (cmd.hasOption(select_game)) {
-                String gameSelectedId = cmd.getOptionValue(select_game);
+                String lobbyID = cmd.getOptionValue(select_game);
+                if(lobbyID.length() == 1){
+                    int IDnumber = Integer.parseInt(lobbyID);
+                    lobbyID = IDlist.get(IDnumber);
+                }
                 host = false;
-                super.gameManagerController.onSelectGame(gameSelectedId, userPlayer.getNickname());
+                super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname());
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
@@ -291,7 +302,7 @@ public class CLIgeneral extends View{
         ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
         ArrayList<BoardCard> selected = new ArrayList<>();
 
-        System.out.println("Select Cards in couples of coordinates.\nExample: 5 4 5 5 5 6\twhere 5-4 is the first couple and so on");
+        System.out.println("Select Cards in couples of coordinates.\nExample: 5 4 5 5 5 6\twhere 5 4 is the first couple and so on");
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
         while(s.length() != 11 && s.length() != 3 && s.length() != 7)
@@ -321,6 +332,7 @@ public class CLIgeneral extends View{
         this.selectedCards = selected;
         super.gameController.onSelectedCards(coord, userPlayer.getNickname());
     }
+    @Override
     public void chooseColumn(){
         System.out.println("Insert the shelf's column for the selected cards. From 0 to 4.");
         Scanner in3 = new Scanner(System.in);
@@ -370,7 +382,7 @@ public class CLIgeneral extends View{
         printShelf(userPlayer.getPlayersShelf());
 /* Printing other players' shelves */
         for(int i = 0; i < players.size(); i++){
-            if(!players.get(i).equals(userPlayer)){
+            if(!players.get(i).getNickname().equals(userPlayer.getNickname())){
                 System.out.println(players.get(i).getNickname()+"'s shelf:\t\t"+players.get(i).getNickname()+"'s score: "
                         +players.get(i).getScore());
                 printShelf(players.get(i).getPlayersShelf());
