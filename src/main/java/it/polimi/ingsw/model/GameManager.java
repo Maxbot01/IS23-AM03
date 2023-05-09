@@ -6,7 +6,10 @@ import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
+import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
+import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
+import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 
@@ -173,6 +176,14 @@ public class GameManager extends GameObservable{
                     //TODO: manage exception
                 }
 
+            }
+        }
+    }
+
+    public void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){ //TODO: Capire come usare user
+        for(Game x: currentGames.values()){
+            if(x.getID().equals(gameID)){
+                x.selectedColumn(selected,column,user); // Per i try catch, non basta averli nel "game"?
             }
         }
     }

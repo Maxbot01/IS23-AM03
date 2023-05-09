@@ -15,13 +15,14 @@ public class SelectedColumnsMessage extends MatchStateMessage{
     public String newPlayer;
     public BoardCard[][] pieces;
     public Boolean[][] selectables;
-    public ArrayList<Pair<String, BoardCard[][]>> updatedPlayersShelves;
+    public Pair<String, BoardCard[][]> updatedPlayerShelf;
 
-    public SelectedColumnsMessage(GameStateType gameState, String matchID, Pair<String, Integer> updatedPoints, String newPlayer, ArrayList<Pair<String, BoardCard[][]>> updatedPlayersShelves, BoardCard[][] pieces, Boolean[][] selectables) {
+    public SelectedColumnsMessage(GameStateType gameState, String matchID, Pair<String, Integer> updatedPoints, String newPlayer,
+                                  Pair<String, BoardCard[][]> updatedPlayerShelf, BoardCard[][] pieces, Boolean[][] selectables) {
         super(gameState, matchID);
         this.updatedPoints = updatedPoints;
         this.newPlayer = newPlayer;
-        this.updatedPlayersShelves = updatedPlayersShelves;
+        this.updatedPlayerShelf = updatedPlayerShelf;
         this.pieces = pieces;
         this.selectables = selectables;
     }

@@ -21,7 +21,7 @@ public class InitStateMessage extends MatchStateMessage {
     public HashMap<String, PersonalGoal> personalGoals;
     public List<String> players;
     public String chairedPlayer;
-    public HashMap<String, Integer> playersPoints;
+    public HashMap<String, Integer> playersPoints; //TODO: questo non serve
 
 
     public ArrayList<Pair<String, BoardCard[][]>> playersShelves;

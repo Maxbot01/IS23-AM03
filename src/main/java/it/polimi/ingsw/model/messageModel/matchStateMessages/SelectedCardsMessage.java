@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class SelectedCardsMessage extends MatchStateMessage {
 
-    private ArrayList<BoardCard> selectedCards;
+    public ArrayList<BoardCard> selectedCards;
     public Boolean[][] selectables;
     public BoardCard[][] pieces;
     private Player currentPlayer;

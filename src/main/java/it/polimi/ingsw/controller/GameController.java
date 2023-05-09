@@ -15,6 +15,8 @@ import it.polimi.ingsw.view.View;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static it.polimi.ingsw.client.ClientManager.*;
+
 public class GameController extends Controller implements GameViewObserver, Subscriber {
     private VirtualGame virtualGame;
 
@@ -34,12 +36,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //check if selection was correct
         if(isSelectionPossible(selected)){
             //ClientManager.view.chooseColumn();
-            ClientManager.virtualGameManager.selectedCards(selected, user, gameID);
+            virtualGameManager.selectedCards(selected, user, gameID);
         }else{
             ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least another chosen card");
             ClientManager.view.chooseCards();
         }
-        virtualGame.selectedCards(selected);
     }
 
     //TODO: make this!!!
@@ -50,9 +51,9 @@ public class GameController extends Controller implements GameViewObserver, Subs
     }
 
     @Override
-    public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex) {
+    public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) {
         //view has selected columns
-        virtualGame.selectedColumn(selCards, colIndex);
+        virtualGameManager.selectedColumn(selCards, colIndex, user, gameID);
     }
 
     @Override
@@ -70,34 +71,39 @@ public class GameController extends Controller implements GameViewObserver, Subs
         if(message instanceof InitStateMessage){
             InitStateMessage mess = (InitStateMessage)message;
             //if the message was for this client send ack
-            ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals);
             HashMap<String,Integer> playersPoints = new HashMap<>(); // updatedMatchDetails needs an input of points, but all the points are set at 0
-            for(String s: mess.players){
+            for(String s: mess.players){ //TODO: playersPoints in initStateMessage non serve
                 playersPoints.put(s,0);
-            }
-            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState, playersPoints);
-            ClientManager.view.printLivingRoomAndShelves();
+            }ClientManager.view.initializeGame(mess.players, mess.commonGoals, mess.personalGoals, mess.pieces, mess.selecectables,
+                    mess.playersShelves, playersPoints, mess.gameState);
+            //Ho creato 3 update, initialize, update(dopo selectedCards) e update(dopo selectedColumn) perché c'erano problemi. L'altra alternativa era cambiare tutti i messaggi
+            //ClientManager.view.updatedMatchDetails(mess.pieces, mess.selecectables, mess.playersShelves, mess.gameState, playersPoints);
+            ClientManager.view.printLivingRoom();
+            ClientManager.view.printShelves();
             ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
             if (mess.chairedPlayer.equals(ClientManager.userNickname)){
                 latestInit = mess;
-                ClientManager.virtualGameManager.sendAck();
+                virtualGameManager.sendAck();
                 ClientManager.view.chooseCards();
             }else{
-
                 ClientManager.view.waitingCommands(); // it needs to be sent continuously until it's his turn, or maybe a notify to the cli that blocks a while cycle
             }
 
-        }else if(message instanceof GameStateMessage){
+        }else if(message instanceof GameStateMessage){//Useful in case of disconnection
             //received info about the match
 
         }else if(message instanceof SelectedCardsMessage){
             SelectedCardsMessage mess = (SelectedCardsMessage)message;
-            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selectables, );
+            ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
+            ClientManager.view.printLivingRoom();
             ClientManager.view.chooseColumn();
 
         }else if(message instanceof SelectedColumnsMessage){
             SelectedColumnsMessage mess = (SelectedColumnsMessage)message;
-            ClientManager.view.updatedMatchDetails(mess.pieces, mess.selectables, mess.updatedPlayerShelf, mess.gameState, mess.updatedPoints);
+            //ClientManager.view.updatedMatchDetails(mess.pieces, mess.selectables, mess.updatedPlayerShelf, mess.gameState, mess.updatedPoints);
+            //ClientManager.view.printLivingRoomAndShelves();
+            ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
+            ClientManager.view.printShelves();
             ClientManager.view.showPlayingPlayer(mess.newPlayer);
         }
         return true;

@@ -74,17 +74,60 @@ public class CLIgeneral extends View{
             .required(false)
             .build();
     @Override
-    public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals, String userPlayer){
+    public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals,
+                               BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>>
+                               playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState){
         for(String s: playersNick){
             Player p = new Player(s);
             this.players.add(p);
         }
         this.commonGoals = commonGoals;
-        this.userPlayer = new Player(userPlayer);
         this.personalGoal = personalGoals.get(userPlayer);
+        this.livingRoom = livingRoom;
+        this.selectables = selectables;
+        this.gameState = gameState;
+        for(int j = 0; j < players.size(); j++) {
+            //Players' shelves update
+            for (int i = 0; i < playersShelves.size(); i++) {
+                if (playersShelves.get(i).getFirst().equals(players.get(j).getNickname())) {
+                    BoardCard[][] updatedShelf = playersShelves.get(j).getSecond();
+                    for (int z = 0; z < updatedShelf.length; z++) {
+                        for (int w = 0; w < updatedShelf[0].length; w++) {
+                            this.players.get(i).getPlayersShelf().getShelfCards()[z][w] = updatedShelf[z][w];
+                        }
+                    }
+                }
+            }
+            //Players' points update
+            this.players.get(j).updateScore(playersPoints.get(players.get(j).getNickname())-players.get(j).getScore());
+        }
     }
-
-
+    @Override
+    public void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState){
+        this.livingRoom = livingRoom;
+        this.selectables = selectables;
+        this.gameState = gameState;
+    }
+    @Override
+    public void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String,
+            Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf){
+        this.livingRoom = livingRoom;
+        this.selectables = selectables;
+        this.gameState = gameState;
+        for(int i = 0; i < players.size(); i++){
+            if(players.get(i).getNickname().equals(updatedPlayerPoints.getFirst())){
+                this.players.get(i).updateScore(updatedPlayerPoints.getSecond()-players.get(i).getScore());
+            }
+            if(players.get(i).getNickname().equals(updatedPlayerShelf.getFirst())){
+                BoardCard[][] updatedShelf = updatedPlayerShelf.getSecond();
+                for(int j = 0; j < updatedShelf.length; j++){
+                    for(int z = 0; z < updatedShelf[0].length; z++){
+                        this.players.get(i).getPlayersShelf().getShelfCards()[j][z] = updatedShelf[j][z];
+                    }
+                }
+            }
+        }
+    }
     @Override
     public void waitingCommands(){
         Options options = new Options();
@@ -100,10 +143,8 @@ public class CLIgeneral extends View{
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         try{
+            //while(qualcosa che mi arriva dal controller che continua a mandarlo e che successivamente lo rompe)
             cmd = parser.parse(options, scanf());
-            while(!options.hasOption(cmd.getOptions()[0].getOpt())){ // Until it receives a possible command, it continues to scan
-                cmd = parser.parse(options, scanf());
-            }
             if(cmd.hasOption(show_gameId)){
                 System.out.println("Your gameId is: "+gameID);
             } else if (cmd.hasOption(show_commonGoals)) {
@@ -126,29 +167,12 @@ public class CLIgeneral extends View{
                 String msg = scan.nextLine();
                 super.gameController.onGetChatMessage(msg);
                 // It also needs to show the past messages
+            }else {
+                System.out.println("Unavailable command, remember to type '-' and the desired command");
             }
         } catch (ParseException pe){
             System.err.println("Error parsing command-line arguments");
             formatter.printHelp("Section Commands", options);
-        }
-    }
-    @Override
-    public void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
-                                    GameStateType gameState) {
-        this.livingRoom = livingRoom;
-        this.selectables = selectables;
-        this.gameState = gameState;
-        for(int i = 0; i < players.size(); i++){ // With the first two for cycles I avoid possible differences in the players' order between the old ArrayList and the updated
-            for(int j = 0; j < players.size(); j++){
-                if(players.get(i).getNickname().equals(playersShelves.get(j).getFirst())){
-                    BoardCard[][] updatedShelf = playersShelves.get(j).getSecond();
-                    for(int z = 0; z < updatedShelf.length; z++){
-                        for(int w = 0; w < updatedShelf[0].length; w++){
-                            this.players.get(i).getPlayersShelf().getShelfCards()[z][w] = updatedShelf[z][w];
-                        }
-                    }
-                }
-            }
         }
     }
     @Override
@@ -158,7 +182,12 @@ public class CLIgeneral extends View{
         Scanner in = new Scanner(System.in);
         String username = in.next();
         String password = in.next();
+        this.userPlayer = new Player(username);
         ClientManager.gameManagerController.onSetCredentials(username, password);
+    }
+    @Override
+    public void showPlayingPlayer(String playingPlayer){
+        System.out.println(playingPlayer+" is playing");
     }
     @Override
     public void launchGameManager(List<GameLobby> availableGames){
@@ -173,28 +202,23 @@ public class CLIgeneral extends View{
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
-        for(int i = 0; i < options.getOptions().size(); i++){
-            System.out.println(options.getOptions().toArray()[i].toString());
-        }
         try{
 
             cmd = parser.parse(options, scanf());
-
-            while(cmd.getOptions().length == 0 || !options.hasOption(cmd.getOptions()[0].getOpt())){ // Until it receives a possible command, it continues to scan
-                cmd = parser.parse(options, scanf());
-                while(cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
+            while(!cmd.hasOption(create_game) && !cmd.hasOption(select_game)){ // Until it receives a possible command, it continues to scan
+                if(cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
                     for (int i = 0; i < availableGames.size(); i++) {
                         System.out.println("GameId: " + availableGames.get(i).getID());
                         for (int j = 0; j < availableGames.get(i).getPlayers().size(); j++) {
                             System.out.println("\t\t" + availableGames.get(i).getPlayers().get(j));
                         }
                     }
-                    cmd = parser.parse(options, scanf());
-                }
-                while(cmd.hasOption(help)){
+                }else if(cmd.hasOption(help)){
                     formatter.printHelp("Section Commands", options);
-                    cmd = parser.parse(options, scanf());
+                }else{
+                    System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
+                cmd = parser.parse(options, scanf());
             }
             if (cmd.hasOption(create_game)) {
                 int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
@@ -221,7 +245,7 @@ public class CLIgeneral extends View{
         options.addOption(show_gameId);
         options.addOption(chat);
         options.addOption(help);
-        if(host){
+        if(host && lobbyHost.equals(userPlayer.getNickname())){
             options.addOption(start_match);
         }
         // Printing section commands
@@ -232,23 +256,20 @@ public class CLIgeneral extends View{
 
         try{
             cmd = parser.parse(options, scanf());
-            while(!options.hasOption(cmd.getOptions()[0].getOpt())){ // Until it receives a possible command, it continues to scan
-                cmd = parser.parse(options, scanf());
-                while(cmd.hasOption(show_gameId)){
+            while(!cmd.hasOption(start_match)){ // Until it receives a possible command, it continues to scan
+                if(cmd.hasOption(show_gameId)){
                     System.out.println("Your gameId is: " + gameID);
-                    cmd = parser.parse(options, scanf());
-                }
-                while(cmd.hasOption(help)){
+                }else if(cmd.hasOption(help)){
                     formatter.printHelp("Section Commands", options);
-                    cmd = parser.parse(options, scanf());
-                }
-                while(cmd.hasOption(chat)) { // Example of chat implementation
+                }else if(cmd.hasOption(chat)) { // Example of chat implementation
                     Scanner scan = new Scanner(System.in);
                     String msg = scan.nextLine();
                     super.lobbyController.onGetChatMessage(msg);
-                    cmd = parser.parse(options, scanf());
                     // It also needs to show the past messages
+                }else{
+                    System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
+                cmd = parser.parse(options, scanf());
             }
             if (cmd.hasOption(start_match)) {
                     super.lobbyController.onStartMatch(gameID, userPlayer.getNickname());
@@ -301,42 +322,42 @@ public class CLIgeneral extends View{
             System.out.println("Select a column within range, from 0 to 4.");
             column = Integer.parseInt(in3.next());
         }
-        super.gameController.onSelectedColumn(selectedCards,column);
+        super.gameController.onSelectedColumn(selectedCards, column, userPlayer.getNickname());
     }
-
     @Override
     public void setNickname(String nick) {
         userPlayer = new Player(nick);
     }
-
     @Override
-    public void printLivingRoomAndShelves(){
+    public void printLivingRoom() {
         BoardCard[][] pieces = livingRoom;
-        System.out.println("Game state: "+gameState.toString()+"\n");
+        System.out.println("Game state: " + gameState.toString() + "\n");
         System.out.print("  0");
-        for(int j = 1; j < pieces[0].length; j++){
-            System.out.print(" "+j);
+        for (int j = 1; j < pieces[0].length; j++) {
+            System.out.print(" " + j);
         }
         System.out.println();
-        for(int i = 0; i < pieces.length; i++){
-            System.out.print(i+" ");
-            for(int j = 0; j < pieces[0].length; j++){
+        for (int i = 0; i < pieces.length; i++) {
+            System.out.print(i + " ");
+            for (int j = 0; j < pieces[0].length; j++) {
                 BoardCard tmp = pieces[i][j];
-                Pair<String,Character> color;
+                Pair<String, Character> color;
                 color = getColor(tmp);
-                if(selectables[i][j].equals(true)) {
-                    System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.UNDERLINE+color.getFirst()+color.getSecond()+CLIColors.RESET);
+                if (selectables[i][j].equals(true)) {
+                    System.out.print(CLIColors.BLACK_BACKGROUND + CLIColors.UNDERLINE + color.getFirst() + color.getSecond() + CLIColors.RESET);
                 } else {
-                    System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.BASE+color.getFirst()+color.getSecond()+CLIColors.RESET);
+                    System.out.print(CLIColors.BLACK_BACKGROUND + CLIColors.BASE + color.getFirst() + color.getSecond() + CLIColors.RESET);
                 }
-                if(j != pieces[0].length-1){
-                    System.out.print(CLIColors.BLACK_BACKGROUND+" "+CLIColors.RESET);
+                if (j != pieces[0].length - 1) {
+                    System.out.print(CLIColors.BLACK_BACKGROUND + " " + CLIColors.RESET);
                 }
             }
             System.out.print("\n");
         }
         System.out.print("\n");
-
+    }
+    @Override
+    public void printShelves(){
 /* Printing of shelves, starting from the playingPlayer's shelf */
         System.out.println("Your shelf:\t\tYour score: "+userPlayer.getScore());
         printShelf(userPlayer.getPlayersShelf());
@@ -344,7 +365,7 @@ public class CLIgeneral extends View{
         for(int i = 0; i < players.size(); i++){
             if(!players.get(i).equals(userPlayer)){
                 System.out.println(players.get(i).getNickname()+"'s shelf:\t\t"+players.get(i).getNickname()+"'s score: "
-                +players.get(i).getScore());
+                        +players.get(i).getScore());
                 printShelf(players.get(i).getPlayersShelf());
             }
         }

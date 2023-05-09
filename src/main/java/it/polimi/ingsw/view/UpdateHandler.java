@@ -16,24 +16,27 @@ import java.util.List;
 
 public interface UpdateHandler {
     /**
-     * It initializes the game main parameters
+     * It initializes the game's main parameters, it is also used in case of disconnection
      * @param players
      * @param commonGoals
      * @param personalGoals
-     */
-    void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals);
-    /**
-     * It contains all the available command the CLI user can call while waiting for his turn
-     */
-    void waitingCommands(); // The controller continues to call this method until the playing player changes to the CLI user
-    /**
-     * Updates the CLI parameters for the match
      * @param livingRoom
      * @param selectables
      * @param playersShelves
+     * @param playersPoints
+     * @param gameState
      */
-    void updatedMatchDetails(BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
-                             GameStateType gameState, HashMap<String,Integer> playersPoints);
+    void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals,
+                           BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
+                           HashMap<String, Integer> playersPoints, GameStateType gameState);
+    /**
+     * It contains all the available command the CLI user can call while waiting for his turn
+     */
+    void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState);
+    void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String, Integer>
+                                        updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf);
+
+    void waitingCommands(); // The controller continues to call this method until the playing player changes to the CLI user
     /**
      * Requests Username from Command Line
      * @return String
@@ -64,7 +67,8 @@ public interface UpdateHandler {
      */
 
     void setNickname(String nick);
-    void printLivingRoomAndShelves();
+    void printLivingRoom();
+    void printShelves();
     /**
      * Prints error type on command line
      * @param error
