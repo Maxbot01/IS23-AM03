@@ -34,7 +34,7 @@ public class PersonalGoal {
      * Initializes the selected goal for the player, caller guarantees the index be different from the other players index
      * @param withIndex personal goal card # to choose
      */
-    PersonalGoal(int withIndex) {
+    public PersonalGoal(int withIndex) {
         this.selectedGoal = personalGoals.get(withIndex);
     }
 

@@ -17,7 +17,8 @@ public class InitStateMessage extends MatchStateMessage {
 
     public BoardCard[][] pieces;
     public Boolean[][] selecectables;
-    public CommonGoals commonGoals;
+    public String firstGoal;
+    public String secondGoal;
     public HashMap<String, PersonalGoal> personalGoals;
     public List<String> players;
     public String chairedPlayer;
@@ -31,13 +32,14 @@ public class InitStateMessage extends MatchStateMessage {
         this.matchID = matchID;
         this.pieces = pieces;
         this.selecectables = selecectables;
-        this.commonGoals = commonGoals;
+        this.firstGoal = commonGoals.getFirstGoal().toString();
+        this.secondGoal = commonGoals.getSecondGoal().toString();
         this.personalGoals = personalGoals;
         this.players = players;
         this.chairedPlayer = chairedPlayer;
         this.playersShelves = playersShelves;
     }
-/*
+
     public void printMessage() {
         System.out.println("InitStateMessage:");
         System.out.println("GameStateType: " + super.gameState);
@@ -64,26 +66,22 @@ public class InitStateMessage extends MatchStateMessage {
             }
             System.out.println();
         }
-        System.out.println("CommonGoals 1: " + commonGoals.getFirstGoal().toString());
-        System.out.println("CommonGoals 2: " + commonGoals.getSecondGoal().toString());
+        System.out.println("CommonGoals 1: " + firstGoal);
+        System.out.println("CommonGoals 2: " + secondGoal);
         System.out.println("PersonalGoals:");
-        for (Map.Entry<Player, PersonalGoal> entry : personalGoals.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
+        //for (Map.Entry<Player, PersonalGoal> entry : personalGoals.entrySet()) {
+          //  System.out.println(entry.getKey() + ": " + entry.getValue());
+        //}
         System.out.println("Players: " + players);
         System.out.println("ChairedPlayer: " + chairedPlayer);
         System.out.println("PlayersShelves:");
-        for (Pair<Player, BoardCard[][]> pair : playersShelves) {
-            System.out.println(pair.getFirst().getNickname() + ":");
-            for (int i = 0; i < pair.getSecond().length; i++) {
-                for (int j = 0; j < pair.getSecond()[i].length; j++) {
-                    System.out.print(pair.getSecond()[i][j].getColor() + " ");
-                }
-                System.out.println();
+        //for (Pair<Player, BoardCard[][]> pair : playersShelves) {
+          //  System.out.println(pair.getFirst().getNickname() + ":");
+            //for (int i = 0; i < pair.getSecond().length; i++) {
+              //  for (int j = 0; j < pair.getSecond()[i].length; j++) {
+                //    System.out.print(pair.getSecond()[i][j].getColor() + " ");
+                //}
+                //System.out.println();
             }
         }
-    }
-*/
 
-
-}
