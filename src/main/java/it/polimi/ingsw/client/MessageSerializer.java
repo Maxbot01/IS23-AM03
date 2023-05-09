@@ -62,7 +62,7 @@ public class MessageSerializer {
             String id = jsonObject.get("id").getAsString();
             if(!(toPlayer.equals(ClientManager.userUID) || toPlayer.equals(ClientManager.userNickname))){
                 //not directed to this client, return a null
-                System.out.println("not directed to me, got " + toPlayer + " but have "+ ClientManager.userUID + " | " + ClientManager.userNickname);
+                //System.out.println("not directed to me, got " + toPlayer + " but have "+ ClientManager.userUID + " | " + ClientManager.userNickname);
                 return null;
             }
             JsonObject messageData = jsonObject.get("messageData").getAsJsonObject();

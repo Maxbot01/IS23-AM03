@@ -53,6 +53,7 @@ public class GameManager extends GameObservable{
     }
 
     public void createGame(Integer numPlayers, String username){
+        //TODO: notify everyone connected that new games have been created
         //creates game
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
         System.out.println("new current games: " + currentGames.keySet());
