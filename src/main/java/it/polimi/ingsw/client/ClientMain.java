@@ -30,14 +30,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ClientMain {
+public class ClientMain implements Runnable{
 
     private Socket socket;
     private static ObjectOutputStream output;
     private ObjectInputStream input;
     private static boolean isRunning;
 
-    public ClientMain(Socket socket) {
+    public ClientMain(Socket socket){
         this.socket = socket;
 
         try {
@@ -54,6 +54,7 @@ public class ClientMain {
 
     public static void sendMessage(String message) {
         try {
+            System.out.println("sono in send message del client, con il messaggio:\n"+message);
             output.writeObject(message);
             output.flush();
         } catch (IOException e) {
@@ -62,7 +63,7 @@ public class ClientMain {
         }
     }
 
-    public void receiveMessages() {
+    public void run() {
         try {
             while (isRunning) {
                 String message = (String) input.readObject();
@@ -72,7 +73,10 @@ public class ClientMain {
                 if(serializedMessage != null){
                     //if it's meant for us
                     //TODO: add exception to handle wrongly received message to react accordingly
-                    ClientManager.clientReceiveMessage(serializedMessage);
+                    //TODO: put this into thread to stop cli from blocking this loop
+                    new Thread(() -> {
+                        ClientManager.clientReceiveMessage(serializedMessage);
+                    }).start();
                 }
             }
         } catch (IOException e) {
@@ -104,7 +108,7 @@ public class ClientMain {
         //client.sendMessage("Hello, server!");
 
 // Receive messages from the server until the client is stopped
-        client.receiveMessages();
+        client.run();
 
 // Stop the client
         client.stop();

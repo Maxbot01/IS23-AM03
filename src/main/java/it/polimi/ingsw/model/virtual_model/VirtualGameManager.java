@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.modelSupport.BoardCard;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +55,11 @@ public class VirtualGameManager extends VirtualGameModel{
 
     public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
         VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("selectedCards", new Object[]{selected, user, gameID});
+        ClientMain.sendMessage(serializeMethod(serializedGameManager));
+    }
+
+    public void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("selectedColumn", new Object[]{selected,column,user,gameID});
         ClientMain.sendMessage(serializeMethod(serializedGameManager));
     }
 }

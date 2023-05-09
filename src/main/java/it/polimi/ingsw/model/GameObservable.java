@@ -27,7 +27,7 @@ public abstract class GameObservable {
     }
     protected void notifyAllObservers(List<String> observers, Message withMessage, boolean inLobbyOrGame, String ID){
         //send the message for every given nick (TO CHANGE MAYBE)
-        System.out.println("Sending message to everyone" + withMessage.toString());
+        System.out.println("Sending message to everyone" + observers);
         //TODO: change format for this
         for(String x: observers){
             MessageSerializer messageSerializer = new MessageSerializer();

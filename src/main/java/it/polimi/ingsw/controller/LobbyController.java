@@ -17,7 +17,7 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
         ClientManager.pubsub.addSubscriber(TopicType.lobbyState, this);
     }
     @Override
-    public void onStartMatch(String ID, String user) {
+    public void onStartMatch(String ID, String user) { // The username sent is the host's username
         //virtualGameLobby.startMatch(ID, user);
         ClientManager.virtualGameManager.startMatch(ID, user);
     }
