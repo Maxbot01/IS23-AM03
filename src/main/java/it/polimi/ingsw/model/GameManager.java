@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullEx
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -98,15 +99,16 @@ public class GameManager extends GameObservable{
      * Gets all the lobbies that have not been tombstoned (joinable)
      * @return
      */
-    private HashMap<GameLobby, Game> getAllCurrentJoinableLobbies(){
-        HashMap<GameLobby, Game> out = new HashMap<>();
+    private HashMap<String, List<String>> getAllCurrentJoinableLobbiesIDs(){
+        HashMap<String, List<String>> out = new HashMap<>();
         for(GameLobby x: this.currentGames.keySet()){
             if(!x.isKilled()){
-                out.put(x, this.currentGames.get(x));
+                out.put(this.currentGames.get(x).getID(), x.getPlayers());
             }
         }
         return out;
     }
+
 
     public void setCredentials(String username, String password, String UID){
         //check if there was, else send message of erroneus urername set request.
@@ -117,8 +119,8 @@ public class GameManager extends GameObservable{
                 //sends all the games
                 userIDs.put(username, UID);
                 System.out.println(username + "connected with UID: " + UID);
-                System.out.println("current games: " + getAllCurrentJoinableLobbies());
-                super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbies(), username), false, "-");
+                System.out.println("current games: " + getAllCurrentJoinableLobbiesIDs());
+                super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
             }else{
                 //username wrong password
                 //sends error
@@ -126,11 +128,10 @@ public class GameManager extends GameObservable{
             }
         }else{
             //new user
-            HashMap<GameLobby,Game> tmp = getAllCurrentJoinableLobbies();
-            System.out.println(username + " connected");
-            System.out.println("current games: " + tmp.keySet().toString());
+            System.out.println(username + "connected");
+            System.out.println("current games: " + getAllCurrentJoinableLobbiesIDs());
             nicknames.put(username, password);
-            super.notifyObserver(username, new loginGameMessage(tmp, username), false, "-");
+            super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
         }
     }
 

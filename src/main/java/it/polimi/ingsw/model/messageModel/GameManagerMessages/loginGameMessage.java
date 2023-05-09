@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class loginGameMessage extends GameManagerMessage{
-    public List<String> availableGamesId;
+
     public HashMap<String, List<String>> gamesPlayers;
     public String username;
-    public loginGameMessage(List<String> availableGamesId, HashMap<String, List<String>> gamesPlayers, String username){
-        this.availableGamesId = availableGamesId;
+    public loginGameMessage(HashMap<String, List<String>> gamesPlayers, String username){
+
         this.gamesPlayers = gamesPlayers;
         this.username = username;
     }
