@@ -17,7 +17,7 @@ public class InitStateMessage extends MatchStateMessage {
 
     public BoardCard[][] pieces;
     public Boolean[][] selecectables;
-    public CommonGoals commonGoals;
+    public CommonGoals commonGoals; // to list of two elements
     public HashMap<String, PersonalGoal> personalGoals;
     public List<String> players;
     public String chairedPlayer;

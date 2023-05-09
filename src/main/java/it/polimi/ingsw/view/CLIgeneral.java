@@ -212,9 +212,11 @@ public class CLIgeneral extends View{
                     }else {
                         for(String s: availableGames.keySet()){
                             System.out.println("GameId: "+s);
+                            System.out.print("Players: ");
                             for(String player: availableGames.get(s)){
-                                System.out.print(player);
+                                System.out.print(player+"\t");
                             }
+                            System.out.println();
                         }
                     }
                 }else if(cmd.hasOption(help)){
