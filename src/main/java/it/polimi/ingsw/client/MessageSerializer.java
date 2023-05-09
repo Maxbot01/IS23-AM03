@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
@@ -71,7 +72,7 @@ public class MessageSerializer {
                 case "LobbyInfoMessage":
                     return new Gson().fromJson(messageData, LobbyInfoMessage.class);
                 case "ErrorMessage":
-                    return new Gson().fromJson(messageData, LobbyInfoMessage.class);
+                    return new Gson().fromJson(messageData, ErrorMessage.class);
                 case "loginGameMessage":
                     return new Gson().fromJson(messageData, loginGameMessage.class);
                 case "FinishedGameMessage":
