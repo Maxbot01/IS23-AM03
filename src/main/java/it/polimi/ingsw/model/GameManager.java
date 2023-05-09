@@ -103,7 +103,7 @@ public class GameManager extends GameObservable{
         HashMap<String, List<String>> out = new HashMap<>();
         for(GameLobby x: this.currentGames.keySet()){
             if(!x.isKilled()){
-                out.put(this.currentGames.get(x).getID(), x.getPlayers());
+                out.put(x.getID(), x.getPlayers());
             }
         }
         return out;
