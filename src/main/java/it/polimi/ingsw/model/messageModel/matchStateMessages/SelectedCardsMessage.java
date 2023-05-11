@@ -16,7 +16,7 @@ public class SelectedCardsMessage extends MatchStateMessage {
     public ArrayList<BoardCard> selectedCards;
     public Boolean[][] selectables;
     public BoardCard[][] pieces;
-    private Player currentPlayer;
+    public Player currentPlayer;
 
     public SelectedCardsMessage(GameStateType gameState, String matchID, ArrayList<BoardCard> selectedCards, Boolean[][] selectables, BoardCard[][] pieces, Player currentPlayer) {
         super(gameState, matchID);

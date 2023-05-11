@@ -73,6 +73,16 @@ public class CLIgeneral extends View{
             .desc("activates chat input")
             .required(false)
             .build();
+    private final Option exit = Option.builder("exit")
+            .hasArg(false)
+            .desc("terminates the connection with the server")
+            .required(false)
+            .build();
+    private final Option play_again = Option.builder("play_again")
+            .hasArg(false)
+            .desc("takes you back to the game selection and creation section")
+            .required(false)
+            .build();
     @Override
     public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals,
                                BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>>
@@ -119,8 +129,6 @@ public class CLIgeneral extends View{
         for(int i = 0; i < players.size(); i++){
             if(players.get(i).getNickname().equals(updatedPlayerPoints.getFirst())){
                 this.players.get(i).updateScore(updatedPlayerPoints.getSecond()-players.get(i).getScore());
-            }
-            if(players.get(i).getNickname().equals(updatedPlayerShelf.getFirst())){
                 BoardCard[][] updatedShelf = updatedPlayerShelf.getSecond();
                 for(int j = 0; j < updatedShelf.length; j++){
                     for(int z = 0; z < updatedShelf[0].length; z++){
@@ -129,6 +137,7 @@ public class CLIgeneral extends View{
                 }
             }
         }
+
     }
     @Override
     public void waitingCommands(){
@@ -189,7 +198,7 @@ public class CLIgeneral extends View{
     }
     @Override
     public void showPlayingPlayer(String playingPlayer){
-        System.out.println(playingPlayer+" is playing");
+        System.out.println(playingPlayer+" is playing...");
     }
     @Override
     public void launchGameManager(HashMap<String, List<String>> availableGames){
@@ -344,31 +353,56 @@ public class CLIgeneral extends View{
         super.gameController.onSelectedColumn(selectedCards, column, userPlayer.getNickname());
     }
     @Override
-    public void setNickname(String nick) {
-        userPlayer = new Player(nick);
+    public void endCommands(){
+        Options options = new Options();
+        options.addOption(help);
+        options.addOption(exit);
+        options.addOption(play_again);
+
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Section Commands", options);
+
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd;
+        try{
+            cmd = parser.parse(options, scanf());
+            while(!cmd.hasOption(exit) && !cmd.hasOption(play_again)){
+                if(cmd.hasOption(help)){
+                    formatter.printHelp("Section Commands", options);
+                }else{
+                    System.out.println("Unavailable command, remember to type '-' and the desired command");
+                }
+                cmd = parser.parse(options, scanf());
+            }
+            if(cmd.hasOption(exit)){
+                //TODO: Terminates the connection to the server
+            }else if(cmd.hasOption(play_again)){
+                gameManagerController.onLookForNewGames(userPlayer.getNickname());
+            }
+        } catch (ParseException pe){
+            System.err.println("Error parsing command-line arguments");
+            formatter.printHelp("Section Commands", options);
+        }
     }
     @Override
     public void printLivingRoom() {
         BoardCard[][] pieces = livingRoom;
-        System.out.println("Game state: " + gameState.toString() + "\n");
-        System.out.print("  0");
+        System.out.println("\n"+"Game state: " + gameState.toString());
+        System.out.print("   0");
         for (int j = 1; j < pieces[0].length; j++) {
-            System.out.print(" " + j);
+            System.out.print("  " + j);
         }
         System.out.println();
-        for (int i = 0; i < pieces.length; i++) {
+        for(int i = 0; i < pieces.length; i++){
             System.out.print(i + " ");
             for (int j = 0; j < pieces[0].length; j++) {
                 BoardCard tmp = pieces[i][j];
-                Pair<String, Character> color;
+                Pair<String, String> color;
                 color = getColor(tmp);
                 if (selectables[i][j].equals(true)) {
-                    System.out.print(CLIColors.BLACK_BACKGROUND + CLIColors.UNDERLINE + color.getFirst() + color.getSecond() + CLIColors.RESET);
+                    System.out.print(CLIColors.WHITE + CLIColors.BASE + color.getFirst() + color.getSecond()+CLIColors.RESET);
                 } else {
-                    System.out.print(CLIColors.BLACK_BACKGROUND + CLIColors.BASE + color.getFirst() + color.getSecond() + CLIColors.RESET);
-                }
-                if (j != pieces[0].length - 1) {
-                    System.out.print(CLIColors.BLACK_BACKGROUND + " " + CLIColors.RESET);
+                    System.out.print(CLIColors.BLACK + CLIColors.BASE + color.getFirst() + color.getSecond()+CLIColors.RESET);
                 }
             }
             System.out.print("\n");
@@ -377,9 +411,14 @@ public class CLIgeneral extends View{
     }
     @Override
     public void printShelves(){
+        System.out.println("\n"+"Game State: "+gameState.toString());
 /* Printing of shelves, starting from the playingPlayer's shelf */
-        System.out.println("Your shelf:\t\tYour score: "+userPlayer.getScore());
-        printShelf(userPlayer.getPlayersShelf());
+        for(Player p: players){
+            if(p.getNickname().equals(userPlayer.getNickname())){
+                System.out.println("Your shelf:\t\tYour score: "+p.getScore());
+                printShelf(p.getPlayersShelf());
+            }
+        }
 /* Printing other players' shelves */
         for(int i = 0; i < players.size(); i++){
             if(!players.get(i).getNickname().equals(userPlayer.getNickname())){
@@ -393,32 +432,41 @@ public class CLIgeneral extends View{
     public void showErrorMessage(String error){
         System.out.println(error);
     }
-    private Pair<String,Character> getColor(BoardCard tmp){
-        String colorHighlight;
-        char colorValue;
-        if(tmp.getColor().equals(colorType.TOMBSTONE) || tmp.getColor().equals(colorType.EMPTY_SPOT)){
-            colorHighlight = CLIColors.BLACK;
-            colorValue = 'X';
-        } else if (tmp.getColor().equals(colorType.GREEN)) {
-            colorHighlight = CLIColors.GREEN;
-            colorValue = 'G';
-        } else if (tmp.getColor().equals(colorType.WHITE)) {
-            colorHighlight = CLIColors.WHITE;
-            colorValue = 'W';
-        } else if (tmp.getColor().equals(colorType.YELLOW)) {
-            colorHighlight = CLIColors.YELLOW;
-            colorValue = 'Y';
-        } else if (tmp.getColor().equals(colorType.LIGHT_BLUE)) {
-            colorHighlight = CLIColors.CYAN;
-            colorValue = 'L';
-        } else if (tmp.getColor().equals(colorType.BLUE)) {
-            colorHighlight = CLIColors.BLUE;
-            colorValue = 'B';
-        } else { // purple case
-            colorHighlight = CLIColors.PURPLE;
-            colorValue = 'P';
+    @Override
+    public void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner, GameStateType finalGameState){
+        System.out.println("\n"+"Game State: "+finalGameState.toString());
+        System.out.println("\n"+"The winner is "+winner);
+        System.out.println();
+        for(Pair<String,Integer> p: finalScoreBoard){
+            System.out.println(p.getFirst()+"\tFinal Score: "+p.getSecond());
         }
-        Pair<String,Character> val = new Pair<>(colorHighlight,colorValue);
+    }
+    private Pair<String,String> getColor(BoardCard tmp){
+        String colorBackground;
+        String colorValue;
+        if(tmp.getColor().equals(colorType.TOMBSTONE) || tmp.getColor().equals(colorType.EMPTY_SPOT)){
+            colorBackground = CLIColors.BLACK_BACKGROUND;
+            colorValue = " X ";
+        } else if (tmp.getColor().equals(colorType.GREEN)) {
+            colorBackground = CLIColors.GREEN_BACKGROUND;
+            colorValue = " G ";
+        } else if (tmp.getColor().equals(colorType.WHITE)) {
+            colorBackground = CLIColors.WHITE_BACKGROUND;
+            colorValue = " W ";
+        } else if (tmp.getColor().equals(colorType.YELLOW)) {
+            colorBackground = CLIColors.YELLOW_BACKGROUND;
+            colorValue = " Y ";
+        } else if (tmp.getColor().equals(colorType.LIGHT_BLUE)) {
+            colorBackground = CLIColors.CYAN_BACKGROUND;
+            colorValue = " L ";
+        } else if (tmp.getColor().equals(colorType.BLUE)) {
+            colorBackground = CLIColors.BLUE_BACKGROUND;
+            colorValue = " B ";
+        } else { // purple case
+            colorBackground = CLIColors.PURPLE_BACKGROUND;
+            colorValue = " P ";
+        }
+        Pair<String,String> val = new Pair<>(colorBackground,colorValue);
         return val;
     }
     private String[] scanf(){
@@ -439,12 +487,9 @@ public class CLIgeneral extends View{
         for(int i = 0; i < tmp.getShelfCards().length; i++){
             for(int j = 0; j < tmp.getShelfCards()[0].length; j++){
                 BoardCard card = tmp.getCardAtPosition(i,j);
-                Pair<String,Character> color;
+                Pair<String,String> color;
                 color = getColor(card);
-                System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.BASE+color.getFirst()+color.getSecond()+ CLIColors.RESET);
-                if(j != tmp.getShelfCards()[0].length-1){
-                    System.out.print(CLIColors.BLACK_BACKGROUND+" "+CLIColors.RESET);
-                }
+                System.out.print(CLIColors.BLACK+CLIColors.BASE+color.getFirst()+color.getSecond()+CLIColors.RESET);
             }
             System.out.print("\n");
         }

@@ -48,6 +48,11 @@ public class GameManagerController extends Controller implements GameManagerView
     }
 
     @Override
+    public void onLookForNewGames(String user){
+        virtualGameManager.lookForNewGames(user);
+    }
+
+    @Override
     public boolean receiveSubscriberMessages(Message message) {
         if(message instanceof NetworkMessage){
 
@@ -64,7 +69,6 @@ public class GameManagerController extends Controller implements GameManagerView
         }else if(message instanceof loginGameMessage){
             //user can go in, launchGameManager phase
             ClientManager.userNickname = ((loginGameMessage)message).username;
-            ClientManager.view.setNickname(((loginGameMessage)message).username); // TODO: Lo devo togliere
             ClientManager.view.launchGameManager(((loginGameMessage)message).gamesPlayers);
         }
         return true;

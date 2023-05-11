@@ -129,6 +129,9 @@ public class VirtualGameManagerSerializer {
                 gameManager.selectedColumn(getBoardCardFormat(getElementsFromObject(virtualGameManagerSerializer.getArgs()[0])),
                         Character.getNumericValue(virtualGameManagerSerializer.getArgs()[1].toString().charAt(0)), user4, gameID2);
                 //gameManager.selectedColumn((ArrayList<BoardCard>) virtualGameManagerSerializer.getArgs()[0], (Integer)virtualGameManagerSerializer.getArgs()[1], user4, gameID2);
+            case "lookForNewGames":
+                String user5 = virtualGameManagerSerializer.getArgs()[0].toString();
+                gameManager.lookForNewGames(user5);
         }
     }
     /**
@@ -155,6 +158,10 @@ public class VirtualGameManagerSerializer {
                 }
             }
         }
+        /*System.out.println("Printing strings inside getElementsFromObject");
+        for(String t: strings){
+            System.out.print(" -- "+t+" -- ");
+        }*/
         return strings;
     }
     /**
@@ -182,9 +189,12 @@ public class VirtualGameManagerSerializer {
             Pair<Integer,Integer> p = new Pair<>(Character.getNumericValue(s.charAt(first)),Character.getNumericValue(s.charAt(second)));
             pairs.add(p);
         }
+        /*System.out.println("Printing pairs inside getPairFormat");
+        for(Pair<Integer,Integer> p : pairs){
+            System.out.print(" -- "+p.getFirst()+"."+p.getSecond()+" -- ");
+        }*/
         return pairs;
     }
-
     /**
      * It converts an ArrayList of string into an ArrayList of BoardCards. Be sure the format you want to change is compatible
      * @param elements
@@ -193,36 +203,36 @@ public class VirtualGameManagerSerializer {
     private static ArrayList<BoardCard> getBoardCardFormat(ArrayList<String> elements){
         ArrayList<BoardCard> boardCards = new ArrayList<>();
 
-        boolean foundColor = false;
         for(String s: elements){
+            boolean foundColor = false;
             String color = "";
             String ornament = "";
             for(int i = 0; i < s.length(); i++){
-                if(s.charAt(i) == ':'){
-                    System.out.println("':' found at index "+i+" with foundColor at "+foundColor);
+                if(s.charAt(i) == '='){
                     if(!foundColor){
-                        i += 2;
-                        while(s.charAt(i) != '"'){
+                        i++;
+                        while(s.charAt(i) != ','){
                             color = color.concat(String.valueOf(s.charAt(i)));
                             i++;
                         }
                         foundColor = true;
                     }else{
-                        i += 2;
+                        i++;
                         ornament = String.valueOf(s.charAt(i));
                     }
                 }
             }
             if(color.length() != 0 && ornament.length() != 0){
                 BoardCard b = new BoardCard(colorType.valueOf(color), ornamentType.valueOf(ornament));
-                System.out.println(b);
-                colorType.valueOf(color);
                 boardCards.add(b);
-                System.out.println(boardCards);
             }else{
                 System.out.println("il formato delle stringhe non era corretto");
             }
         }
+        /*System.out.println("Printing boardCards inside getBoardCardFormat");
+        for(BoardCard b: boardCards){
+            System.out.print(" -- color:"+b.getColor().toString()+" ornament: "+b.getOrnament().toString()+" -- ");
+        }*/
         return boardCards;
     }
 }
