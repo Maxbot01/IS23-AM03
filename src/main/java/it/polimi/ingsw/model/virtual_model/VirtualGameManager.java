@@ -41,6 +41,12 @@ public class VirtualGameManager extends VirtualGameModel{
         VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("sendAck", new Object[]{});
         ClientMain.sendMessage(serializeMethod(serializedGameManager));
     }
+
+    public void lookForNewGames(String user){
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("lookForNewGames", new Object[]{user});
+        ClientMain.sendMessage(serializeMethod(serializedGameManager));
+    }
+
     /*
     Lobby methods
      */

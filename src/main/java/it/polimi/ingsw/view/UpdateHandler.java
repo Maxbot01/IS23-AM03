@@ -56,27 +56,36 @@ public interface UpdateHandler {
      * Calls the game sequence where the CLI user chooses the cards from the living room
      */
     void chooseCards();
-
     /**
      * Calls the game sequence where the CLI user chooses the column of his shelf
      */
     void chooseColumn();
     /**
-     * It prints the living room and shelves on the terminal
+     * Calls the commands available after a match has ended
      */
-
-    void setNickname(String nick);
+    void endCommands();
+    /**
+     * Prints the livingRoom/Board
+     */
     void printLivingRoom();
+    /**
+     * Prints all the shelves
+     */
     void printShelves();
     /**
      * Prints error type on command line
      * @param error
      */
     void showErrorMessage(String error);
-
     /**
      * Prints the playing player
      * @param playingPlayer
      */
     void showPlayingPlayer(String playingPlayer);
+    /**
+     * Prints the final scoreboard
+     * @param finalScoreBoard
+     * @param winner
+     */
+    void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner,GameStateType gameState);
 }

@@ -42,6 +42,7 @@ public class GameLobby extends GameObservable {
         players = new ArrayList<>();
         players.add(host);
         super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players), false, ID); //TODO: non dovrebbe essere true inLobbyorGame?
+        //TODO: Send a message to all observers not in game (or don't show it) with the new available games (remember that there's the method lookForNewGames)
     }
 
     public void addPlayer(String player) throws LobbyFullException {

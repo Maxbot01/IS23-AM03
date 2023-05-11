@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
+import it.polimi.ingsw.model.modelSupport.Client;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.view.View;
@@ -179,7 +180,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             }
             ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.pieces, mess.selecectables,
                     mess.playersShelves, playersPoints, mess.gameState);
-            //Ho creato 3 update, initialize, update(dopo selectedCards) e update(dopo selectedColumn) perché c'erano problemi. L'altra alternativa era cambiare tutti i messaggi
             ClientManager.view.printLivingRoom();
             ClientManager.view.printShelves();
             ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
@@ -198,15 +198,22 @@ public class GameController extends Controller implements GameViewObserver, Subs
             SelectedCardsMessage mess = (SelectedCardsMessage)message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
             ClientManager.view.printLivingRoom();
-            ClientManager.view.chooseColumn();
-
+            if(mess.currentPlayer.getNickname().equals(ClientManager.userNickname)) {
+                ClientManager.view.chooseColumn();
+            }
         }else if(message instanceof SelectedColumnsMessage){
             SelectedColumnsMessage mess = (SelectedColumnsMessage)message;
-            //ClientManager.view.updatedMatchDetails(mess.pieces, mess.selectables, mess.updatedPlayerShelf, mess.gameState, mess.updatedPoints);
-            //ClientManager.view.printLivingRoomAndShelves();
             ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
             ClientManager.view.printShelves();
             ClientManager.view.showPlayingPlayer(mess.newPlayer);
+            if(mess.newPlayer.equals(ClientManager.userNickname)){
+                ClientManager.view.chooseCards();
+            }else{
+                ClientManager.view.waitingCommands();
+            }
+        }else if(message instanceof FinishedGameMessage mess){
+            ClientManager.view.printScoreBoard(mess.finalScoreBoard,mess.winnerNickname,mess.gameState);
+            ClientManager.view.endCommands();
         }
         return true;
     }

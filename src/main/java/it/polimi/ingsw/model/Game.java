@@ -3,15 +3,18 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.SelectedColumnsMessageError;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.*;
 import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
 import it.polimi.ingsw.model.modelSupport.enums.TurnStateType;
+import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
+import it.polimi.ingsw.view.CLIColors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,7 +146,39 @@ public class Game extends GameObservable{
      */
     public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) { //TODO: See if user is necessary
         try {
-            playingPlayer.getPlayersShelf().insertInColumn(selCards, colIndex);
+            /*testing
+            System.out.println("PRINTING THE SELECTED CARDS:");
+            for(BoardCard b: selCards){
+                System.out.println(" color: "+b.getColor().toString()+" ornament: "+b.getOrnament().toString());
+            }
+            System.out.println("PRINTING THE PLAYING PLAYER: "+playingPlayer.getNickname()+" PRINTING THE USER: "+user);
+            System.out.println("PRINTING THE MODIFIED SHELF BEFORE:");
+            for(int i = 0; i < playingPlayer.getPlayersShelf().getShelfCards().length; i++){
+                for(int j = 0; j < playingPlayer.getPlayersShelf().getShelfCards()[0].length; j++){
+                    BoardCard card = playingPlayer.getPlayersShelf().getCardAtPosition(i,j);
+                    Pair<String,Character> color;
+                    color = getColor(card);
+                    System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.BASE+color.getFirst()+color.getSecond()+ CLIColors.RESET);
+                    if(j != playingPlayer.getPlayersShelf().getShelfCards()[0].length-1){
+                        System.out.print(CLIColors.BLACK_BACKGROUND+" "+CLIColors.RESET);
+                    }
+                }
+                System.out.print("\n");
+            }*/
+            this.playingPlayer.getPlayersShelf().insertInColumn(selCards, colIndex);
+            /*System.out.println("PRINTING THE MODIFIED SHELF AFTER:");
+            for(int i = 0; i < playingPlayer.getPlayersShelf().getShelfCards().length; i++){
+                for(int j = 0; j < playingPlayer.getPlayersShelf().getShelfCards()[0].length; j++){
+                    BoardCard card = playingPlayer.getPlayersShelf().getCardAtPosition(i,j);
+                    Pair<String,Character> color;
+                    color = getColor(card);
+                    System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.BASE+color.getFirst()+color.getSecond()+ CLIColors.RESET);
+                    if(j != playingPlayer.getPlayersShelf().getShelfCards()[0].length-1){
+                        System.out.print(CLIColors.BLACK_BACKGROUND+" "+CLIColors.RESET);
+                    }
+                }
+                System.out.print("\n");
+            }*/
         }catch(ColumnNotSelectable e) {
             //can't insert the items in the columns, send error message to client
             super.notifyObserver(playingPlayer.getNickname(), new SelectedColumnsMessageError(e.getMessage()), true, this.ID);
@@ -152,7 +187,7 @@ public class Game extends GameObservable{
             //TODO: handle game over
             //the shelf is full, the state changes to LAST_ROUND
             this.gameState = GameStateType.LAST_ROUND;
-            //the current player gets the bonus point for finishing //TODO: errore, verrebbe dato a tutti, bisogna metterlo all'inserzione delle cards, con un booleano true se è già stato ottenuto, se solo il primo a finirla lo prende il punto
+            //the current player gets the bonus point for finishing
             this.playingPlayer.updateScore(1);
         }
         //the playing players shelf is updated
@@ -165,7 +200,7 @@ public class Game extends GameObservable{
             for (Player pl:players){
                 //TODO: possibility to put an observer from the player to the shelf to automatically update points
                 //get final score adds personal points to the score so it has to be called only once
-                finalScoreBoard.add(new Pair(pl.getNickname(), pl.getFinalScore()));
+                finalScoreBoard.add(new Pair<>(pl.getNickname(), pl.getFinalScore()));
             }
             String winnerNickname = finalScoreBoard.stream().reduce((a, b) -> a.getSecond() > b.getSecond() ? a : b).get().getFirst();
             super.notifyAllObservers(getAllNicks(), new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname), true, this.ID);
@@ -179,12 +214,10 @@ public class Game extends GameObservable{
         }
         //se il game non è finito posso procedere ed inviare l'update a tutti
         super.notifyAllObservers(getAllNicks(), new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(),
-                playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname(),playingPlayer.getPlayersShelf().
+                playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname(),this.playingPlayer.getPlayersShelf().
                 getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()), true, this.ID);
         this.playingPlayer = getNextPlayer();
     }
-
-
     public ArrayList<Player> getPlayers(){
         return new ArrayList<>(players);
     }
