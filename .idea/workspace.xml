@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="GameStateMessage.java, MessageSerializer.java, MessageSerializerTest.java">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="MessageSerializer.java, VirtualGameManagerSerializer.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/MessageSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/MessageSerializer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,17 +67,17 @@
       <recent name="it.polimi.ingsw.controller.pubSub" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Client">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.client.ClientMain" />
-      <module name="ProgettoIDS23" />
+      <module name="AM03" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="Server" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.server.ServerMain" />
-      <module name="ProgettoIDS23" />
+      <module name="AM03" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -117,14 +116,7 @@
       <workItem from="1682952749284" duration="16316000" />
       <workItem from="1683215185065" duration="13665000" />
       <workItem from="1683368477901" duration="37866000" />
-      <workItem from="1683645261758" duration="5512000" />
-    </task>
-    <task id="LOCAL-00008" summary="added PersonalGoal and player">
-      <created>1679255189842</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1679255189842</updated>
+      <workItem from="1683645261758" duration="6923000" />
     </task>
     <task id="LOCAL-00009" summary="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals">
       <created>1679271689797</created>
@@ -462,7 +454,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683647587734</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="MessageSerializer.java, VirtualGameManagerSerializer.java">
+      <created>1683657072502</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1683657072503</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -531,7 +530,8 @@
     <MESSAGE value="client-server" />
     <MESSAGE value="Serializzazione commonGoals" />
     <MESSAGE value="GameStateMessage.java, MessageSerializer.java, MessageSerializerTest.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="GameStateMessage.java, MessageSerializer.java, MessageSerializerTest.java" />
+    <MESSAGE value="MessageSerializer.java, VirtualGameManagerSerializer.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="MessageSerializer.java, VirtualGameManagerSerializer.java" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ProgettoIDS23$Client.ic" NAME="Client Coverage Results" MODIFIED="1683507446112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
