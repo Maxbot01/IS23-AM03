@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bfe33370-7ca1-4501-94a6-5ec7e0a898ca" name="Changes" comment="changes in GameController with 3 new methods">
-      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/view/CLIColorsTest.java" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="General changes in almost everything related to the game flow">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/modelSupport/LivingRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/CLIColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/CLIColors.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +20,6 @@
         <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
-        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -32,6 +31,19 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="db36a96f-0cb5-4567-ae18-7a496f8167ec" />
+        <option name="url" value="https://github.com/Maxbot01/IS23-AM03.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CommonGoals/Strategy/SixOfTwoGoalStrategy.java" root0="FORCE_HIGHLIGHTING" />
@@ -48,37 +60,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="it.polimi.ingsw.controller" />
       <recent name="it.polimi.ingsw.controller.pubSub" />
     </key>
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
-    </key>
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="it.polimi.ingsw.view" />
-    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Client">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.client.ClientMain" />
       <module name="AM03" />
@@ -129,14 +133,8 @@
       <workItem from="1683368477901" duration="37866000" />
       <workItem from="1683651663403" duration="16067000" />
       <workItem from="1683788522016" duration="1050000" />
-      <workItem from="1683791081200" duration="19810000" />
-    </task>
-    <task id="LOCAL-00008" summary="added PersonalGoal and player">
-      <created>1679255189842</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1679255189842</updated>
+      <workItem from="1683791081200" duration="20976000" />
+      <workItem from="1683883149082" duration="2557000" />
     </task>
     <task id="LOCAL-00009" summary="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals">
       <created>1679271689797</created>
@@ -474,7 +472,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683675296953</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="General changes in almost everything related to the game flow">
+      <created>1683814364721</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1683814364722</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -543,7 +548,8 @@
     <MESSAGE value="client-server" />
     <MESSAGE value="Serializzazione commonGoals" />
     <MESSAGE value="changes in GameController with 3 new methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="changes in GameController with 3 new methods" />
+    <MESSAGE value="General changes in almost everything related to the game flow" />
+    <option name="LAST_COMMIT_MESSAGE" value="General changes in almost everything related to the game flow" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ProgettoIDS23$Client.ic" NAME="Client Coverage Results" MODIFIED="1683507446112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

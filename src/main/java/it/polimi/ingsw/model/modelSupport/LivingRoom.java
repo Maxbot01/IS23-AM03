@@ -45,23 +45,21 @@ public class LivingRoom{
     /**
      * BoardCard bag with shuffled cards
      */
-    private final List<BoardCard> bag = new ArrayList<BoardCard>();
+    private final List<BoardCard> bag = new ArrayList<>();
     /**
      * Index of the last-selected card in the bag
      */
     private int indexOfStackCard;
-
-
     /**
      * Create the shuffled bag, fills the livingroom
-     * @param numOfPlayers number of players, needed to know how to fill the board
+     * @param numOfPLayers number of players, needed to know how to fill the board
      */
-    public LivingRoom(int numOfPlayers) {
-        // Prepare arrays for card types to be added to the bag
+    public LivingRoom(int numOfPLayers) {
+        //preparo due vettori da cui prendere le tipologie carte da aggiungere al bag
         colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
         ornamentType[] ornaments = {ornamentType.A, ornamentType.B, ornamentType.C};
 
-        // Add the first 126 cards to the ordered deck
+        //preparo il deck ordinato con le prime 126 carte
         for (int j = 0; j < COLORS; j++) {
             for (int i = 0; i < NUMORNAMENTS; i++) {
                 int orn = 0;
@@ -72,43 +70,39 @@ public class LivingRoom{
             }
         }
 
-        // Add the remaining 6 cards manually (with ornament A)
+        //aggiungo "manualmente" le 6 carte rimanenti (dando ornamento A)
+
         for(int i=0; i<COLORS; i++) {
             BoardCard card = new BoardCard(colors[i], ornaments[0]);
             this.bag.add(card);
         }
 
-        // Shuffle the bag of cards
         Collections.shuffle(this.bag);
 
-        // Fill the living room
+        //Fill the livingroom
         posItms.add(fp2);
         posItms.add(fp3);
         posItms.add(fp4);
 
-        Integer[][] fp = posItms.get(numOfPlayers - 2);
+        Integer[][] fp = posItms.get(numOfPLayers - 2);
         this.pieces = new BoardCard[DIM][DIM];
-
-        // Insert the cards in the living room
-        indexOfStackCard = 0;
+        //Insert the cards in the living room
+        this.indexOfStackCard = 0;
         for(int i = 0; i < DIM; i++){
             for(int j = 0; j < DIM; j++){
                 if(j >= fp[i][0] && j < fp[i][0] + fp[i][1]){
-                    pieces[i][j] = this.bag.get(indexOfStackCard);
-                    indexOfStackCard++;
+                    pieces[i][j] = this.bag.get(this.indexOfStackCard);
+                    this.indexOfStackCard++;
                 }else{
-                    pieces[i][j] = EMPTY_SPOT_CARD;
+                    this.pieces[i][j] = EMPTY_SPOT_CARD;
                 }
             }
         }
+
     }
-
-
     public BoardCard[][] getPieces() {
         return pieces;
     }
-
-
     /**
      * Refills the board only if needed and returns the updated (or not if not needed) livingroom
      */
@@ -127,20 +121,19 @@ public class LivingRoom{
         if (startRefill == 1) {
             for(int i = 0; i < DIM; i++){
                 for(int j = 0; j < DIM; j++){
-                    if(pieces[i][j].getColor() == colorType.TOMBSTONE){
-                        if(indexOfStackCard > bag.size()){
+                    if(this.pieces[i][j].getColor() == colorType.TOMBSTONE){
+                        if(this.indexOfStackCard > bag.size()){
                             //no more cards are usable
                             throw new NoMoreCardsException();
                         }
-                        pieces[i][j] = bag.get(indexOfStackCard);
-                        indexOfStackCard++;
+                        this.pieces[i][j] = this.bag.get(this.indexOfStackCard);
+                        this.indexOfStackCard++;
                     }
                 }
             }
         }
-        return pieces;
+        return this.pieces;
     }
-
     /**
      * Calculates all the selectable items in the board
      */
@@ -153,9 +146,7 @@ public class LivingRoom{
        }
        return selectable;
     }
-
-
-    public BoardCard[][] updateBoard(ArrayList<Pair<Integer ,Integer>> selected ) throws UnselectableCardException {
+    public void updateBoard(ArrayList<Pair<Integer ,Integer>> selected ) throws UnselectableCardException {
         for (Pair<Integer, Integer> coordinates : selected) {
             int i = coordinates.getFirst();
             int j = coordinates.getSecond();
@@ -166,11 +157,9 @@ public class LivingRoom{
         for (Pair<Integer, Integer> coordinates : selected) {
             int i = coordinates.getFirst();
             int j = coordinates.getSecond();
-            pieces[i][j] = TOMBSTONE_CARD;
+            this.pieces[i][j] = TOMBSTONE_CARD;
         }
-        return pieces;
     }
-
     /**
      * Returns the Card at the given coordinates
      * @param coordinates
@@ -182,13 +171,11 @@ public class LivingRoom{
         int j = coordinates.getSecond();
         if(!isPresent(i,j))
             throw new UnselectableCardException();
-        else return pieces[i][j];
+        else return this.pieces[i][j];
     }
-
     public boolean cardIsSelectable(int i, int j){
         return isPresent(i,j) && freeCorner(i,j);
     }
-
     /**
      * Checks if an item in the board has adjacent items
      * @param i i coordinate
