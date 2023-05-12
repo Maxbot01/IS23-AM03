@@ -54,16 +54,14 @@ public class LivingRoom{
 
     /**
      * Create the shuffled bag, fills the livingroom
-     * @param numOfPLayers number of players, needed to know how to fill the board
+     * @param numOfPlayers number of players, needed to know how to fill the board
      */
-    public LivingRoom(int numOfPLayers) {
-
-        //preparo due vettori da cui prendere le tipologie carte da aggiungere al bag
-        List<BoardCard> bag = new ArrayList<BoardCard>();
+    public LivingRoom(int numOfPlayers) {
+        // Prepare arrays for card types to be added to the bag
         colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
         ornamentType[] ornaments = {ornamentType.A, ornamentType.B, ornamentType.C};
 
-        //preparo il deck ordinato con le prime 126 carte
+        // Add the first 126 cards to the ordered deck
         for (int j = 0; j < COLORS; j++) {
             for (int i = 0; i < NUMORNAMENTS; i++) {
                 int orn = 0;
@@ -74,27 +72,24 @@ public class LivingRoom{
             }
         }
 
-        //aggiungo "manualmente" le 6 carte rimanenti (dando ornamento A)
-
+        // Add the remaining 6 cards manually (with ornament A)
         for(int i=0; i<COLORS; i++) {
             BoardCard card = new BoardCard(colors[i], ornaments[0]);
             this.bag.add(card);
         }
 
-        Collections.shuffle(bag);
+        // Shuffle the bag of cards
+        Collections.shuffle(this.bag);
 
-
-        //Fill the livingroom
+        // Fill the living room
         posItms.add(fp2);
         posItms.add(fp3);
         posItms.add(fp4);
 
-
-        System.out.println(this.bag);
-
-        Integer[][] fp = posItms.get(numOfPLayers - 2);
+        Integer[][] fp = posItms.get(numOfPlayers - 2);
         this.pieces = new BoardCard[DIM][DIM];
-        //Insert the cards in the living room
+
+        // Insert the cards in the living room
         indexOfStackCard = 0;
         for(int i = 0; i < DIM; i++){
             for(int j = 0; j < DIM; j++){
@@ -106,8 +101,8 @@ public class LivingRoom{
                 }
             }
         }
-
     }
+
 
     public BoardCard[][] getPieces() {
         return pieces;
