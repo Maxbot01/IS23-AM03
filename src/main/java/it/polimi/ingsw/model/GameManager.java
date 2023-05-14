@@ -77,6 +77,7 @@ public class GameManager extends GameObservable{
                 for(String p: withPlayers){
                     players.add(new Player(p));
                 }
+                //TODO: nel caso in cui il giocatore stia creando una nuova partita dopo che ne ha terminata un'altra, devo controllare che ci sia giò e nel caso rimpiazzare il game a cui è collegato
                 currentGames.put(x, new Game(players, withID));
                 x.killLobby();
                 //game has been created
@@ -134,6 +135,14 @@ public class GameManager extends GameObservable{
             nicknames.put(username, password);
             super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
         }
+    }
+
+    /**
+     * It sends the available games when a player wants to play again
+     * @param username
+     */
+    public void lookForNewGames(String username){
+        super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
     }
 
 

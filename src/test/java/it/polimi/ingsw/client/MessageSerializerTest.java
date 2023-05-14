@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.CommonGoals.Strategy.SixOfTwoGoalStrategy;
 import it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.FinishedGameMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.InitStateMessage;
@@ -68,7 +69,7 @@ class MessageSerializerTest {
         //output serializedMessage
         System.out.println(serializedMessage);
     }*/
-    /*
+
     @Test
     void SerializeAndDeserializeInitStateMessage() {
         BoardCard[][] pieces = new BoardCard[3][4];
@@ -107,28 +108,23 @@ class MessageSerializerTest {
 
 
         List<String> players = new ArrayList<>();
-        players.add("player1");
-        players.add("player2");
-        players.add("player3");
+        players.add("Alice");
 
-        String chairedPlayer = "player1";
+        String chairedPlayer = "Alice";
 
         HashMap<String, PersonalGoal> personalGoals = new HashMap<>();
-        personalGoals.put("player1", personalGoals.get(0));
-        personalGoals.put("player2", personalGoals.get(0));
-        personalGoals.put("player3", personalGoals.get(0));
+        personalGoals.put("Alice", new PersonalGoal(1));
 
 
         ArrayList<Pair<String, BoardCard[][]>> playersShelves = new ArrayList<>();
-        playersShelves.add(new Pair<>("player1", new BoardCard[][]{{new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A)}, {new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.GREEN, ornamentType.A)}}));
-        playersShelves.add(new Pair<>("player2", new BoardCard[][]{{new BoardCard(colorType.GREEN, ornamentType.A), new BoardCard(colorType.YELLOW, ornamentType.A)}, {new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A)}}));
-        playersShelves.add(new Pair<>("player3", new BoardCard[][]{{new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.PURPLE, ornamentType.A)}, {new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.GREEN, ornamentType.A)}}));
+        playersShelves.add(new Pair<>("Alice", new BoardCard[][]{{new BoardCard(colorType.PURPLE, ornamentType.A), new BoardCard(colorType.BLUE, ornamentType.A)}, {new BoardCard(colorType.YELLOW, ornamentType.A), new BoardCard(colorType.GREEN, ornamentType.A)}}));
 
         InitStateMessage initStateMessage = new InitStateMessage(IN_PROGRESS, "match123", pieces, selectables, commonGoals, personalGoals, players, chairedPlayer, playersShelves);
 
 
         // Print out the message to verify that it was created correctly
         initStateMessage.printMessage();
+        ClientManager.userNickname = "Alice";
 
         // Serializziamo il messaggio usando il MessageSerializer
         MessageSerializer serializer = new MessageSerializer();
@@ -142,8 +138,9 @@ class MessageSerializerTest {
         Message deserializedMessage = new MessageSerializer().deserialize(serializedMessage);
         //output deserializedMessage
         System.out.println(deserializedMessage);
+        deserializedMessage.printMessage();
 
-    }*/
+    }
 
     @Test
     void serializeAndDeserializeFinishedGameMessage() {
@@ -160,6 +157,7 @@ class MessageSerializerTest {
         String serializedMessage = serializer.serialize(finishedGameMessage,"Alice","gameID123");
         //output serializedMessage
         System.out.println(serializedMessage);
+        ClientManager.userNickname = "Alice";
 
 
         // Deserialize the message
@@ -195,6 +193,7 @@ class MessageSerializerTest {
 
         // Print out the message to verify that it was created correctly
         selectedCardsMessage.printMessage();
+        ClientManager.userNickname = "Alice";
 
         // Serialize the message using the MessageSerializer
         MessageSerializer serializer = new MessageSerializer();
@@ -253,6 +252,7 @@ class MessageSerializerTest {
         assertNotNull(serializedMessage);
         //output serializedMessage
         System.out.println(serializedMessage);
+        ClientManager.userNickname = "Alice";
 
         // Deserialize the message
         Message deserializedMessage = serializer.deserialize(serializedMessage);
