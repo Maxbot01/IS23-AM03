@@ -64,6 +64,7 @@ public class ClientMain implements Runnable{
 
     public void run() {
         try {
+            Thread previousThread = null;
             while (isRunning) {
                 String message = (String) input.readObject();
                 System.out.println("Received message from server: " + message);
@@ -73,9 +74,14 @@ public class ClientMain implements Runnable{
                     //if it's meant for us
                     //TODO: add exception to handle wrongly received message to react accordingly
                     //TODO: put this into thread to stop cli from blocking this loop
-                    new Thread(() -> {
+                    if(previousThread != null){
+                        previousThread.interrupt();
+                    }
+                    Thread newThread = new Thread(() -> {
                         ClientManager.clientReceiveMessage(serializedMessage);
-                    }).start();
+                    });
+                    newThread.start();
+                    previousThread = newThread;
                 }
             }
         } catch (IOException e) {
