@@ -18,6 +18,7 @@ import it.polimi.ingsw.view.CLIgeneral;
 import it.polimi.ingsw.view.View;
 
 public class ClientManager {
+    public static boolean isSocket;
     //SINGLETON
     private static ClientManager instance;
     public static PubSubService pubsub;
@@ -38,7 +39,7 @@ public class ClientManager {
         if(isCLI){
             //cli mode
             view = new CLIgeneral();
-            virtualGameManager = new VirtualGameManager();
+            virtualGameManager = new VirtualGameManager(isSocket);
             gameManagerController = new GameManagerController(view, virtualGameManager);
             view.registerObserver(gameManagerController, null, null);
             //gameController = new GameController(new CLIgeneral(), new VirtualGame());

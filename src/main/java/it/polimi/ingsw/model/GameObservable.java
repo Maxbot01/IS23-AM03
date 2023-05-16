@@ -2,10 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.client.MessageSerializer;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.server.ServerMain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GameObservable {

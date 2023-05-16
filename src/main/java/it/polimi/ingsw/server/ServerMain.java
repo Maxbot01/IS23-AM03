@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.MessageSerializer;
 import it.polimi.ingsw.client.VirtualGameManagerSerializer;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.view.CLIgeneral;
@@ -195,42 +196,3 @@ public class ServerMain {
     private static ObjectOutputStream oos;
 
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        //create the socket server object
-        //static ServerSocket variable
-
-        //server classes init
-
-        ServerSocket server;
-        //socket server port on which it will listen
-        int port = 1234;
-        server = new ServerSocket(port);
-        //keep listens indefinitely until receives 'exit' call or program terminates
-        while(true){
-            System.out.println("Waiting for the client request");
-            //creating socket and waiting for client connection
-            Socket socket = server.accept();
-            //read from socket to ObjectInputStream object
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            //convert ObjectInputStream object to String
-            String message = (String) ois.readObject();
-            System.out.println("Message Received: " + message);
-            //create ObjectOutputStream object
-            oos = new ObjectOutputStream(socket.getOutputStream());
-            //write object to Socket
-            //oos.writeObject("client sent "+ message);
-            VirtualGameManagerSerializer.deserializeMethod(message);
-            //close resources
-            ois.close();
-            oos.close();
-            socket.close();
-            //terminate the server if client sends exit request
-            if(message.equalsIgnoreCase("exit")) break;
-        }
-        System.out.println("Shutting down Socket server!!");
-        //close the ServerSocket object
-        server.close();
-    } }
-
-
-    */

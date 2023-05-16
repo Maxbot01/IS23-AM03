@@ -50,6 +50,7 @@ public class ClientMain implements Runnable{
         }
         ClientManager.userUID = UUID.randomUUID().toString();
         ClientManager cl = new ClientManager(true);
+        ClientManager.isSocket = true;
     }
 
     public static void sendMessage(String message) {
