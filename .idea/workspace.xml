@@ -9,47 +9,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="client-server">
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx-swt.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx.base.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx.controls.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx.fxml.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx.graphics.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx.media.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx.swing.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/javafx.web.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libdecora_sse.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libfxplugins.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libglass.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libglib-lite.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libgstreamer-lite.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libjavafx_font.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libjavafx_iio.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libjfxmedia.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libjfxmedia_avf.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libjfxwebkit.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libprism_common.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libprism_es2.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libJFX/libprism_sw.dylib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/GUIView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/GameLobbyView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/GameManagerView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/GameView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/LoginView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/ScreenSwitcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards/Cornici1.1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards/bookshelf.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards/livingroom.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/myShelfie.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/javaFX/hello-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="GUI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,14 +149,7 @@
       <workItem from="1683368477901" duration="44346000" />
       <workItem from="1684096194903" duration="598000" />
       <workItem from="1684140132892" duration="29014000" />
-      <workItem from="1684230201447" duration="4667000" />
-    </task>
-    <task id="LOCAL-00010" summary="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals">
-      <created>1679312251930</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1679312251930</updated>
+      <workItem from="1684230201447" duration="4829000" />
     </task>
     <task id="LOCAL-00011" summary="few updates on Player, created javadoc dir">
       <created>1679329947805</created>
@@ -533,7 +487,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684140156072</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="GUI">
+      <created>1684241401643</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1684241401643</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -600,7 +561,8 @@
     <MESSAGE value="stuff" />
     <MESSAGE value="flow" />
     <MESSAGE value="client-server" />
-    <option name="LAST_COMMIT_MESSAGE" value="client-server" />
+    <MESSAGE value="GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ProgettoIDS23$Client.ic" NAME="Client Coverage Results" MODIFIED="1683507446112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
