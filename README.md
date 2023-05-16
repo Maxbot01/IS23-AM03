@@ -28,5 +28,5 @@ CLI:<br />
 ![90%](https://progress-bar.dev/90)
 
 GUI:<br />
-![0%](https://progress-bar.dev/0)
+![30%](https://progress-bar.dev/30)
 
