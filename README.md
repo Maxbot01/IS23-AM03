@@ -16,7 +16,7 @@ Controller:<br />
 ![80%](https://progress-bar.dev/80)
 
 Socket:<br />
-![40%](https://progress-bar.dev/40)
+![70%](https://progress-bar.dev/40)
 
 RMI:<br />
 ![0%](https://progress-bar.dev/0)
