@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.Message;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Client;
@@ -73,12 +75,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //should receive matchStateMessages only
         //after it receives it, updates the view accordingly
         if (message instanceof InitStateMessage) {
-            InitStateMessage mess = (InitStateMessage)message;
+            InitStateMessage mess = (InitStateMessage) message;
             CommonGoals common = new CommonGoals();
             //if the message was for this client send ack
-            HashMap<String,Integer> playersPoints = new HashMap<>(); // updatedMatchDetails needs an input of points, but all the points are set at 0
-            for(String s: mess.players){ //TODO: playersPoints in initStateMessage non serve
-                playersPoints.put(s,0);
+            HashMap<String, Integer> playersPoints = new HashMap<>(); // updatedMatchDetails needs an input of points, but all the points are set at 0
+            for (String s : mess.players) { //TODO: playersPoints in initStateMessage non serve
+                playersPoints.put(s, 0);
             }
             switch (mess.firstGoal) {
                 case "SixOfTwoGoalStrategy":
@@ -187,33 +189,44 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 latestInit = mess;
                 virtualGameManager.sendAck();
                 ClientManager.view.chooseCards();
-            }else{
+            } else {
                 ClientManager.view.waitingCommands(); // it needs to be sent continuously until it's his turn, or maybe a notify to the cli that blocks a while cycle
             }
-
-        }else if(message instanceof GameStateMessage){//Useful in case of disconnection
+        } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
             //received info about the match
-
-        }else if(message instanceof SelectedCardsMessage){
-            SelectedCardsMessage mess = (SelectedCardsMessage)message;
+            //TODO: Basically identical to initStateMessage
+        } else if (message instanceof SelectedCardsMessage) {
+            SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
             ClientManager.view.printLivingRoom();
-            if(mess.currentPlayer.getNickname().equals(ClientManager.userNickname)) {
+            if (mess.currentPlayer.getNickname().equals(ClientManager.userNickname)) {
                 ClientManager.view.chooseColumn();
             }
-        }else if(message instanceof SelectedColumnsMessage){
-            SelectedColumnsMessage mess = (SelectedColumnsMessage)message;
+        } else if (message instanceof SelectedColumnsMessage) {
+            SelectedColumnsMessage mess = (SelectedColumnsMessage) message;
             ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
             ClientManager.view.printShelves();
             ClientManager.view.showPlayingPlayer(mess.newPlayer);
-            if(mess.newPlayer.equals(ClientManager.userNickname)){
+            if (mess.newPlayer.equals(ClientManager.userNickname)) {
                 ClientManager.view.chooseCards();
-            }else{
+            } else {
                 ClientManager.view.waitingCommands();
             }
-        }else if(message instanceof FinishedGameMessage mess){
-            ClientManager.view.printScoreBoard(mess.finalScoreBoard,mess.winnerNickname,mess.gameState);
+        } else if (message instanceof FinishedGameMessage mess) {
+            ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             ClientManager.view.endCommands();
+        } else if (message instanceof ErrorMessage mess) {
+            switch (mess.error.toString()) {
+                case "selectedColumnsError":
+                    ClientManager.view.chooseColumn();
+                    break;
+                case "acceptFinishedGameError":
+                    //TODO: Manage error
+                    break;
+                case "selectedCardsMessageError":
+                    ClientManager.view.chooseCards();
+                    break;
+            }
         }
         return true;
     }

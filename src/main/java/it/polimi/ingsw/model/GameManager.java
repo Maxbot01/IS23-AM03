@@ -59,31 +59,8 @@ public class GameManager extends GameObservable{
         System.out.println("new current games: " + currentGames.keySet());
     }
 
-
-
     public String getUID(String fromUsername){
         return userIDs.get(fromUsername);
-    }
-
-    public void createMatchFromLobby(String withID, ArrayList<String> withPlayers){
-        if(!currentGames.containsKey(withID)){
-            //handle error id so not exist
-            return;
-        }
-        for(GameLobby x: currentGames.keySet()){
-            if(x.getID().equals(withID)){
-                System.out.println("inside create");
-                ArrayList<Player> players = new ArrayList<>();
-                for(String p: withPlayers){
-                    players.add(new Player(p));
-                }
-                //TODO: nel caso in cui il giocatore stia creando una nuova partita dopo che ne ha terminata un'altra, devo controllare che ci sia giò e nel caso rimpiazzare il game a cui è collegato
-                currentGames.put(x, new Game(players, withID));
-                x.killLobby();
-                //game has been created
-            }
-        }
-
     }
 
     public void ping(String fromClientUID){
@@ -157,22 +134,32 @@ public class GameManager extends GameObservable{
      */
 
     public void startMatch(String ID, String user){
-        System.out.println("match start "+ ID + " user: " + user);
-
+        boolean found = false;
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
-                //TODO:REMOVE!!! before return
-                System.out.println("inside create");
-                ArrayList<Player> players = new ArrayList<>();
-                for(String p: x.getPlayers()){
-                    players.add(new Player(p));
-                }
-                currentGames.put(x, new Game(players, ID));
-                x.killLobby();
-                return;
-                //x.startMatch(user);
+                x.startMatch(user);
+                found = true;
             }
         }
+        if(!found){
+            //TODO: Manage "ID not found" error
+        }
+    }
+    public void createMatchFromLobby(String ID, ArrayList<String> withPlayers){
+        System.out.println("createMatchFromLobby");
+        ArrayList<Player> players = new ArrayList<>();
+        for(String p: withPlayers){
+            players.add(new Player(p));
+        }
+        //TODO: nel caso in cui il giocatore stia creando una nuova partita dopo che ne ha terminata un'altra, devo controllare che ci sia giò e nel caso rimpiazzare il game a cui è collegato
+        for(GameLobby x: currentGames.keySet()){
+            if(x.getID().equals(ID)){
+                currentGames.put(x, new Game(players,ID));
+                x.killLobby();
+                break;
+            }//It's certainly there
+        }
+        //game has been created
     }
 
 

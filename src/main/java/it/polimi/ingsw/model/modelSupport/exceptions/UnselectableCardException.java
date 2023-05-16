@@ -5,5 +5,6 @@ public class UnselectableCardException extends Exception{
         super(msg);
     }
     public UnselectableCardException(){
+
     };
 }

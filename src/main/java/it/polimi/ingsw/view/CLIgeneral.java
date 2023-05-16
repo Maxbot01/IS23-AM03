@@ -20,10 +20,9 @@ public class CLIgeneral extends View{
     private CommonGoals commonGoals;
     private PersonalGoal personalGoal;
     private ArrayList<Player> players;
-    private Player userPlayer;
+    private Player userPlayer; // Remember that userPlayer does not have a personal goal or points
     private boolean host;
-    ArrayList<BoardCard> selectedCards;
-
+    private ArrayList<BoardCard> selectedCards;
 
     // COMMANDS INITIALIZATION
     private final Option show_games = Option.builder("show_games")
@@ -83,6 +82,11 @@ public class CLIgeneral extends View{
             .desc("takes you back to the game selection and creation section")
             .required(false)
             .build();
+    private final Option stop = Option.builder("stop")//TODO: Delete after debug
+            .hasArg(false)
+            .desc("stop the waiting Commands, used for debugging")
+            .required(false)
+            .build();
     @Override
     public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals,
                                BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>>
@@ -94,7 +98,7 @@ public class CLIgeneral extends View{
         }
         this.players = tmp;
         this.commonGoals = commonGoals;
-        this.personalGoal = personalGoals.get(userPlayer);
+        this.personalGoal = personalGoals.get(userPlayer.getNickname());
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
@@ -147,6 +151,7 @@ public class CLIgeneral extends View{
         options.addOption(show_commonGoals);
         options.addOption(show_personalGoal);
         options.addOption(help);
+        options.addOption(stop);//TODO: Delete after debug
         // Printing section commands
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Section Commands", options);
@@ -156,34 +161,41 @@ public class CLIgeneral extends View{
         try{
             //while(qualcosa che mi arriva dal controller che continua a mandarlo e che successivamente lo rompe)
             cmd = parser.parse(options, scanf());
-            if(cmd.hasOption(show_gameId)){
-                System.out.println("Your gameId is: "+gameID);
-            } else if (cmd.hasOption(show_commonGoals)) {
-                System.out.println("First common goal: "+commonGoals.getFirstGoal()+"\nSecond commmon"+
-                        "goal: "+commonGoals.getSecondGoal());
-            } else if (cmd.hasOption(show_personalGoal)) {
-                Shelf personalGoalShelf = new Shelf();
-                for(int i = 0; i < personalGoal.getSelectedGoal().size(); i++)
-                {
-                    Pair<colorType,Pair<Integer,Integer>> tmp = personalGoal.getSelectedGoal().get(i);
-                    BoardCard card = new BoardCard(tmp.getFirst(), ornamentType.A);
-                    personalGoalShelf.getShelfCards()[tmp.getSecond().getFirst()][tmp.getSecond().getSecond()] = card;
+            while(!cmd.hasOption(stop)) {
+                if (cmd.hasOption(show_gameId)) {
+                    System.out.println("Your gameId is: " + gameID);
+                } else if (cmd.hasOption(show_commonGoals)) {
+                    System.out.println("First common goal: " + commonGoals.getFirstGoal().toString() + "\nSecond commmon" +
+                            "goal: " + commonGoals.getSecondGoal().toString());
+                } else if (cmd.hasOption(show_personalGoal)) {
+                    Shelf personalGoalShelf = new Shelf();
+                    for (int i = 0; i < this.personalGoal.getSelectedGoal().size(); i++) {
+                        Pair<colorType, Pair<Integer, Integer>> tmp = this.personalGoal.getSelectedGoal().get(i);
+                        BoardCard card = new BoardCard(tmp.getFirst(), ornamentType.A);
+                        personalGoalShelf.getShelfCards()[tmp.getSecond().getFirst()][tmp.getSecond().getSecond()] = card;
+                    }
+                    System.out.println("Your personal goal is:");
+                    printShelf(personalGoalShelf);
+                } else if (cmd.hasOption(help)) {
+                    formatter.printHelp("Available Commands", options);
+                } else if (cmd.hasOption(chat)) { // Example of chat implementation
+                    Scanner scan = new Scanner(System.in);
+                    String msg = scan.nextLine();
+                    super.gameController.onGetChatMessage(msg);
+                    // It also needs to show the past messages
+                } else {
+                    System.out.println("waitingCommands section");
+                    System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
-                System.out.println("Your personal goal is:");
-                printShelf(personalGoalShelf);
-            } else if (cmd.hasOption(help)) {
-                formatter.printHelp("Available Commands", options);
-            } else if (cmd.hasOption(chat)) { // Example of chat implementation
-                Scanner scan = new Scanner(System.in);
-                String msg = scan.nextLine();
-                super.gameController.onGetChatMessage(msg);
-                // It also needs to show the past messages
-            }else {
-                System.out.println("Unavailable command, remember to type '-' and the desired command");
+                cmd = parser.parse(options, scanf());
+            }
+            if(cmd.hasOption(stop)){
+                System.out.println("You have left waitingCommands");
             }
         } catch (ParseException pe){
-            System.err.println("Error parsing command-line arguments");
-            formatter.printHelp("Section Commands", options);
+            System.out.println("waitingCommands section");
+            System.out.println("Error parsing command-line arguments");
+            formatter.printHelp("Parsing Error Section Commands", options);
         }
     }
     @Override
@@ -217,7 +229,6 @@ public class CLIgeneral extends View{
         HashMap<Integer,String> IDlist = new HashMap<>();
         int i = 1;
         try{
-
             cmd = parser.parse(options, scanf());
             while(!cmd.hasOption(create_game) && !cmd.hasOption(select_game)){ // Until it receives a possible command, it continues to scan
                 if(cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
@@ -238,6 +249,7 @@ public class CLIgeneral extends View{
                 }else if(cmd.hasOption(help)){
                     formatter.printHelp("Section Commands", options);
                 }else{
+                    System.out.println("launchGameManager section");
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
                 cmd = parser.parse(options, scanf());
@@ -256,8 +268,9 @@ public class CLIgeneral extends View{
                 super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname());
             }
         } catch (ParseException pe){
-            System.err.println("Error parsing command-line arguments");
-            formatter.printHelp("Section Commands", options);
+            System.out.println("launchGameManager section");
+            System.out.println("Error parsing command-line arguments");
+            formatter.printHelp("Parsing Error Section Commands", options);
         }
     }
     @Override
@@ -294,6 +307,7 @@ public class CLIgeneral extends View{
                     super.lobbyController.onGetChatMessage(msg);
                     // It also needs to show the past messages
                 }else{
+                    System.out.println("launchGameLobby section");
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
                 cmd = parser.parse(options, scanf());
@@ -302,16 +316,19 @@ public class CLIgeneral extends View{
                     super.lobbyController.onStartMatch(gameID, userPlayer.getNickname());
             }
         } catch (ParseException pe){
-            System.err.println("Error parsing command-line arguments");
-            formatter.printHelp("Section Commands", options);
+            System.out.println("launchGameLobby section");
+            System.out.println("Error parsing command-line arguments");
+            formatter.printHelp("Parsing Error Section Commands", options);
         }
+        System.out.println("You have left the lobby");
     }
     @Override
     public void chooseCards(){
         ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
         ArrayList<BoardCard> selected = new ArrayList<>();
 
-        System.out.println("Select Cards in couples of coordinates.\nExample: 5 4 5 5 5 6\twhere 5 4 is the first couple and so on");
+        System.out.println("Select Cards in couples of coordinates.\t\tThe selectable cards are those higlighted" +
+                            " in white"+"\nExample: 5 4 5 5 5 6\twhere 5 4 is the first couple and so on");
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
         while(s.length() != 11 && s.length() != 3 && s.length() != 7)
@@ -380,8 +397,9 @@ public class CLIgeneral extends View{
                 gameManagerController.onLookForNewGames(userPlayer.getNickname());
             }
         } catch (ParseException pe){
-            System.err.println("Error parsing command-line arguments");
-            formatter.printHelp("Section Commands", options);
+            System.out.println("endCommands section");
+            System.out.println("Error parsing command-line arguments");
+            formatter.printHelp("Parsing Error Section Commands", options);
         }
     }
     @Override

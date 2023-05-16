@@ -36,7 +36,6 @@ public class ClientMain implements Runnable{
     private static ObjectOutputStream output;
     private ObjectInputStream input;
     private static boolean isRunning;
-
     public ClientMain(Socket socket){
         this.socket = socket;
 
@@ -71,12 +70,15 @@ public class ClientMain implements Runnable{
                 MessageSerializer messageSerializer = new MessageSerializer();
                 Message serializedMessage = messageSerializer.deserialize(message);
                 if(serializedMessage != null){
+                    System.out.println("it's for me");
                     //if it's meant for us
                     //TODO: add exception to handle wrongly received message to react accordingly
                     //TODO: put this into thread to stop cli from blocking this loop
-                    if(previousThread != null){
+
+                    if(previousThread != null){ //TODO: non bisogna interromperlo, altrimenti elimino la possibilità di effettuare nuovi comandi, devo vedere se è un messaggio e basta o un comando
                         previousThread.interrupt();
                     }
+
                     Thread newThread = new Thread(() -> {
                         ClientManager.clientReceiveMessage(serializedMessage);
                     });
@@ -92,7 +94,6 @@ public class ClientMain implements Runnable{
             isRunning = false;
         }
     }
-
     public void stop() {
         isRunning = false;
         try {

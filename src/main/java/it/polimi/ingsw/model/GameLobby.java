@@ -20,7 +20,7 @@ public class GameLobby extends GameObservable {
     }
 
     public void startMatch(String user){
-        System.out.println("om start in");
+        System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
             GameManager.getInstance().createMatchFromLobby(ID, players);
         }else if (numOfPlayers < players.size()){
