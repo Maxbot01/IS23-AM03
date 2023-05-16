@@ -37,7 +37,7 @@ public class ClientMain implements Runnable{
     private ObjectInputStream input;
     private static boolean isRunning;
 
-    public ClientMain(Socket socket){
+    public ClientMain(Socket socket, boolean isCLi){
         this.socket = socket;
 
         try {
@@ -49,7 +49,7 @@ public class ClientMain implements Runnable{
             isRunning = false;
         }
         ClientManager.userUID = UUID.randomUUID().toString();
-        ClientManager cl = new ClientManager(true);
+        ClientManager cl = new ClientManager(isCLi);
         ClientManager.isSocket = true;
     }
 
@@ -66,6 +66,7 @@ public class ClientMain implements Runnable{
     public void run() {
         try {
             Thread previousThread = null;
+
             while (isRunning) {
                 String message = (String) input.readObject();
                 System.out.println("Received message from server: " + message);
@@ -106,9 +107,9 @@ public class ClientMain implements Runnable{
     }
 
     public static void main(String[] args) throws IOException {
-        CLIgeneral cli = new CLIgeneral();
+        //CLIgeneral cli = new CLIgeneral();
         Socket socket = new Socket("localhost", 1234);
-        ClientMain client = new ClientMain(socket);
+        ClientMain client = new ClientMain(socket, true);
 
 // Send a message to the server
         //client.sendMessage("Hello, server!");

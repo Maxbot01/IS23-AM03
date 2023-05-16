@@ -13,6 +13,7 @@ public abstract class GameObservable {
         MessageSerializer messageSerializer = new MessageSerializer();
         String serializedMessage;
         //GameManager.getInstance().getUID(t
+
         if(inLobbyOrGame){
             serializedMessage = messageSerializer.serialize(withMessage, toPlayer, ID);
             System.out.println("Sending message to " + toPlayer + ": " + serializedMessage.toString());
@@ -21,6 +22,7 @@ public abstract class GameObservable {
             System.out.println("Sending message to " + toPlayer + ": " + serializedMessage.toString());
         }
         ServerMain.server.broadcastMessage(serializedMessage);
+
         //withMessage.printMessage();
     }
     protected void notifyAllObservers(List<String> observers, Message withMessage, boolean inLobbyOrGame, String ID){

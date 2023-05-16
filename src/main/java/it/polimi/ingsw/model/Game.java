@@ -91,7 +91,6 @@ public class Game extends GameObservable{
             playersShelves.add(new Pair<>(p.getNickname(), p.getPlayersShelf().getShelfCards()));
             personalGoals.put(p.getNickname(), p.getPersonalGoal());
         }
-
         BoardCard[] cur = {};
         System.out.println("started match, sending message");
         super.notifyAllObservers(getAllNicks(), new InitStateMessage(GameStateType.IN_PROGRESS, "ID",  livingRoom.getPieces(), livingRoom.calculateSelectable(), this.commonGoals, personalGoals, this.players.stream().map(x -> x.getNickname()).collect(Collectors.toList()), this.playingPlayer.getNickname(), playersShelves), true, this.ID);
