@@ -10,12 +10,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="client-server">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/ClientCLI.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Server.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx-swt.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx.base.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx.controls.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx.fxml.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx.graphics.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx.media.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx.swing.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/javafx.web.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libdecora_sse.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libfxplugins.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libglass.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libglib-lite.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libgstreamer-lite.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libjavafx_font.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libjavafx_iio.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libjfxmedia.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libjfxmedia_avf.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libjfxwebkit.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libprism_common.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libprism_es2.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libJFX/libprism_sw.dylib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/GUIView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/GameLobbyView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/GameManagerView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/GameView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/LoginView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/ScreenSwitcher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards/Cornici1.1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards/bookshelf.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards/livingroom.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/myShelfie.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/javaFX/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/client/ClientManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/GameObservable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/virtual_model/VirtualGameManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +61,8 @@
       <list>
         <option value="Interface" />
         <option value="Enum" />
+        <option value="module-info" />
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -55,27 +91,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/enricoalberti/Desktop/UNI/ANNO 3/INGEGNERIA DEL SOFTWARE/code/ProgettoIDS23/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="it.polimi.ingsw.controller" />
       <recent name="it.polimi.ingsw.controller.pubSub" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView" />
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView" />
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager" selected="Application.fx">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.client.ClientMain" />
       <module name="ProgettoIDS23" />
@@ -97,10 +150,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="fx" type="Application" factoryName="Application" singleton="false">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.view.GUIView.ScreenSwitcher" />
+      <module name="ProgettoIDS23" />
+      <option name="VM_PARAMETERS" value="--module-path libJFX --add-modules=javafx.controls" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Testing_Common_Goals_Finale" />
       <item itemvalue="Application.Server" />
       <item itemvalue="Application.Client" />
+      <item itemvalue="Application.fx" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -125,13 +187,8 @@
       <workItem from="1683215185065" duration="13665000" />
       <workItem from="1683368477901" duration="44346000" />
       <workItem from="1684096194903" duration="598000" />
-    </task>
-    <task id="LOCAL-00009" summary="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals">
-      <created>1679271689797</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1679271689797</updated>
+      <workItem from="1684140132892" duration="29014000" />
+      <workItem from="1684230201447" duration="4667000" />
     </task>
     <task id="LOCAL-00010" summary="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals">
       <created>1679312251930</created>
@@ -469,7 +526,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684086880628</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="client-server">
+      <created>1684140156072</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1684140156072</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

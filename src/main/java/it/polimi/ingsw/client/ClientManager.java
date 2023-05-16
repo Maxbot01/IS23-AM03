@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.view.CLIgeneral;
+import it.polimi.ingsw.view.GUIView.GUIView;
 import it.polimi.ingsw.view.View;
 
 public class ClientManager {
@@ -22,7 +23,7 @@ public class ClientManager {
     private static ClientManager instance;
     public static PubSubService pubsub;
     public static View view;
-    private static GameController gameController;
+    public static GameController gameController;
     public static GameManagerController gameManagerController;
     private static LobbyController lobbyController;
 
@@ -30,21 +31,25 @@ public class ClientManager {
 
     public static String userNickname; // a cosa gli serve???
     public static String userUID;
+    public static boolean isCli;
 
     public ClientManager(boolean isCLI){
         gameController = null;
         lobbyController = null;
         pubsub = new PubSubService();
+        isCli = isCLI;
         if(isCLI){
             //cli mode
             view = new CLIgeneral();
-            virtualGameManager = new VirtualGameManager();
-            gameManagerController = new GameManagerController(view, virtualGameManager);
-            view.registerObserver(gameManagerController, null, null);
             //gameController = new GameController(new CLIgeneral(), new VirtualGame());
         }else{
-            // gui mode
+            view = new GUIView();
         }
+
+        virtualGameManager = new VirtualGameManager();
+        gameManagerController = new GameManagerController(view, virtualGameManager);
+        view.registerObserver(gameManagerController, null, null);
+
     }
 
 
@@ -65,6 +70,7 @@ public class ClientManager {
 
     //accessible from ClientMain (socket) and RMI
     public static void clientReceiveMessage(Message receivedMessageDecoded){
+
         if(receivedMessageDecoded instanceof NetworkMessage){
             //received a network message (like ping or request of username)
             pubsub.publishMessage(TopicType.networkMessageState, receivedMessageDecoded);
