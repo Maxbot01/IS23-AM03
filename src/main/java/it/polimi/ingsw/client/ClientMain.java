@@ -36,7 +36,8 @@ public class ClientMain implements Runnable{
     private static ObjectOutputStream output;
     private ObjectInputStream input;
     private static boolean isRunning;
-    public ClientMain(Socket socket){
+
+    public ClientMain(Socket socket, boolean isCLi){
         this.socket = socket;
 
         try {
@@ -48,7 +49,7 @@ public class ClientMain implements Runnable{
             isRunning = false;
         }
         ClientManager.userUID = UUID.randomUUID().toString();
-        ClientManager cl = new ClientManager(true);
+        ClientManager cl = new ClientManager(isCLi);
     }
 
     public static void sendMessage(String message) {
@@ -64,21 +65,19 @@ public class ClientMain implements Runnable{
     public void run() {
         try {
             Thread previousThread = null;
+
             while (isRunning) {
                 String message = (String) input.readObject();
                 System.out.println("Received message from server: " + message);
                 MessageSerializer messageSerializer = new MessageSerializer();
                 Message serializedMessage = messageSerializer.deserialize(message);
                 if(serializedMessage != null){
-                    System.out.println("it's for me");
                     //if it's meant for us
                     //TODO: add exception to handle wrongly received message to react accordingly
                     //TODO: put this into thread to stop cli from blocking this loop
-
-                    if(previousThread != null){ //TODO: non bisogna interromperlo, altrimenti elimino la possibilità di effettuare nuovi comandi, devo vedere se è un messaggio e basta o un comando
+                    if(previousThread != null){
                         previousThread.interrupt();
                     }
-
                     Thread newThread = new Thread(() -> {
                         ClientManager.clientReceiveMessage(serializedMessage);
                     });
@@ -94,6 +93,7 @@ public class ClientMain implements Runnable{
             isRunning = false;
         }
     }
+
     public void stop() {
         isRunning = false;
         try {
@@ -106,9 +106,9 @@ public class ClientMain implements Runnable{
     }
 
     public static void main(String[] args) throws IOException {
-        CLIgeneral cli = new CLIgeneral();
+        //CLIgeneral cli = new CLIgeneral();
         Socket socket = new Socket("localhost", 1234);
-        ClientMain client = new ClientMain(socket);
+        ClientMain client = new ClientMain(socket, true);
 
 // Send a message to the server
         //client.sendMessage("Hello, server!");
