@@ -24,12 +24,15 @@ public class VirtualGameManager extends VirtualGameModel{
     public void setCredentials(String username, String password, String UID){
         //TODO: IMPORTANTE; DA RIMUOVERE LA PROSSIMA LINEA (fatta per primo messaggio ma da fixare seializer)
         ClientManager.userNickname = username;
+
         VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password, UID});
         ClientMain.sendMessage(serializeMethod(serializedGameManager));
     }
     public void selectGame(String gameID, String user){
+
         VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("selectGame", new Object[]{gameID, user});
         ClientMain.sendMessage(serializeMethod(serializedGameManager));
+
     }
     public void createGame(Integer numPlayers, String user){
         VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("createGame", new Object[]{numPlayers, user});
@@ -41,6 +44,12 @@ public class VirtualGameManager extends VirtualGameModel{
         VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("sendAck", new Object[]{});
         ClientMain.sendMessage(serializeMethod(serializedGameManager));
     }
+
+    public void lookForNewGames(String user){
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("lookForNewGames", new Object[]{user});
+        ClientMain.sendMessage(serializeMethod(serializedGameManager));
+    }
+
     /*
     Lobby methods
      */

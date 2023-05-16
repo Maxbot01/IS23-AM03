@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
     private VirtualGameManager virtualGameManager;
-
+    private loginGameMessage lastLoginMessage;
 
     public GameManagerController(View view, VirtualGameManager virtualGameManager) {
         super(view);
@@ -48,6 +48,11 @@ public class GameManagerController extends Controller implements GameManagerView
     }
 
     @Override
+    public void onLookForNewGames(String user){
+        virtualGameManager.lookForNewGames(user);
+    }
+
+    @Override
     public boolean receiveSubscriberMessages(Message message) {
         if(message instanceof NetworkMessage){
 
@@ -61,10 +66,18 @@ public class GameManagerController extends Controller implements GameManagerView
             }
         }else if(message instanceof ErrorMessage){
             ClientManager.view.showErrorMessage(((ErrorMessage) message).error.toString());
+            switch (((ErrorMessage)message).error.toString()) {
+                case "wrongPassword":
+                    ClientManager.view.requestCredentials();
+                    break;
+                case "lobbyIsFull":
+                    ClientManager.view.launchGameManager(lastLoginMessage.gamesPlayers);
+                    break;
+            }
         }else if(message instanceof loginGameMessage){
             //user can go in, launchGameManager phase
             ClientManager.userNickname = ((loginGameMessage)message).username;
-            ClientManager.view.setNickname(((loginGameMessage)message).username); // TODO: Lo devo togliere
+            this.lastLoginMessage = (loginGameMessage)message;
             ClientManager.view.launchGameManager(((loginGameMessage)message).gamesPlayers);
         }
         return true;

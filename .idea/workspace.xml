@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Server" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="Serializzazione commonGoals">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/fx/HelloApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/fx/HelloController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/fx/hello-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/gui/BorderLayout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/gui/FlowLayout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/gui/Gridlayout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/gui/PrimoFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="GUI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,9 +22,9 @@
       <list>
         <option value="Interface" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="module-info" />
         <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -65,11 +60,12 @@
     "Repository.Attach.Sources": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Maxbot/IdeaProjects/IS23-AM03/src/main/java/it/polimi/ingsw/fx",
+    "last_opened_file_path": "/Users/enricoalberti/Desktop/UNI/ANNO 3/INGEGNERIA DEL SOFTWARE/code/ProgettoIDS23/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.pluginManager"
@@ -81,30 +77,22 @@
       <recent name="it.polimi.ingsw.controller.pubSub" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Maxbot\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\fx" />
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView" />
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Maxbot\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\fx" />
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView" />
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.HelloApplication">
+  <component name="RunManager" selected="Application.fx">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.client.ClientMain" />
       <module name="ProgettoIDS23" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.fx.HelloApplication" />
-      <module name="AM03" />
-      <option name="VM_PARAMETERS" value="--module-path=C:\javafx-sdk-20.0.1\lib --add-modules=javafx.controls,javafx.fxml" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.fx.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -123,17 +111,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="fx" type="Application" factoryName="Application" singleton="false">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.view.GUIView.ScreenSwitcher" />
+      <module name="ProgettoIDS23" />
+      <option name="VM_PARAMETERS" value="--module-path libJFX --add-modules=javafx.controls" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Testing_Common_Goals_Finale" />
       <item itemvalue="Application.Server" />
       <item itemvalue="Application.Client" />
-      <item itemvalue="Application.HelloApplication" />
+      <item itemvalue="Application.fx" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.HelloApplication" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -155,28 +146,10 @@
       <workItem from="1681661874501" duration="270000" />
       <workItem from="1682952749284" duration="16316000" />
       <workItem from="1683215185065" duration="13665000" />
-      <workItem from="1683368477901" duration="37866000" />
-    </task>
-    <task id="LOCAL-00008" summary="added PersonalGoal and player">
-      <created>1679255189842</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1679255189842</updated>
-    </task>
-    <task id="LOCAL-00009" summary="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals">
-      <created>1679271689797</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1679271689797</updated>
-    </task>
-    <task id="LOCAL-00010" summary="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals">
-      <created>1679312251930</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1679312251930</updated>
+      <workItem from="1683368477901" duration="44346000" />
+      <workItem from="1684096194903" duration="598000" />
+      <workItem from="1684140132892" duration="29014000" />
+      <workItem from="1684230201447" duration="4829000" />
     </task>
     <task id="LOCAL-00011" summary="few updates on Player, created javadoc dir">
       <created>1679329947805</created>
@@ -493,14 +466,35 @@
       <option name="project" value="LOCAL" />
       <updated>1683636867173</updated>
     </task>
-    <task id="LOCAL-00056" summary="Serializzazione commonGoals">
-      <created>1683642951309</created>
+    <task id="LOCAL-00056" summary="client-server">
+      <created>1683641334259</created>
       <option name="number" value="00056" />
       <option name="presentableId" value="LOCAL-00056" />
       <option name="project" value="LOCAL" />
-      <updated>1683642951309</updated>
+      <updated>1683641334259</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="client-server">
+      <created>1684086880628</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1684086880628</updated>
+    </task>
+    <task id="LOCAL-00058" summary="client-server">
+      <created>1684140156072</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1684140156072</updated>
+    </task>
+    <task id="LOCAL-00059" summary="GUI">
+      <created>1684241401643</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1684241401643</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -567,8 +561,8 @@
     <MESSAGE value="stuff" />
     <MESSAGE value="flow" />
     <MESSAGE value="client-server" />
-    <MESSAGE value="Serializzazione commonGoals" />
-    <option name="LAST_COMMIT_MESSAGE" value="Serializzazione commonGoals" />
+    <MESSAGE value="GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ProgettoIDS23$Client.ic" NAME="Client Coverage Results" MODIFIED="1683507446112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

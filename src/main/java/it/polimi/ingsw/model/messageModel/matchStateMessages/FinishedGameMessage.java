@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class FinishedGameMessage extends MatchStateMessage{
 
-    ArrayList<Pair<String, Integer>> finalScoreBoard;
-    String winnerNickname;
+    public ArrayList<Pair<String, Integer>> finalScoreBoard;
+    public String winnerNickname;
 
     public FinishedGameMessage(GameStateType gameState, String matchID, ArrayList<Pair<String, Integer>> finalScoreBoard, String winnerNickname) {
         super(gameState, matchID);
