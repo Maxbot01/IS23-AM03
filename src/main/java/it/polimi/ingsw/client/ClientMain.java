@@ -1,34 +1,12 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.controller.GameManagerController;
-import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.messageModel.NetworkMessage;
-import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
-import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
-import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
-import it.polimi.ingsw.server.ServerMain;
-import it.polimi.ingsw.view.CLIgeneral;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.UUID;
-
-import static it.polimi.ingsw.client.VirtualGameManagerSerializer.serializeMethod;
-import static java.lang.System.out;
-
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 public class ClientMain implements Runnable{
 
@@ -49,7 +27,7 @@ public class ClientMain implements Runnable{
             isRunning = false;
         }
 
-        ClientManager.initializeClientManagerSingleton(isCLi, UUID.randomUUID().toString());
+        ClientManager.initializeClientManagerSingleton(isCLi);
     }
 
     public static void sendMessage(String message) {

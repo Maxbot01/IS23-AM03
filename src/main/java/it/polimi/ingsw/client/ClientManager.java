@@ -30,7 +30,6 @@ public class ClientManager {
     public static VirtualGameManager virtualGameManager;
 
     public static String userNickname; // a cosa gli serve???
-    public static String userUID;
     public boolean isCli;
     // rest of the class
 
@@ -38,8 +37,7 @@ public class ClientManager {
 
 
     // Public static method to get the singleton instance and be sure to never initialize the ClientManager twice
-    public static ClientManager initializeClientManagerSingleton(boolean isCLI, String UID) {
-        userUID = UID;
+    public static ClientManager initializeClientManagerSingleton(boolean isCLI) {
         if (instance == null) {
             instance = new ClientManager(isCLI);
         }
