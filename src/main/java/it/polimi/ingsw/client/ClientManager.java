@@ -31,14 +31,15 @@ public class ClientManager {
 
     public static String userNickname; // a cosa gli serve???
     public static String userUID;
-    public  boolean isCli;
+    public boolean isCli;
     // rest of the class
 
     // Private constructor to prevent instantiation from outside the class
 
 
     // Public static method to get the singleton instance and be sure to never initialize the ClientManager twice
-    public static ClientManager initializeClientManagerSingleton(boolean isCLI) {
+    public static ClientManager initializeClientManagerSingleton(boolean isCLI, String UID) {
+        userUID = UID;
         if (instance == null) {
             instance = new ClientManager(isCLI);
         }

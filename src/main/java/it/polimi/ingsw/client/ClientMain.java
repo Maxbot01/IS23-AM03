@@ -48,8 +48,8 @@ public class ClientMain implements Runnable{
             System.out.println("Error creating client I/O streams: " + e.getMessage());
             isRunning = false;
         }
-        ClientManager.initializeClientManagerSingleton(isCLi);
-        ClientManager.userUID = UUID.randomUUID().toString();
+
+        ClientManager.initializeClientManagerSingleton(isCLi, UUID.randomUUID().toString());
     }
 
     public static void sendMessage(String message) {

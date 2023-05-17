@@ -42,7 +42,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //check if selection was correct
         if (isSelectionPossible(selected)) {
             //ClientManager.view.chooseColumn();
-            virtualGameManager.selectedCards(selected, user, gameID);
+            ClientManager.virtualGameManager.selectedCards(selected, user, gameID);
         }else{
             ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least another chosen card");
             ClientManager.view.chooseCards();
