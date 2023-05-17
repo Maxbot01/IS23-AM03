@@ -109,14 +109,8 @@ public class ClientMain implements Runnable{
         //CLIgeneral cli = new CLIgeneral();
         Socket socket = new Socket("localhost", 1234);
         ClientMain client = new ClientMain(socket, true);
-
-// Send a message to the server
-        //client.sendMessage("Hello, server!");
-
-// Receive messages from the server until the client is stopped
         client.run();
 
-// Stop the client
         client.stop();
     }
 }
