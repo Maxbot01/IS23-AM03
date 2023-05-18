@@ -93,6 +93,7 @@ public class CLIgeneral extends View{
                                playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState){
         ArrayList<Player> tmp = new ArrayList<>();
         for(String s: playersNick){
+
             Player p = new Player(s);
             tmp.add(p);
         }
@@ -130,12 +131,20 @@ public class CLIgeneral extends View{
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
+        if (Thread.currentThread().isInterrupted()) {
+            return;
+        }
         for(int i = 0; i < players.size(); i++){
+            if (Thread.currentThread().isInterrupted()) {
+                return;
+            }
             if(players.get(i).getNickname().equals(updatedPlayerPoints.getFirst())){
                 this.players.get(i).updateScore(updatedPlayerPoints.getSecond()-players.get(i).getScore());
                 BoardCard[][] updatedShelf = updatedPlayerShelf.getSecond();
                 for(int j = 0; j < updatedShelf.length; j++){
+
                     for(int z = 0; z < updatedShelf[0].length; z++){
+
                         this.players.get(i).getPlayersShelf().getShelfCards()[j][z] = updatedShelf[j][z];
                     }
                 }
@@ -159,9 +168,15 @@ public class CLIgeneral extends View{
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         try{
+            if (Thread.currentThread().isInterrupted()) {
+                return; // Exit the loop gracefully
+            }
             //while(qualcosa che mi arriva dal controller che continua a mandarlo e che successivamente lo rompe)
             cmd = parser.parse(options, scanf());
             while(!cmd.hasOption(stop)) {
+                if (Thread.currentThread().isInterrupted()) {
+                    return;
+                }
                 if (cmd.hasOption(show_gameId)) {
                     System.out.println("Your gameId is: " + gameID);
                 } else if (cmd.hasOption(show_commonGoals)) {
@@ -188,6 +203,9 @@ public class CLIgeneral extends View{
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
                 cmd = parser.parse(options, scanf());
+                if (Thread.currentThread().isInterrupted()) {
+                    return; // Exit the loop gracefully
+                }
             }
             if(cmd.hasOption(stop)){
                 System.out.println("You have left waitingCommands");
@@ -203,6 +221,9 @@ public class CLIgeneral extends View{
         System.out.println("Insert Username and a Password, that you will need in case of disconnection.\n" +
                 "If you are reconnecting use your previously inserted password:");
         Scanner in = new Scanner(System.in);
+        if (Thread.currentThread().isInterrupted()) {
+            return; // Exit the loop gracefully
+        }
         String username = in.next();
         String password = in.next();
         this.userPlayer = new Player(username);
@@ -225,12 +246,23 @@ public class CLIgeneral extends View{
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
+        if (Thread.currentThread().isInterrupted()) {
+            return; // Exit the loop gracefully
+        }
 
         HashMap<Integer,String> IDlist = new HashMap<>();
         int i = 1;
         try{
+            if (Thread.currentThread().isInterrupted()) {
+                return; // Exit the loop gracefully
+            }
             cmd = parser.parse(options, scanf());
+
             while(!cmd.hasOption(create_game) && !cmd.hasOption(select_game)){ // Until it receives a possible command, it continues to scan
+
+                if (Thread.currentThread().isInterrupted()) {
+                    return; // Exit the loop gracefully
+                }
                 if(cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
                     if(availableGames.size() == 0){
                         System.out.println("No games available");
@@ -253,6 +285,9 @@ public class CLIgeneral extends View{
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
                 cmd = parser.parse(options, scanf());
+                if (Thread.currentThread().isInterrupted()) {
+                    return; // Exit the loop gracefully
+                }
             }
             if (cmd.hasOption(create_game)) {
                 int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
@@ -295,14 +330,24 @@ public class CLIgeneral extends View{
         CommandLine cmd = null;
 
         try{
+            if (Thread.currentThread().isInterrupted()) {
+                return; // Exit the loop gracefully
+            }
             cmd = parser.parse(options, scanf());
             while(!cmd.hasOption(start_match)){ // Until it receives a possible command, it continues to scan
+
+                if (Thread.currentThread().isInterrupted()) {
+                    return; // Exit the loop gracefully
+                }
                 if(cmd.hasOption(show_gameId)){
                     System.out.println("Your gameId is: " + gameID);
                 }else if(cmd.hasOption(help)){
                     formatter.printHelp("Section Commands", options);
                 }else if(cmd.hasOption(chat)) { // Example of chat implementation
                     Scanner scan = new Scanner(System.in);
+                    if (Thread.currentThread().isInterrupted()) {
+                        return; // Exit the loop gracefully
+                    }
                     String msg = scan.nextLine();
                     super.lobbyController.onGetChatMessage(msg);
                     // It also needs to show the past messages
@@ -329,6 +374,9 @@ public class CLIgeneral extends View{
 
         System.out.println("Select Cards in couples of coordinates.\t\tThe selectable cards are those higlighted" +
                             " in white"+"\nExample: 5 4 5 5 5 6\twhere 5 4 is the first couple and so on");
+        if (Thread.currentThread().isInterrupted()) {
+            return; // Exit the loop gracefully
+        }
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
         while(s.length() != 11 && s.length() != 3 && s.length() != 7)
@@ -382,8 +430,12 @@ public class CLIgeneral extends View{
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         try{
+            if (Thread.currentThread().isInterrupted()) {
+                return; // Exit the loop gracefully
+            }
             cmd = parser.parse(options, scanf());
             while(!cmd.hasOption(exit) && !cmd.hasOption(play_again)){
+
                 if(cmd.hasOption(help)){
                     formatter.printHelp("Section Commands", options);
                 }else{
@@ -512,135 +564,11 @@ public class CLIgeneral extends View{
             System.out.print("\n");
         }
     }
-    /* Old Commands version */
-    /*
-    public void executeLauncher(){ // method called after the client connects to the server
-        // Scaning command line arguments
-        ArrayList<String> arguments = new ArrayList<>();
-        Scanner in = new Scanner(System.in);
-        String s = in.nextLine();
-        Scanner inScan = new Scanner(s);
-        while(inScan.hasNext()){
-            arguments.add(inScan.next());
-        }
-        String[] args = new String[arguments.size()];
-        for(int i = 0; i < arguments.size(); i++){
-            args[i] = arguments.get(i);
-        }
 
-        ArrayList<Pair<Integer, Integer>> coord = new ArrayList<>();
-        ArrayList<BoardCard> selected = new ArrayList<>();
-        ArrayList<Option> optionList = new ArrayList<>();
-
-        optionList.add(new Option("zero_option","starter of list"));
-        optionList.addAll(options.getOptions());
-
-        CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = null;
-
-        try{
-            cmd = parser.parse(options, args);
-
-            if(cmd.hasOption(set_username) && commandsOrder == 0){
-                String username = cmd.getOptionValue(set_username);
-                System.out.println("CHECK: Chosen username is '"+username+"'");
-                commandsOrder = optionList.indexOf(set_username);//1
-                // qui ci va onSetUsername
-                // invio dello username al controller e quindi creazione dell'utente (non del player)
-            }else if(cmd.hasOption(show_games) && commandsOrder == 1){
-                commandsOrder = optionList.indexOf(show_games);//2
-                super.gameManagerController.onShowGamesAvailable();// da inserire nel controller
-                // HashMap<GameLobby,Game> gamesList =
-                // System.out.println("CHECK: Games list from server\n"+gamesList);
-            }else if(cmd.hasOption(create_game) && (commandsOrder == 1 || commandsOrder == 2)){
-                Integer numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
-                System.out.println("CHECK: Number of players chosen is "+numOfPlayers);
-                commandsOrder = optionList.indexOf(create_game);//3
-                super.gameManagerController.onCreateGame(numOfPlayers);
-                // printo la lobby (il controller lo fa)
-            }else if(cmd.hasOption(select_game) && (commandsOrder == 1 || commandsOrder == 2)){
-                String gameId = cmd.getOptionValue(select_game);
-                System.out.println("CHECK: Chosen gameId is "+gameId);
-                commandsOrder = optionList.indexOf(select_game);//4
-                super.gameManagerController.onSelectGame(gameId);
-                // printo la lobby (il controller lo fa)
-            }else if(cmd.hasOption(show_gameId) && (commandsOrder == 3 || commandsOrder == 4)){
-                Integer gameIdAndLobby = Integer.parseInt(cmd.getOptionValue(show_gameId));
-                System.out.println("CHECK: GameId of lobby is "+gameIdAndLobby);
-                commandsOrder = optionList.indexOf(show_gameId);//5
-                super.lobbyController.onShowGameId(); // da inserire nel controller
-            }else if(cmd.hasOption(start_match) && commandsOrder >= 3 && commandsOrder <= 5){
-                super.lobbyController.onStartMatch();
-                commandsOrder = optionList.indexOf(start_match);//6
-                // printo la livingRoom e le shelves (il controller lo fa)
-            }else if(cmd.hasOption(select_cards) && commandsOrder == 6) { // I also need "it's your turn" message
-                int resto = cmd.getArgs().length % 2;
-                if (resto != 0) {
-                    int numOfCoord = cmd.getArgs().length / 2;
-                    for (int i = 0; i < numOfCoord; i++) {
-                        int x = Integer.parseInt(cmd.getOptionValues(select_cards)[i]);
-                        int y = Integer.parseInt(cmd.getOptionValues(select_cards)[i + 1]);
-                        Pair<Integer, Integer> tmp = new Pair<>(x, y);
-                        coord.add(tmp);
-                        //inserisci le boardCard in selected (il colore)
-                    }
-                    System.out.println("CHECK: Chosen coordinates are " + coord);
-                    commandsOrder = optionList.indexOf(select_cards);//7
-                } else {
-                    System.err.println("Errore: numero di coordinate inserite non valido");
-                }
-            }else if(cmd.hasOption(choose_order) && commandsOrder == 7){
-                String order = cmd.getOptionValue(choose_order);
-                System.out.println("CHECK: Chosen order is "+order);
-                if(order.length() == coord.size()){
-                    ArrayList<Pair<Integer,Integer>> copy = coord;
-                    for(int i = 0; i < order.length(); i++){
-                        coord.add(copy.get(Character.getNumericValue(order.charAt(i))));
-                    }
-                    commandsOrder = optionList.indexOf(choose_order);//8
-                }else{
-                    System.err.println("Errore: l'ordine inserito non corrisponde con il numero di boardCard scelte");
-                }
-                super.gameController.onSelectedCards(coord);
-                // printo la livingRoom e le shelves (è la printAll) (lo fa il controller)
-            }else if(cmd.hasOption(select_column) && commandsOrder == 8){
-                String tmp = cmd.getOptionValue(select_column);
-                if(tmp.length() == 1){
-                    Integer column = Integer.parseInt(tmp);
-                    // super.gameController.onSelectedColumn(,column);
-                    commandsOrder = 0;//0
-                }else{
-                    System.err.println("Errore: indice di colonna non valido");
-                }
-            }else if(cmd.hasOption(help)){
-                //Depending on the value of commandsOrder, I show the available commands
-                HelpFormatter tmp = new HelpFormatter();
-                Options available = new Options();
-                available.addOption(help);
-                available.addOption(show_all);
-
-                if (commandsOrder == 1 || commandsOrder == 2) {
-                    available.addOption(optionList.get(2));
-                    available.addOption(optionList.get(3));
-                    available.addOption(optionList.get(4));
-                    tmp.printHelp("Available Commands", available);
-                } else if (commandsOrder == 3 || commandsOrder == 4) {
-                    available.addOption(optionList.get(5));
-                    available.addOption(optionList.get(6));
-                    tmp.printHelp("Available Commands", available);
-                } else {
-                    available.addOption(optionList.get(commandsOrder+1));
-                    tmp.printHelp("Available Commands", available);
-                }// after the command select_column you won't be able to do anything, it won't be your turn anymore, and the changes will be shown to everybody
-            }else if(cmd.hasOption(show_all)){
-                HelpFormatter tmp = new HelpFormatter();
-                tmp.printHelp("All commands", options);
-            }
-        } catch (ParseException pe){
-            System.err.println("Error parsing command-line arguments");
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("Commands", options);
-        }
-    }
-    */
 }
+
+
+/*
+
+
+ */

@@ -1,24 +1,5 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.client.ClientMain;
-import it.polimi.ingsw.client.MessageSerializer;
-import it.polimi.ingsw.client.VirtualGameManagerSerializer;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameManager;
-import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.view.CLIgeneral;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -44,7 +25,15 @@ public class ServerMain {
         }
     }
 
-    public void broadcastMessage(String message) {
+    public void sendMessageToSocket(String message, Socket socket){
+        for (ClientHandler client : clients) {
+            if(client.socket.equals(socket)){
+                //right socket to send message to
+                client.sendMessage(message);
+            }
+        }
+    }
+    public void broadcastMessageSocket(String message) {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
@@ -69,7 +58,7 @@ public class ServerMain {
         try {
             serverSocket.close();
             for (ClientHandler client : clients) {
-                client.stop();
+                client.interrupt();
             }
         } catch (IOException e) {
             System.out.println("Error stopping server: " + e.getMessage());
@@ -109,7 +98,7 @@ public class ServerMain {
                 while (isRunning) {
                     String message = (String) input.readObject();
                     System.out.println("Received message from client " + socket.getInetAddress().getHostAddress() + ": " + message);
-                    VirtualGameManagerSerializer.deserializeMethod(message);
+                    VirtualGameManagerSerializer.deserializeMethod(message, socket);
                     //broadcastMessage("Client " + socket.getInetAddress().getHostAddress() + ": " + message);
                 }
             } catch (IOException e) {
@@ -196,3 +185,42 @@ public class ServerMain {
     private static ObjectOutputStream oos;
 
 
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        //create the socket server object
+        //static ServerSocket variable
+
+        //server classes init
+
+        ServerSocket server;
+        //socket server port on which it will listen
+        int port = 1234;
+        server = new ServerSocket(port);
+        //keep listens indefinitely until receives 'exit' call or program terminates
+        while(true){
+            System.out.println("Waiting for the client request");
+            //creating socket and waiting for client connection
+            Socket socket = server.accept();
+            //read from socket to ObjectInputStream object
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            //convert ObjectInputStream object to String
+            String message = (String) ois.readObject();
+            System.out.println("Message Received: " + message);
+            //create ObjectOutputStream object
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            //write object to Socket
+            //oos.writeObject("client sent "+ message);
+            VirtualGameManagerSerializer.deserializeMethod(message);
+            //close resources
+            ois.close();
+            oos.close();
+            socket.close();
+            //terminate the server if client sends exit request
+            if(message.equalsIgnoreCase("exit")) break;
+        }
+        System.out.println("Shutting down Socket server!!");
+        //close the ServerSocket object
+        server.close();
+    } }
+
+
+    */

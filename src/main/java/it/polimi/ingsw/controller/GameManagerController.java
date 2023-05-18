@@ -28,13 +28,13 @@ public class GameManagerController extends Controller implements GameManagerView
         ClientManager.pubsub.addSubscriber(TopicType.gameManagerState, this);
         ClientManager.pubsub.addSubscriber(TopicType.errorMessageState, this);
         ClientManager.pubsub.addSubscriber(TopicType.networkMessageState, this);
-        virtualGameManager.ping(ClientManager.userUID);
+        virtualGameManager.ping();
     }
 
 
     @Override
     public void onSetCredentials(String username, String password) {
-        virtualGameManager.setCredentials(username, password, ClientManager.userUID);
+        virtualGameManager.setCredentials(username, password);
     }
 
     @Override
