@@ -34,7 +34,6 @@ public class ClientManager {
 
     public static String userNickname;
     public boolean isCli;
-    public boolean isSocketClient;
 
     public static String rmiUID;
     // rest of the class
