@@ -5,6 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,11 +132,31 @@ public class ServerMain {
             }
         }
 
+
         @Override
         public void run() {
             receiveMessages();
         }
     }
+
+    public static void StartRMI() {
+        try {
+            // Crea l'istanza dell'oggetto remoto
+            RemoteService remoteService = new RemoteServiceImpl();
+
+            // Crea un registro RMI sulla porta 1099
+            Registry registry = LocateRegistry.createRegistry(1099);
+
+            // Pubblica l'oggetto remoto nel registro RMI con un nome specifico
+            registry.rebind("RemoteService", remoteService);
+
+            System.out.println("Server RMI avviato correttamente.");
+        } catch (RemoteException e) {
+            System.out.println("Errore durante l'avvio del server RMI: " + e.getMessage());
+            e.printStackTrace(); // Stampa l'eccezione completa per il debug
+        }
+    }
+
 
     public static ServerMain server;
 
@@ -141,8 +164,11 @@ public class ServerMain {
         int port = 1234;
         server = new ServerMain(port);
         System.out.println("Starting server on port " + port);
+        StartRMI(); // Aggiunta della chiamata a StartRMI()
         server.start();
+
     }
+
 }
 
     /*

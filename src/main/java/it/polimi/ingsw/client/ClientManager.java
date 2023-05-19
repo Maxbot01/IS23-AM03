@@ -18,7 +18,10 @@ import it.polimi.ingsw.view.CLIgeneral;
 import it.polimi.ingsw.view.GUIView.GUIView;
 import it.polimi.ingsw.view.View;
 
+import java.util.UUID;
+
 public class ClientManager {
+
     //SINGLETON
     private static ClientManager instance;
     public static PubSubService pubsub;
@@ -31,20 +34,22 @@ public class ClientManager {
 
     public static String userNickname; // a cosa gli serve???
     public boolean isCli;
+
+    public static String rmiUID;
     // rest of the class
 
     // Private constructor to prevent instantiation from outside the class
 
 
     // Public static method to get the singleton instance and be sure to never initialize the ClientManager twice
-    public static ClientManager initializeClientManagerSingleton(boolean isCLI) {
+    public static ClientManager initializeClientManagerSingleton(boolean isCLI, boolean isSocketClient) {
         if (instance == null) {
-            instance = new ClientManager(isCLI);
+            instance = new ClientManager(isCLI, isSocketClient);
         }
         return instance;
     }
 
-    private ClientManager(boolean isCLI){
+    private ClientManager(boolean isCLI, boolean isSocketClient){
         gameController = null;
         lobbyController = null;
         pubsub = new PubSubService();
@@ -56,8 +61,13 @@ public class ClientManager {
         }else{
             view = new GUIView();
         }
-
-        virtualGameManager = new VirtualGameManager();
+        System.out.println(isSocketClient);
+        if (isSocketClient){
+            rmiUID = null;
+        } else {
+            rmiUID = UUID.randomUUID().toString();
+        }
+        virtualGameManager = new VirtualGameManager(isSocketClient);
         gameManagerController = new GameManagerController(view, virtualGameManager);
         view.registerObserver(gameManagerController, null, null);
 
