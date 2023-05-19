@@ -36,7 +36,7 @@ public interface UpdateHandler {
     void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String, Integer>
                                         updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf);
 
-    void waitingCommands(); // The controller continues to call this method until the playing player changes to the CLI user
+    void waitingCommands(); //The controller continues to call this method until the playing player changes to the CLI user
     /**
      * Requests Username from Command Line
      * @return String
