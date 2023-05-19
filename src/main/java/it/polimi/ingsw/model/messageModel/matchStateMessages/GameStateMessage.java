@@ -16,7 +16,8 @@ public class GameStateMessage extends MatchStateMessage{
     public Boolean[][] selecectables;
 
     public BoardCard[] currentlySelected;
-    public CommonGoals commonGoals;
+    public String firstGoal;
+    public String secondGoal;
     public HashMap<String, PersonalGoal> personalGoals;
     public ArrayList<String> players;
     public String chairedPlayer;
@@ -28,7 +29,8 @@ public class GameStateMessage extends MatchStateMessage{
         this.pieces = pieces;
         this.selecectables = selecectables;
         this.currentlySelected = currentlySelected;
-        this.commonGoals = commonGoals;
+        this.firstGoal = commonGoals.getFirstGoal().toString();
+        this.secondGoal = commonGoals.getSecondGoal().toString();
         this.personalGoals = personalGoals;
         this.players = players;
         this.chairedPlayer = chairedPlayer;

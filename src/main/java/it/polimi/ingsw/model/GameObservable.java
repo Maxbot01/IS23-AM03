@@ -21,7 +21,10 @@ public abstract class GameObservable {
      */
     protected void notifyObserver(String toPlayer, Message withMessage, boolean inLobbyOrGame, String gameID){
         //if we are in a lobby or in a game needs to send the id of the lobby/game
+
         sendMessageToNetworkUser(toPlayer, withMessage, gameID);
+
+
         //withMessage.printMessage();
     }
 
@@ -35,8 +38,8 @@ public abstract class GameObservable {
             serializedMessage = messageSerializer.serialize(withMessage, "", "");
             ServerMain.server.sendMessageToSocket(serializedMessage, client.getSocketID());
         }else{
-            //TODO: send message via RMI
-
+            //send rmi
+            ClientManager.clientReceiveMessage(withMessage);
         }
 
     }
@@ -51,9 +54,11 @@ public abstract class GameObservable {
     protected void notifyAllObservers(List<String> observers, Message withMessage, boolean inLobbyOrGame, String gameID){
         //send the message for every given nick (TO CHANGE MAYBE)
         System.out.println("Sending message to everyone" + observers);
+        //TODO: change format for this
         for(String player: observers){
             sendMessageToNetworkUser(player, withMessage, gameID);
         }
+
         withMessage.printMessage();
     }
 
@@ -76,7 +81,7 @@ public abstract class GameObservable {
             ServerMain.server.sendMessageToSocket(serializedMessage, GameManager.getInstance().userIdentification.get(toPlayer).getSocketID());
         }else{
             //TODO: user is RMI
-
+            ClientManager.clientReceiveMessage(withMessage);
         }
     }
 
