@@ -1,20 +1,14 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.server;
 
-import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.helpers.*;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
-import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 
-import javax.swing.plaf.synth.ColorType;
-import java.awt.*;
+import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
 
 public class VirtualGameManagerSerializer {
     private String method;
@@ -47,21 +41,20 @@ public class VirtualGameManagerSerializer {
         return gson.toJson(virtualGameManagerSerializer);
     }
 
-    public static <token> void deserializeMethod(String jsonString) {
+    public static <token> void deserializeMethod(String jsonString, Socket socket) {
+        //FOR SURE WE ARE IN SOCKET
         GameManager gameManager = GameManager.getInstance();
         Gson gson = new Gson();
         VirtualGameManagerSerializer virtualGameManagerSerializer = gson.fromJson(jsonString, VirtualGameManagerSerializer.class);
 
         switch(virtualGameManagerSerializer.getMethod()) {
             case "ping":
-                String uid = (String) virtualGameManagerSerializer.getArgs()[0];
-                gameManager.ping(uid);
+                gameManager.ping(new RemoteUserInfo(true, socket, null));
                 break;
             case "setCredentials":
                 String username = (String) virtualGameManagerSerializer.getArgs()[0];
                 String password = (String) virtualGameManagerSerializer.getArgs()[1];
-                uid = (String) virtualGameManagerSerializer.getArgs()[2];
-                gameManager.setCredentials(username, password, uid);
+                gameManager.setCredentials(username, password, new RemoteUserInfo(true, socket, null));
                 break;
             case "selectGame":
                 String gameID = (String) virtualGameManagerSerializer.getArgs()[0];

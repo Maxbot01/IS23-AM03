@@ -25,15 +25,26 @@ public class ClientManager {
     public static View view;
     public static GameController gameController;
     public static GameManagerController gameManagerController;
-    private static LobbyController lobbyController;
+    public static LobbyController lobbyController;
 
     public static VirtualGameManager virtualGameManager;
 
     public static String userNickname; // a cosa gli serve???
-    public static String userUID;
-    public static boolean isCli;
+    public boolean isCli;
+    // rest of the class
 
-    public ClientManager(boolean isCLI){
+    // Private constructor to prevent instantiation from outside the class
+
+
+    // Public static method to get the singleton instance and be sure to never initialize the ClientManager twice
+    public static ClientManager initializeClientManagerSingleton(boolean isCLI) {
+        if (instance == null) {
+            instance = new ClientManager(isCLI);
+        }
+        return instance;
+    }
+
+    private ClientManager(boolean isCLI){
         gameController = null;
         lobbyController = null;
         pubsub = new PubSubService();

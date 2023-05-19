@@ -58,13 +58,6 @@ public class MessageSerializer {
         public Message deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             String messageType = jsonObject.get("messageType").getAsString();
-            String toPlayer = jsonObject.get("toPlayerORtoUid").getAsString();
-            String id = jsonObject.get("id").getAsString();
-            if(!(toPlayer.equals(ClientManager.userUID) || toPlayer.equals(ClientManager.userNickname))){
-                //not directed to this client, return a null
-                System.out.println("not directed to me, got " + toPlayer + " but have "+ ClientManager.userUID + " | " + ClientManager.userNickname);
-                return null;
-            }
             JsonObject messageData = jsonObject.get("messageData").getAsJsonObject();
             switch (messageType) {
                 case "InitStateMessage":

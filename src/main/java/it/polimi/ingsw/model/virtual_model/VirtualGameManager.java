@@ -1,31 +1,27 @@
 package it.polimi.ingsw.model.virtual_model;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
-import it.polimi.ingsw.client.VirtualGameManagerSerializer;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameManager;
+import it.polimi.ingsw.server.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.client.VirtualGameManagerSerializer.serializeMethod;
+import static it.polimi.ingsw.server.VirtualGameManagerSerializer.serializeMethod;
 
 public class VirtualGameManager extends VirtualGameModel{
 
-    public void ping(String withUID){
-        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("ping", new Object[]{withUID});
+    public void ping(){
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("ping", new Object[]{});
         ClientMain.sendMessage(serializeMethod(serializedGameManager));
         //serializeMethod(serializedGameManager);
     }
-    public void setCredentials(String username, String password, String UID){
+    public void setCredentials(String username, String password){
         //TODO: IMPORTANTE; DA RIMUOVERE LA PROSSIMA LINEA (fatta per primo messaggio ma da fixare seializer)
         ClientManager.userNickname = username;
 
-        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password, UID});
+        VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password});
         ClientMain.sendMessage(serializeMethod(serializedGameManager));
     }
     public void selectGame(String gameID, String user){

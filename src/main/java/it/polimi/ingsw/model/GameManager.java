@@ -12,11 +12,16 @@ import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
+import it.polimi.ingsw.server.RemoteUserInfo;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Singleton with all the current games and the needed methods to create or join a game
@@ -29,13 +34,16 @@ public class GameManager extends GameObservable{
     //hash map with the game lobby and the relative games
     private HashMap<GameLobby, Game> currentGames;
     private HashMap<String, String> nicknames;
-    private HashMap<String, String> userIDs;
+    //private HashMap<String, String> userIDs;
+    public HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
     private GameManager(){
         nicknames = new HashMap<>();
         currentGames = new HashMap<>();
         userMatches = new HashMap<>();
+        userIdentification = new HashMap<>();
     }
+
 
     public void selectGame(String ID, String user){
         //currentGames.put(new GameLobby());
@@ -59,16 +67,14 @@ public class GameManager extends GameObservable{
         System.out.println("new current games: " + currentGames.keySet());
     }
 
-    public String getUID(String fromUsername){
-        return userIDs.get(fromUsername);
-    }
 
-    public void ping(String fromClientUID){
+
+    public void ping(RemoteUserInfo fromClientInfo){
         //received ping message
         //send pong
         //TODO: server.send(new NetworkMessage("pong"));
         System.out.println("called ping() on server");
-        super.notifyObserver(fromClientUID, new NetworkMessage("pong"), false, "-");
+        super.notifyNetworkClient(fromClientInfo, new NetworkMessage("pong"));
     }
 
 
@@ -89,17 +95,18 @@ public class GameManager extends GameObservable{
     }
 
 
-    public void setCredentials(String username, String password, String UID){
+    public void setCredentials(String username, String password, RemoteUserInfo userInfo){
         //check if there was, else send message of erroneus urername set request.
+        boolean loggedSuccesful = false;
         if(nicknames.containsKey(username)){
             //already exists, checks if psw is right
             if (nicknames.get(username).equals(password)){
                 //ok login
                 //sends all the games
-                userIDs.put(username, UID);
-                System.out.println(username + "connected with UID: " + UID);
+                //userIDs.put(username, UID);
+                System.out.println(username + "connected");
                 System.out.println("current games: " + getAllCurrentJoinableLobbiesIDs());
-                super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+                loggedSuccesful = true;
             }else{
                 //username wrong password
                 //sends error
@@ -110,8 +117,15 @@ public class GameManager extends GameObservable{
             System.out.println(username + "connected");
             System.out.println("current games: " + getAllCurrentJoinableLobbiesIDs());
             nicknames.put(username, password);
+            loggedSuccesful = true;
+        }
+
+        if(loggedSuccesful){
+            //TODO: save map of user -> RMI or socket id
+            userIdentification.put(username, userInfo);
             super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
         }
+
     }
 
     /**
@@ -209,4 +223,9 @@ public class GameManager extends GameObservable{
 
 
 
+
+
 }
+
+
+

@@ -1,23 +1,5 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.client.ClientMain;
-import it.polimi.ingsw.client.MessageSerializer;
-import it.polimi.ingsw.client.VirtualGameManagerSerializer;
-import it.polimi.ingsw.model.GameManager;
-import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.view.CLIgeneral;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -43,7 +25,15 @@ public class ServerMain {
         }
     }
 
-    public void broadcastMessage(String message) {
+    public void sendMessageToSocket(String message, Socket socket){
+        for (ClientHandler client : clients) {
+            if(client.socket.equals(socket)){
+                //right socket to send message to
+                client.sendMessage(message);
+            }
+        }
+    }
+    public void broadcastMessageSocket(String message) {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
@@ -68,7 +58,7 @@ public class ServerMain {
         try {
             serverSocket.close();
             for (ClientHandler client : clients) {
-                client.stop();
+                client.interrupt();
             }
         } catch (IOException e) {
             System.out.println("Error stopping server: " + e.getMessage());
@@ -108,7 +98,7 @@ public class ServerMain {
                 while (isRunning) {
                     String message = (String) input.readObject();
                     System.out.println("Received message from client " + socket.getInetAddress().getHostAddress() + ": " + message);
-                    VirtualGameManagerSerializer.deserializeMethod(message);
+                    VirtualGameManagerSerializer.deserializeMethod(message, socket);
                     //broadcastMessage("Client " + socket.getInetAddress().getHostAddress() + ": " + message);
                 }
             } catch (IOException e) {

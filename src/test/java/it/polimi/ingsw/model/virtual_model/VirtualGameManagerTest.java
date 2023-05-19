@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.virtual_model;
 
-import it.polimi.ingsw.client.VirtualGameManagerSerializer;
+import it.polimi.ingsw.server.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.helpers.Pair;
 import org.junit.jupiter.api.Test;
 
