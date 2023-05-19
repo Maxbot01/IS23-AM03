@@ -19,6 +19,10 @@ public class GameLobby extends GameObservable {
         return players;
     }
 
+    public String getHost(){
+        return this.host;
+    }
+
     public void startMatch(String user){
         System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
@@ -41,7 +45,7 @@ public class GameLobby extends GameObservable {
         this.numOfPlayers = numOfPlayers;
         players = new ArrayList<>();
         players.add(host);
-        super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players), false, ID); //TODO: non dovrebbe essere true inLobbyorGame?
+        super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players, false), false, ID); //TODO: non dovrebbe essere true inLobbyorGame?
         //TODO: Send a message to all observers not in game (or don't show it) with the new available games (remember that there's the method lookForNewGames)
     }
 
@@ -50,7 +54,7 @@ public class GameLobby extends GameObservable {
             throw new LobbyFullException();
         }else{
             players.add(player);
-            super.notifyAllObservers(players, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
+            super.notifyAllObservers(players, new LobbyInfoMessage(ID, host, numOfPlayers, players,false), true, this.ID);
             //super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
         }
     }

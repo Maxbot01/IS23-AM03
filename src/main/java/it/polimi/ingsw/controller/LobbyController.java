@@ -13,11 +13,17 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
 
     private String ID;
     private LobbyInfoMessage lastLobbyMessage;
+    private Thread lastThread;
     public LobbyController(View view, String ID) {
         super(view);
         this.ID = ID;
         ClientManager.pubsub.addSubscriber(TopicType.lobbyState, this);
     }
+
+    public String getID() {
+        return ID;
+    }
+
     @Override
     public void onStartMatch(String ID, String user) { // The username sent is the host's username
         //virtualGameLobby.startMatch(ID, user);
@@ -34,7 +40,20 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
         if(message instanceof LobbyInfoMessage mess) {
             //received a lobby info message, shows info about the lobby
             this.lastLobbyMessage = mess;
-            ClientManager.view.launchGameLobby(mess.ID, mess.players, mess.host);
+            if(lastThread != null){
+                System.out.println("launchGameLobby "+lastThread.getName()+" interrupted");
+                lastThread.interrupt();
+            }else{
+                System.out.println("First launchGameLobby");
+            }
+            this.lastThread = Thread.currentThread();
+            System.out.println("launchGameLobby Thread name: "+Thread.currentThread().getName());
+            if(!mess.lastLobbyMessage) {
+                ClientManager.view.launchGameLobby(mess.ID, mess.players, mess.host);
+            }else{
+                this.lastThread.interrupt();
+                System.out.println("Last Lobby thread interrupted");
+            }
         }else if(message instanceof ErrorMessage mess){
             switch (mess.error.toString()) {
                 case "notEnoughPlayers", "onlyHostCanStartMatch":
