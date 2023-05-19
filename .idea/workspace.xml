@@ -9,8 +9,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="GUI">
+    <list default="true" id="2c7ea511-349f-4786-9700-d1a9b565ffee" name="Changes" comment="nothing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx-swt.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx.base.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx.controls.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx.fxml.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx.graphics.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx.media.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx.swing.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/javafx.web.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libdecora_sse.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libfxplugins.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libglass.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libglib-lite.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libgstreamer-lite.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libjavafx_font.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libjavafx_iio.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libjfxmedia.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libjfxmedia_avf.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libjfxwebkit.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libprism_common.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libprism_es2.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libJFX/libprism_sw.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/CLIgeneral.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/CLIgeneral.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,12 +87,15 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "/Users/enricoalberti/Desktop/UNI/ANNO 3/INGEGNERIA DEL SOFTWARE/code/ProgettoIDS23/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -84,6 +111,8 @@
       <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03" />
+      <recent name="C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\libJFX" />
       <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView" />
       <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards" />
       <recent name="$PROJECT_DIR$" />
@@ -113,7 +142,7 @@
     </configuration>
     <configuration name="fx" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.view.GUIView.ScreenSwitcher" />
-      <module name="ProgettoIDS23" />
+      <module name="AM03" />
       <option name="VM_PARAMETERS" value="--module-path libJFX --add-modules=javafx.controls" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -150,6 +179,7 @@
       <workItem from="1684096194903" duration="598000" />
       <workItem from="1684140132892" duration="29014000" />
       <workItem from="1684230201447" duration="4829000" />
+      <workItem from="1684428405247" duration="718000" />
     </task>
     <task id="LOCAL-00011" summary="few updates on Player, created javadoc dir">
       <created>1679329947805</created>
