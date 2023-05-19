@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
     private VirtualGameManager virtualGameManager;
     private loginGameMessage lastLoginMessage;
-
+    private Thread lastThread;
     public GameManagerController(View view, VirtualGameManager virtualGameManager) {
         super(view);
         this.virtualGameManager = virtualGameManager;
@@ -76,9 +76,22 @@ public class GameManagerController extends Controller implements GameManagerView
             }
         }else if(message instanceof loginGameMessage){
             //user can go in, launchGameManager phase
-            ClientManager.userNickname = ((loginGameMessage)message).username;
+            System.out.println("Inside receiveMessage loginGameMessage");
             this.lastLoginMessage = (loginGameMessage)message;
-            ClientManager.view.launchGameManager(((loginGameMessage)message).gamesPlayers);
+            if(ClientManager.userNickname == null){
+                ClientManager.userNickname = lastLoginMessage.username;
+            }else{
+                ClientManager.view.showErrorMessage("A new game was created");
+            }
+            if(lastThread != null){
+                System.out.println("launchGameManager "+lastThread.getName()+" interrupted");
+                lastThread.interrupt();
+            }else{
+                System.out.println("First launchGameManager");
+            }
+            this.lastThread = Thread.currentThread();
+            System.out.println("launchGameManager Thread name: "+Thread.currentThread().getName());
+            ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
         }
         return true;
     }

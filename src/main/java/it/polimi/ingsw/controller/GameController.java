@@ -36,6 +36,10 @@ public class GameController extends Controller implements GameViewObserver, Subs
         ClientManager.pubsub.addSubscriber(TopicType.matchState, this);
     }
 
+    public String getGameID() {
+        return gameID;
+    }
+
     @Override
     public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
         //view has selected cards
@@ -79,7 +83,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             CommonGoals common = new CommonGoals();
             //if the message was for this client send ack
             HashMap<String, Integer> playersPoints = new HashMap<>(); // updatedMatchDetails needs an input of points, but all the points are set at 0
-            for (String s : mess.players) { //TODO: playersPoints in initStateMessage non serve
+            for (String s : mess.players) {
                 playersPoints.put(s, 0);
             }
             switch (mess.firstGoal) {
@@ -193,8 +197,8 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.waitingCommands(); // it needs to be sent continuously until it's his turn, or maybe a notify to the cli that blocks a while cycle
             }
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
-            //received info about the match
             //TODO: Basically identical to initStateMessage
+            //TODO: Be careful, it will have the same thread problem as launchGameLobby
         } else if (message instanceof SelectedCardsMessage) {
             SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
@@ -206,6 +210,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             SelectedColumnsMessage mess = (SelectedColumnsMessage) message;
             ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
             ClientManager.view.printShelves();
+            ClientManager.view.printLivingRoom();
             ClientManager.view.showPlayingPlayer(mess.newPlayer);
             if (mess.newPlayer.equals(ClientManager.userNickname)) {
                 ClientManager.view.chooseCards();

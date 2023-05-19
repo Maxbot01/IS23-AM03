@@ -18,6 +18,8 @@ import it.polimi.ingsw.view.CLIgeneral;
 import it.polimi.ingsw.view.GUIView.GUIView;
 import it.polimi.ingsw.view.View;
 
+import javax.xml.validation.SchemaFactoryConfigurationError;
+
 public class ClientManager {
     //SINGLETON
     private static ClientManager instance;
@@ -29,7 +31,7 @@ public class ClientManager {
 
     public static VirtualGameManager virtualGameManager;
 
-    public static String userNickname; // a cosa gli serve???
+    public static String userNickname;
     public boolean isCli;
     // rest of the class
 
@@ -68,15 +70,31 @@ public class ClientManager {
         //GameManagerController sees that a game has been created with an ID, the game controller gets instantiated
        //unsubscribes previous controllers anc subsucribes the new ones
         //TODO: check if the ones created has the same id if it does do not remove
+        //Changes: I've put the "new" inside every second nested if, and added a check for the registerObserver
+        boolean created = false;
         if(gameController != null){
-            pubsub.removeSubscriber(TopicType.matchState, gameController);
+            if(!gameController.getGameID().equals(ID)) {
+                pubsub.removeSubscriber(TopicType.matchState, gameController);
+                gameController = new GameController(view, new VirtualGame(), ID);
+                created = true;
+            }
+        }else{
+            gameController = new GameController(view, new VirtualGame(), ID);
+            created = true;
         }
         if(lobbyController != null){
-            pubsub.removeSubscriber(TopicType.lobbyState, lobbyController);
+            if(!lobbyController.getID().equals(ID)) {
+                pubsub.removeSubscriber(TopicType.lobbyState, lobbyController);
+                lobbyController = new LobbyController(view, ID);
+                created = true;
+            }
+        }else{
+            lobbyController = new LobbyController(view, ID);
+            created = true;
         }
-        gameController = new GameController(view, new VirtualGame(), ID);
-        lobbyController = new LobbyController(view, ID);
-        view.registerObserver(gameManagerController, lobbyController, gameController);
+        if(created) {
+            view.registerObserver(gameManagerController, lobbyController, gameController);
+        }
     }
 
     //accessible from ClientMain (socket) and RMI
@@ -90,6 +108,7 @@ public class ClientManager {
         }else if(receivedMessageDecoded instanceof GameManagerMessage){
             pubsub.publishMessage(TopicType.gameManagerState, receivedMessageDecoded);
         }else if(receivedMessageDecoded instanceof LobbyInfoMessage){
+            //Crea dei nuovi controller ogni volta che gli arriva un messaggio, in base alle condizioni
             createdControllers(((LobbyInfoMessage)receivedMessageDecoded).ID);
             pubsub.publishMessage(TopicType.lobbyState, receivedMessageDecoded);
         }else if(receivedMessageDecoded instanceof InitStateMessage){

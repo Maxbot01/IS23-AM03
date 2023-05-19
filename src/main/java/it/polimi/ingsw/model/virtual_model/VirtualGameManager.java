@@ -18,8 +18,8 @@ public class VirtualGameManager extends VirtualGameModel{
         //serializeMethod(serializedGameManager);
     }
     public void setCredentials(String username, String password){
-        //TODO: IMPORTANTE; DA RIMUOVERE LA PROSSIMA LINEA (fatta per primo messaggio ma da fixare seializer)
-        ClientManager.userNickname = username;
+        //IMPORTANTE; DA RIMUOVERE LA PROSSIMA LINEA (fatta per primo messaggio ma da fixare seializer)
+        //ClientManager.userNickname = username;
 
         VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password});
         ClientMain.sendMessage(serializeMethod(serializedGameManager));

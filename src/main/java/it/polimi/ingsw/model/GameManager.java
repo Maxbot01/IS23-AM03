@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
+import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
@@ -37,11 +38,13 @@ public class GameManager extends GameObservable{
     //private HashMap<String, String> userIDs;
     public HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
+    private final HashMap<String,Boolean> playersNotInLobby; // boolean true means the player is in lobby
     private GameManager(){
         nicknames = new HashMap<>();
         currentGames = new HashMap<>();
         userMatches = new HashMap<>();
         userIdentification = new HashMap<>();
+        playersNotInLobby = new HashMap<>();
     }
 
 
@@ -52,6 +55,8 @@ public class GameManager extends GameObservable{
                 //joins this lobby
                 try {
                     x.addPlayer(user);
+                    this.playersNotInLobby.remove(user);
+                    this.playersNotInLobby.put(user,true);
                 }catch(LobbyFullException e){
                     //lobby is full, returns error
                     super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull), false, "-");
@@ -61,9 +66,18 @@ public class GameManager extends GameObservable{
     }
 
     public void createGame(Integer numPlayers, String username){
-        //TODO: notify everyone connected that new games have been created
-        //creates game
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
+        if(playersNotInLobby.containsKey(username)){ //It notifies every player still outside the lobby when a new game is created, and activates launchGameManager in the view
+            this.playersNotInLobby.remove(username);
+            this.playersNotInLobby.put(username,true);
+            for(String s: this.playersNotInLobby.keySet()) {
+                if (this.playersNotInLobby.get(s).equals(false)) {
+                    super.notifyObserver(s, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+                }
+            }
+        }else{
+            System.out.println("Player is not present");
+        }
         System.out.println("new current games: " + currentGames.keySet());
     }
 
@@ -97,7 +111,7 @@ public class GameManager extends GameObservable{
 
 
     public void setCredentials(String username, String password, RemoteUserInfo userInfo){
-        //check if there was, else send message of erroneus urername set request.
+        //check if there was, else send message of erroneous username set request.
         boolean loggedSuccesful = false;
         if(nicknames.containsKey(username)){
             //already exists, checks if psw is right
@@ -118,6 +132,7 @@ public class GameManager extends GameObservable{
             System.out.println(username + "connected");
             System.out.println("current games: " + getAllCurrentJoinableLobbiesIDs());
             nicknames.put(username, password);
+            this.playersNotInLobby.put(username,false);
             loggedSuccesful = true;
         }
 
@@ -171,6 +186,11 @@ public class GameManager extends GameObservable{
             if(x.getID().equals(ID)){
                 currentGames.put(x, new Game(players,ID));
                 x.killLobby();
+                for(String s: withPlayers){
+                    if(!s.equals(x.getHost())){
+                        super.notifyObserver(s,new LobbyInfoMessage(ID,x.getHost(), withPlayers.size(), withPlayers,true),true,ID);
+                    }
+                }
                 break;
             }//It's certainly there
         }
