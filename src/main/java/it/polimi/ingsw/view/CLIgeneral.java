@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ClientManager;
+import it.polimi.ingsw.controller.GameManagerController;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.GameStateType;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
+import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import org.apache.commons.cli.*;
 import java.util.*;
 public class CLIgeneral extends View{
@@ -234,7 +236,11 @@ public class CLIgeneral extends View{
         String username = in.next();
         String password = in.next();
         this.userPlayer = new Player(username);
-        ClientManager.gameManagerController.onSetCredentials(username, password);
+        System.out.println("GameManagerController: " + ClientManager.gameManagerController);
+        System.out.println("Your username is: "+username);
+        System.out.println("Your password is: "+password);
+        GameManagerController gameManagerController = ClientManager.gameManagerController;
+        gameManagerController.onSetCredentials(username, password);
     }
     @Override
     public void showPlayingPlayer(String playingPlayer){

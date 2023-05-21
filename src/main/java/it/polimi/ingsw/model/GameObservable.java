@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.client.MessageSerializer;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.modelSupport.Player;
@@ -38,7 +39,11 @@ public abstract class GameObservable {
             ServerMain.server.sendMessageToSocket(serializedMessage, client.getSocketID());
         }else{
             //send rmi
+            // Ottenere una referenza all'oggetto remoto associato al client
+            MyRemoteInterface remoteObject = client.getRemoteObject();
 
+            // Invocare il metodo desiderato sull'oggetto remoto
+            remoteObject.receiveMessage(withMessage, client.getRmiUID());
         }
 
     }
@@ -80,7 +85,12 @@ public abstract class GameObservable {
             ServerMain.server.sendMessageToSocket(serializedMessage, GameManager.getInstance().userIdentification.get(toPlayer).getSocketID());
         }else{
             //TODO: user is RMI
+            //send rmi
+            // Ottenere una referenza all'oggetto remoto associato al client
+            MyRemoteInterface remoteObject = GameManager.getInstance().userIdentification.get(toPlayer).getRemoteObject();
 
+            // Invocare il metodo desiderato sull'oggetto remoto
+            remoteObject.receiveMessage(withMessage, GameManager.getInstance().userIdentification.get(toPlayer).getRmiUID());
         }
     }
 
