@@ -39,7 +39,7 @@ public class GameManager extends GameObservable{
     public HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
     private final HashMap<String,Boolean> playersNotInLobby; // boolean true means the player is in lobby
-    private GameManager(){
+    protected GameManager(){
         nicknames = new HashMap<>();
         currentGames = new HashMap<>();
         userMatches = new HashMap<>();

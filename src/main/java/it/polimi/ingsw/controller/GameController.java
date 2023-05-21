@@ -30,10 +30,17 @@ public class GameController extends Controller implements GameViewObserver, Subs
 
     public GameController(View view, VirtualGame virtualGame, String gameID) {
         super(view);
+        System.out.println("GameController created");
         this.virtualGame = virtualGame;
+        System.out.println("GameController created");
+
         this.gameID = gameID;
+        System.out.println("GameController created");
+
         //adds itself to the subscribers
         ClientManager.pubsub.addSubscriber(TopicType.matchState, this);
+        System.out.println("GameController created");
+
     }
 
     public String getGameID() {

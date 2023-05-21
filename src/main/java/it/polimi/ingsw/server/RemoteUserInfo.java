@@ -7,6 +7,7 @@ public class RemoteUserInfo{
     private final String rmiUID;
 
     private final boolean isSocket;
+    private MyRemoteInterface remoteObject;
 
     public RemoteUserInfo(boolean isSocket, Socket socketID, String rmiUID){
         this.socketID = socketID;
@@ -22,5 +23,13 @@ public class RemoteUserInfo{
     }
     public boolean isConnectionSocket(){
         return isSocket;
+    }
+
+    public MyRemoteInterface getRemoteObject() {
+        return remoteObject;
+    }
+
+    public void setRemoteObject(MyRemoteInterface remoteObject) {
+        this.remoteObject = remoteObject;
     }
 }

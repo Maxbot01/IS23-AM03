@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
+
+import javax.management.remote.rmi.RMIServer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,6 +11,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +59,7 @@ public class ServerMain {
             }
         }
     }
+
 
     public void stop() {
         isRunning = false;
@@ -141,19 +146,12 @@ public class ServerMain {
 
     public static void StartRMI() {
         try {
-            // Crea l'istanza dell'oggetto remoto
-            RemoteService remoteService = new RemoteServiceImpl();
-
-            // Crea un registro RMI sulla porta 1099
+            MyRemoteInterface remoteObj = new MyRemoteObject();
             Registry registry = LocateRegistry.createRegistry(1099);
-
-            // Pubblica l'oggetto remoto nel registro RMI con un nome specifico
-            registry.rebind("RemoteService", remoteService);
-
-            System.out.println("Server RMI avviato correttamente.");
+            registry.rebind("MyRemoteObject", remoteObj);
+            System.out.println("Server pronto.");
         } catch (RemoteException e) {
-            System.out.println("Errore durante l'avvio del server RMI: " + e.getMessage());
-            e.printStackTrace(); // Stampa l'eccezione completa per il debug
+            System.err.println("Error starting RMI server: " + e.getMessage());
         }
     }
 
@@ -161,12 +159,28 @@ public class ServerMain {
     public static ServerMain server;
 
     public static void main(String[] args) {
-        int port = 1234;
+      //per socket:
+        /* int port = 1234;
         server = new ServerMain(port);
         System.out.println("Starting server on port " + port);
         StartRMI(); // Aggiunta della chiamata a StartRMI()
-        server.start();
+        server.start();*/
 
+        //per rmi:
+        try {
+            MyRemoteInterface remoteObj = new MyRemoteObject();
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind("MyRemoteObject", remoteObj);
+            System.out.println("Server pronto.");
+
+            // Attendi indefinitamente per mantenere il server in esecuzione
+            Object lock = new Object();
+            synchronized (lock) {
+                lock.wait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
