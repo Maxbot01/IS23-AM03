@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.client.MessageSerializer;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.modelSupport.Player;
@@ -39,7 +38,7 @@ public abstract class GameObservable {
             ServerMain.server.sendMessageToSocket(serializedMessage, client.getSocketID());
         }else{
             //send rmi
-            ClientManager.clientReceiveMessage(withMessage);
+
         }
 
     }
@@ -81,7 +80,7 @@ public abstract class GameObservable {
             ServerMain.server.sendMessageToSocket(serializedMessage, GameManager.getInstance().userIdentification.get(toPlayer).getSocketID());
         }else{
             //TODO: user is RMI
-            ClientManager.clientReceiveMessage(withMessage);
+
         }
     }
 

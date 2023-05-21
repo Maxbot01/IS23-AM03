@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.virtual_model;
 
 import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
-import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.helpers.Pair;
@@ -26,7 +25,7 @@ public class VirtualGameManager extends VirtualGameModel{
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
             //serializeMethod(serializedGameManager);
         } else {
-          GameManager.getInstance().ping(new RemoteUserInfo(false, null, ClientManager.rmiUID));
+
         }
     }
     public void setCredentials(String username, String password){
@@ -36,7 +35,7 @@ public class VirtualGameManager extends VirtualGameModel{
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            GameManager.getInstance().setCredentials(username, password, new RemoteUserInfo(false, null, ClientManager.rmiUID));
+
         }
     }
     public void selectGame(String gameID, String user){
@@ -44,7 +43,7 @@ public class VirtualGameManager extends VirtualGameModel{
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("selectGame", new Object[]{gameID, user});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            GameManager.getInstance().selectGame(gameID, user);
+
         }
 
     }
@@ -54,7 +53,7 @@ public class VirtualGameManager extends VirtualGameModel{
             System.out.println("Creating game with " + numPlayers + " players from " + user);
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            GameManager.getInstance().createGame(numPlayers, user);
+
         }
     }
 
@@ -63,7 +62,7 @@ public class VirtualGameManager extends VirtualGameModel{
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("sendAck", new Object[]{});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            GameManager.getInstance().sendAck();
+
         }
     }
 
@@ -72,7 +71,7 @@ public class VirtualGameManager extends VirtualGameModel{
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("lookForNewGames", new Object[]{user});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            GameManager.getInstance().lookForNewGames(user);
+
         }
     }
 
@@ -84,7 +83,7 @@ public class VirtualGameManager extends VirtualGameModel{
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("startMatch", new Object[]{ID, user});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            GameManager.getInstance().startMatch(ID, user);
+
         }
     }
 
@@ -97,7 +96,7 @@ public class VirtualGameManager extends VirtualGameModel{
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("selectedCards", new Object[]{selected, user, gameID});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            GameManager.getInstance().selectedCards(selected, user, gameID);
+
         }
     }
 
@@ -106,7 +105,7 @@ public class VirtualGameManager extends VirtualGameModel{
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("selectedColumn", new Object[]{selected,column,user,gameID});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            GameManager.getInstance().selectedColumn(selected,column,user,gameID);
+
         }
     }
 }
