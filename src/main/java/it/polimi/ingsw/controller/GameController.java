@@ -22,6 +22,8 @@ public class GameController extends Controller implements GameViewObserver, Subs
 
     private InitStateMessage latestInit;
     private String gameID;
+    private String currentPlayerSelecting;
+    public volatile boolean playerReady;
 
     private final static int DIM = 9;
 
@@ -32,17 +34,24 @@ public class GameController extends Controller implements GameViewObserver, Subs
         System.out.println("GameController created");
 
         this.gameID = gameID;
+        this.playerReady = false;
         System.out.println("GameController created");
 
         //adds itself to the subscribers
         ClientManager.pubsub.addSubscriber(TopicType.matchState, this);
         //System.out.println("GameController created");
+        ClientManager.pubsub.addSubscriber(TopicType.errorMessageState, this);
+        System.out.println("GameController created");
 
     }
 
 
     public String getGameID() {
         return gameID;
+    }
+    @Override
+    public void setReady(){
+        this.playerReady = true;
     }
 
     @Override
@@ -69,10 +78,15 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //view has accepted finished game
         //virtualGame.acceptFinishedGame();
     }
+    @Override
+    public void startCardsSelection(){
+        virtualGameManager.sendAck();
+        ClientManager.view.chooseCards();
+    }
 
 
     @Override
-    public boolean receiveSubscriberMessages(Message message) {
+    public boolean receiveSubscriberMessages(Message message){
         //a message has been received
         //should receive matchStateMessages only
         //after it receives it, updates the view accordingly
@@ -182,18 +196,38 @@ public class GameController extends Controller implements GameViewObserver, Subs
                     TriangularGoalStrategy secondGoal11 = new TriangularGoalStrategy();
                     common.setSecondGoal(secondGoal11);
             }
+            // Command "-ready" section:
+            if(ClientManager.userNickname.equals(lobbyController.lastLobbyMessage.host)){
+                this.playerReady = true;
+            }else{
+                ClientManager.view.showErrorMessage("The game has started\nEnter the game with the command \"-ready\"");
+                /*while (true) {
+                    if (this.playerReady){
+                        System.out.println("Sono nel while, nell'if");
+                        break;
+                    }
+                }*/
+                while (!this.playerReady) {
+                    Thread.onSpinWait();
+                }
+                ClientManager.view.showErrorMessage("You entered the game");
+            }
             ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.pieces, mess.selecectables,
                     mess.playersShelves, playersPoints, mess.gameState);
             ClientManager.view.printLivingRoom();
             ClientManager.view.printShelves();
-            ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
-            if (mess.chairedPlayer.equals(ClientManager.userNickname)) {
+            //ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
+            //TODO: I could put a new method updateWhoIsPlaying with the chairedPlayer, so the view knows who is playing
+            //TODO: I could put gameCommands here instead of the if else
+            /*if (mess.chairedPlayer.equals(ClientManager.userNickname)) {
                 latestInit = mess;
                 virtualGameManager.sendAck();
                 ClientManager.view.chooseCards();
             } else {
                 ClientManager.view.waitingCommands(); // it needs to be sent continuously until it's his turn, or maybe a notify to the cli that blocks a while cycle
-            }
+            }*/
+            ClientManager.view.updateChairedPlayer(mess.chairedPlayer);
+            ClientManager.view.gameCommands();
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
             //TODO: Basically identical to initStateMessage
             //TODO: Be careful, it will have the same thread problem as launchGameLobby
@@ -201,7 +235,9 @@ public class GameController extends Controller implements GameViewObserver, Subs
             SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
             ClientManager.view.printLivingRoom();
+            this.currentPlayerSelecting = mess.currentPlayer.getNickname();
             if (mess.currentPlayer.getNickname().equals(ClientManager.userNickname)) {
+                System.out.println("You have finished chooseCards, after selectedCardsMessage");
                 ClientManager.view.chooseColumn();
             }
         } else if (message instanceof SelectedColumnsMessage) {
@@ -209,24 +245,35 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
             ClientManager.view.printShelves();
             ClientManager.view.printLivingRoom();
-            ClientManager.view.showPlayingPlayer(mess.newPlayer);
-            if (mess.newPlayer.equals(ClientManager.userNickname)) {
+            //ClientManager.view.showPlayingPlayer(mess.newPlayer);// print the chairedPlayer from the view (CLI)
+            //TODO: Instead of having chooseCards I will have updateWhoIsPlaying with the newPlayer (inside the method I'll have a print that shows who is playing now, and it will grant the command "select_cards" to that player
+            /*if (mess.newPlayer.equals(ClientManager.userNickname)) {
                 ClientManager.view.chooseCards();
             } else {
                 ClientManager.view.waitingCommands();
+            }*/
+            ClientManager.view.updateChairedPlayer(mess.newPlayer);
+            System.out.println("Calling gameCommands for player: "+currentPlayerSelecting);
+            if(ClientManager.userNickname.equals(currentPlayerSelecting)){
+                System.out.println("Before the new gameCommands execution");
+                ClientManager.view.gameCommands();
             }
         } else if (message instanceof FinishedGameMessage mess) {
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
-            ClientManager.view.endCommands();
+            ClientManager.view.endCommands();//TODO: I will need to change this too, in order that it happens after the player has written "close" to exit the game
         } else if (message instanceof ErrorMessage mess) {
+            System.out.println("errorMessage in GameController");//DEBUG
             switch (mess.error.toString()) {
                 case "selectedColumnsError":
+                    System.out.println("error case in GameController: "+mess.error.toString());
                     ClientManager.view.chooseColumn();
                     break;
                 case "acceptFinishedGameError":
+                    System.out.println("error case in GameController: "+mess.error.toString());
                     //TODO: Manage error
                     break;
                 case "selectedCardsMessageError":
+                    System.out.println("error case in GameController: "+mess.error.toString());
                     ClientManager.view.chooseCards();
                     break;
             }

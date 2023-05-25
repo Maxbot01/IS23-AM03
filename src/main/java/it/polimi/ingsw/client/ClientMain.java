@@ -63,6 +63,10 @@ public class ClientMain implements Runnable{
         try {
             //Thread previousThread = null;
 
+            /*Thread commandThread = new Thread(()->{//Added input thread for cli
+               ClientManager.startReceivingCommands();
+            });
+            commandThread.start();*/
             while (isRunning) {
                 String message = (String) input.readObject();
                 System.out.println("Received message from server: " + message);
@@ -75,13 +79,16 @@ public class ClientMain implements Runnable{
                     /*if(previousThread != null){
                         previousThread.interrupt();
                     }*/
-                    Thread newThread = new Thread(() -> {
+
+                    Thread newThread = new Thread(() -> { //This is the execution thread
+                        System.out.println("New thread created: "+Thread.currentThread().getName());//DEBUG
                         ClientManager.clientReceiveMessage(serializedMessage);
                     });
                     newThread.start();
                     //previousThread = newThread;
                 }
             }
+            //commandThread.interrupt(); relative to the cliInput thread
         } catch (IOException e) {
             System.out.println("Error receiving message from server: " + e.getMessage());
             isRunning = false;
@@ -107,6 +114,7 @@ public class ClientMain implements Runnable{
             output.close();
             input.close();
             socket.close();
+
         } catch (IOException e) {
             System.out.println("Error stopping client: " + e.getMessage());
         }

@@ -99,6 +99,7 @@ public class VirtualGameManagerSerializer {
                 gameManager.receiveChatMessage(gameID, fromUser, mex);
 
 
+                //TODO: Uncomment this instruction -> gameManager.lookForNewGames(user5);
         }
     }
     /**

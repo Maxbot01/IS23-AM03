@@ -8,6 +8,7 @@ import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.ChatMessage;
+import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
@@ -15,10 +16,13 @@ import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
+import it.polimi.ingsw.model.modelSupport.Client;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.view.View;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
     private VirtualGameManager virtualGameManager;
@@ -67,26 +71,36 @@ public class GameManagerController extends Controller implements GameManagerView
                 default:
                     break;
             }
-        }else if(message instanceof ErrorMessage){
-            ClientManager.view.showErrorMessage(((ErrorMessage) message).error.toString());
-            switch (((ErrorMessage)message).error.toString()) {
+        }else if(message instanceof ErrorMessage mess){
+            System.out.println("errorMessage in GameManagerController");//DEBUG
+            //TODO: Uncomment this instruction -> ClientManager.view.showErrorMessage(mess.error.toString());
+            switch (mess.error.toString()) {
                 case "wrongPassword":
+                    System.out.println("error case in GameManagerController: "+mess.error.toString());
                     ClientManager.view.requestCredentials();
                     break;
                 case "lobbyIsFull":
+                    System.out.println("error case in GameManagerController: "+mess.error.toString());
                     ClientManager.view.launchGameManager(lastLoginMessage.gamesPlayers);
                     break;
             }
         }else if(message instanceof loginGameMessage){
             //user can go in, launchGameManager phase
-            System.out.println("Inside receiveMessage loginGameMessage");
             this.lastLoginMessage = (loginGameMessage)message;
             if(ClientManager.userNickname == null){
                 ClientManager.userNickname = lastLoginMessage.username;
+                ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
             }else{
-                ClientManager.view.showErrorMessage("A new game was created");
+                int allGamesSize = lastLoginMessage.gamesPlayers.keySet().toArray().length;
+                String addedGameId = lastLoginMessage.gamesPlayers.keySet().toArray()[allGamesSize-1].toString();
+                List<String> addedGamePlayers = lastLoginMessage.gamesPlayers.get(addedGameId);
+                Pair<String, List<String>> addedGame = new Pair<>(addedGameId,addedGamePlayers);
+                ClientManager.view.addNewGame(addedGame);
             }
-            if(lastThread != null){
+
+
+
+            /*if(lastThread != null){
                 System.out.println("launchGameManager "+lastThread.getName()+" interrupted");
                 lastThread.interrupt();
             }else{
@@ -97,6 +111,7 @@ public class GameManagerController extends Controller implements GameManagerView
             ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
         }else if(message instanceof ChatMessage){
             ClientManager.view.newChatMessage(((ChatMessage) message).messages);
+            ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);*/
         }
         return true;
     }

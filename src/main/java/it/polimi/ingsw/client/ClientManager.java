@@ -83,6 +83,15 @@ public class ClientManager {
 
     }
 
+    /*public static void startReceivingCommands(){ CLIInputThread
+        try {
+            view.readInput();
+        } catch (InterruptedException e) {
+            System.out.println(Thread.currentThread().getName()+" relative to the commands input is interrupted");
+        }
+    }*/
+
+
 
     public static void createdControllers(String ID){
         //GameManagerController sees that a game has been created with an ID, the game controller gets instantiated
