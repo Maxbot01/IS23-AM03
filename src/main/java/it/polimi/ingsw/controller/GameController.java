@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
@@ -12,9 +11,6 @@ import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
-import it.polimi.ingsw.model.modelSupport.Client;
-import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
-import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -23,15 +19,16 @@ import java.util.HashMap;
 import static it.polimi.ingsw.client.ClientManager.*;
 
 public class GameController extends Controller implements GameViewObserver, Subscriber {
-    private VirtualGame virtualGame;
 
     private InitStateMessage latestInit;
     private String gameID;
 
-    public GameController(View view, VirtualGame virtualGame, String gameID) {
+    private final static int DIM = 9;
+
+    public GameController(View view, null, String gameID) {
         super(view);
         System.out.println("GameController created");
-        this.virtualGame = virtualGame;
+        //this.virtualGame = virtualGame;
         System.out.println("GameController created");
 
         this.gameID = gameID;
@@ -39,9 +36,10 @@ public class GameController extends Controller implements GameViewObserver, Subs
 
         //adds itself to the subscribers
         ClientManager.pubsub.addSubscriber(TopicType.matchState, this);
-        System.out.println("GameController created");
+        //System.out.println("GameController created");
 
     }
+
 
     public String getGameID() {
         return gameID;
@@ -58,13 +56,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least another chosen card");
             ClientManager.view.chooseCards();
         }
-    }
-
-    //TODO: make this!!!
-    private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
-        //TODO: check if is the selection is right
-        //latestInit.selecex
-        return true;
     }
 
     @Override
@@ -248,6 +239,73 @@ public class GameController extends Controller implements GameViewObserver, Subs
      */
     @Override
     public String onGetChatMessage(String msg){
+        virtualGameManager.receiveChatMessage(this.gameID, userNickname, msg);
         return msg; //TODO: fix this method with the correspondent virtual section
     }
+
+
+
+    //TODO: make this!!!
+    private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
+        //TODO: check if is the selection is right
+        //latestInit.selecex
+        return true;
+    }
+
+
+
+    /*
+    private boolean selectableCards(ArrayList<Pair<Integer, Integer>> cards){
+        boolean accept = true;
+        int dim = cards.size();
+        for(int i = 0; i<dim && accept; i++){
+            int x = cards.get(i).getFirst();
+            int y = cards.get(i).getSecond();
+            if(!cardIsSelectable(x,y)) {
+                accept = false;
+            }
+        }
+        return consecutive(cards) && accept;
+    }
+
+    private boolean cardIsSelectable(int i, int j){
+        return isPresent(i,j) && freeCorner(i,j);
+    }
+
+    private boolean adiacent(int i, int j) {
+        if (i == 0) {
+            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i + 1, j);
+
+        } else if (i == (DIM - 1)) {
+            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
+
+        } else if (j == 0) {
+            return isPresent(i - 1, j) || (isPresent(i + 1, j) || isPresent(i, j + 1));
+
+        } else if (j == (DIM - 1)) {
+            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
+
+        } else {
+            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j) || isPresent(i + 1, j);
+
+        }
+
+    }
+
+    private boolean freeCorner(int i, int j){
+        if (i == 0 || i == DIM - 1 || j == 0 || j == DIM - 1) return true;
+        else {
+            return !isPresent(i, j - 1) || !isPresent(i, j + 1) || !isPresent(i - 1, j) || !isPresent(i + 1, j);
+        }
+    }
+
+    private boolean isPresent(int i, int j){
+        return (pieces[i][j].getColor() != colorType.TOMBSTONE) && (pieces[i][j].getColor() != colorType.EMPTY_SPOT);
+    }
+
+    */
+
+
+
+
 }

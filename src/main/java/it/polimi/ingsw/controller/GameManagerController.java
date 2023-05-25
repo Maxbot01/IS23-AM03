@@ -6,6 +6,8 @@ import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
+import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
@@ -93,6 +95,8 @@ public class GameManagerController extends Controller implements GameManagerView
             this.lastThread = Thread.currentThread();
             System.out.println("launchGameManager Thread name: "+Thread.currentThread().getName());
             ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
+        }else if(message instanceof ChatMessage){
+            ClientManager.view.newChatMessage(((ChatMessage) message).messages);
         }
         return true;
     }

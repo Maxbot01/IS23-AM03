@@ -113,15 +113,15 @@ public class ClientMain implements Runnable{
     }
 
     public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
+        //Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Seleziona il tipo di connessione (socket/rmi): ");
-        String connectionType = scanner.nextLine();
+        //System.out.print("Seleziona il tipo di connessione (socket/rmi): ");
+        String connectionType = "socket";
 
         boolean isCLI = true;  // Imposta a true o false a seconda delle tue esigenze
         ClientMain client;
 
-        if (connectionType.equalsIgnoreCase("socket")) {
+        if (true) {
             System.out.println("Socket mode selected.");
             Socket socket = new Socket("localhost", 1234);
             client = new ClientMain(socket, isCLI, true, null);

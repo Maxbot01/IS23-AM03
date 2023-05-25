@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
@@ -25,7 +26,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * Singleton with all the current games and the needed methods to create or join a game
+ * Singleton that represents the front-end logic of the server and exposes the endpoint method that every client can call, it manages the requests creating and deleting the games
  */
 public class GameManager extends GameObservable{
 
@@ -38,6 +39,8 @@ public class GameManager extends GameObservable{
     //private HashMap<String, String> userIDs;
     public HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
+
+    private HashMap<String, ArrayList<Pair<String, String>>> chats;
     private final HashMap<String,Boolean> playersNotInLobby; // boolean true means the player is in lobby
     protected GameManager(){
         nicknames = new HashMap<>();
@@ -45,6 +48,7 @@ public class GameManager extends GameObservable{
         userMatches = new HashMap<>();
         userIdentification = new HashMap<>();
         playersNotInLobby = new HashMap<>();
+        chats = new HashMap<>();
     }
 
 
@@ -61,6 +65,19 @@ public class GameManager extends GameObservable{
                     //lobby is full, returns error
                     super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull), false, "-");
                 }
+            }
+        }
+    }
+
+    public void receiveChatMessage(String gameID, String fromUser, String message){
+        chats.computeIfAbsent(gameID, k -> new ArrayList<>());
+        Pair<String, String> myPair = new Pair<>(fromUser, message);
+
+        chats.get(gameID).add(myPair);
+
+        for(GameLobby x: this.currentGames.keySet()){
+            if(x.getID().equals(gameID)){
+                super.notifyAllObservers(x.getPlayers(), new ChatMessage(chats.get(gameID)), true, gameID);
             }
         }
     }

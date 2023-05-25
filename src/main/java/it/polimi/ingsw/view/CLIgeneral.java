@@ -177,7 +177,7 @@ public class CLIgeneral extends View{
             System.out.println("waitingCommands prima del parse");
             cmd = parser.parse(options, scanf());
             System.out.println("waitingCommands dopo il parse");
-            while(!cmd.hasOption(stop)) {
+            while(!cmd.hasOption(stop) && !Thread.currentThread().isInterrupted()) {
                 if (Thread.currentThread().isInterrupted()) {
                     return;
                 }
@@ -541,6 +541,12 @@ public class CLIgeneral extends View{
         }
         System.out.print("\n");
     }
+
+    @Override
+    public void newChatMessage(ArrayList<Pair<String, String>> messages) {
+
+    }
+
     @Override
     public void printShelves(){
         System.out.println("\n"+"Game State: "+gameState.toString());

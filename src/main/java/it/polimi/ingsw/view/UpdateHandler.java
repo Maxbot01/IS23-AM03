@@ -72,6 +72,8 @@ public interface UpdateHandler {
     /**
      * Prints all the shelves
      */
+
+    void newChatMessage(ArrayList<Pair<String, String>> messages);
     void printShelves();
     /**
      * Prints error type on command line

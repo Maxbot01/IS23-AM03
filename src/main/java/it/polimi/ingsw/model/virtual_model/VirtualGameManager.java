@@ -2,8 +2,6 @@ package it.polimi.ingsw.model.virtual_model;
 
 import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
-import it.polimi.ingsw.model.GameManager;
-import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 import it.polimi.ingsw.server.MyRemoteInterface;
@@ -12,15 +10,16 @@ import it.polimi.ingsw.server.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+
+//TODO: mettere interfaccia GameManager e VirtualGameManager così hanno stessi metodi di endpoint
+
 import static it.polimi.ingsw.server.VirtualGameManagerSerializer.serializeMethod;
 
-public class VirtualGameManager extends VirtualGameModel {
+
+public class VirtualGameManager {
 
     public boolean isSocketClient;
     private MyRemoteInterface remoteObject;
@@ -28,6 +27,19 @@ public class VirtualGameManager extends VirtualGameModel {
     public VirtualGameManager(boolean isSocketClient,MyRemoteInterface remoteObject){
         this.isSocketClient = isSocketClient;
         this.remoteObject = remoteObject;
+    }
+
+
+    public void receiveChatMessage(String gameID, String fromUser, String message){
+        if (isSocketClient) {
+            VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("receiveChatMessage", new Object[]{});
+            ClientMain.sendMessage(serializeMethod(serializedGameManager));
+            //serializeMethod(serializedGameManager);
+        } else {
+            RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
+            remoteUserInfo.setRemoteObject(remoteObject);
+            remoteObject.receiveChatMessage(gameID, fromUser, message);
+        }
     }
 
     //setter for remoteObject
