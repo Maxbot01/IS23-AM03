@@ -1,10 +1,17 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
+
+import javax.management.remote.rmi.RMIServer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +59,7 @@ public class ServerMain {
             }
         }
     }
+
 
     public void stop() {
         isRunning = false;
@@ -129,20 +137,52 @@ public class ServerMain {
             }
         }
 
+
         @Override
         public void run() {
             receiveMessages();
         }
     }
 
+    public static void StartRMI() {
+        try {
+            MyRemoteInterface remoteObj = new MyRemoteObject();
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind("MyRemoteObject", remoteObj);
+            System.out.println("Server pronto.");
+        } catch (RemoteException e) {
+            System.err.println("Error starting RMI server: " + e.getMessage());
+        }
+    }
+
+
     public static ServerMain server;
 
     public static void main(String[] args) {
-        int port = 1234;
+      //per socket:
+        /* int port = 1234;
         server = new ServerMain(port);
         System.out.println("Starting server on port " + port);
-        server.start();
+        StartRMI(); // Aggiunta della chiamata a StartRMI()
+        server.start();*/
+
+        //per rmi:
+        try {
+            MyRemoteInterface remoteObj = new MyRemoteObject();
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind("MyRemoteObject", remoteObj);
+            System.out.println("Server pronto.");
+
+            // Attendi indefinitamente per mantenere il server in esecuzione
+            Object lock = new Object();
+            synchronized (lock) {
+                lock.wait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
 
     /*

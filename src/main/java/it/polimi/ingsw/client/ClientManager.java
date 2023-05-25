@@ -14,13 +14,20 @@ import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
+import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.view.CLIgeneral;
 import it.polimi.ingsw.view.GUIView.GUIView;
 import it.polimi.ingsw.view.View;
 
-import javax.xml.validation.SchemaFactoryConfigurationError;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.ServerNotActiveException;
+import java.util.UUID;
 
 public class ClientManager {
+
+    public static it.polimi.ingsw.controller.GameManagerController GameManagerController;
     //SINGLETON
     private static ClientManager instance;
     public static PubSubService pubsub;
@@ -33,20 +40,22 @@ public class ClientManager {
 
     public static String userNickname;
     public boolean isCli;
+
+    public static String clientIP;
+
     // rest of the class
 
     // Private constructor to prevent instantiation from outside the class
 
-
     // Public static method to get the singleton instance and be sure to never initialize the ClientManager twice
-    public static ClientManager initializeClientManagerSingleton(boolean isCLI) {
+    public static ClientManager initializeClientManagerSingleton(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject ) {
         if (instance == null) {
-            instance = new ClientManager(isCLI);
+            instance = new ClientManager(isCLI, isSocketClient, remoteObject);
         }
         return instance;
     }
 
-    private ClientManager(boolean isCLI){
+    private ClientManager(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject){
         gameController = null;
         lobbyController = null;
         pubsub = new PubSubService();
@@ -58,11 +67,22 @@ public class ClientManager {
         }else{
             view = new GUIView();
         }
+        if (!(isSocketClient)) {
+            try {
+                clientIP = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException e) {
+                System.out.println("Error getting local IP address: " + e.getMessage());
+                clientIP = "Unknown"; // Valore di fallback in caso di eccezione
+            }
+        } else {
+            clientIP = null;
+        }
+        System.out.println("Client IP: " + clientIP);
 
-        virtualGameManager = new VirtualGameManager();
+        virtualGameManager = new VirtualGameManager(isSocketClient, remoteObject);
+        System.out.println("GameManagerController: " + ClientManager.gameManagerController);
         gameManagerController = new GameManagerController(view, virtualGameManager);
         view.registerObserver(gameManagerController, null, null);
-
     }
 
     /*public static void startReceivingCommands(){ CLIInputThread

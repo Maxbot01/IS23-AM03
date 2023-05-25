@@ -37,6 +37,7 @@ public class GameManagerController extends Controller implements GameManagerView
 
     @Override
     public void onSetCredentials(String username, String password) {
+        System.out.println("Credentials set");
         virtualGameManager.setCredentials(username, password);
     }
 
@@ -58,10 +59,11 @@ public class GameManagerController extends Controller implements GameManagerView
     @Override
     public boolean receiveSubscriberMessages(Message message) {
         if(message instanceof NetworkMessage){
-
             //this message holds Messages useful for network
             switch (((NetworkMessage) message).message){
                 case "pong":
+                    System.out.println(ClientManager.gameManagerController);
+                    System.out.println("pong received");
                     ClientManager.view.requestCredentials();
                     break;
                 default:
