@@ -11,4 +11,6 @@ public interface GameViewObserver {
     void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user);
     void onAcceptFinishedGame();
     String onGetChatMessage(String msg);
+    void startCardsSelection();
+    void setReady();
 }

@@ -145,11 +145,12 @@ public class GameManager extends GameObservable{
 
     /**
      * It sends the available games when a player wants to play again
-     * @param username
+     * @param
      */
-    public void lookForNewGames(String username){
+    //TODO: Fix this method
+    /*public void lookForNewGames(String username){
         super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
-    }
+    }*/
 
 
     //TODO: to do!!

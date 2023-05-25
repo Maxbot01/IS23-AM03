@@ -4,7 +4,10 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.errorMessages.SelectedColumnsMessageError;
+import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.*;
 import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
@@ -117,7 +120,7 @@ public class Game extends GameObservable{
             try {
                 selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
             } catch (UnselectableCardException e) {
-                // non dovrebbero esserci errori visto che il check lo facciamo nella view
+                super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError),true,ID);
                 throw new RuntimeException(e);
                 //TODO: manage this exception, send an error message
             }
@@ -125,6 +128,7 @@ public class Game extends GameObservable{
         try {
             this.livingRoom.updateBoard(selected);
         } catch (UnselectableCardException e) {
+            super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError),true,ID);
             throw new RuntimeException(e);
             //TODO: gestire questo errore
         }

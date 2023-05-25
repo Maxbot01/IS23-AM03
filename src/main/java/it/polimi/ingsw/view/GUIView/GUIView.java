@@ -32,10 +32,20 @@ public class GUIView extends View {
 
     }
 
-    @Override
+    /*@Override
     public void waitingCommands() {
 
-    }
+    }*/
+    //TODO: DON'T WORRY ABOUT THESE METHODS RIGHT NOW
+    @Override
+    public void addNewGame(Pair<String, List<String>> newGame){}
+    @Override
+    public void addNewLobbyPlayer(String addedPlayer){}
+    @Override
+    public void gameCommands(){}
+    @Override
+    public void updateChairedPlayer(String chairedPlayer){}
+    //TODO: THEY END HERE
 
     @Override
     public void requestCredentials() {

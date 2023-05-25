@@ -2,20 +2,12 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
-import it.polimi.ingsw.model.CommonGoals.Strategy.Double2x2GoalStrategy;
-import it.polimi.ingsw.model.CommonGoals.Strategy.EightTilesGoalStrategy;
-import it.polimi.ingsw.model.CommonGoals.Strategy.FiveDiagonalGoalStrategy;
-import it.polimi.ingsw.model.CommonGoals.Strategy.FiveXGoalStrategy;
-import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.*;
 import java.util.ArrayList;
-
-import it.polimi.ingsw.model.modelSupport.enums.CommonGoalType;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
-import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import org.apache.commons.cli.*;
 import java.util.*;
 public class CLIgeneral extends View{
@@ -26,12 +18,15 @@ public class CLIgeneral extends View{
     private CommonGoals commonGoals;
     private PersonalGoal personalGoal;
     private ArrayList<Player> players;
+    private HashMap<String,List<String>> availableGames;
     private Player userPlayer; // Remember that userPlayer does not have a personal goal or points
-    private boolean host;
+    private String host;
+    private String chairedPlayer;
     private ArrayList<BoardCard> selectedCards;
+    //private String[] dataInput; CLIInputThread
 
     // COMMANDS INITIALIZATION
-    private final Option show_games = Option.builder("show_games")
+    private final Option show_games = Option.builder("show_games")// In the GUI it will be shown straight away
             .hasArg(false)
             .desc("shows all the games available")
             .required(false)
@@ -88,9 +83,19 @@ public class CLIgeneral extends View{
             .desc("takes you back to the game selection and creation section")
             .required(false)
             .build();
-    private final Option stop = Option.builder("stop")//TODO: Delete after debug
+    private final Option close = Option.builder("close")//TODO: Delete after debug
             .hasArg(false)
-            .desc("stops the waiting Commands, used for debugging")
+            .desc("closes the game commands at the end of the game")
+            .required(false)
+            .build();
+    private final Option ready = Option.builder("ready")//Used for entering the game once it's created, and exiting the lobby
+            .hasArg(false)
+            .desc("sets the player ready to start the game")
+            .required(false)
+            .build();
+    private final Option select_cards = Option.builder("select_cards")
+            .hasArg(false)
+            .desc("starts the cards and column selection phase")
             .required(false)
             .build();
     @Override
@@ -159,14 +164,28 @@ public class CLIgeneral extends View{
 
     }
     @Override
-    public void waitingCommands(){
+    public void updateChairedPlayer(String chairedPlayer){
+        this.chairedPlayer = chairedPlayer;
+        if(chairedPlayer.equals(userPlayer.getNickname())){
+            System.out.println("You are playing...");
+        }else {
+            System.out.println(chairedPlayer + " is playing...");
+        }
+    }
+
+    /*@Override
+    public void setFinishedFlag(boolean value){
+        this.finishedFlag = value;
+    }*/
+    //@Override
+    /*public void waitingCommands(){
         Options options = new Options();
         options.addOption(show_gameId);
         options.addOption(chat);
         options.addOption(show_commonGoals);
         options.addOption(show_personalGoal);
         options.addOption(help);
-        options.addOption(stop);//TODO: Delete after debug
+        //options.addOption(stop);//TODO: Delete after debug
         // Printing section commands
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Section Commands", options);
@@ -174,16 +193,16 @@ public class CLIgeneral extends View{
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
         try{
-            if (Thread.currentThread().isInterrupted()) {
+            /*if (Thread.currentThread().isInterrupted()) {
                 return; // Exit the loop gracefully
-            }
+            }*/
             //while(qualcosa che mi arriva dal controller che continua a mandarlo e che successivamente lo rompe)
-            cmd = parser.parse(options, scanf());
-            while(!cmd.hasOption(stop)) {
-                if (Thread.currentThread().isInterrupted()) {
+            //RIMETTILO cmd = parser.parse(options, scanf());
+            //while(!cmd.hasOption(stop)) {
+                /*if (Thread.currentThread().isInterrupted()) {
                     return;
-                }
-                if (cmd.hasOption(show_gameId)) {
+                }*/
+                /*RIMETTILOif (cmd.hasOption(show_gameId)) {
                     System.out.println("Your gameId is: " + gameID);
                 } else if (cmd.hasOption(show_commonGoals)) {
                     System.out.println("First common goal: " + commonGoals.getFirstGoal().toString() + "\nSecond commmon" +
@@ -209,22 +228,88 @@ public class CLIgeneral extends View{
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
                 cmd = parser.parse(options, scanf());
-                if (Thread.currentThread().isInterrupted()) {
+                /*if (Thread.currentThread().isInterrupted()) {
                     return; // Exit the loop gracefully
-                }
-            }
+                }*/
+            /*}
             if(cmd.hasOption(stop)){
                 System.out.println("You have left waitingCommands");
-            }
-        } catch (ParseException pe){
+            }*/
+        /*} catch (ParseException pe){
             System.out.println("waitingCommands section");
             System.out.println("Error parsing command-line arguments");
             formatter.printHelp("Parsing Error Section Commands", options);
-        } catch (InterruptedException ie){
-            System.out.println("Exiting launchGameManager " + Thread.currentThread().getName() + ", YY");
-            return;
         }
         System.out.println("You have left waitingCommands, but not with 'stop'");
+    }*/
+    @Override
+    public void gameCommands(){
+        Options options = new Options();
+        options.addOption(show_gameId);
+        options.addOption(chat);
+        options.addOption(show_commonGoals);
+        options.addOption(show_personalGoal);
+        options.addOption(help);
+        options.addOption(select_cards);
+        options.addOption(close);//TODO: Create a check with a flag variable changed when finishedGameMessage arrives
+        boolean finished = false;
+        // Printing section commands
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Section Commands", options);
+
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = null;
+        while(!finished) {
+            try {
+                cmd = parser.parse(options, scanf());
+                while (!cmd.hasOption(close)) {
+                    if (cmd.hasOption(show_gameId)) {
+                        System.out.println("Your gameId is: " + gameID);
+                    } else if (cmd.hasOption(show_commonGoals)) {
+                        System.out.println("First common goal: " + commonGoals.getFirstGoal().getClass().getName()
+                                .replaceAll("Strategy","") + "\nSecond commmongoal: " + commonGoals
+                                .getSecondGoal().getClass().getName().replaceAll("Strategy",""));
+                    } else if (cmd.hasOption(show_personalGoal)) {
+                        Shelf personalGoalShelf = new Shelf();
+                        for (int i = 0; i < this.personalGoal.getSelectedGoal().size(); i++) {
+                            Pair<colorType, Pair<Integer, Integer>> tmp = this.personalGoal.getSelectedGoal().get(i);
+                            BoardCard card = new BoardCard(tmp.getFirst(), ornamentType.A);
+                            personalGoalShelf.getShelfCards()[tmp.getSecond().getFirst()][tmp.getSecond().getSecond()] = card;
+                        }
+                        System.out.println("Your personal goal is:");
+                        printShelf(personalGoalShelf);
+                    } else if (cmd.hasOption(help)) {
+                        formatter.printHelp("Available Commands", options);
+                    } else if (cmd.hasOption(chat)) { // Example of chat implementation
+                        Scanner scan = new Scanner(System.in);
+                        String msg = scan.nextLine();
+                        super.gameController.onGetChatMessage(msg);
+                        // It also needs to show the past messages
+                    } else if (cmd.hasOption(select_cards)) {
+                        if (chairedPlayer.equals(userPlayer.getNickname())) {
+                            finished = true;
+                            super.gameController.startCardsSelection();
+                            break;
+                        } else {
+                            System.out.println("It's not your turn to pick");
+                        }
+                    } else {
+                        System.out.println("gameCommands section");//DEBUG
+                        System.out.println("Unavailable command, remember to type '-' and the desired command");
+                    }
+                    cmd = parser.parse(options, scanf());
+                }
+                if (cmd.hasOption(close) && !finished) {
+                    finished = true;
+                    System.out.println("You have left the game");
+                }
+            } catch (ParseException pe) {
+                System.out.println("gameCommands section");//DEBUG
+                System.out.println("Error parsing command-line arguments");
+                formatter.printHelp("Parsing Error Section Commands, invalid command", options);
+            }
+        }
+        System.out.println("You have left gameCommands");//DEBUG
     }
     @Override
     public void requestCredentials(){
@@ -240,7 +325,7 @@ public class CLIgeneral extends View{
         ClientManager.gameManagerController.onSetCredentials(username, password);
     }
     @Override
-    public void showPlayingPlayer(String playingPlayer){
+    public void showPlayingPlayer(String playingPlayer){//TODO: Delete because I'll have the chairedPlayer now
         System.out.println(playingPlayer+" is playing...");
     }
     @Override
@@ -250,109 +335,141 @@ public class CLIgeneral extends View{
         options.addOption(create_game);
         options.addOption(select_game);
         options.addOption(help);
+        boolean finished = false;
+        this.availableGames = availableGames;
         // Printing section commands
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Section Commands", options);
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
-        if (Thread.currentThread().isInterrupted()) {
+        /*if (Thread.currentThread().isInterrupted()) {
             System.out.println("Exiting launchGameManager Thread, 1");
             return; // Exit the loop gracefully
-        }
+        }*/
 
-        HashMap<Integer,String> IDlist = new HashMap<>();
-        int i = 1;
-        while(!Thread.currentThread().isInterrupted()) {
+        /*HashMap<Integer,String> IDlist = new HashMap<>();
+        int i = 1;*/
+        //while(!Thread.currentThread().isInterrupted()) {
+        while(!finished) {
             try {
-                if (Thread.currentThread().isInterrupted()) {
+                /*if (Thread.currentThread().isInterrupted()) {
                     System.out.println("Exiting launchGameManager Thread, 2");
                     return; // Exit the loop gracefully
-                }
+                }*/
                 cmd = parser.parse(options, scanf());
-                while (!cmd.hasOption(create_game) && !cmd.hasOption(select_game) && !Thread.currentThread().isInterrupted()) { // Until it receives a possible command, it continues to scan
-
-                    if (Thread.currentThread().isInterrupted()) {
+                while (!cmd.hasOption(create_game)/* && !Thread.currentThread().isInterrupted()*/) { // Until it receives a possible command, it continues to scan
+                    /*if (Thread.currentThread().isInterrupted()) {
                         System.out.println("Exiting launchGameManager Thread, 3");
                         return; // Exit the loop gracefully
-                    }
+                    }*/
                     if (cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
-                        if (Thread.currentThread().isInterrupted()) {
+                        /*if (Thread.currentThread().isInterrupted()) {
                             System.out.println("Exiting launchGameManager Thread, 4");
                             return; // Exit the loop gracefully
-                        }
-                        if (availableGames.size() == 0) {
+                        }*/
+                        if (this.availableGames.size() == 0) {
                             System.out.println("No games available");
                         } else {
-                            for (String s : availableGames.keySet()) {
+                            int i = 1;
+                            for (String s : this.availableGames.keySet()) {
                                 System.out.println("GameId " + i + ": " + s);
                                 System.out.print("Players: ");
                                 for (String player : availableGames.get(s)) {
                                     System.out.print(player + "\t");
                                 }
                                 System.out.println();
-                                IDlist.put(i, s);
                                 i++;
                             }
                         }
                     } else if (cmd.hasOption(help)) {
-                        if (Thread.currentThread().isInterrupted()) {
+                        /*if (Thread.currentThread().isInterrupted()) {
                             System.out.println("Exiting launchGameManager Thread, 5");
                             return; // Exit the loop gracefully
-                        }
+                        }*/
                         formatter.printHelp("Section Commands", options);
+                    } else if (cmd.hasOption(select_game)) {
+                        boolean valid = true;
+                        String lobbyID = cmd.getOptionValue(select_game);
+                        if (lobbyID.length() == 1) {
+                            int IDnumber = Integer.parseInt(lobbyID);
+                            if (IDnumber - 1 < availableGames.size()) {
+                                lobbyID = availableGames.keySet().toArray()[IDnumber - 1].toString();
+                            } else {
+                                valid = false;
+                            }
+                        } else if (!availableGames.containsKey(lobbyID)) {
+                            valid = false;
+                        }
+                        if (valid) {
+                            finished = true;//TODO: Put this check in all section to solve the parsing error quit
+                            super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname());
+                            break;
+                        } else {
+                            System.out.println("Incorrect ID, please select a valid ID");
+                        }
                     } else {
-                        if (Thread.currentThread().isInterrupted()) {
+                        /*if (Thread.currentThread().isInterrupted()) {
                             System.out.println("Exiting launchGameManager Thread, 6");
                             return; // Exit the loop gracefully
-                        }
+                        }*/
                         System.out.println("launchGameManager section");
                         System.out.println("Unavailable command, remember to type '-' and the desired command");
                     }
                     cmd = parser.parse(options, scanf());
-                    if (Thread.currentThread().isInterrupted()) {
+                    /*if (Thread.currentThread().isInterrupted()) {
                         System.out.println("Exiting launchGameManager Thread, 7");
                         return; // Exit the loop gracefully
-                    }
+                    }*/
                 }
-                if (Thread.currentThread().isInterrupted()) {
+                /*if (Thread.currentThread().isInterrupted()) {
                     System.out.println("Exiting launchGameManager " + Thread.currentThread().getName() + ", XX");
                     return; // Exit the loop gracefully
-                } else if (cmd.hasOption(create_game)) {
-                    if (Thread.currentThread().isInterrupted()) {
+                } else*/
+                if (cmd.hasOption(create_game) && !finished) {
+                    /*if (Thread.currentThread().isInterrupted()) {
                         System.out.println("Exiting launchGameManager Thread, 8");
                         return; // Exit the loop gracefully
-                    }
+                    }*/
                     int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
-                    host = true;
+                    host = userPlayer.getNickname();
+                    finished = true;
                     super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
-                } else if (cmd.hasOption(select_game)) {
-                    if (Thread.currentThread().isInterrupted()) {
-                        System.out.println("Exiting launchGameManager Thread, 9");
-                        return; // Exit the loop gracefully
-                    }
-                    String lobbyID = cmd.getOptionValue(select_game);
-                    if (lobbyID.length() == 1) {
-                        int IDnumber = Integer.parseInt(lobbyID);
-                        lobbyID = IDlist.get(IDnumber);
-                    }
-                    host = false;
-                    super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname());
                 }
             } catch (ParseException pe) {
                 System.out.println("launchGameManager section");
-                System.out.println("Error parsing command-line arguments");
-                formatter.printHelp("Parsing Error Section Commands", options);
-            } catch (InterruptedException ie){
+                System.out.println("Error parsing command-line arguments, invalid command");
+                formatter.printHelp("Section Commands", options);
+            }
+        }/*catch (InterruptedException ie){
                 System.out.println("Exiting launchGameManager " + Thread.currentThread().getName() + ", YY");
                 return;
-            }
-        }
+            }*/
+        //}
         System.out.println("You have left the manager");
+    }
+    @Override
+    public void addNewGame(Pair<String, List<String>> newGame){
+        this.availableGames.put(newGame.getFirst(),newGame.getSecond());
+        System.out.println("A new game was created");
+        System.out.println("GameId "+this.availableGames.size()+": "+newGame.getFirst());
+        System.out.print("Players: ");
+        for (String player : this.availableGames.get(newGame.getFirst())) {//I iterate on availableGames to be sure it was added
+            System.out.print(player + "\t");
+        }
+        System.out.println();
     }
     @Override
     public void launchGameLobby(String gameID, ArrayList<String> lobbyPlayers, String lobbyHost){
         this.gameID = gameID;
+        ArrayList<Player> tmp = new ArrayList<>();
+        for(String s: lobbyPlayers){
+
+            Player p = new Player(s);
+            tmp.add(p);
+        }
+        this.players = tmp;
+        this.host = lobbyHost;
         System.out.print("You have entered the lobby\n"+"Lobby host: "+lobbyHost+"\nLobby players:"); // printing lobby and lobby players
         for(int i = 0; i < lobbyPlayers.size(); i++){
             System.out.print("\t"+lobbyPlayers.get(i));
@@ -362,87 +479,109 @@ public class CLIgeneral extends View{
         options.addOption(show_gameId);
         options.addOption(chat);
         options.addOption(help);
-        if(host && lobbyHost.equals(userPlayer.getNickname())){
+        if(host.equals(userPlayer.getNickname())){
             options.addOption(start_match);
+        }else{
+            options.addOption(ready);
         }
+        boolean finished = false;
         // Printing section commands
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Section Commands", options);
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
 
-        try{
-            if (Thread.currentThread().isInterrupted()) {
+        while(!finished) {
+            try {
+            /*if (Thread.currentThread().isInterrupted()) {
                 System.out.println("Exiting launchGameLobby Thread, 1");
                 return; // Exit the loop gracefully
-            }
-            cmd = parser.parse(options, scanf());
-            while(!cmd.hasOption(start_match) && !Thread.currentThread().isInterrupted()){ // Until it receives a possible command, it continues to scan
-                if (Thread.currentThread().isInterrupted()) {
+            }*/
+                cmd = parser.parse(options, scanf());
+                while (!cmd.hasOption(start_match) && !cmd.hasOption(ready)/* && !Thread.currentThread().isInterrupted()*/) { // Until it receives a possible command, it continues to scan
+                /*if (Thread.currentThread().isInterrupted()) {
                     System.out.println("Exiting launchGameLobby Thread, 2");
                     return; // Exit the loop gracefully
-                }
-                if(cmd.hasOption(show_gameId)){
-                    if (Thread.currentThread().isInterrupted()) {
+                }*/
+                    if (cmd.hasOption(show_gameId)) {
+                    /*if (Thread.currentThread().isInterrupted()) {
                         System.out.println("Exiting launchGameLobby Thread, 3");
                         return; // Exit the loop gracefully
-                    }
-                    System.out.println("Your gameId is: " + gameID);
-                }else if(cmd.hasOption(help)){
-                    if (Thread.currentThread().isInterrupted()) {
+                    }*/
+                        System.out.println("Your gameId is: " + gameID);
+                    } else if (cmd.hasOption(help)) {
+                    /*if (Thread.currentThread().isInterrupted()) {
                         System.out.println("Exiting launchGameLobby Thread, 4");
                         return; // Exit the loop gracefully
-                    }
-                    formatter.printHelp("Section Commands", options);
-                }else if(cmd.hasOption(chat)) { // Example of chat implementation
-                    if (Thread.currentThread().isInterrupted()) {
+                    }*/
+                        formatter.printHelp("Section Commands", options);
+                    } else if (cmd.hasOption(chat)) { // Example of chat implementation
+                    /*if (Thread.currentThread().isInterrupted()) {
                         System.out.println("Exiting launchGameLobby Thread, 5");
                         return; // Exit the loop gracefully
-                    }
-                    Scanner scan = new Scanner(System.in);
-                    String msg = scan.nextLine();
-                    super.lobbyController.onGetChatMessage(msg);
-                    // It also needs to show the past messages
-                }else{
-                    if (Thread.currentThread().isInterrupted()) {
+                    }*/
+                        Scanner scan = new Scanner(System.in);
+                        String msg = scan.nextLine();
+                        super.lobbyController.onGetChatMessage(msg);
+                        // It also needs to show the past messages
+                    } else {
+                    /*if (Thread.currentThread().isInterrupted()) {
                         System.out.println("Exiting launchGameLobby Thread, 6");
                         return; // Exit the loop gracefully
+                    }*/
+                        System.out.println("launchGameLobby section");
+                        System.out.println("Unavailable command, remember to type '-' and the desired command");
                     }
-                    System.out.println("launchGameLobby section");
-                    System.out.println("Unavailable command, remember to type '-' and the desired command");
+                    cmd = parser.parse(options, scanf());
                 }
-                cmd = parser.parse(options, scanf());
-            }
-            if(Thread.currentThread().isInterrupted()){
+            /*if(Thread.currentThread().isInterrupted()){
                 System.out.println("Exiting launchGameLobby "+Thread.currentThread().getName()+", XX");
                 return; // Exit the loop gracefully
-            } else if (cmd.hasOption(start_match)) {
-                if (Thread.currentThread().isInterrupted()) {
+            } else*/
+                if (cmd.hasOption(start_match)) {
+                /*if (Thread.currentThread().isInterrupted()) {
                     System.out.println("Exiting launchGameLobby Thread, 7");
                     return; // Exit the loop gracefully
+                }*/
+                    finished = true;
+                    super.lobbyController.onStartMatch(gameID, userPlayer.getNickname());
+                } else if (cmd.hasOption(ready)) {
+                    finished = true;
+                    super.gameController.setReady();
+                    //TODO: We could show the game after this command
                 }
-                super.lobbyController.onStartMatch(gameID, userPlayer.getNickname());
-            }
-        } catch (ParseException pe){
-            System.out.println("launchGameLobby section");
-            System.out.println("Error parsing command-line arguments");
-            formatter.printHelp("Parsing Error Section Commands", options);
-        } catch (InterruptedException ie){
+            } catch (ParseException pe) {
+                System.out.println("launchGameLobby section");
+                System.out.println("Error parsing command-line arguments, invalid command");
+                formatter.printHelp("Section Commands", options);
+            } /*catch (InterruptedException ie){
             System.out.println("Exiting launchGameManager " + Thread.currentThread().getName() + ", YY");
             return;
+        }*/
         }
         System.out.println("You have left the lobby");
+    }
+    @Override
+    public void addNewLobbyPlayer(String addedPlayer){
+        Player p = new Player(addedPlayer);
+        this.players.add(p);
+        System.out.println(addedPlayer+" has entered the lobby");
+        System.out.print("Lobby players: ");
+        for(Player t: players){
+            System.out.print(t.getNickname()+"\t");
+        }
+        System.out.println();
     }
     @Override
     public void chooseCards(){
         ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
         ArrayList<BoardCard> selected = new ArrayList<>();
 
-        System.out.println("Select Cards in couples of coordinates.\t\tThe selectable cards are those higlighted" +
+        System.out.println("Select Cards in couples of coordinates, maximum of three.\t\tThe selectable cards are those higlighted" +
                             " in white"+"\nExample: 5 4 5 5 5 6\twhere 5 4 is the first couple and so on");
-        if (Thread.currentThread().isInterrupted()) {
+        /*if (Thread.currentThread().isInterrupted()) {
             return; // Exit the loop gracefully
-        }
+        }*/
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
         while(s.length() != 11 && s.length() != 3 && s.length() != 7)
@@ -454,18 +593,42 @@ public class CLIgeneral extends View{
             Pair<Integer,Integer> tmp = new Pair<>(Character.getNumericValue(s.charAt(i)),Character.getNumericValue(s.charAt(i+2)));
             coord.add(tmp);
         }
-        System.out.println("Choose order for the selected cards.\nExample: '132' -> first card, third card, second card.");
-        Scanner in2 = new Scanner(System.in);
-        s = in2.next();
-        while(s.length() != coord.size()){
-            System.out.println("The chosen order must be of the same size of the cards selected.");
+        if(coord.size() > 1) {
+            System.out.println("Choose order for the selected cards.\nExample: '132' -> first card, third card, second card.");
+            Scanner in2 = new Scanner(System.in);
             s = in2.next();
+            boolean valid = true;
+            while(valid){
+                if(s.length() != coord.size()){
+                    System.out.println("The chosen order must be of the same size of the cards selected.");
+                    valid = false;
+                }else{
+                    int max = s.length();
+                    List<Integer> sToList = new ArrayList<>();
+                    for(char c: s.toCharArray()){
+                        sToList.add(Character.getNumericValue(c));
+                    }
+                    for(int i = max; i > 0; i--){
+                        if(!sToList.contains(i)){
+                            valid = false;
+                            System.out.println("The chosen order must refer to the number of cards selected\nExample:" +
+                                    " 3 cards selected -> 312, NOT 314");
+                            break;
+                        }
+                    }
+                }
+                if(!valid){
+                    s = in2.next();
+                }else{
+                    break;
+                }
+            }
+            ArrayList<Pair<Integer, Integer>> copy = new ArrayList<>();
+            for (int i = 0; i < s.length(); i++) {
+                copy.add(coord.get(Character.getNumericValue(s.charAt(i)) - 1));
+            }
+            coord = copy;
         }
-        ArrayList<Pair<Integer,Integer>> copy = new ArrayList<>();
-        for(int i = 0; i < s.length(); i++){
-            copy.add(coord.get(Character.getNumericValue(s.charAt(i))-1));
-        }
-        coord = copy;
         for(int i = 0; i < coord.size(); i++){
             selected.add(livingRoom[coord.get(i).getFirst()][coord.get(i).getSecond()]);
         }
@@ -496,9 +659,6 @@ public class CLIgeneral extends View{
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         try{
-            if (Thread.currentThread().isInterrupted()) {
-                return; // Exit the loop gracefully
-            }
             cmd = parser.parse(options, scanf());
             while(!cmd.hasOption(exit) && !cmd.hasOption(play_again)){
 
@@ -518,9 +678,6 @@ public class CLIgeneral extends View{
             System.out.println("endCommands section");
             System.out.println("Error parsing command-line arguments");
             formatter.printHelp("Parsing Error Section Commands", options);
-        } catch (InterruptedException ie){
-            System.out.println("Exiting launchGameManager " + Thread.currentThread().getName() + ", YY");
-            return;
         }
     }
     @Override
@@ -580,6 +737,14 @@ public class CLIgeneral extends View{
             System.out.println(p.getFirst()+"\tFinal Score: "+p.getSecond());
         }
     }
+    /*@Override CLIInputThread
+    public void readInput() throws InterruptedException {
+        while(!Thread.currentThread().isInterrupted()){
+            this.dataInput = scanf();
+        }
+        throw new InterruptedException();
+    }*/
+
     private Pair<String,String> getColor(BoardCard tmp){
         String colorBackground;
         String colorValue;
@@ -608,7 +773,7 @@ public class CLIgeneral extends View{
         Pair<String,String> val = new Pair<>(colorBackground,colorValue);
         return val;
     }
-    private String[] scanf() throws InterruptedException{
+    private String[] scanf(){
         ArrayList<String> arguments = new ArrayList<>();
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
@@ -635,9 +800,3 @@ public class CLIgeneral extends View{
     }
 
 }
-
-
-/*
-
-
- */
