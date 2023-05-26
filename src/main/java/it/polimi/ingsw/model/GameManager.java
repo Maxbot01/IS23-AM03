@@ -69,14 +69,34 @@ public class GameManager extends GameObservable{
         }
     }
 
-    public void receiveChatMessage(String gameID, String fromUser, String message){
-        chats.computeIfAbsent(gameID, k -> new ArrayList<>());
-        Pair<String, String> myPair = new Pair<>(fromUser, message);
+    /**
+     * User has either requested to see messages (fromUser and message null), or add message and get chat messages
+     * (gameId, null, null, true) -> receive all the messages
+     * (gameId, null, null. false) -> receive last 5 messages
+     * (gameID, fromUser, message, false) -> send message and receive all the messages
+     * (gameID, fromUser, message, true) -> send message and receive last 5 messages
+     * @param gameID
+     * @param fromUser
+     * @param message
+     * @param fullChat
+     */
+    public void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat){
 
-        chats.get(gameID).add(myPair);
+        if(fromUser != null && message != null){
+            chats.computeIfAbsent(gameID, k -> new ArrayList<>());
+            Pair<String, String> myPair = new Pair<>(fromUser, message);
+            chats.get(gameID).add(myPair);
+        }
 
         for(GameLobby x: this.currentGames.keySet()){
             if(x.getID().equals(gameID)){
+                ChatMessage sent;
+                if(fullChat){
+                    sent = new ChatMessage(chats.get(gameID));
+                }else {
+                    //just sends the last 5 messages
+                    sent = new ChatMessage((ArrayList<Pair<String, String>>) chats.get(gameID).subList(Math.max(chats.get(gameID).size() - 5, 0), chats.get(gameID).size()));
+                }
                 super.notifyAllObservers(x.getPlayers(), new ChatMessage(chats.get(gameID)), true, gameID);
             }
         }
@@ -166,9 +186,9 @@ public class GameManager extends GameObservable{
      * @param
      */
     //TODO: Fix this method
-    /*public void lookForNewGames(String username){
+    public void lookForNewGames(String username){
         super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
-    }*/
+    }
 
 
     //TODO: to do!!

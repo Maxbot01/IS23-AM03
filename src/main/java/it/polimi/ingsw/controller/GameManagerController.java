@@ -87,7 +87,7 @@ public class GameManagerController extends Controller implements GameManagerView
         }else if(message instanceof loginGameMessage){
             //user can go in, launchGameManager phase
             this.lastLoginMessage = (loginGameMessage)message;
-            if(ClientManager.userNickname == null){
+            if(ClientManager.userNickname != null){
                 ClientManager.userNickname = lastLoginMessage.username;
                 ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
             }else{
@@ -96,6 +96,7 @@ public class GameManagerController extends Controller implements GameManagerView
                 List<String> addedGamePlayers = lastLoginMessage.gamesPlayers.get(addedGameId);
                 Pair<String, List<String>> addedGame = new Pair<>(addedGameId,addedGamePlayers);
                 ClientManager.view.addNewGame(addedGame);
+
             }
 
 

@@ -52,5 +52,10 @@ public class MyRemoteObject extends GameManager implements MyRemoteInterface {
         };
     }
 
+    @Override
+    public void receiveChatMessage(String gameID, String fromUser, String message) {
+
+    }
+
     // Implementazione dei metodi remoti dell'interfaccia MyRemoteInterface
 }

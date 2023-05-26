@@ -27,7 +27,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
 
     private final static int DIM = 9;
 
-    public GameController(View view, null, String gameID) {
+    public GameController(View view,  String gameID) {
         super(view);
         System.out.println("GameController created");
         //this.virtualGame = virtualGame;

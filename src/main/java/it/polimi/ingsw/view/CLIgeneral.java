@@ -166,6 +166,12 @@ public class CLIgeneral extends View{
         }
 
     }
+
+    @Override
+    public void waitingCommands() {
+
+    }
+
     @Override
     public void updateChairedPlayer(String chairedPlayer){
         this.chairedPlayer = chairedPlayer;
@@ -712,6 +718,12 @@ public class CLIgeneral extends View{
         }
         System.out.print("\n");
     }
+
+    @Override
+    public void newChatMessage(ArrayList<Pair<String, String>> messages) {
+
+    }
+
     @Override
     public void printShelves(){
         System.out.println("\n"+"Game State: "+gameState.toString());

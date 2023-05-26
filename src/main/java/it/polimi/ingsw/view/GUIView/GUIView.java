@@ -32,6 +32,11 @@ public class GUIView extends View {
 
     }
 
+    @Override
+    public void waitingCommands() {
+
+    }
+
     /*@Override
     public void waitingCommands() {
 
@@ -40,7 +45,9 @@ public class GUIView extends View {
     @Override
     public void addNewGame(Pair<String, List<String>> newGame){}
     @Override
-    public void addNewLobbyPlayer(String addedPlayer){}
+    public void addNewLobbyPlayer(String addedPlayer){
+        ScreenSwitcher.gameLobbyViewScene = ScreenSwitcher.gameLobbyView.updateUsers(addedPlayer);
+    }
     @Override
     public void gameCommands(){}
     @Override
@@ -83,6 +90,11 @@ public class GUIView extends View {
 
     @Override
     public void printLivingRoom() {
+
+    }
+
+    @Override
+    public void newChatMessage(ArrayList<Pair<String, String>> messages) {
 
     }
 

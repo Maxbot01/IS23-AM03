@@ -96,7 +96,7 @@ public class VirtualGameManagerSerializer {
                 gameID = (String) virtualGameManagerSerializer.getArgs()[0];
                 String fromUser = (String) virtualGameManagerSerializer.getArgs()[1];
                 String mex = (String) virtualGameManagerSerializer.getArgs()[2];
-                gameManager.receiveChatMessage(gameID, fromUser, mex);
+                gameManager.receiveChatMessage(gameID, fromUser, mex, true);
 
 
                 //TODO: Uncomment this instruction -> gameManager.lookForNewGames(user5);

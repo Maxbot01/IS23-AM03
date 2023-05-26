@@ -9,17 +9,28 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameLobbyView {
     private ScreenSwitcher screenSwitcher;
     private VBox lobbyView;
 
+    private ArrayList<String> users;
+    private String host;
+
     public GameLobbyView(ScreenSwitcher screenSwitcher) {
         this.screenSwitcher = screenSwitcher;
     }
 
-    public Scene createContent(List<String> users, String host, boolean isHost) {
+
+    public Scene updateUsers(String newU){
+        users.add(newU);
+        return createContent(this.users, host, false);
+    }
+    public Scene createContent(ArrayList<String> users, String host, boolean isHost) {
+        this.users = users;
+        this.host = host;
         lobbyView = new VBox();
         lobbyView.setSpacing(10);
         lobbyView.setPadding(new Insets(20));

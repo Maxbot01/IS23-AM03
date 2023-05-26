@@ -102,11 +102,11 @@ public class ClientManager {
         if(gameController != null){
             if(!gameController.getGameID().equals(ID)) {
                 pubsub.removeSubscriber(TopicType.matchState, gameController);
-                gameController = new GameController(view, null, ID);
+                gameController = new GameController(view, ID);
                 created = true;
             }
         }else{
-            gameController = new GameController(view, null, ID);
+            gameController = new GameController(view, ID);
             created = true;
         }
         if(lobbyController != null){
