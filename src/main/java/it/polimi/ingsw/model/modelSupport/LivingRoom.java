@@ -150,8 +150,8 @@ public class LivingRoom{
         for (Pair<Integer, Integer> coordinates : selected) {
             int i = coordinates.getFirst();
             int j = coordinates.getSecond();
-            if (!(isPresent(i, j) && freeCorner(i, j))) {
-                throw new UnselectableCardException();
+            if (!(isPresent(i, j) && freeCorner(i, j))) {//TODO: This check can be removed, be sure first
+                throw new UnselectableCardException("No card present at position "+i+" "+j);
             }
         }
         for (Pair<Integer, Integer> coordinates : selected) {
@@ -170,7 +170,7 @@ public class LivingRoom{
         int i = coordinates.getFirst();
         int j = coordinates.getSecond();
         if(!isPresent(i,j))
-            throw new UnselectableCardException();
+            throw new UnselectableCardException("No card present at position "+i+" "+j);
         else return this.pieces[i][j];
     }
     public boolean cardIsSelectable(int i, int j){

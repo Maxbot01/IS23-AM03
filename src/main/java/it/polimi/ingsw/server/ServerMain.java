@@ -160,13 +160,13 @@ public class ServerMain {
 
     public static void main(String[] args) {
       //per socket:
-        /* int port = 1234;
+        int port = 1234;
         server = new ServerMain(port);
         System.out.println("Starting server on port " + port);
         StartRMI(); // Aggiunta della chiamata a StartRMI()
-        server.start();*/
+        server.start();
 
-        //per rmi:
+        /*per rmi:
         try {
             MyRemoteInterface remoteObj = new MyRemoteObject();
             Registry registry = LocateRegistry.createRegistry(1099);
@@ -180,7 +180,7 @@ public class ServerMain {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 }

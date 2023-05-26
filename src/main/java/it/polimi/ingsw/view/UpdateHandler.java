@@ -50,7 +50,7 @@ public interface UpdateHandler {
     void addNewGame(Pair<String, List<String>> newGame);
     void addNewLobbyPlayer(String addedPlayer);
     void gameCommands();
-    void updateChairedPlayer(String chairedPlayer);
+    void updatePlayingPlayer(String playingPlayer);
     /**
      * Calls the command section of GameLobby, enabling the user to write which command to execute.
      * It is sent only to the

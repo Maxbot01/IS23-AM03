@@ -27,11 +27,10 @@ public class GameLobby extends GameObservable {
         System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
             GameManager.getInstance().createMatchFromLobby(ID, players);
-        }else if (numOfPlayers < players.size()){
-            //TODO: send wrong request error
-            super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers), false, "-");
-        }else if(!user.equals(host)){
-            super.notifyObserver(user, new ErrorMessage(ErrorType.onlyHostCanStartMatch), false, "-");
+        }else if (players.size() < numOfPlayers){
+            super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers,"There aren't enough players to start the match"), false, "-");
+        }else if(!user.equals(host)){//TODO: This check is not needed, it is done inside the cli, maybe it's needed for the gui, check before removing
+            super.notifyObserver(user, new ErrorMessage(ErrorType.onlyHostCanStartMatch,"Only the host can start the match"), false, "-");
         }
     }
 
@@ -51,7 +50,7 @@ public class GameLobby extends GameObservable {
 
     public void addPlayer(String player) throws LobbyFullException {
         if(players.size() + 1 > numOfPlayers){
-            throw new LobbyFullException();
+            throw new LobbyFullException("The selected lobby is full");
         }else{
             players.add(player);
             super.notifyAllObservers(players, new LobbyInfoMessage(ID, host, numOfPlayers, players,false), true, this.ID);

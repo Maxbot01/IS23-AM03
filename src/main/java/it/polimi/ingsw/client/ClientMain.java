@@ -128,7 +128,7 @@ public class ClientMain implements Runnable{
 
         boolean isCLI = true;  // Imposta a true o false a seconda delle tue esigenze
         ClientMain client;
-
+        //TODO: Insert the following 3 if in a while, in order to not exit the client if user inserts neither options
         if (connectionType.equalsIgnoreCase("socket")) {
             System.out.println("Socket mode selected.");
             Socket socket = new Socket("localhost", 1234);
