@@ -63,7 +63,6 @@ public class VirtualGameManager {
     public void setCredentials(String username, String password) {
         //TODO: IMPORTANTE; DA RIMUOVERE LA PROSSIMA LINEA (fatta per primo messaggio ma da fixare seializer)
         if (isSocketClient) {
-            ClientManager.userNickname = username;
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {

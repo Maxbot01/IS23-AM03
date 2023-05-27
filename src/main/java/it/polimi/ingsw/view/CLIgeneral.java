@@ -24,7 +24,7 @@ public class CLIgeneral extends View{
     private HashMap<String,List<String>> availableGames;
     private Player userPlayer; // Remember that userPlayer does not have a personal goal or points
     private String host;
-    private String chairedPlayer;
+    private String playingPlayer;
     private ArrayList<BoardCard> selectedCards;
     //private String[] dataInput; CLIInputThread
 
@@ -173,12 +173,12 @@ public class CLIgeneral extends View{
     }
 
     @Override
-    public void updateChairedPlayer(String chairedPlayer){
-        this.chairedPlayer = chairedPlayer;
-        if(chairedPlayer.equals(userPlayer.getNickname())){
+    public void updatePlayingPlayer(String playingPlayer){
+        this.playingPlayer = playingPlayer;
+        if(playingPlayer.equals(userPlayer.getNickname())){
             System.out.println("You are playing...");
         }else {
-            System.out.println(chairedPlayer + " is playing...");
+            System.out.println(playingPlayer + " is playing...");
         }
     }
 
@@ -295,7 +295,7 @@ public class CLIgeneral extends View{
                         super.gameController.onGetChatMessage(msg);
                         // It also needs to show the past messages
                     } else if (cmd.hasOption(select_cards)) {
-                        if (chairedPlayer.equals(userPlayer.getNickname())) {
+                        if (playingPlayer.equals(userPlayer.getNickname())) {
                             finished = true;
                             super.gameController.startCardsSelection();
                             break;
@@ -445,9 +445,15 @@ public class CLIgeneral extends View{
                         return; // Exit the loop gracefully
                     }*/
                     int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
-                    host = userPlayer.getNickname();
-                    finished = true;
-                    super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
+                    if(numOfPlayers >= 2 && numOfPlayers <= 4) {
+                        host = userPlayer.getNickname();
+                        finished = true;
+                        super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
+                    }else if(numOfPlayers > 4){
+                        System.out.println("You can't have more than 4 players in a game");
+                    }else{
+                        System.out.println("You need to have at least 2 player for the game");
+                    }
                 }
             } catch (ParseException pe) {
                 System.out.println("launchGameManager section");
@@ -590,7 +596,7 @@ public class CLIgeneral extends View{
         ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
         ArrayList<BoardCard> selected = new ArrayList<>();
 
-        System.out.println("Select Cards in couples of coordinates, maximum of three.\t\tThe selectable cards are those higlighted" +
+        System.out.println("Select Cards in couples of coordinates, maximum of three.\tThe selectable cards are those higlighted" +
                             " in white"+"\nExample: 5 4 5 5 5 6\twhere 5 4 is the first couple and so on");
         /*if (Thread.currentThread().isInterrupted()) {
             return; // Exit the loop gracefully
@@ -610,11 +616,12 @@ public class CLIgeneral extends View{
             System.out.println("Choose order for the selected cards.\nExample: '132' -> first card, third card, second card.");
             Scanner in2 = new Scanner(System.in);
             s = in2.next();
-            boolean valid = true;
-            while(valid){
+            boolean valid = false;
+            while(!valid){
+                boolean correct = true;
                 if(s.length() != coord.size()){
                     System.out.println("The chosen order must be of the same size of the cards selected.");
-                    valid = false;
+                    correct = false;
                 }else{
                     int max = s.length();
                     List<Integer> sToList = new ArrayList<>();
@@ -623,17 +630,17 @@ public class CLIgeneral extends View{
                     }
                     for(int i = max; i > 0; i--){
                         if(!sToList.contains(i)){
-                            valid = false;
+                            correct = false;
                             System.out.println("The chosen order must refer to the number of cards selected\nExample:" +
                                     " 3 cards selected -> 312, NOT 314");
                             break;
                         }
                     }
                 }
-                if(!valid){
+                if(!correct){
                     s = in2.next();
                 }else{
-                    break;
+                    valid = true;
                 }
             }
             ArrayList<Pair<Integer, Integer>> copy = new ArrayList<>();
@@ -753,6 +760,11 @@ public class CLIgeneral extends View{
         System.out.println("\n"+"The winner is "+winner);
         System.out.println();
         for(Pair<String,Integer> p: finalScoreBoard){
+            for(int i = 0; i < players.size(); i++){
+                if(p.getFirst().equals(players.get(i).getNickname())){
+                    this.players.get(i).updateScore(p.getSecond()-players.get(i).getScore());
+                }
+            }
             System.out.println(p.getFirst()+"\tFinal Score: "+p.getSecond());
         }
     }

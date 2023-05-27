@@ -63,7 +63,7 @@ public class GameManager extends GameObservable{
                     this.playersNotInLobby.put(user,true);
                 }catch(LobbyFullException e){
                     //lobby is full, returns error
-                    super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull), false, "-");
+                    super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull,e.info), false, "-");
                 }
             }
         }
@@ -162,7 +162,7 @@ public class GameManager extends GameObservable{
             }else{
                 //username wrong password
                 //sends error
-                super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword), false, "-");
+                super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword,"Wrong password"), false, "-");
             }
         }else{
             //new user
@@ -245,14 +245,14 @@ public class GameManager extends GameObservable{
                 try{
                     x.selectedCards(selected, user);
                 }catch (UnselectableCardException e){
-                    //TODO: manage exception
+                    super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError, e.info),true,gameID);
                 }
 
             }
         }
     }
 
-    public void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){ //TODO: Capire come usare user
+    public void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
         for(Game x: currentGames.values()){
             if(x.getID().equals(gameID)){
                 x.selectedColumn(selected,column,user); // Per i try catch, non basta averli nel "game"?

@@ -40,6 +40,7 @@ public class GameManagerController extends Controller implements GameManagerView
     @Override
     public void onSetCredentials(String username, String password) {
         System.out.println("Credentials set");
+        ClientManager.userNickname = username;
         virtualGameManager.setCredentials(username, password);
     }
 
@@ -72,25 +73,24 @@ public class GameManagerController extends Controller implements GameManagerView
                     break;
             }
         }else if(message instanceof ErrorMessage mess){
-            System.out.println("errorMessage in GameManagerController");//DEBUG
-            //TODO: Uncomment this instruction -> ClientManager.view.showErrorMessage(mess.error.toString());
+            ClientManager.view.showErrorMessage(mess.info);
             switch (mess.error.toString()) {
                 case "wrongPassword":
-                    System.out.println("error case in GameManagerController: "+mess.error.toString());
+                    //System.out.println("error case in GameManagerController: "+mess.info);
                     ClientManager.view.requestCredentials();
                     break;
                 case "lobbyIsFull":
-                    System.out.println("error case in GameManagerController: "+mess.error.toString());
+                    //System.out.println("error case in GameManagerController: "+mess.info);
                     ClientManager.view.launchGameManager(lastLoginMessage.gamesPlayers);
                     break;
             }
         }else if(message instanceof loginGameMessage){
             //user can go in, launchGameManager phase
-            this.lastLoginMessage = (loginGameMessage)message;
-            if(ClientManager.userNickname != null){
-                ClientManager.userNickname = lastLoginMessage.username;
+            if(lastLoginMessage == null){
+                this.lastLoginMessage = (loginGameMessage)message;
                 ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
             }else{
+                this.lastLoginMessage = (loginGameMessage)message;
                 int allGamesSize = lastLoginMessage.gamesPlayers.keySet().toArray().length;
                 String addedGameId = lastLoginMessage.gamesPlayers.keySet().toArray()[allGamesSize-1].toString();
                 List<String> addedGamePlayers = lastLoginMessage.gamesPlayers.get(addedGameId);

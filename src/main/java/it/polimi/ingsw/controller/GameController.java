@@ -62,7 +62,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             //ClientManager.view.chooseColumn();
             ClientManager.virtualGameManager.selectedCards(selected, user, gameID);
         }else{
-            ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least another chosen card");
+            ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least one other chosen card");
             ClientManager.view.chooseCards();
         }
     }
@@ -226,7 +226,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             } else {
                 ClientManager.view.waitingCommands(); // it needs to be sent continuously until it's his turn, or maybe a notify to the cli that blocks a while cycle
             }*/
-            ClientManager.view.updateChairedPlayer(mess.chairedPlayer);
+            ClientManager.view.updatePlayingPlayer(mess.chairedPlayer);
             ClientManager.view.gameCommands();
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
             //TODO: Basically identical to initStateMessage
@@ -237,7 +237,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printLivingRoom();
             this.currentPlayerSelecting = mess.currentPlayer.getNickname();
             if (mess.currentPlayer.getNickname().equals(ClientManager.userNickname)) {
-                System.out.println("You have finished chooseCards, after selectedCardsMessage");
                 ClientManager.view.chooseColumn();
             }
         } else if (message instanceof SelectedColumnsMessage) {
@@ -252,28 +251,31 @@ public class GameController extends Controller implements GameViewObserver, Subs
             } else {
                 ClientManager.view.waitingCommands();
             }*/
-            ClientManager.view.updateChairedPlayer(mess.newPlayer);
+            ClientManager.view.updatePlayingPlayer(mess.newPlayer);
             System.out.println("Calling gameCommands for player: "+currentPlayerSelecting);
             if(ClientManager.userNickname.equals(currentPlayerSelecting)){
-                System.out.println("Before the new gameCommands execution");
                 ClientManager.view.gameCommands();
             }
         } else if (message instanceof FinishedGameMessage mess) {
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
+            ClientManager.view.printShelves();
             ClientManager.view.endCommands();//TODO: I will need to change this too, in order that it happens after the player has written "close" to exit the game
         } else if (message instanceof ErrorMessage mess) {
-            System.out.println("errorMessage in GameController");//DEBUG
+            ClientManager.view.showErrorMessage(mess.info);//This is the info relative to the error message
             switch (mess.error.toString()) {
                 case "selectedColumnsError":
-                    System.out.println("error case in GameController: "+mess.error.toString());
+                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.chooseColumn();
                     break;
+                case "shelfFullError":
+                    //System.out.println("error case in GameController: "+mess.info);
+                    break;
                 case "acceptFinishedGameError":
-                    System.out.println("error case in GameController: "+mess.error.toString());
+                    //System.out.println("error case in GameController: "+mess.info);
                     //TODO: Manage error
                     break;
                 case "selectedCardsMessageError":
-                    System.out.println("error case in GameController: "+mess.error.toString());
+                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.chooseCards();
                     break;
             }
