@@ -7,6 +7,8 @@ import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
+import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
@@ -83,18 +85,37 @@ public class GameManagerController extends Controller implements GameManagerView
                     ClientManager.view.launchGameManager(lastLoginMessage.gamesPlayers);
                     break;
             }
-        }else if(message instanceof loginGameMessage){
+        }else if(message instanceof loginGameMessage mess){
             //user can go in, launchGameManager phase
             if(lastLoginMessage == null){
-                this.lastLoginMessage = (loginGameMessage)message;
+                this.lastLoginMessage = mess;
                 ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
             }else{
-                this.lastLoginMessage = (loginGameMessage)message;
-                int allGamesSize = lastLoginMessage.gamesPlayers.keySet().toArray().length;
-                String addedGameId = lastLoginMessage.gamesPlayers.keySet().toArray()[allGamesSize-1].toString();
-                List<String> addedGamePlayers = lastLoginMessage.gamesPlayers.get(addedGameId);
-                Pair<String, List<String>> addedGame = new Pair<>(addedGameId,addedGamePlayers);
+                //this.lastLoginMessage = (loginGameMessage)message;
+                int allGamesSize = mess.gamesPlayers.keySet().toArray().length;
+                String addedGameId = mess.gamesPlayers.keySet().toArray()[allGamesSize-1].toString();
+                List<String> addedGamePlayers = mess.gamesPlayers.get(addedGameId);
+                Pair<String, List<String>> addedGame;
+                //Check needed to add a new game or update an old one with a new player entry
+                if(lastLoginMessage.gamesPlayers.containsKey(addedGameId)){
+                    boolean found = false;
+                    for(String key: mess.gamesPlayers.keySet()){
+                        for(String playerName: mess.gamesPlayers.get(key)){
+                            if(!lastLoginMessage.gamesPlayers.get(key).contains(playerName)){
+                                addedGameId = key;
+                                addedGamePlayers = mess.gamesPlayers.get(key);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(found){
+                            break;
+                        }
+                    }
+                }
+                addedGame = new Pair<>(addedGameId,addedGamePlayers);
                 ClientManager.view.addNewGame(addedGame);
+
             }
 
 
@@ -107,6 +128,9 @@ public class GameManagerController extends Controller implements GameManagerView
             }
             this.lastThread = Thread.currentThread();
             System.out.println("launchGameManager Thread name: "+Thread.currentThread().getName());
+            ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
+        }else if(message instanceof ChatMessage){
+            ClientManager.view.newChatMessage(((ChatMessage) message).messages);
             ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);*/
         }
         return true;

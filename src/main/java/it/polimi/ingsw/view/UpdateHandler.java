@@ -37,6 +37,7 @@ public interface UpdateHandler {
                                         updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf);
 
     //void waitingCommands(); // The controller continues to call this method until the playing player changes to the CLI user
+    void waitingCommands(); //The controller continues to call this method until the playing player changes to the CLI user
     /**
      * Requests Username from Command Line
      * @return String
@@ -76,6 +77,8 @@ public interface UpdateHandler {
     /**
      * Prints all the shelves
      */
+
+    void newChatMessage(ArrayList<Pair<String, String>> messages);
     void printShelves();
     /**
      * Prints error type on command line

@@ -7,6 +7,10 @@ public class RemoteUserInfo{
     private final String rmiUID;
 
     private final boolean isSocket;
+
+    /**
+     * This class is inteded to represent the connection of a logged user (RMI or socket)
+     */
     private MyRemoteInterface remoteObject;
 
     public RemoteUserInfo(boolean isSocket, Socket socketID, String rmiUID){

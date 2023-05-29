@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.GameManagerController;
 import it.polimi.ingsw.controller.LobbyController;
 import it.polimi.ingsw.controller.pubSub.PubSubService;
 import it.polimi.ingsw.controller.pubSub.TopicType;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
@@ -12,7 +13,6 @@ import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
-import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.view.CLIgeneral;
@@ -21,13 +21,9 @@ import it.polimi.ingsw.view.View;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.rmi.server.RemoteServer;
-import java.rmi.server.ServerNotActiveException;
-import java.util.UUID;
 
 public class ClientManager {
 
-    public static it.polimi.ingsw.controller.GameManagerController GameManagerController;
     //SINGLETON
     private static ClientManager instance;
     public static PubSubService pubsub;
@@ -46,6 +42,7 @@ public class ClientManager {
     // rest of the class
 
     // Private constructor to prevent instantiation from outside the class
+
 
     // Public static method to get the singleton instance and be sure to never initialize the ClientManager twice
     public static ClientManager initializeClientManagerSingleton(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject ) {
@@ -83,6 +80,7 @@ public class ClientManager {
         System.out.println("GameManagerController: " + ClientManager.gameManagerController);
         gameManagerController = new GameManagerController(view, virtualGameManager);
         view.registerObserver(gameManagerController, null, null);
+
     }
 
     /*public static void startReceivingCommands(){ CLIInputThread
@@ -104,11 +102,11 @@ public class ClientManager {
         if(gameController != null){
             if(!gameController.getGameID().equals(ID)) {
                 pubsub.removeSubscriber(TopicType.matchState, gameController);
-                gameController = new GameController(view, new VirtualGame(), ID);
+                gameController = new GameController(view, ID);
                 created = true;
             }
         }else{
-            gameController = new GameController(view, new VirtualGame(), ID);
+            gameController = new GameController(view, ID);
             created = true;
         }
         if(lobbyController != null){
@@ -128,7 +126,6 @@ public class ClientManager {
 
     //accessible from ClientMain (socket) and RMI
     public static void clientReceiveMessage(Message receivedMessageDecoded){
-
         if(receivedMessageDecoded instanceof NetworkMessage){
             //received a network message (like ping or request of username)
             pubsub.publishMessage(TopicType.networkMessageState, receivedMessageDecoded);
@@ -154,6 +151,8 @@ public class ClientManager {
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
         }else if(receivedMessageDecoded instanceof FinishedGameMessage){
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
+        }else if(receivedMessageDecoded instanceof ChatMessage){
+            pubsub.publishMessage(TopicType.gameManagerState, receivedMessageDecoded);
         }
     }
 }

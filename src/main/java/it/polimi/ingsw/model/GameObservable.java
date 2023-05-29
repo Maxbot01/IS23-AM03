@@ -1,18 +1,29 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.client.MessageSerializer;
 import it.polimi.ingsw.model.messageModel.Message;
+import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.ServerMain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GameObservable {
 
+    /**
+     * Notifies a single client, given the username gets the latest socket/rmi id and sends the message
+     * @param toPlayer
+     * @param withMessage
+     * @param inLobbyOrGame
+     * @param gameID
+     */
     protected void notifyObserver(String toPlayer, Message withMessage, boolean inLobbyOrGame, String gameID){
         //if we are in a lobby or in a game needs to send the id of the lobby/game
 
+        System.out.println("sending out");
         sendMessageToNetworkUser(toPlayer, withMessage, gameID);
 
 
@@ -20,6 +31,7 @@ public abstract class GameObservable {
     }
 
     protected void notifyNetworkClient(RemoteUserInfo client, Message withMessage){
+        System.out.println("sending out");
         if(client.isConnectionSocket()){
             //send socket
             MessageSerializer messageSerializer = new MessageSerializer();
@@ -29,6 +41,8 @@ public abstract class GameObservable {
             serializedMessage = messageSerializer.serialize(withMessage, "", "");
             ServerMain.server.sendMessageToSocket(serializedMessage, client.getSocketID());
         }else{
+
+            System.out.println("sending out");
             //send rmi
             // Ottenere una referenza all'oggetto remoto associato al client
             MyRemoteInterface remoteObject = client.getRemoteObject();
@@ -39,6 +53,13 @@ public abstract class GameObservable {
 
     }
 
+    /**
+     * Notifies multiple observers, usually every user of a game
+     * @param observers
+     * @param withMessage
+     * @param inLobbyOrGame
+     * @param gameID
+     */
     protected void notifyAllObservers(List<String> observers, Message withMessage, boolean inLobbyOrGame, String gameID){
         //send the message for every given nick (TO CHANGE MAYBE)
         System.out.println("Sending message to everyone" + observers);
@@ -50,7 +71,14 @@ public abstract class GameObservable {
         withMessage.printMessage();
     }
 
+    /**
+     * Private method sed to send a message to a player rmi or socket
+     * @param toPlayer
+     * @param withMessage
+     * @param gameID
+     */
     private void sendMessageToNetworkUser(String toPlayer, Message withMessage, String gameID) {
+        System.out.println("sending out");
         if(GameManager.getInstance().userIdentification.get(toPlayer).isConnectionSocket()){
             //user is socket
             MessageSerializer messageSerializer = new MessageSerializer();

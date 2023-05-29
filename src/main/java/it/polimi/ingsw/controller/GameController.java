@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
@@ -12,9 +11,6 @@ import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
-import it.polimi.ingsw.model.modelSupport.Client;
-import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
-import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -23,17 +19,18 @@ import java.util.HashMap;
 import static it.polimi.ingsw.client.ClientManager.*;
 
 public class GameController extends Controller implements GameViewObserver, Subscriber {
-    private VirtualGame virtualGame;
 
     private InitStateMessage latestInit;
     private String gameID;
     private String currentPlayerSelecting;
     public volatile boolean playerReady;
 
-    public GameController(View view, VirtualGame virtualGame, String gameID) {
+    private final static int DIM = 9;
+
+    public GameController(View view,  String gameID) {
         super(view);
         System.out.println("GameController created");
-        this.virtualGame = virtualGame;
+        //this.virtualGame = virtualGame;
         System.out.println("GameController created");
 
         this.gameID = gameID;
@@ -42,10 +39,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
 
         //adds itself to the subscribers
         ClientManager.pubsub.addSubscriber(TopicType.matchState, this);
+        //System.out.println("GameController created");
         ClientManager.pubsub.addSubscriber(TopicType.errorMessageState, this);
         System.out.println("GameController created");
 
     }
+
 
     public String getGameID() {
         return gameID;
@@ -67,20 +66,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.chooseCards();
         }
     }
-
-    //TODO: make this!!!
-    private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
-        //TODO: check if is the selection is right
-        //latestInit.selecex
-        return true;
-    }
-
     @Override
     public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) {
         //view has selected columns
         virtualGameManager.selectedColumn(selCards, colIndex, user, gameID);
     }
-
     @Override
     public void onAcceptFinishedGame() {
         //view has accepted finished game
@@ -91,8 +81,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
         virtualGameManager.sendAck();
         ClientManager.view.chooseCards();
     }
-
-
     @Override
     public boolean receiveSubscriberMessages(Message message){
         //a message has been received
@@ -225,8 +213,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printLivingRoom();
             ClientManager.view.printShelves();
             //ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
-            //TODO: I could put a new method updateWhoIsPlaying with the chairedPlayer, so the view knows who is playing
-            //TODO: I could put gameCommands here instead of the if else
             /*if (mess.chairedPlayer.equals(ClientManager.userNickname)) {
                 latestInit = mess;
                 virtualGameManager.sendAck();
@@ -237,8 +223,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.updatePlayingPlayer(mess.chairedPlayer);
             ClientManager.view.gameCommands();
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
-            //TODO: Basically identical to initStateMessage
-            //TODO: Be careful, it will have the same thread problem as launchGameLobby
+            //TODO: Basically identical to initStateMessage, be careful
         } else if (message instanceof SelectedCardsMessage) {
             SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
@@ -253,7 +238,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printShelves();
             ClientManager.view.printLivingRoom();
             //ClientManager.view.showPlayingPlayer(mess.newPlayer);// print the chairedPlayer from the view (CLI)
-            //TODO: Instead of having chooseCards I will have updateWhoIsPlaying with the newPlayer (inside the method I'll have a print that shows who is playing now, and it will grant the command "select_cards" to that player
             /*if (mess.newPlayer.equals(ClientManager.userNickname)) {
                 ClientManager.view.chooseCards();
             } else {
@@ -304,6 +288,73 @@ public class GameController extends Controller implements GameViewObserver, Subs
      */
     @Override
     public String onGetChatMessage(String msg){
+        virtualGameManager.receiveChatMessage(this.gameID, userNickname, msg);
         return msg; //TODO: fix this method with the correspondent virtual section
     }
+
+
+
+    //TODO: make this!!!
+    private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
+        //TODO: check if is the selection is right
+        //latestInit.selecex
+        return true;
+    }
+
+
+
+    /*
+    private boolean selectableCards(ArrayList<Pair<Integer, Integer>> cards){
+        boolean accept = true;
+        int dim = cards.size();
+        for(int i = 0; i<dim && accept; i++){
+            int x = cards.get(i).getFirst();
+            int y = cards.get(i).getSecond();
+            if(!cardIsSelectable(x,y)) {
+                accept = false;
+            }
+        }
+        return consecutive(cards) && accept;
+    }
+
+    private boolean cardIsSelectable(int i, int j){
+        return isPresent(i,j) && freeCorner(i,j);
+    }
+
+    private boolean adiacent(int i, int j) {
+        if (i == 0) {
+            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i + 1, j);
+
+        } else if (i == (DIM - 1)) {
+            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
+
+        } else if (j == 0) {
+            return isPresent(i - 1, j) || (isPresent(i + 1, j) || isPresent(i, j + 1));
+
+        } else if (j == (DIM - 1)) {
+            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
+
+        } else {
+            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j) || isPresent(i + 1, j);
+
+        }
+
+    }
+
+    private boolean freeCorner(int i, int j){
+        if (i == 0 || i == DIM - 1 || j == 0 || j == DIM - 1) return true;
+        else {
+            return !isPresent(i, j - 1) || !isPresent(i, j + 1) || !isPresent(i - 1, j) || !isPresent(i + 1, j);
+        }
+    }
+
+    private boolean isPresent(int i, int j){
+        return (pieces[i][j].getColor() != colorType.TOMBSTONE) && (pieces[i][j].getColor() != colorType.EMPTY_SPOT);
+    }
+
+    */
+
+
+
+
 }

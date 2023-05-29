@@ -1,31 +1,25 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
-import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
-import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 import it.polimi.ingsw.server.RemoteUserInfo;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-
 /**
- * Singleton with all the current games and the needed methods to create or join a game
+ * Singleton that represents the front-end logic of the server and exposes the endpoint method that every client can call, it manages the requests creating and deleting the games
  */
 public class GameManager extends GameObservable{
 
@@ -38,6 +32,8 @@ public class GameManager extends GameObservable{
     //private HashMap<String, String> userIDs;
     public HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
+
+    private HashMap<String, ArrayList<Pair<String, String>>> chats;
     private final HashMap<String,Boolean> playersInLobby; // boolean true means the player is in lobby
     protected GameManager(){
         nicknames = new HashMap<>();
@@ -45,6 +41,7 @@ public class GameManager extends GameObservable{
         userMatches = new HashMap<>();
         userIdentification = new HashMap<>();
         playersInLobby = new HashMap<>();
+        chats = new HashMap<>();
     }
 
 
@@ -55,12 +52,50 @@ public class GameManager extends GameObservable{
                 //joins this lobby
                 try {
                     x.addPlayer(user);
-                    this.playersInLobby.remove(user);
                     this.playersInLobby.put(user,true);
+                    //It notifies the not-in-lobby players that a game has been entered by someone (the players are updated)
+                    for(String s: playersInLobby.keySet()){
+                        if(playersInLobby.get(s).equals(false)){
+                            super.notifyObserver(s,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(),user),false,"-");
+                        }
+                    }
                 }catch(LobbyFullException e){
                     //lobby is full, returns error
                     super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull,e.info), false, "-");
                 }
+            }
+        }
+    }
+
+    /**
+     * User has either requested to see messages (fromUser and message null), or add message and get chat messages
+     * (gameId, null, null, true) -> receive all the messages
+     * (gameId, null, null. false) -> receive last 5 messages
+     * (gameID, fromUser, message, false) -> send message and receive all the messages
+     * (gameID, fromUser, message, true) -> send message and receive last 5 messages
+     * @param gameID
+     * @param fromUser
+     * @param message
+     * @param fullChat
+     */
+    public void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat){
+
+        if(fromUser != null && message != null){
+            chats.computeIfAbsent(gameID, k -> new ArrayList<>());
+            Pair<String, String> myPair = new Pair<>(fromUser, message);
+            chats.get(gameID).add(myPair);
+        }
+
+        for(GameLobby x: this.currentGames.keySet()){
+            if(x.getID().equals(gameID)){
+                ChatMessage sent;
+                if(fullChat){
+                    sent = new ChatMessage(chats.get(gameID));
+                }else {
+                    //just sends the last 5 messages
+                    sent = new ChatMessage((ArrayList<Pair<String, String>>) chats.get(gameID).subList(Math.max(chats.get(gameID).size() - 5, 0), chats.get(gameID).size()));
+                }
+                super.notifyAllObservers(x.getPlayers(), new ChatMessage(chats.get(gameID)), true, gameID);
             }
         }
     }
@@ -80,6 +115,7 @@ public class GameManager extends GameObservable{
         }
         System.out.println("new current games: " + currentGames.keySet());
     }
+
 
 
 
@@ -149,7 +185,7 @@ public class GameManager extends GameObservable{
      */
     //TODO: Fix this method
     public void lookForNewGames(String username){
-        //super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+        super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
     }
 
 

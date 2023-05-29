@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 
 import javax.management.remote.rmi.RMIServer;
@@ -13,12 +14,19 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+
+/**
+ * This class manages the server socket, is multi threaded to handle multiple clients and messages
+ */
 public class ServerMain {
 
     private ServerSocket serverSocket;
     private List<ClientHandler> clients;
+
+
     private boolean isRunning;
 
     public ServerMain(int port) {
@@ -45,6 +53,7 @@ public class ServerMain {
             client.sendMessage(message);
         }
     }
+
 
     public void start() {
         while (isRunning) {
@@ -160,13 +169,14 @@ public class ServerMain {
 
     public static void main(String[] args) {
       //per socket:
-        int port = 1234;
+         int port = 1234;
         server = new ServerMain(port);
         System.out.println("Starting server on port " + port);
         StartRMI(); // Aggiunta della chiamata a StartRMI()
         server.start();
 
-        /*per rmi:
+        /*
+        //per rmi:
         try {
             MyRemoteInterface remoteObj = new MyRemoteObject();
             Registry registry = LocateRegistry.createRegistry(1099);

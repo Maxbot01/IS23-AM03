@@ -91,6 +91,14 @@ public class VirtualGameManagerSerializer {
                 //gameManager.selectedColumn((ArrayList<BoardCard>) virtualGameManagerSerializer.getArgs()[0], (Integer)virtualGameManagerSerializer.getArgs()[1], user4, gameID2);
             case "lookForNewGames":
                 String user5 = virtualGameManagerSerializer.getArgs()[0].toString();
+                gameManager.lookForNewGames(user5);
+            case "receiveChatMessage":
+                gameID = (String) virtualGameManagerSerializer.getArgs()[0];
+                String fromUser = (String) virtualGameManagerSerializer.getArgs()[1];
+                String mex = (String) virtualGameManagerSerializer.getArgs()[2];
+                gameManager.receiveChatMessage(gameID, fromUser, mex, true);
+
+
                 //TODO: Uncomment this instruction -> gameManager.lookForNewGames(user5);
         }
     }

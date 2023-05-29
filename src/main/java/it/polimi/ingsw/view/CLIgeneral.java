@@ -166,6 +166,12 @@ public class CLIgeneral extends View{
         }
 
     }
+
+    @Override
+    public void waitingCommands() {
+
+    }
+
     @Override
     public void updatePlayingPlayer(String playingPlayer){
         this.playingPlayer = playingPlayer;
@@ -460,8 +466,12 @@ public class CLIgeneral extends View{
     }
     @Override
     public void addNewGame(Pair<String, List<String>> newGame){
+        if(availableGames.containsKey(newGame.getFirst())){
+            System.out.println("A player has entered the following game");
+        }else{
+            System.out.println("A new game was created");
+        }
         this.availableGames.put(newGame.getFirst(),newGame.getSecond());
-        System.out.println("A new game was created");
         System.out.println("GameId "+this.availableGames.size()+": "+newGame.getFirst());
         System.out.print("Players: ");
         for (String player : this.availableGames.get(newGame.getFirst())) {//I iterate on availableGames to be sure it was added
@@ -725,6 +735,10 @@ public class CLIgeneral extends View{
             System.out.print("\n");
         }
         System.out.print("\n");
+    }
+    @Override
+    public void newChatMessage(ArrayList<Pair<String, String>> messages) {
+
     }
     @Override
     public void printShelves(){
