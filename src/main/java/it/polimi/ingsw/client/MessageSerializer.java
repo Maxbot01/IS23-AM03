@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import com.google.gson.*;
 import it.polimi.ingsw.model.CommonGoals.Strategy.CommonGoalStrategy;
 import it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
@@ -111,6 +112,8 @@ public class MessageSerializer {
                     return new Gson().fromJson(messageData, NetworkMessage.class);
                 case "GameStateMessage":
                     return new Gson().fromJson(messageData, GameStateMessage.class);
+                case "ChatMessage":
+                    return new Gson().fromJson(messageData, ChatMessage.class);
 
 
                 //TODO: add other cases for other message types that you want to deserialize

@@ -24,5 +24,5 @@ public interface MyRemoteInterface extends Remote {
         void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID) throws RemoteException;
         void sendAck();
         void receiveMessage(Message withMessage, String rmiUID);
-        void receiveChatMessage(String gameID, String fromUser, String message);
+        void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame);
 }

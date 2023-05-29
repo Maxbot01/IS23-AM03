@@ -96,7 +96,10 @@ public class VirtualGameManagerSerializer {
                 gameID = (String) virtualGameManagerSerializer.getArgs()[0];
                 String fromUser = (String) virtualGameManagerSerializer.getArgs()[1];
                 String mex = (String) virtualGameManagerSerializer.getArgs()[2];
-                gameManager.receiveChatMessage(gameID, fromUser, mex, true);
+                boolean fullChat = (boolean) virtualGameManagerSerializer.getArgs()[3];
+                boolean inGame = (boolean) virtualGameManagerSerializer.getArgs()[4];
+                System.out.println("VGMS 1");
+                gameManager.receiveChatMessage(gameID, fromUser, mex, fullChat, inGame);
 
 
                 //TODO: Uncomment this instruction -> gameManager.lookForNewGames(user5);

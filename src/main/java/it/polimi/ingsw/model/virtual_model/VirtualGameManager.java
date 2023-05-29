@@ -30,15 +30,15 @@ public class VirtualGameManager {
     }
 
 
-    public void receiveChatMessage(String gameID, String fromUser, String message){
+    public void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame){
         if (isSocketClient) {
-            VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("receiveChatMessage", new Object[]{});
+            VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("receiveChatMessage", new Object[]{gameID,fromUser,message,fullChat,inGame});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
             //serializeMethod(serializedGameManager);
         } else {
             RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
             remoteUserInfo.setRemoteObject(remoteObject);
-            remoteObject.receiveChatMessage(gameID, fromUser, message);
+            remoteObject.receiveChatMessage(gameID, fromUser, message, fullChat, inGame);
         }
     }
 

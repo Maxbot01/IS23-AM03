@@ -92,11 +92,6 @@ public class GUIView extends View {
     }
 
     @Override
-    public void newChatMessage(ArrayList<Pair<String, String>> messages) {
-
-    }
-
-    @Override
     public void printShelves() {
 
     }
@@ -113,6 +108,11 @@ public class GUIView extends View {
 
     @Override
     public void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner, GameStateType gameState) {
+
+    }
+
+    @Override
+    public void printChat(ArrayList<Pair<String,String>> chat){
 
     }
 }

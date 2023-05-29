@@ -53,7 +53,7 @@ public class MyRemoteObject extends GameManager implements MyRemoteInterface {
     }
 
     @Override
-    public void receiveChatMessage(String gameID, String fromUser, String message) {
+    public void receiveChatMessage(String gameID, String fromUser, String message,boolean fullChat, boolean inGame) {
 
     }
 

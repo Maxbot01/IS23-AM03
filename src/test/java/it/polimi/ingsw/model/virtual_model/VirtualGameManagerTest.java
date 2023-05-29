@@ -12,7 +12,7 @@ public class VirtualGameManagerTest {
 
     @Test
     void pingTest() {
-        VirtualGameManager virtualGameManager = new VirtualGameManager(true);
+        VirtualGameManager virtualGameManager = new VirtualGameManager(true,null);//TODO: remoteObject wasn't initialized, FIX
         virtualGameManager.ping();
         VirtualGameManagerSerializer expectedSerializedGameManager = new VirtualGameManagerSerializer("ping", new Object[]{});
         String expectedJson = VirtualGameManagerSerializer.serializeMethod(expectedSerializedGameManager);
@@ -21,7 +21,7 @@ public class VirtualGameManagerTest {
 
     @Test
     void setCredentialsTest() {
-        VirtualGameManager virtualGameManager = new VirtualGameManager(true);
+        VirtualGameManager virtualGameManager = new VirtualGameManager(true,null);//TODO: remoteObject wasn't initialized, FIX
         virtualGameManager.setCredentials("username", "password");
         VirtualGameManagerSerializer expectedSerializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{"username", "password"});
         String expectedJson = VirtualGameManagerSerializer.serializeMethod(expectedSerializedGameManager);
@@ -30,7 +30,7 @@ public class VirtualGameManagerTest {
 
     @Test
     void selectGameTest() {
-        VirtualGameManager virtualGameManager = new VirtualGameManager(true);
+        VirtualGameManager virtualGameManager = new VirtualGameManager(true,null);//TODO: remoteObject wasn't initialized, FIX
         virtualGameManager.selectGame("gameID", "user");
         VirtualGameManagerSerializer expectedSerializedGameManager = new VirtualGameManagerSerializer("selectGame", new Object[]{"gameID", "user"});
         String expectedJson = VirtualGameManagerSerializer.serializeMethod(expectedSerializedGameManager);
@@ -39,7 +39,7 @@ public class VirtualGameManagerTest {
 
     @Test
     void createGameTest() {
-        VirtualGameManager virtualGameManager = new VirtualGameManager(true);
+        VirtualGameManager virtualGameManager = new VirtualGameManager(true,null);//TODO: remoteObject wasn't initialized, FIX
         virtualGameManager.createGame(3, "user");
         VirtualGameManagerSerializer expectedSerializedGameManager = new VirtualGameManagerSerializer("createGame", new Object[]{3, "user"});
         String expectedJson = VirtualGameManagerSerializer.serializeMethod(expectedSerializedGameManager);
@@ -48,7 +48,7 @@ public class VirtualGameManagerTest {
 
     @Test
     void sendAckTest() {
-        VirtualGameManager virtualGameManager = new VirtualGameManager(true);
+        VirtualGameManager virtualGameManager = new VirtualGameManager(true,null);//TODO: remoteObject wasn't initialized, FIX
         virtualGameManager.sendAck();
         VirtualGameManagerSerializer expectedSerializedGameManager = new VirtualGameManagerSerializer("sendAck", new Object[]{});
         String expectedJson = VirtualGameManagerSerializer.serializeMethod(expectedSerializedGameManager);
@@ -57,7 +57,7 @@ public class VirtualGameManagerTest {
 
     @Test
     void startMatchTest() {
-        VirtualGameManager virtualGameManager = new VirtualGameManager(true);
+        VirtualGameManager virtualGameManager = new VirtualGameManager(true,null);//TODO: remoteObject wasn't initialized, FIX
         virtualGameManager.startMatch("ID", "user");
         VirtualGameManagerSerializer expectedSerializedGameManager = new VirtualGameManagerSerializer("startMatch", new Object[]{"ID", "user"});
         String expectedJson = VirtualGameManagerSerializer.serializeMethod(expectedSerializedGameManager);
@@ -67,7 +67,7 @@ public class VirtualGameManagerTest {
 
     @Test
     void selectedCardsTest() {
-        VirtualGameManager virtualGameManager = new VirtualGameManager(true);
+        VirtualGameManager virtualGameManager = new VirtualGameManager(true,null);//TODO: remoteObject wasn't initialized, FIX
         ArrayList<Pair<Integer, Integer>> selected = new ArrayList<>();
         selected.add(new Pair<>(1, 2));
         selected.add(new Pair<>(3, 4));

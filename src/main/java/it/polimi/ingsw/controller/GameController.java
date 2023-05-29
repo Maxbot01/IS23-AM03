@@ -7,6 +7,7 @@ import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
@@ -25,27 +26,13 @@ public class GameController extends Controller implements GameViewObserver, Subs
     private String currentPlayerSelecting;
     public volatile boolean playerReady;
 
-    private final static int DIM = 9;
-
     public GameController(View view,  String gameID) {
         super(view);
-        System.out.println("GameController created");
-        //this.virtualGame = virtualGame;
-        System.out.println("GameController created");
-
         this.gameID = gameID;
         this.playerReady = false;
-        System.out.println("GameController created");
-
-        //adds itself to the subscribers
         ClientManager.pubsub.addSubscriber(TopicType.matchState, this);
-        //System.out.println("GameController created");
         ClientManager.pubsub.addSubscriber(TopicType.errorMessageState, this);
-        System.out.println("GameController created");
-
     }
-
-
     public String getGameID() {
         return gameID;
     }
@@ -53,7 +40,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
     public void setReady(){
         this.playerReady = true;
     }
-
     @Override
     public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
         //view has selected cards
@@ -279,6 +265,8 @@ public class GameController extends Controller implements GameViewObserver, Subs
                     ClientManager.view.chooseCards();
                     break;
             }
+        }else if (message instanceof ChatMessage mess) {
+            ClientManager.view.printChat(mess.messages);
         }
         return true;
     }
@@ -287,22 +275,19 @@ public class GameController extends Controller implements GameViewObserver, Subs
     Types of messages
      */
     @Override
-    public String onGetChatMessage(String msg){
-        virtualGameManager.receiveChatMessage(this.gameID, userNickname, msg);
-        return msg; //TODO: fix this method with the correspondent virtual section
+    public void onSendChatMessage(String message){
+        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,message,false,true);
     }
-
-
-
+    @Override
+    public void onGetChat(boolean fullChat){
+        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,null,fullChat,true);
+    }
     //TODO: make this!!!
     private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
         //TODO: check if is the selection is right
         //latestInit.selecex
         return true;
     }
-
-
-
     /*
     private boolean selectableCards(ArrayList<Pair<Integer, Integer>> cards){
         boolean accept = true;
@@ -353,8 +338,4 @@ public class GameController extends Controller implements GameViewObserver, Subs
     }
 
     */
-
-
-
-
 }

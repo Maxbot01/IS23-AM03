@@ -13,10 +13,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 import it.polimi.ingsw.server.RemoteUserInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Singleton that represents the front-end logic of the server and exposes the endpoint method that every client can call, it manages the requests creating and deleting the games
@@ -69,8 +66,8 @@ public class GameManager extends GameObservable{
 
     /**
      * User has either requested to see messages (fromUser and message null), or add message and get chat messages
-     * (gameId, null, null, true) -> receive all the messages
-     * (gameId, null, null. false) -> receive last 5 messages
+     * (gameId, null, null, true) -> receive all the messages //WE NEED THE USER TOO
+     * (gameId, null, null. false) -> receive last 5 messages //WE NEED THE USER TOO
      * (gameID, fromUser, message, false) -> send message and receive all the messages
      * (gameID, fromUser, message, true) -> send message and receive last 5 messages
      * @param gameID
@@ -78,24 +75,38 @@ public class GameManager extends GameObservable{
      * @param message
      * @param fullChat
      */
-    public void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat){
-
-        if(fromUser != null && message != null){
-            chats.computeIfAbsent(gameID, k -> new ArrayList<>());
-            Pair<String, String> myPair = new Pair<>(fromUser, message);
-            chats.get(gameID).add(myPair);
-        }
-
+    public void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame){
         for(GameLobby x: this.currentGames.keySet()){
-            if(x.getID().equals(gameID)){
-                ChatMessage sent;
-                if(fullChat){
-                    sent = new ChatMessage(chats.get(gameID));
-                }else {
-                    //just sends the last 5 messages
-                    sent = new ChatMessage((ArrayList<Pair<String, String>>) chats.get(gameID).subList(Math.max(chats.get(gameID).size() - 5, 0), chats.get(gameID).size()));
+            if(x.getID().equals(gameID) || currentGames.get(x).getID().equals(gameID)){
+                System.out.println("GM 1");
+                if(message == null){//We are sending the chat
+                    ArrayList<Pair<String, String>> lastFive = new ArrayList<>();
+                    if(chats.containsKey(gameID)) {
+                        if (!fullChat) {
+                            for (int i = chats.get(gameID).size() - 1; i >= 0 && i > chats.get(gameID).size() - 6; i--) {
+                                lastFive.add(chats.get(gameID).get(i));
+                            }
+                            Collections.reverse(lastFive);
+                            super.notifyObserver(fromUser, new ChatMessage(lastFive,inGame), true, gameID);
+                        } else {
+                            super.notifyObserver(fromUser, new ChatMessage(chats.get(gameID),inGame), true, gameID);
+                        }
+                    }else{//It sent an empty list if there are no messages
+                        super.notifyObserver(fromUser,new ChatMessage(lastFive,inGame),true,gameID);
+                    }
+                }else{//We got a message to add to the chat
+                    chats.computeIfAbsent(gameID, k -> new ArrayList<>());
+                    Pair<String, String> myPair = new Pair<>(fromUser, message);
+                    chats.get(gameID).add(myPair);
+                    ArrayList<Pair<String, String>> lastFive = new ArrayList<>();
+                    for (int i = chats.get(gameID).size() - 1; i >= 0 && i > chats.get(gameID).size() - 6; i--) {
+                        lastFive.add(chats.get(gameID).get(i));
+                    }
+                    Collections.reverse(lastFive);
+                    System.out.println("GM 2");
+                    super.notifyAllObservers(x.getPlayers(),new ChatMessage(lastFive,inGame),true,gameID);
                 }
-                super.notifyAllObservers(x.getPlayers(), new ChatMessage(chats.get(gameID)), true, gameID);
+                break;
             }
         }
     }

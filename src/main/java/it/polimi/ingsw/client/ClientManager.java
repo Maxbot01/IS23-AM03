@@ -152,7 +152,11 @@ public class ClientManager {
         }else if(receivedMessageDecoded instanceof FinishedGameMessage){
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
         }else if(receivedMessageDecoded instanceof ChatMessage){
-            pubsub.publishMessage(TopicType.gameManagerState, receivedMessageDecoded);
+            if(((ChatMessage) receivedMessageDecoded).inGame){
+                pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
+            }else {
+                pubsub.publishMessage(TopicType.lobbyState, receivedMessageDecoded);
+            }
         }
     }
 }

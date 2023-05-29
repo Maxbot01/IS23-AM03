@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatMessage extends Message{
-    public ChatMessage(ArrayList<Pair<String, String>> messages){
-        this.messages = messages;
-    }
     public ArrayList<Pair<String, String>> messages;
+    public boolean inGame;
+    public ChatMessage(ArrayList<Pair<String, String>> messages, boolean inGame){
+        this.messages = messages;
+        this.inGame = inGame;
+    }
 }
