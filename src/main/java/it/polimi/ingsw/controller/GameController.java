@@ -267,23 +267,31 @@ public class GameController extends Controller implements GameViewObserver, Subs
         } else if (message instanceof FinishedGameMessage mess) {
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             ClientManager.view.printShelves();
+            this.playerReady = false;
+            ClientManager.view.showErrorMessage("Exit the game with the command \"-close\"");
+            while (!playerReady){
+                Thread.onSpinWait();
+            }
             ClientManager.view.endCommands();//TODO: I will need to change this too, in order that it happens after the player has written "close" to exit the game
         } else if (message instanceof ErrorMessage mess) {
-            ClientManager.view.showErrorMessage(mess.info);//This is the info relative to the error message
             switch (mess.error.toString()) {
                 case "selectedColumnsError":
                     //System.out.println("error case in GameController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseColumn();
                     break;
                 case "shelfFullError":
                     //System.out.println("error case in GameController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     break;
                 case "acceptFinishedGameError":
                     //System.out.println("error case in GameController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     //TODO: Manage error
                     break;
                 case "selectedCardsMessageError":
                     //System.out.println("error case in GameController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseCards();
                     break;
             }

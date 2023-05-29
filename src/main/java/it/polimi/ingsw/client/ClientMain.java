@@ -123,30 +123,35 @@ public class ClientMain implements Runnable{
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Seleziona il tipo di connessione (socket/rmi): ");
-        String connectionType = scanner.nextLine();
+        //System.out.print("Seleziona il tipo di connessione (socket/rmi): ");
+        String connectionType;
 
         boolean isCLI = true;  // Imposta a true o false a seconda delle tue esigenze
         ClientMain client;
-        //TODO: Insert the following 3 if in a while, in order to not exit the client if user inserts neither options
-        if (connectionType.equalsIgnoreCase("socket")) {
-            System.out.println("Socket mode selected.");
-            Socket socket = new Socket("localhost", 1234);
-            client = new ClientMain(socket, isCLI, true, null);
-            client.run();
-            client.stop();
-        } else if (connectionType.equalsIgnoreCase("rmi")) {
-            System.out.println("RMI mode selected.");
-            MyRemoteInterface remoteObj = new MyRemoteObject();
-            Registry registry = LocateRegistry.createRegistry(1098);
-            registry.rebind("MyRemoteObject", remoteObj);
-            client = new ClientMain(null, isCLI, false, remoteObj);
-            client.runRMI();
-            client.stop();
-        } else {
-            System.out.println("Tipo di connessione non valido.");
-            return;
-        }
+        do { //Added in case the client inserts a wrong string
+            System.out.print("Seleziona il tipo di connessione (socket/rmi): ");
+            connectionType = scanner.nextLine();
+            if (connectionType.equalsIgnoreCase("socket")) {
+                System.out.println("Socket mode selected.");
+                Socket socket = new Socket("localhost", 1234);
+                client = new ClientMain(socket, isCLI, true, null);
+                client.run();
+                client.stop();
+                break;
+            } else if (connectionType.equalsIgnoreCase("rmi")) {
+                System.out.println("RMI mode selected.");
+                MyRemoteInterface remoteObj = new MyRemoteObject();
+                Registry registry = LocateRegistry.createRegistry(1098);
+                registry.rebind("MyRemoteObject", remoteObj);
+                client = new ClientMain(null, isCLI, false, remoteObj);
+                client.runRMI();
+                client.stop();
+                break;
+            } else {
+                System.out.println("Tipo di connessione non valido.");
+            }
+        } while(true);
+
     }
 }
 

@@ -38,13 +38,13 @@ public class GameManager extends GameObservable{
     //private HashMap<String, String> userIDs;
     public HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
-    private final HashMap<String,Boolean> playersNotInLobby; // boolean true means the player is in lobby
+    private final HashMap<String,Boolean> playersInLobby; // boolean true means the player is in lobby
     protected GameManager(){
         nicknames = new HashMap<>();
         currentGames = new HashMap<>();
         userMatches = new HashMap<>();
         userIdentification = new HashMap<>();
-        playersNotInLobby = new HashMap<>();
+        playersInLobby = new HashMap<>();
     }
 
 
@@ -55,8 +55,8 @@ public class GameManager extends GameObservable{
                 //joins this lobby
                 try {
                     x.addPlayer(user);
-                    this.playersNotInLobby.remove(user);
-                    this.playersNotInLobby.put(user,true);
+                    this.playersInLobby.remove(user);
+                    this.playersInLobby.put(user,true);
                 }catch(LobbyFullException e){
                     //lobby is full, returns error
                     super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull,e.info), false, "-");
@@ -67,11 +67,11 @@ public class GameManager extends GameObservable{
 
     public void createGame(Integer numPlayers, String username){
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
-        if(playersNotInLobby.containsKey(username)){ //It notifies every player still outside the lobby when a new game is created, and activates launchGameManager in the view
-            this.playersNotInLobby.remove(username);
-            this.playersNotInLobby.put(username,true);
-            for(String s: this.playersNotInLobby.keySet()) {
-                if (this.playersNotInLobby.get(s).equals(false)) {
+        if(playersInLobby.containsKey(username)){ //It notifies every player still outside the lobby when a new game is created, and activates launchGameManager in the view
+            this.playersInLobby.remove(username);
+            this.playersInLobby.put(username,true);
+            for(String s: this.playersInLobby.keySet()) {
+                if (this.playersInLobby.get(s).equals(false)) {
                     super.notifyObserver(s, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
                 }
             }
@@ -131,7 +131,7 @@ public class GameManager extends GameObservable{
             System.out.println(username + "connected");
             System.out.println("current games: " + getAllCurrentJoinableLobbiesIDs());
             nicknames.put(username, password);
-            this.playersNotInLobby.put(username,false);
+            this.playersInLobby.put(username,false);
             loggedSuccesful = true;
         }
 

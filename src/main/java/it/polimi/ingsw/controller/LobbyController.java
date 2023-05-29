@@ -73,10 +73,10 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
                 System.out.println("Last Lobby thread interrupted");
             }*/
         }else if(message instanceof ErrorMessage mess){
-            ClientManager.view.showErrorMessage(mess.info);
             switch (mess.error.toString()) {
                 case "notEnoughPlayers", "onlyHostCanStartMatch":
                     //System.out.println("error case in LobbyController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.launchGameLobby(lastLobbyMessage.ID,lastLobbyMessage.players,lastLobbyMessage.host);
                     break;
             }

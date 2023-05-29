@@ -71,14 +71,15 @@ public class GameManagerController extends Controller implements GameManagerView
                     break;
             }
         }else if(message instanceof ErrorMessage mess){
-            ClientManager.view.showErrorMessage(mess.info);
             switch (mess.error.toString()) {
                 case "wrongPassword":
                     //System.out.println("error case in GameManagerController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.requestCredentials();
                     break;
                 case "lobbyIsFull":
                     //System.out.println("error case in GameManagerController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.launchGameManager(lastLoginMessage.gamesPlayers);
                     break;
             }
