@@ -37,6 +37,21 @@ public class GUIView extends View {
 //NO
         }
 
+    /*@Override
+    public void waitingCommands() {
+
+    }*/
+    @Override
+    public void addNewGame(Pair<String, List<String>> newGame){}
+    @Override
+    public void addNewLobbyPlayer(String addedPlayer){
+        ScreenSwitcher.gameLobbyViewScene = ScreenSwitcher.gameLobbyView.updateUsers(addedPlayer);
+    }
+    @Override
+    public void gameCommands(){}
+    @Override
+    public void updatePlayingPlayer(String chairedPlayer){}
+
     @Override
     public void requestCredentials() {
         System.out.println("requestedCred");
@@ -94,5 +109,10 @@ public class GUIView extends View {
     @Override
     public void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner, GameStateType gameState) {
         //NO
+    }
+
+    @Override
+    public void printChat(ArrayList<Pair<String,String>> chat){
+
     }
 }

@@ -40,7 +40,8 @@ public interface UpdateHandler {
     void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String, Integer>
                                         updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf);
 
-    void waitingCommands(); // The controller continues to call this method until the playing player changes to the CLI user
+    //void waitingCommands(); // The controller continues to call this method until the playing player changes to the CLI user
+    void waitingCommands(); //The controller continues to call this method until the playing player changes to the CLI user
     /**
      * Requests Username from Command Line
      * @return String
@@ -51,6 +52,10 @@ public interface UpdateHandler {
      * @param availableGames
      */
     void launchGameManager(HashMap<String, List<String>> availableGames);
+    void addNewGame(Pair<String, List<String>> newGame);
+    void addNewLobbyPlayer(String addedPlayer);
+    void gameCommands();
+    void updatePlayingPlayer(String playingPlayer);
     /**
      * Calls the command section of GameLobby, enabling the user to write which command to execute.
      * It is sent only to the
@@ -73,6 +78,11 @@ public interface UpdateHandler {
      */
     void printLivingRoom();
     /**
+     * prints the chat
+     * @param messages
+     */
+    void printChat(ArrayList<Pair<String, String>> messages);
+    /**
      * Prints all the shelves
      */
     void printShelves();
@@ -92,4 +102,6 @@ public interface UpdateHandler {
      * @param winner
      */
     void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner,GameStateType gameState);
+
+    //void readInput() throws InterruptedException; CLIInputThread
 }

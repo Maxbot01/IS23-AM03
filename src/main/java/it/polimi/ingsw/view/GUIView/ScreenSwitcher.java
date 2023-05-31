@@ -27,8 +27,8 @@ import javafx.scene.layout.StackPane;
 
 public class ScreenSwitcher extends Application {
     private static Stage primaryStage;
-    private static Scene gameManagerViewScene;
-    private static Scene gameLobbyViewScene;
+    public static Scene gameManagerViewScene;
+    static Scene gameLobbyViewScene;
 
     private static Scene gameScene;
 
@@ -65,7 +65,7 @@ public class ScreenSwitcher extends Application {
         new Thread(() -> {
             try {
                 Socket socket = new Socket("localhost", 1234);
-                ClientMain client = new ClientMain(socket, false);
+                ClientMain client = new ClientMain(socket, false, true, null);
                 client.run();
                 client.stop();
 
@@ -90,7 +90,7 @@ public class ScreenSwitcher extends Application {
 
     }
 
-    public static void showGameLobbyView(List<String> users, String host, boolean isHost) {
+    public static void showGameLobbyView(ArrayList<String> users, String host, boolean isHost) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {

@@ -75,7 +75,7 @@ public class Shelf {
         }
         // check if the column is already full
         if (columnIsFull(colIndex)) {
-            throw new ColumnNotSelectable("Selected column is already full");
+            throw new ColumnNotSelectable("The selected column is already full");
         }
         // find the first empty row in the column
         int row = 0;
@@ -84,7 +84,7 @@ public class Shelf {
         }
         // check if there is enough space in the column for the selected cards
         if (row + selCards.size() > ROWS_LEN) {
-            throw new ColumnNotSelectable("Cannot add cards to column: not enough space");
+            throw new ColumnNotSelectable("Cannot add cards to column, not enough space");
         }
         for (BoardCard selCard : selCards) {
             shelfCards[5-row][colIndex] = selCard;
@@ -93,7 +93,7 @@ public class Shelf {
 
         // check if the shelf is already full
         if (shelfIsFull()) {
-            throw new ShelfFullException("Shelf is already full");
+            throw new ShelfFullException("Shelf is full");
         }
     }
     /**

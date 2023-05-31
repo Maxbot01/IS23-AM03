@@ -4,7 +4,10 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
+import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.errorMessages.SelectedColumnsMessageError;
+import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.*;
 import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
@@ -113,22 +116,23 @@ public class Game extends GameObservable{
          */
         //TODO: check to be sure that the right player played
         ArrayList<BoardCard> selectedCardsTypes = new ArrayList<>();
-        for (Pair<Integer, Integer> pr: selected) {
-            try {
+        //try {//Exception handled in GameManager
+            for (Pair<Integer, Integer> pr: selected) {
                 selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
-            } catch (UnselectableCardException e) {
-                // non dovrebbero esserci errori visto che il check lo facciamo nella view
-                throw new RuntimeException(e);
-                //TODO: manage this exception, send an error message
             }
-        }
-        try {
             this.livingRoom.updateBoard(selected);
+            super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
+        /*} catch (UnselectableCardException e) {
+            super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError, e.info),true,ID);
+            //throw new RuntimeException(e);
+        }*/
+        /*try {
+            this.livingRoom.updateBoard(selected);//It would send two error messages, making two chooseCards call
         } catch (UnselectableCardException e) {
+            super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError),true,ID);
             throw new RuntimeException(e);
-            //TODO: gestire questo errore
-        }
-        super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
+        }*/
+        //It is sent only if successful -> super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
     }
 
     private List<String> getAllNicks(){
@@ -180,7 +184,7 @@ public class Game extends GameObservable{
             }*/
         }catch(ColumnNotSelectable e) {
             //can't insert the items in the columns, send error message to client
-            super.notifyObserver(playingPlayer.getNickname(), new SelectedColumnsMessageError(e.getMessage()), true, this.ID);
+            super.notifyObserver(playingPlayer.getNickname()/*TODO: Same as signature 'user'? be sure*/, new ErrorMessage(ErrorType.selectedColumnsError,e.info), true, this.ID);
             return;
         }catch (ShelfFullException e1){
             //TODO: handle game over
@@ -188,6 +192,7 @@ public class Game extends GameObservable{
             this.gameState = GameStateType.LAST_ROUND;
             //the current player gets the bonus point for finishing
             this.playingPlayer.updateScore(1);
+            super.notifyObserver(playingPlayer.getNickname(), new ErrorMessage(ErrorType.shelfFullError,e1.info), true, this.ID);
         }
         //the playing players shelf is updated
         //calculate players points gained from the move
@@ -209,7 +214,7 @@ public class Game extends GameObservable{
         try{
             this.livingRoom.refillBoard();
         }catch(NoMoreCardsException e){
-            this.gameState = GameStateType.LAST_ROUND;
+            this.gameState = GameStateType.LAST_ROUND;//TODO: Error -> it's not the last round yet
         }
         //se il game non è finito posso procedere ed inviare l'update a tutti
         super.notifyAllObservers(getAllNicks(), new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(),

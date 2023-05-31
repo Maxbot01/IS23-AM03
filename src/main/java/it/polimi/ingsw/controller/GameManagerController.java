@@ -6,6 +6,9 @@ import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
+import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
+import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
@@ -13,28 +16,32 @@ import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
+import it.polimi.ingsw.model.modelSupport.Client;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.view.View;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
     private VirtualGameManager virtualGameManager;
-    private loginGameMessage lastLoginMessage;
-
+    private loginGameMessage lastLoginMessage = null;
+    private Thread lastThread;
     public GameManagerController(View view, VirtualGameManager virtualGameManager) {
         super(view);
         this.virtualGameManager = virtualGameManager;
         ClientManager.pubsub.addSubscriber(TopicType.gameManagerState, this);
         ClientManager.pubsub.addSubscriber(TopicType.errorMessageState, this);
         ClientManager.pubsub.addSubscriber(TopicType.networkMessageState, this);
-        virtualGameManager.ping(ClientManager.userUID);
+        virtualGameManager.ping();
     }
-
 
     @Override
     public void onSetCredentials(String username, String password) {
-        virtualGameManager.setCredentials(username, password, ClientManager.userUID);
+        System.out.println("Credentials set");
+        ClientManager.userNickname = username;
+        virtualGameManager.setCredentials(username, password);
     }
 
     @Override
@@ -55,30 +62,76 @@ public class GameManagerController extends Controller implements GameManagerView
     @Override
     public boolean receiveSubscriberMessages(Message message) {
         if(message instanceof NetworkMessage){
-
             //this message holds Messages useful for network
             switch (((NetworkMessage) message).message){
                 case "pong":
+                    System.out.println(ClientManager.gameManagerController);
+                    System.out.println("pong received");
                     ClientManager.view.requestCredentials();
                     break;
                 default:
                     break;
             }
-        }else if(message instanceof ErrorMessage){
-            ClientManager.view.showErrorMessage(((ErrorMessage) message).error.toString());
-            switch (((ErrorMessage)message).error.toString()) {
+        }else if(message instanceof ErrorMessage mess){
+            switch (mess.error.toString()) {
                 case "wrongPassword":
+                    //System.out.println("error case in GameManagerController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.requestCredentials();
                     break;
                 case "lobbyIsFull":
+                    //System.out.println("error case in GameManagerController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.launchGameManager(lastLoginMessage.gamesPlayers);
                     break;
             }
-        }else if(message instanceof loginGameMessage){
+        }else if(message instanceof loginGameMessage mess){
             //user can go in, launchGameManager phase
-            ClientManager.userNickname = ((loginGameMessage)message).username;
-            this.lastLoginMessage = (loginGameMessage)message;
-            ClientManager.view.launchGameManager(((loginGameMessage)message).gamesPlayers);
+            if(lastLoginMessage == null){
+                this.lastLoginMessage = mess;
+                ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);
+            }else{
+                String addedGameId = null;
+                List<String> addedGamePlayers = null;
+                //Check needed to add a new game or update an old one with a new player entry
+                if(lastLoginMessage.gamesPlayers.keySet().containsAll(mess.gamesPlayers.keySet())){
+                    boolean found = false;
+                    for(String key: mess.gamesPlayers.keySet()){
+                        for(String playerName: mess.gamesPlayers.get(key)){
+                            if(!lastLoginMessage.gamesPlayers.get(key).contains(playerName)){
+                                addedGameId = key;
+                                addedGamePlayers = mess.gamesPlayers.get(key);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(found){
+                            break;
+                        }
+                    }
+                }else{
+                    for(String s: mess.gamesPlayers.keySet()){
+                        if(!lastLoginMessage.gamesPlayers.containsKey(s)){
+                            addedGameId = s;
+                            addedGamePlayers = mess.gamesPlayers.get(s);
+                            break;
+                        }
+                    }
+                }
+                this.lastLoginMessage = (loginGameMessage)message;
+                Pair<String, List<String>> addedGame = new Pair<>(addedGameId, addedGamePlayers);
+                ClientManager.view.addNewGame(addedGame);
+
+            }
+            /*if(lastThread != null){
+                System.out.println("launchGameManager "+lastThread.getName()+" interrupted");
+                lastThread.interrupt();
+            }else{
+                System.out.println("First launchGameManager");
+            }
+            this.lastThread = Thread.currentThread();
+            System.out.println("launchGameManager Thread name: "+Thread.currentThread().getName());
+            ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);*/
         }
         return true;
     }

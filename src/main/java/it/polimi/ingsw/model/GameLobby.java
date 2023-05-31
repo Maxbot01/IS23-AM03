@@ -19,15 +19,18 @@ public class GameLobby extends GameObservable {
         return players;
     }
 
+    public String getHost(){
+        return this.host;
+    }
+
     public void startMatch(String user){
         System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
             GameManager.getInstance().createMatchFromLobby(ID, players);
-        }else if (numOfPlayers < players.size()){
-            //TODO: send wrong request error
-            super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers), false, "-");
-        }else if(!user.equals(host)){
-            super.notifyObserver(user, new ErrorMessage(ErrorType.onlyHostCanStartMatch), false, "-");
+        }else if (players.size() < numOfPlayers){
+            super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers,"There aren't enough players to start the match"), false, "-");
+        }else if(!user.equals(host)){//TODO: This check is not needed, it is done inside the cli, maybe it's needed for the gui, check before removing
+            super.notifyObserver(user, new ErrorMessage(ErrorType.onlyHostCanStartMatch,"Only the host can start the match"), false, "-");
         }
     }
 
@@ -41,16 +44,16 @@ public class GameLobby extends GameObservable {
         this.numOfPlayers = numOfPlayers;
         players = new ArrayList<>();
         players.add(host);
-        super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players), false, ID); //TODO: non dovrebbe essere true inLobbyorGame?
+        super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players, false), false, ID); //TODO: non dovrebbe essere true inLobbyorGame?
         //TODO: Send a message to all observers not in game (or don't show it) with the new available games (remember that there's the method lookForNewGames)
     }
 
     public void addPlayer(String player) throws LobbyFullException {
         if(players.size() + 1 > numOfPlayers){
-            throw new LobbyFullException();
+            throw new LobbyFullException("The selected lobby is full");
         }else{
             players.add(player);
-            super.notifyAllObservers(players, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
+            super.notifyAllObservers(players, new LobbyInfoMessage(ID, host, numOfPlayers, players,false), true, this.ID);
             //super.notifyObserver(player, new LobbyInfoMessage(ID, host, numOfPlayers, players), true, this.ID);
         }
     }

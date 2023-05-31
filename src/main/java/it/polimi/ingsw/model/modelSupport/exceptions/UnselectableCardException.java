@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.modelSupport.exceptions;
 
-public class UnselectableCardException extends Exception{
-    public UnselectableCardException( String msg){
-        super(msg);
-    }
-    public UnselectableCardException(){
+import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 
+public class UnselectableCardException extends Exception{
+    public String info;
+    public UnselectableCardException(String info){
+        this.info = info;
     };
 }

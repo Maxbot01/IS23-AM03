@@ -13,20 +13,20 @@ Model:<br />
 ![90%](https://progress-bar.dev/90)
 
 Controller:<br />
-![80%](https://progress-bar.dev/80)
+![90%](https://progress-bar.dev/90)
 
 Socket:<br />
-![40%](https://progress-bar.dev/40)
+![90%](https://progress-bar.dev/90)
 
 RMI:<br />
-![0%](https://progress-bar.dev/0)
+![80%](https://progress-bar.dev/80)
 
 Chat:<br />
-![10%](https://progress-bar.dev/10)
+![80%](https://progress-bar.dev/80)
 
 CLI:<br />
 ![90%](https://progress-bar.dev/90)
 
 GUI:<br />
-![0%](https://progress-bar.dev/0)
+![30%](https://progress-bar.dev/30)
 
