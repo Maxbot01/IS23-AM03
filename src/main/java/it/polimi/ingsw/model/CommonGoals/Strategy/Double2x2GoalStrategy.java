@@ -10,6 +10,11 @@ import java.util.ArrayList;
  * Strategy of Double2x2: it looks for 2 groups of 4 boardCards of the same color in a square formation (the two groups can be of a different color)
  */
 public class Double2x2GoalStrategy implements CommonGoalStrategy {
+    /*private String description = "Sei gruppi separati formati ciascuno da due tessere adiacenti dello stesso tipo (non necessariamente come mostrato in figura). Le tessere di un gruppo possono essere diverse da quelle di un altro gruppo.";
+    public String getDescription() {
+        return this.description;
+    }*///TODO: Decide whether to add this description or not
+
     /**
      * Algorithm of Double2x2
      * @param Mat

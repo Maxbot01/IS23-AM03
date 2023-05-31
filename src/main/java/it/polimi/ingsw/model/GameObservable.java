@@ -62,7 +62,7 @@ public abstract class GameObservable {
      */
     protected void notifyAllObservers(List<String> observers, Message withMessage, boolean inLobbyOrGame, String gameID){
         //send the message for every given nick (TO CHANGE MAYBE)
-        System.out.println("Sending message to everyone" + observers);
+        System.out.println("Sending message to everyone " + observers);
         //TODO: change format for this
         for(String player: observers){
             sendMessageToNetworkUser(player, withMessage, gameID);
@@ -91,6 +91,7 @@ public abstract class GameObservable {
             ServerMain.server.sendMessageToSocket(serializedMessage, GameManager.getInstance().userIdentification.get(toPlayer).getSocketID());
         }else{
             //TODO: user is RMI
+            System.out.println("I'm in RMI sendMessageToNetworkUser");
             //send rmi
             // Ottenere una referenza all'oggetto remoto associato al client
             MyRemoteInterface remoteObject = GameManager.getInstance().userIdentification.get(toPlayer).getRemoteObject();

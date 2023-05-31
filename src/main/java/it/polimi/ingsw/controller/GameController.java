@@ -230,7 +230,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.waitingCommands();
             }*/
             ClientManager.view.updatePlayingPlayer(mess.newPlayer);
-            System.out.println("Calling gameCommands for player: "+currentPlayerSelecting);
             if(ClientManager.userNickname.equals(currentPlayerSelecting)){
                 ClientManager.view.gameCommands();
             }
@@ -242,7 +241,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             while (!playerReady){
                 Thread.onSpinWait();
             }
-            ClientManager.view.endCommands();//TODO: I will need to change this too, in order that it happens after the player has written "close" to exit the game
+            ClientManager.view.endCommands();
         } else if (message instanceof ErrorMessage mess) {
             switch (mess.error.toString()) {
                 case "selectedColumnsError":
