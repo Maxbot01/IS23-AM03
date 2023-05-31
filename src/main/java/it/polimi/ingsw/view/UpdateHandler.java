@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.modelSupport.PersonalGoal;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,10 @@ public interface UpdateHandler {
      */
     void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals,
                            BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
-                           HashMap<String, Integer> playersPoints, GameStateType gameState);
+                           HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException;
+
+    void initializeGame(List<String> players, int[] indexes, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String, BoardCard[][]>> playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException;
+
     /**
      * It contains all the available command the CLI user can call while waiting for his turn
      */

@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.virtual_model.VirtualGame;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -70,7 +71,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
 
 
     @Override
-    public boolean receiveSubscriberMessages(Message message) {
+    public boolean receiveSubscriberMessages(Message message) throws IOException {
         //a message has been received
         //should receive matchStateMessages only
         //after it receives it, updates the view accordingly

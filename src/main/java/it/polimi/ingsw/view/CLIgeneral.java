@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
@@ -118,6 +120,12 @@ public class CLIgeneral extends View{
             this.players.get(j).updateScore(playersPoints.get(players.get(j).getNickname())-players.get(j).getScore());
         }
     }
+
+    @Override
+    public void initializeGame(List<String> players, int[] indexes, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String, BoardCard[][]>> playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException {
+
+    }
+
     @Override
     public void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState){
         this.livingRoom = livingRoom;

@@ -19,23 +19,23 @@ public class GUIView extends View {
 
     @Override
     public void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String, BoardCard[][]>> playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState) {
-       //ScreenSwitcher.getInstance().start();
+       //MAX
     }
 
     @Override
     public void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState) {
-
+        //MAX
     }
 
     @Override
     public void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String, Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf) {
-
+        //MAX
     }
 
     @Override
-    public void waitingCommands() {
-
-    }
+        public void waitingCommands() {
+//NO
+        }
 
     @Override
     public void requestCredentials() {
@@ -58,41 +58,41 @@ public class GUIView extends View {
 
     @Override
     public void chooseCards() {
-
+        //MAX
     }
 
     @Override
     public void chooseColumn() {
-
+        //MAX
     }
 
     @Override
     public void endCommands() {
-
+        //MAX*
     }
 
     @Override
     public void printLivingRoom() {
-
+      //NO
     }
 
     @Override
     public void printShelves() {
-
+        //NO
     }
 
     @Override
     public void showErrorMessage(String error) {
-
+        //MAX
     }
 
     @Override
     public void showPlayingPlayer(String playingPlayer) {
-
+        //NO
     }
 
     @Override
     public void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner, GameStateType gameState) {
-
+        //NO
     }
 }
