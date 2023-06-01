@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.pubSub;
 
 import it.polimi.ingsw.model.messageModel.Message;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,7 +42,7 @@ public class PubSubService {
 
     //possibility to hava a callback to ack if the sub received
     //TODO: use PubSubMessage instead of generic message
-    public void publishMessage(TopicType topic, Message message){
+    public void publishMessage(TopicType topic, Message message) throws IOException {
         if (topicSubMap.containsKey(topic)){
             for (Subscriber s: topicSubMap.get(topic)) {
                 s.receiveSubscriberMessages(message);

@@ -7,6 +7,7 @@ import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
@@ -26,27 +27,13 @@ public class GameController extends Controller implements GameViewObserver, Subs
     private String currentPlayerSelecting;
     public volatile boolean playerReady;
 
-    private final static int DIM = 9;
-
     public GameController(View view,  String gameID) {
         super(view);
-        System.out.println("GameController created");
-        //this.virtualGame = virtualGame;
-        System.out.println("GameController created");
-
         this.gameID = gameID;
         this.playerReady = false;
-        System.out.println("GameController created");
-
-        //adds itself to the subscribers
         ClientManager.pubsub.addSubscriber(TopicType.matchState, this);
-        //System.out.println("GameController created");
         ClientManager.pubsub.addSubscriber(TopicType.errorMessageState, this);
-        System.out.println("GameController created");
-
     }
-
-
     public String getGameID() {
         return gameID;
     }
@@ -54,7 +41,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
     public void setReady(){
         this.playerReady = true;
     }
-
     @Override
     public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
         //view has selected cards
@@ -67,13 +53,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.chooseCards();
         }
     }
-
     @Override
     public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) {
         //view has selected columns
         virtualGameManager.selectedColumn(selCards, colIndex, user, gameID, stub);
     }
-
     @Override
     public void onAcceptFinishedGame() {
         //view has accepted finished game
@@ -84,8 +68,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
         virtualGameManager.sendAck();
         ClientManager.view.chooseCards();
     }
-
-
     @Override
     public boolean receiveSubscriberMessages(Message message){
         //a message has been received
@@ -218,8 +200,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printLivingRoom();
             ClientManager.view.printShelves();
             //ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
-            //TODO: I could put a new method updateWhoIsPlaying with the chairedPlayer, so the view knows who is playing
-            //TODO: I could put gameCommands here instead of the if else
             /*if (mess.chairedPlayer.equals(ClientManager.userNickname)) {
                 latestInit = mess;
                 virtualGameManager.sendAck();
@@ -230,8 +210,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.updatePlayingPlayer(mess.chairedPlayer);
             ClientManager.view.gameCommands();
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
-            //TODO: Basically identical to initStateMessage
-            //TODO: Be careful, it will have the same thread problem as launchGameLobby
+            //TODO: Basically identical to initStateMessage, be careful
         } else if (message instanceof SelectedCardsMessage) {
             SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
@@ -246,7 +225,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printShelves();
             ClientManager.view.printLivingRoom();
             //ClientManager.view.showPlayingPlayer(mess.newPlayer);// print the chairedPlayer from the view (CLI)
-            //TODO: Instead of having chooseCards I will have updateWhoIsPlaying with the newPlayer (inside the method I'll have a print that shows who is playing now, and it will grant the command "select_cards" to that player
             /*if (mess.newPlayer.equals(ClientManager.userNickname)) {
                 ClientManager.view.chooseCards();
             } else {
@@ -260,26 +238,36 @@ public class GameController extends Controller implements GameViewObserver, Subs
         } else if (message instanceof FinishedGameMessage mess) {
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             ClientManager.view.printShelves();
+            this.playerReady = false;
+            ClientManager.view.showErrorMessage("Exit the game with the command \"-close\"");
+            while (!playerReady){
+                Thread.onSpinWait();
+            }
             ClientManager.view.endCommands();//TODO: I will need to change this too, in order that it happens after the player has written "close" to exit the game
         } else if (message instanceof ErrorMessage mess) {
-            ClientManager.view.showErrorMessage(mess.info);//This is the info relative to the error message
             switch (mess.error.toString()) {
                 case "selectedColumnsError":
                     //System.out.println("error case in GameController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseColumn();
                     break;
                 case "shelfFullError":
                     //System.out.println("error case in GameController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     break;
                 case "acceptFinishedGameError":
                     //System.out.println("error case in GameController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     //TODO: Manage error
                     break;
                 case "selectedCardsMessageError":
                     //System.out.println("error case in GameController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseCards();
                     break;
             }
+        }else if (message instanceof ChatMessage mess) {
+            ClientManager.view.printChat(mess.messages);
         }
         return true;
     }
@@ -288,22 +276,19 @@ public class GameController extends Controller implements GameViewObserver, Subs
     Types of messages
      */
     @Override
-    public String onGetChatMessage(String msg){
-        virtualGameManager.receiveChatMessage(this.gameID, userNickname, msg);
-        return msg; //TODO: fix this method with the correspondent virtual section
+    public void onSendChatMessage(String message){
+        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,message,false,true);
     }
-
-
-
+    @Override
+    public void onGetChat(boolean fullChat){
+        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,null,fullChat,true);
+    }
     //TODO: make this!!!
     private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
         //TODO: check if is the selection is right
         //latestInit.selecex
         return true;
     }
-
-
-
     /*
     private boolean selectableCards(ArrayList<Pair<Integer, Integer>> cards){
         boolean accept = true;
@@ -354,8 +339,4 @@ public class GameController extends Controller implements GameViewObserver, Subs
     }
 
     */
-
-
-
-
 }

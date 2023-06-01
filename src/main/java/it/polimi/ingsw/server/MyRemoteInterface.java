@@ -23,6 +23,7 @@ public interface MyRemoteInterface extends Remote {
         Message selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID) throws RemoteException, UnselectableCardException;
         Message selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID) throws RemoteException;
         void sendAck() throws RemoteException;
-        void receiveChatMessage(String gameID, String fromUser, String message) throws RemoteException;
+        void receiveMessage(Message withMessage, String rmiUID);
+        void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame);
         void registerClient(String ipAddress) throws RemoteException;
 }

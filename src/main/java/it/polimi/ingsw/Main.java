@@ -17,7 +17,8 @@ import it.polimi.ingsw.view.CLIgeneral;
 
 import javax.swing.*;
 
-public class Main {
+public class
+Main {
     public static void main(String[] args) {
         /*
         ArrayList<Player> players = new ArrayList<>();

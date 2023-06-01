@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.LobbyViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
+import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
@@ -16,7 +17,7 @@ import static it.polimi.ingsw.client.ClientRMI.stub;
 
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 
-    private String ID;
+    private final String ID;
     private boolean isFirstLobbyMessage;
     public LobbyInfoMessage lastLobbyMessage;
     private Thread lastThread;
@@ -75,18 +76,24 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
                 System.out.println("Last Lobby thread interrupted");
             }*/
         }else if(message instanceof ErrorMessage mess){
-            ClientManager.view.showErrorMessage(mess.info);
             switch (mess.error.toString()) {
                 case "notEnoughPlayers", "onlyHostCanStartMatch":
                     //System.out.println("error case in LobbyController: "+mess.info);
+                    ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.launchGameLobby(lastLobbyMessage.ID,lastLobbyMessage.players,lastLobbyMessage.host);
                     break;
             }
+        } else if (message instanceof ChatMessage mess) {
+            ClientManager.view.printChat(mess.messages);
         }
         return true;
     }
     @Override
-    public String onGetChatMessage(String msg){
-        return msg; //TODO: fix this method with the correspondent virtual section
+    public void onSendChatMessage(String message){
+        ClientManager.virtualGameManager.receiveChatMessage(this.ID,ClientManager.userNickname,message,false,false);
+    }
+    @Override
+    public void onGetChat(boolean fullChat){
+        ClientManager.virtualGameManager.receiveChatMessage(this.ID,ClientManager.userNickname,null,fullChat,false);
     }
 }

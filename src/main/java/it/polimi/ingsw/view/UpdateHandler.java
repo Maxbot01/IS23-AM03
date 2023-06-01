@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.modelSupport.PersonalGoal;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,10 @@ public interface UpdateHandler {
      */
     void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals,
                            BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
-                           HashMap<String, Integer> playersPoints, GameStateType gameState);
+                           HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException;
+
+    void initializeGame(List<String> players, int[] indexes, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String, BoardCard[][]>> playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException;
+
     /**
      * It contains all the available command the CLI user can call while waiting for his turn
      */
@@ -59,7 +63,6 @@ public interface UpdateHandler {
     void launchGameLobby(String gameId, ArrayList<String> players, String host); // The check of whether the user is the host is done inside the method, there's no need to give info
     /**
      * Calls the game sequence where the CLI user chooses the cards from the living room
-     * @throws UnselectableCardException
      */
     void chooseCards();
     /**
@@ -75,10 +78,13 @@ public interface UpdateHandler {
      */
     void printLivingRoom();
     /**
+     * prints the chat
+     * @param messages
+     */
+    void printChat(ArrayList<Pair<String, String>> messages);
+    /**
      * Prints all the shelves
      */
-
-    void newChatMessage(ArrayList<Pair<String, String>> messages);
     void printShelves();
     /**
      * Prints error type on command line
