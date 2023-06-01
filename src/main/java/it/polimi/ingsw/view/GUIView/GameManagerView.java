@@ -15,6 +15,8 @@ import javafx.util.Callback;
 
 import java.util.*;
 
+import static it.polimi.ingsw.client.ClientRMI.stub;
+
 public class GameManagerView {
     private ScreenSwitcher screenSwitcher;
     private ListView<Game> gameListView;
@@ -93,7 +95,7 @@ public class GameManagerView {
                 int numberOfPlayers = Integer.parseInt(players);
                 // Perform create game action with the number of players
                 System.out.println("Creating a new game with " + numberOfPlayers + " players");
-                ClientManager.gameManagerController.onCreateGame(numberOfPlayers, ClientManager.userNickname);
+                ClientManager.gameManagerController.onCreateGame(numberOfPlayers, ClientManager.userNickname,stub);
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input: Please enter a valid number of players.", ButtonType.OK);
                 alert.showAndWait();
@@ -144,7 +146,7 @@ public class GameManagerView {
             if (selectedGame != null) {
                 // Perform join action for the selected game
                 System.out.println("Joining game: " + selectedGame.getId());
-                ClientManager.gameManagerController.onSelectGame(selectedGame.getId(), ClientManager.userNickname);
+                ClientManager.gameManagerController.onSelectGame(selectedGame.getId(), ClientManager.userNickname, stub);
             }
         });
         return joinButton;

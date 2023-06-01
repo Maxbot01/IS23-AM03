@@ -7,7 +7,9 @@ import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.ServerMain;
+import it.polimi.ingsw.server.ServerRMI;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public abstract class GameObservable {
      * @param inLobbyOrGame
      * @param gameID
      */
-    protected void notifyObserver(String toPlayer, Message withMessage, boolean inLobbyOrGame, String gameID){
+    protected Message notifyObserver(String toPlayer, Message withMessage, boolean inLobbyOrGame, String gameID){
         //if we are in a lobby or in a game needs to send the id of the lobby/game
 
         System.out.println("sending out");
@@ -28,9 +30,10 @@ public abstract class GameObservable {
 
 
         //withMessage.printMessage();
+        return withMessage;
     }
 
-    protected void notifyNetworkClient(RemoteUserInfo client, Message withMessage){
+    protected Message notifyNetworkClient(RemoteUserInfo client, Message withMessage, MyRemoteInterface stub){
         System.out.println("sending out");
         if(client.isConnectionSocket()){
             //send socket
@@ -41,17 +44,14 @@ public abstract class GameObservable {
             serializedMessage = messageSerializer.serialize(withMessage, "", "");
             ServerMain.server.sendMessageToSocket(serializedMessage, client.getSocketID());
         }else{
-
             System.out.println("sending out");
             //send rmi
-            // Ottenere una referenza all'oggetto remoto associato al client
-            MyRemoteInterface remoteObject = client.getRemoteObject();
-
-            // Invocare il metodo desiderato sull'oggetto remoto
-            remoteObject.receiveMessage(withMessage, client.getRmiUID());
+            return withMessage;
         }
 
+        return withMessage;
     }
+
 
     /**
      * Notifies multiple observers, usually every user of a game
@@ -77,9 +77,9 @@ public abstract class GameObservable {
      * @param withMessage
      * @param gameID
      */
-    private void sendMessageToNetworkUser(String toPlayer, Message withMessage, String gameID) {
+    private Message sendMessageToNetworkUser(String toPlayer, Message withMessage, String gameID) {
         System.out.println("sending out");
-        if(GameManager.getInstance().userIdentification.get(toPlayer).isConnectionSocket()){
+        /*if(GameManager.getInstance().userIdentification.get(toPlayer).isConnectionSocket()){
             //user is socket
             MessageSerializer messageSerializer = new MessageSerializer();
             String serializedMessage;
@@ -91,13 +91,10 @@ public abstract class GameObservable {
             ServerMain.server.sendMessageToSocket(serializedMessage, GameManager.getInstance().userIdentification.get(toPlayer).getSocketID());
         }else{
             //TODO: user is RMI
-            //send rmi
-            // Ottenere una referenza all'oggetto remoto associato al client
-            MyRemoteInterface remoteObject = GameManager.getInstance().userIdentification.get(toPlayer).getRemoteObject();
-
-            // Invocare il metodo desiderato sull'oggetto remoto
-            remoteObject.receiveMessage(withMessage, GameManager.getInstance().userIdentification.get(toPlayer).getRmiUID());
-        }
+            return withMessage;
+        }*/
+        System.out.println("Sending message to " + toPlayer + ": " + withMessage);
+        return withMessage;
     }
 
     /*

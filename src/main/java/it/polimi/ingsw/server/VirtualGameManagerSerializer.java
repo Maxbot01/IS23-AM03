@@ -41,7 +41,7 @@ public class VirtualGameManagerSerializer {
         return gson.toJson(virtualGameManagerSerializer);
     }
 
-    public static <token> void deserializeMethod(String jsonString, Socket socket) {
+    public static <token> void deserializeMethod(String jsonString, Socket socket, MyRemoteInterface stub) {
         //FOR SURE WE ARE IN SOCKET
         GameManager gameManager = GameManager.getInstance();
         Gson gson = new Gson();
@@ -49,7 +49,7 @@ public class VirtualGameManagerSerializer {
 
         switch(virtualGameManagerSerializer.getMethod()) {
             case "ping":
-                gameManager.ping(new RemoteUserInfo(true, socket, null));
+                gameManager.ping(new RemoteUserInfo(true, socket, null), stub);
                 break;
             case "setCredentials":
                 String username = (String) virtualGameManagerSerializer.getArgs()[0];

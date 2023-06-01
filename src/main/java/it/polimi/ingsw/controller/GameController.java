@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static it.polimi.ingsw.client.ClientManager.*;
+import static it.polimi.ingsw.client.ClientRMI.stub;
 
 public class GameController extends Controller implements GameViewObserver, Subscriber {
 
@@ -60,7 +61,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //check if selection was correct
         if (isSelectionPossible(selected)) {
             //ClientManager.view.chooseColumn();
-            ClientManager.virtualGameManager.selectedCards(selected, user, gameID);
+            ClientManager.virtualGameManager.selectedCards(selected, user, gameID, stub);
         }else{
             ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least one other chosen card");
             ClientManager.view.chooseCards();
@@ -70,7 +71,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
     @Override
     public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) {
         //view has selected columns
-        virtualGameManager.selectedColumn(selCards, colIndex, user, gameID);
+        virtualGameManager.selectedColumn(selCards, colIndex, user, gameID, stub);
     }
 
     @Override

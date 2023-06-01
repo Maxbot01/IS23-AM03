@@ -115,7 +115,7 @@ public class ServerMain {
                 while (isRunning) {
                     String message = (String) input.readObject();
                     System.out.println("Received message from client " + socket.getInetAddress().getHostAddress() + ": " + message);
-                    VirtualGameManagerSerializer.deserializeMethod(message, socket);
+                    VirtualGameManagerSerializer.deserializeMethod(message, socket, null);
                     //broadcastMessage("Client " + socket.getInetAddress().getHostAddress() + ": " + message);
                 }
             } catch (IOException e) {
@@ -155,7 +155,7 @@ public class ServerMain {
 
     public static void StartRMI() {
         try {
-            MyRemoteInterface remoteObj = new MyRemoteObject();
+            MyRemoteInterface remoteObj = new ServerRMI();
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("MyRemoteObject", remoteObj);
             System.out.println("Server pronto.");

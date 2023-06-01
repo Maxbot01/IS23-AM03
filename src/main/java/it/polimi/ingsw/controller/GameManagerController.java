@@ -18,6 +18,7 @@ import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessag
 import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
 import it.polimi.ingsw.model.modelSupport.Client;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
+import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.view.View;
 
 import javax.swing.*;
@@ -28,35 +29,34 @@ public class GameManagerController extends Controller implements GameManagerView
     private VirtualGameManager virtualGameManager;
     private loginGameMessage lastLoginMessage;
     private Thread lastThread;
-    public GameManagerController(View view, VirtualGameManager virtualGameManager) {
+    public GameManagerController(View view, VirtualGameManager virtualGameManager, MyRemoteInterface stub) {
         super(view);
         this.virtualGameManager = virtualGameManager;
         ClientManager.pubsub.addSubscriber(TopicType.gameManagerState, this);
         ClientManager.pubsub.addSubscriber(TopicType.errorMessageState, this);
         ClientManager.pubsub.addSubscriber(TopicType.networkMessageState, this);
-        virtualGameManager.ping();
     }
 
     @Override
-    public void onSetCredentials(String username, String password) {
+    public void onSetCredentials(String username, String password, MyRemoteInterface stub) {
         System.out.println("Credentials set");
         ClientManager.userNickname = username;
-        virtualGameManager.setCredentials(username, password);
+        virtualGameManager.setCredentials(username, password, stub);
     }
 
     @Override
-    public void onSelectGame(String gameId, String user) {
-        virtualGameManager.selectGame(gameId, user);
+    public void onSelectGame(String gameId, String user, MyRemoteInterface stub) {
+        virtualGameManager.selectGame(gameId, user, stub);
     }
 
     @Override
-    public void onCreateGame(int numOfPlayers, String user) {
-        virtualGameManager.createGame(numOfPlayers, user);
+    public void onCreateGame(int numOfPlayers, String user, MyRemoteInterface stub) {
+        virtualGameManager.createGame(numOfPlayers, user, stub);
     }
 
     @Override
-    public void onLookForNewGames(String user){
-        virtualGameManager.lookForNewGames(user);
+    public void onLookForNewGames(String user, MyRemoteInterface stub){
+        virtualGameManager.lookForNewGames(user, stub);
     }
 
     @Override

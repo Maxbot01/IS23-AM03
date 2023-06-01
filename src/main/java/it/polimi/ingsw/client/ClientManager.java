@@ -21,6 +21,7 @@ import it.polimi.ingsw.view.View;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.rmi.RemoteException;
 
 public class ClientManager {
 
@@ -78,9 +79,9 @@ public class ClientManager {
 
         virtualGameManager = new VirtualGameManager(isSocketClient, remoteObject);
         System.out.println("GameManagerController: " + ClientManager.gameManagerController);
-        gameManagerController = new GameManagerController(view, virtualGameManager);
+        gameManagerController = new GameManagerController(view, virtualGameManager, remoteObject);
         view.registerObserver(gameManagerController, null, null);
-
+        virtualGameManager.ping(remoteObject);
     }
 
     /*public static void startReceivingCommands(){ CLIInputThread
@@ -155,4 +156,5 @@ public class ClientManager {
             pubsub.publishMessage(TopicType.gameManagerState, receivedMessageDecoded);
         }
     }
+
 }

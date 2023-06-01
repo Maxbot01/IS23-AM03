@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server;
 
+import java.io.Serializable;
 import java.net.Socket;
 
-public class RemoteUserInfo{
+public class RemoteUserInfo implements Serializable {
     private final Socket socketID;
     private final String rmiUID;
 

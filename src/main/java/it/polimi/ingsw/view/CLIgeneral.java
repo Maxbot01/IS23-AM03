@@ -13,6 +13,9 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import org.apache.commons.cli.*;
 import java.util.*;
+
+import static it.polimi.ingsw.client.ClientRMI.stub;
+
 public class CLIgeneral extends View{
     private GameStateType gameState;
     private String gameID;
@@ -332,10 +335,8 @@ public class CLIgeneral extends View{
         String password = in.next();
         this.userPlayer = new Player(username);
         System.out.println("GameManagerController: " + ClientManager.gameManagerController);
-        System.out.println("Your username is: "+username);
-        System.out.println("Your password is: "+password);
         GameManagerController gameManagerController = ClientManager.gameManagerController;
-        gameManagerController.onSetCredentials(username, password);
+        gameManagerController.onSetCredentials(username, password, stub);
     }
     @Override
     public void showPlayingPlayer(String playingPlayer){//TODO: Delete because I'll have the chairedPlayer now
@@ -416,7 +417,7 @@ public class CLIgeneral extends View{
                         }
                         if (valid) {
                             finished = true;//TODO: Put this check in all section to solve the parsing error quit
-                            super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname());
+                            super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname(), stub);
                             break;
                         } else {
                             System.out.println("Incorrect ID, please select a valid ID");
@@ -448,7 +449,7 @@ public class CLIgeneral extends View{
                     if(numOfPlayers >= 2 && numOfPlayers <= 4) {
                         host = userPlayer.getNickname();
                         finished = true;
-                        super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
+                        super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname(), stub);
                     }else if(numOfPlayers > 4){
                         System.out.println("You can't have more than 4 players in a game");
                     }else{
@@ -692,7 +693,7 @@ public class CLIgeneral extends View{
             if(cmd.hasOption(exit)){
                 //TODO: Terminates the connection to the server
             }else if(cmd.hasOption(play_again)){
-                gameManagerController.onLookForNewGames(userPlayer.getNickname());
+                gameManagerController.onLookForNewGames(userPlayer.getNickname(),stub);
             }
         } catch (ParseException pe){
             System.out.println("endCommands section");

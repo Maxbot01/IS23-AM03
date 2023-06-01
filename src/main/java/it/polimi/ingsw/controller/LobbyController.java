@@ -12,6 +12,8 @@ import it.polimi.ingsw.view.View;
 
 import java.util.HashMap;
 
+import static it.polimi.ingsw.client.ClientRMI.stub;
+
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 
     private String ID;
@@ -33,7 +35,7 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
     @Override
     public void onStartMatch(String ID, String user) { // The username sent is the host's username
         //virtualGameLobby.startMatch(ID, user);
-        ClientManager.virtualGameManager.startMatch(ID, user);
+        ClientManager.virtualGameManager.startMatch(ID, user, stub);
     }
 
     @Override

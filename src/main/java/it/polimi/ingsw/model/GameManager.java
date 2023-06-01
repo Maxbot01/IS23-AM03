@@ -3,27 +3,22 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
+import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.GameStateMessage;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
-import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
-import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
+import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Singleton that represents the front-end logic of the server and exposes the endpoint method that every client can call, it manages the requests creating and deleting the games
@@ -52,7 +47,7 @@ public class GameManager extends GameObservable{
     }
 
 
-    public void selectGame(String ID, String user){
+    public Message selectGame(String ID, String user){
         //currentGames.put(new GameLobby());
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID) && !x.isKilled()){
@@ -67,6 +62,7 @@ public class GameManager extends GameObservable{
                 }
             }
         }
+        return null;
     }
 
     /**
@@ -102,7 +98,7 @@ public class GameManager extends GameObservable{
         }
     }
 
-    public void createGame(Integer numPlayers, String username){
+    public Message createGame(Integer numPlayers, String username){
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
         if(playersNotInLobby.containsKey(username)){ //It notifies every player still outside the lobby when a new game is created, and activates launchGameManager in the view
             this.playersNotInLobby.remove(username);
@@ -116,17 +112,18 @@ public class GameManager extends GameObservable{
             System.out.println("Player is not present");
         }
         System.out.println("new current games: " + currentGames.keySet());
+        return null;
     }
 
 
 
 
-    public void ping(RemoteUserInfo fromClientInfo){
+    public Message ping(RemoteUserInfo fromClientInfo, MyRemoteInterface stub) {
         //received ping message
         //send pong
         //TODO: server.send(new NetworkMessage("pong"));
         System.out.println("called ping() on server");
-        super.notifyNetworkClient(fromClientInfo, new NetworkMessage("pong"));
+        return super.notifyNetworkClient(fromClientInfo, new NetworkMessage("pong"), stub);
     }
 
 
@@ -147,7 +144,7 @@ public class GameManager extends GameObservable{
     }
 
 
-    public void setCredentials(String username, String password, RemoteUserInfo userInfo){
+    public Message setCredentials(String username, String password, RemoteUserInfo userInfo){
         //check if there was, else send message of erroneous username set request.
         boolean loggedSuccesful = false;
         if(nicknames.containsKey(username)){
@@ -176,18 +173,22 @@ public class GameManager extends GameObservable{
         if(loggedSuccesful){
             //TODO: save map of user -> RMI or socket id
             userIdentification.put(username, userInfo);
-            super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+            return super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
         }
 
+        return null;
     }
 
     /**
      * It sends the available games when a player wants to play again
+     *
      * @param
+     * @return
      */
     //TODO: Fix this method
-    public void lookForNewGames(String username){
+    public Message lookForNewGames(String username){
         super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+        return null;
     }
 
 
@@ -201,7 +202,7 @@ public class GameManager extends GameObservable{
     Gest methods LOBBIES and forward them to the exact game and lobby
      */
 
-    public void startMatch(String ID, String user){
+    public Message startMatch(String ID, String user){
         boolean found = false;
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
@@ -212,6 +213,7 @@ public class GameManager extends GameObservable{
         if(!found){
             //TODO: Manage "ID not found" error
         }
+        return null;
     }
     public void createMatchFromLobby(String ID, ArrayList<String> withPlayers){
         System.out.println("createMatchFromLobby");
@@ -239,7 +241,7 @@ public class GameManager extends GameObservable{
     /*
     GAME methods
      */
-    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
+    public Message selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
         for(Game x: currentGames.values()){
             if(x.getID().equals(gameID)){
                 try{
@@ -250,14 +252,16 @@ public class GameManager extends GameObservable{
 
             }
         }
+        return null;
     }
 
-    public void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
+    public Message selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
         for(Game x: currentGames.values()){
             if(x.getID().equals(gameID)){
                 x.selectedColumn(selected,column,user); // Per i try catch, non basta averli nel "game"?
             }
         }
+        return null;
     }
     /*
     Thread safe GameManager instance creator

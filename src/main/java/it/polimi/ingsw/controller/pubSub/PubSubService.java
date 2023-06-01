@@ -4,8 +4,6 @@ import it.polimi.ingsw.model.messageModel.Message;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class PubSubService {
     /**
@@ -27,7 +25,6 @@ public class PubSubService {
             ArrayList<Subscriber> toAdd = new ArrayList<>();
             toAdd.add(subscriber);
             topicSubMap.put(topic, toAdd);
-
         }
     }
 
@@ -38,6 +35,7 @@ public class PubSubService {
             subscribers.remove(subscriber);
             topicSubMap.put(topic, subscribers);
         }
+
 
     }
 

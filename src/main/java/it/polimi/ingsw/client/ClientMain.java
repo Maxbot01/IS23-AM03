@@ -1,19 +1,16 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.server.MyRemoteInterface;
-import it.polimi.ingsw.server.MyRemoteObject;
+import it.polimi.ingsw.server.ServerRMI;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class ClientMain implements Runnable{
 
@@ -137,7 +134,7 @@ public class ClientMain implements Runnable{
             client.stop();
         } else if (connectionType.equalsIgnoreCase("rmi")) {
             System.out.println("RMI mode selected.");
-            MyRemoteInterface remoteObj = new MyRemoteObject();
+            MyRemoteInterface remoteObj = new ServerRMI();
             Registry registry = LocateRegistry.createRegistry(1098);
             registry.rebind("MyRemoteObject", remoteObj);
             client = new ClientMain(null, isCLI, false, remoteObj);
