@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.helpers;
 
-public class Quartet<Z,F,S,T> {
+import java.io.Serializable;
+
+public class Quartet<Z,F,S,T> implements Serializable {
     private final Z first;
     private final F second;
     private final S third;

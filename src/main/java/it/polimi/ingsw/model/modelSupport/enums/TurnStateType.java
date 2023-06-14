@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.modelSupport.enums;
 
-public enum TurnStateType {
+import java.io.Serializable;
+
+public enum TurnStateType implements Serializable {
     CARDS_SELECTION,
     CHOOSING_COLUMN
 }

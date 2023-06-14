@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import static it.polimi.ingsw.client.ClientMain.stub;
+
 public class LoginView {
     private ScreenSwitcher screenSwitcher;
     private GridPane gridPane;
@@ -38,7 +40,7 @@ public class LoginView {
         loginButton.setOnAction(e -> {
             // If login is successful, switch to the GameManagerView
             System.out.println("sel user:"+usernameField.getText()+" psw: "+ passwordField.getText());
-            ClientManager.gameManagerController.onSetCredentials(usernameField.getText(), passwordField.getText());
+            ClientManager.gameManagerController.onSetCredentials(usernameField.getText(), passwordField.getText(), stub);
 
             //screenSwitcher.showGameManagerView();
         });

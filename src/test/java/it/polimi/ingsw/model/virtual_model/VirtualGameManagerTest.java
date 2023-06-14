@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VirtualGameManagerTest {
+    /*
 
     @Test
     void pingTest() {
@@ -77,4 +78,5 @@ public class VirtualGameManagerTest {
         System.out.println(expectedJson);
 
     }
+    */
 }

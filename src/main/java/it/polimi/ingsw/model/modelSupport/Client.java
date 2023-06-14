@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.modelSupport;
 
 import it.polimi.ingsw.model.modelSupport.enums.ConnectionType;
 
-public class Client {
+import java.io.Serializable;
+
+public class Client implements Serializable {
     private String IP;
     private ConnectionType withConnectionType;
     private SenderConnectionStrategy connectionStrategy;

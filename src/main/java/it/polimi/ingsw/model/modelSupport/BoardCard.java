@@ -3,7 +3,9 @@ package it.polimi.ingsw.model.modelSupport;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 
-public class BoardCard {
+import java.io.Serializable;
+
+public class BoardCard implements Serializable {
 
     public final colorType color;
 

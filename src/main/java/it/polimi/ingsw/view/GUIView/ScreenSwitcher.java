@@ -65,7 +65,7 @@ public class ScreenSwitcher extends Application {
         new Thread(() -> {
             try {
                 Socket socket = new Socket("localhost", 1234);
-                ClientMain client = new ClientMain(socket, false, true, null);
+                ClientMain client = new ClientMain(socket, false, true, null, null);
                 client.run();
                 client.stop();
 

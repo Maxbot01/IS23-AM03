@@ -1,32 +1,37 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.messageModel.Message;
+import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.MyRemoteObject;
+import it.polimi.ingsw.server.ServerMain;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class ClientMain implements Runnable{
+public class ClientMain implements Runnable {
 
     private Socket socket;
     private static ObjectOutputStream output;
     private ObjectInputStream input;
     private static boolean isRunning;
-    static boolean isSocketClient;
-    private MyRemoteInterface remoteObject;
+    public static boolean isSocketClient;
+    public static MyRemoteInterface stub;
 
 
-    public ClientMain(Socket socket, boolean isCLi, boolean isSocketClient, MyRemoteInterface remoteObject) {
-        if(isSocketClient) {
+    public ClientMain(Socket socket, boolean isCLi, boolean isSocketClient, MyRemoteInterface remoteObject, String ipAddr) {
+        if (isSocketClient) {
             this.socket = socket;
 
             try {
@@ -41,12 +46,12 @@ public class ClientMain implements Runnable{
             this.socket = null;
             this.input = null;
             this.output = null;
-            this.remoteObject = remoteObject;
+            this.stub = remoteObject;
             isRunning = true;
         }
 
         System.out.println(isSocketClient);
-        ClientManager.initializeClientManagerSingleton(isCLi, isSocketClient, remoteObject);
+        ClientManager.initializeClientManagerSingleton(isCLi, isSocketClient, remoteObject, ipAddr);
     }
 
     public static void sendMessage(String message) {
@@ -72,7 +77,7 @@ public class ClientMain implements Runnable{
                 System.out.println("Received message from server: " + message);
                 MessageSerializer messageSerializer = new MessageSerializer();
                 Message serializedMessage = messageSerializer.deserialize(message);
-                if(serializedMessage != null){
+                if (serializedMessage != null) {
                     //if it's meant for us
                     //TODO: add exception to handle wrongly received message to react accordingly
                     //TODO: put this into thread to stop cli from blocking this loop
@@ -81,7 +86,7 @@ public class ClientMain implements Runnable{
                     }*/
 
                     Thread newThread = new Thread(() -> { //This is the execution thread
-                        System.out.println("New thread created: "+Thread.currentThread().getName());//DEBUG
+                        System.out.println("New thread created: " + Thread.currentThread().getName());//DEBUG
                         try {
                             ClientManager.clientReceiveMessage(serializedMessage);
                         } catch (IOException e) {
@@ -101,16 +106,6 @@ public class ClientMain implements Runnable{
             isRunning = false;
         }
     }
-    public void runRMI() {
-       try {
-           System.out.println("Server pronto.");
-           Message message = (Message) input.readObject();
-           System.out.println("Received message from server: " + message);
-        } catch (Exception e) {
-            System.out.println("Error receiving message from server: " + e.getMessage());
-            isRunning = false;
-        }
-    }
 
     public void stop() {
         isRunning = false;
@@ -124,6 +119,46 @@ public class ClientMain implements Runnable{
         }
     }
 
+    public static void setStub(MyRemoteInterface stub) {
+        ClientMain.stub = stub;
+    }
+
+    public static void runRMI(String ipAddress) {
+        try {
+            while (isRunning) {
+                Thread newThread = new Thread(() -> {
+                    Message messageRMI = null;
+                    try {
+                        messageRMI = stub.ReceiveMessageRMI(ipAddress);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        if(stub.getFlag()) {
+                            try {
+                                ClientManager.clientReceiveMessage(messageRMI);
+                                stub.updateStateFalse();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                newThread.start();
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Error receiving message from server: ");
+        isRunning = false;
+    }
+
+
+
+
+
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
 
@@ -136,26 +171,37 @@ public class ClientMain implements Runnable{
             System.out.print("Seleziona il tipo di connessione (socket/rmi): ");
             connectionType = scanner.nextLine();
             if (connectionType.equalsIgnoreCase("socket")) {
+                isSocketClient = true;
                 System.out.println("Socket mode selected.");
                 Socket socket = new Socket("localhost", 1234);
-                client = new ClientMain(socket, isCLI, true, null);
+                client = new ClientMain(socket, isCLI, true, null, null);
                 client.run();
                 client.stop();
                 break;
             } else if (connectionType.equalsIgnoreCase("rmi")) {
                 System.out.println("RMI mode selected.");
-                MyRemoteInterface remoteObj = new MyRemoteObject();
-                Registry registry = LocateRegistry.createRegistry(1098);
-                registry.rebind("MyRemoteObject", remoteObj);
-                client = new ClientMain(null, isCLI, false, remoteObj);
-                client.runRMI();
+                isSocketClient = false;
+                Registry registry = null;
+                registry = LocateRegistry.getRegistry("localhost", 1099);
+                // Looking up the registry for the remote object
+                MyRemoteInterface stub = new MyRemoteObject();
+                try {
+                    stub = (MyRemoteInterface) registry.lookup("MyRemoteInterface");
+                } catch (NotBoundException e) {
+                    throw new RuntimeException(e);
+                }
+                setStub(stub);
+                String ipAddress = UUID.randomUUID().toString();
+                //runRMI(ipAddress);
+                stub.registerClient(ipAddress);
+                client = new ClientMain(null, isCLI, false, stub, ipAddress);
+                client.runRMI(ipAddress);
                 client.stop();
                 break;
             } else {
                 System.out.println("Tipo di connessione non valido.");
             }
         } while(true);
-
     }
 }
 

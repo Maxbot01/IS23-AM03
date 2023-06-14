@@ -14,11 +14,13 @@ import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static it.polimi.ingsw.client.ClientMain.stub;
 import static it.polimi.ingsw.client.ClientManager.*;
-
 public class GameController extends Controller implements GameViewObserver, Subscriber {
 
     private InitStateMessage latestInit;
@@ -37,8 +39,21 @@ public class GameController extends Controller implements GameViewObserver, Subs
         return gameID;
     }
     @Override
-    public void setReady(){
+    public void setReady(String gameID, String nickname) {
         this.playerReady = true;
+        if (stub != null) {
+            Message message = null;
+            try {
+                message = stub.ReceiveMessageRMI(stub.getHostID());
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                ClientManager.clientReceiveMessage(message);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
     @Override
     public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
@@ -46,7 +61,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //check if selection was correct
         if (isSelectionPossible(selected)) {
             //ClientManager.view.chooseColumn();
-            ClientManager.virtualGameManager.selectedCards(selected, user, gameID);
+            ClientManager.virtualGameManager.selectedCards(selected, user, gameID, stub);
         }else{
             ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least one other chosen card");
             ClientManager.view.chooseCards();
@@ -55,7 +70,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
     @Override
     public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) {
         //view has selected columns
-        virtualGameManager.selectedColumn(selCards, colIndex, user, gameID);
+        virtualGameManager.selectedColumn(selCards, colIndex, user, gameID, stub);
     }
     @Override
     public void onAcceptFinishedGame() {
@@ -64,7 +79,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
     }
     @Override
     public void startCardsSelection(){
-        virtualGameManager.sendAck();
         ClientManager.view.chooseCards();
     }
     @Override
@@ -194,8 +208,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 }
                 ClientManager.view.showErrorMessage("You entered the game");
             }
-            ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.pieces, mess.selecectables,
-                    mess.playersShelves, playersPoints, mess.gameState);
+            try {
+                ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.pieces, mess.selecectables,
+                        mess.playersShelves, playersPoints, mess.gameState);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             ClientManager.view.printLivingRoom();
             ClientManager.view.printShelves();
             //ClientManager.view.showPlayingPlayer(mess.chairedPlayer); // prints the playing layer at the beginning of the turn
@@ -207,7 +225,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.waitingCommands(); // it needs to be sent continuously until it's his turn, or maybe a notify to the cli that blocks a while cycle
             }*/
             ClientManager.view.updatePlayingPlayer(mess.chairedPlayer);
-            ClientManager.view.gameCommands();
+            try {
+                ClientManager.view.gameCommands();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
             //TODO: Basically identical to initStateMessage, be careful
         } else if (message instanceof SelectedCardsMessage) {
@@ -231,7 +253,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
             }*/
             ClientManager.view.updatePlayingPlayer(mess.newPlayer);
             if(ClientManager.userNickname.equals(currentPlayerSelecting)){
-                ClientManager.view.gameCommands();
+                try {
+                    ClientManager.view.gameCommands();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } else if (message instanceof FinishedGameMessage mess) {
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);

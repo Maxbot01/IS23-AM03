@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
+import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.view.CLIColors;
 
 import java.util.ArrayList;

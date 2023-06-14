@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model.modelSupport.exceptions;
 
-public class NoMoreCardsException extends Exception{
+import java.io.Serializable;
+
+public class NoMoreCardsException extends Exception implements Serializable {
 }

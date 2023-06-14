@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
 import it.polimi.ingsw.model.modelSupport.enums.TurnStateType;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Random;
 /**
  * This class represents the player
  */
-public class Player{
+public class Player implements Serializable {
     private final String nickname;
     private Client ofClient;
     private String UID;

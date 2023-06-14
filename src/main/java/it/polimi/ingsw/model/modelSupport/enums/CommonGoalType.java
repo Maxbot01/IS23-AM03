@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.modelSupport.enums;
 
-public enum CommonGoalType {
+import java.io.Serializable;
+
+public enum CommonGoalType implements Serializable {
     SIXOFTWO,
     FIVEDIAGONAL,
     FOUROFFOUR,

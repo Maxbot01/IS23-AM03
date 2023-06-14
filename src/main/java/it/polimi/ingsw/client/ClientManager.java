@@ -22,6 +22,7 @@ import it.polimi.ingsw.view.View;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.rmi.RemoteException;
 
 public class ClientManager {
 
@@ -46,14 +47,14 @@ public class ClientManager {
 
 
     // Public static method to get the singleton instance and be sure to never initialize the ClientManager twice
-    public static ClientManager initializeClientManagerSingleton(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject ) {
+    public static ClientManager initializeClientManagerSingleton(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject, String ipAddress){
         if (instance == null) {
-            instance = new ClientManager(isCLI, isSocketClient, remoteObject);
+            instance = new ClientManager(isCLI, isSocketClient, remoteObject, ipAddress);
         }
         return instance;
     }
 
-    private ClientManager(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject){
+    private ClientManager(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject, String ipAddress) {
         gameController = null;
         lobbyController = null;
         pubsub = new PubSubService();
@@ -66,12 +67,7 @@ public class ClientManager {
             view = new GUIView();
         }
         if (!(isSocketClient)) {
-            try {
-                clientIP = InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException e) {
-                System.out.println("Error getting local IP address: " + e.getMessage());
-                clientIP = "Unknown"; // Valore di fallback in caso di eccezione
-            }
+            clientIP = ipAddress;
         } else {
             clientIP = null;
         }
@@ -79,9 +75,9 @@ public class ClientManager {
 
         virtualGameManager = new VirtualGameManager(isSocketClient, remoteObject);
         System.out.println("GameManagerController: " + ClientManager.gameManagerController);
-        gameManagerController = new GameManagerController(view, virtualGameManager);
+        gameManagerController = new GameManagerController(view, virtualGameManager, remoteObject);
         view.registerObserver(gameManagerController, null, null);
-
+        virtualGameManager.ping(remoteObject);
     }
 
     /*public static void startReceivingCommands(){ CLIInputThread
@@ -160,4 +156,5 @@ public class ClientManager {
             }
         }
     }
+
 }

@@ -7,12 +7,13 @@ import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 
 import javax.swing.plaf.synth.ColorType;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * A class representing a shelf that can hold BoardCard objects.
  */
-public class Shelf {
+public class Shelf implements Serializable {
     private BoardCard[][] shelfCards;
     private static final int ROWS_LEN = 6;
     private static final int COLUMNS_LEN = 5;

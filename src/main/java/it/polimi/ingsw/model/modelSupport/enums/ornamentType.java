@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.modelSupport.enums;
 
-public enum ornamentType {
+import java.io.Serializable;
+
+public enum ornamentType implements Serializable {
 
     A,
     B,

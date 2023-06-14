@@ -6,13 +6,14 @@ import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 import java.util.Random;
 
 
-public class LivingRoom{
+public class LivingRoom implements Serializable {
 
     private final static int DIM = 9;
     private final static int TOTCARDS = 132;

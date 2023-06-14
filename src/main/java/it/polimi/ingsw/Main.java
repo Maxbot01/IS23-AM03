@@ -136,12 +136,13 @@ Main {
         */
         // TESTING CLI
         /**/
+        /*
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player("Max"));
         players.add(new Player("Asso"));
         players.add(new Player("Rick"));
         players.add(new Player("Chicco"));
-        Game myGame = new Game(players, "1.1");
+        Game myGame = new Game(players, "1.1", );
 
         ArrayList<BoardCard[][]> shelves = new ArrayList<>();
         Shelf tmp = new Shelf();
@@ -155,7 +156,7 @@ Main {
         ArrayList<Pair<String,BoardCard[][]>> playersShelves = new ArrayList<>();
         for(int i = 0; i < 4; i++){
             playersShelves.add(new Pair<>(players.get(i).getNickname(),shelves.get(i)));
-        }
+        } */
         //cligeneral.initializeGame(players,commonGoals,players.get(2).getPersonalGoal(),players.get(2));
         //cligeneral.updatedMatchDetails(livingRoom,selectables,playersShelves,"1.1", GameStateType.IN_PROGRESS);
         //cligeneral.printLivingRoomAndShelves();

@@ -3,12 +3,12 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 
-import javax.management.remote.rmi.RMIServer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -25,6 +25,10 @@ public class ServerMain {
 
     private ServerSocket serverSocket;
     private List<ClientHandler> clients;
+    public MyRemoteInterface stubProva;
+
+    public static HashMap<String, RemoteUserInfo> userIdentificationInServer = new HashMap<>();
+
 
 
     private boolean isRunning;
@@ -38,6 +42,16 @@ public class ServerMain {
             System.out.println("Error creating server socket: " + e.getMessage());
             isRunning = false;
         }
+    }
+
+    //add user to hashmap
+    public static void addUserToHashMap(String username, RemoteUserInfo remoteUserInfo){
+        userIdentificationInServer.put(username, remoteUserInfo);
+    }
+
+    //getter for hashmap
+    public static HashMap<String, RemoteUserInfo> getUserIdentification(){
+        return userIdentificationInServer;
     }
 
     public void sendMessageToSocket(String message, Socket socket){
@@ -115,7 +129,7 @@ public class ServerMain {
                 while (isRunning) {
                     String message = (String) input.readObject();
                     System.out.println("Received message from client " + socket.getInetAddress().getHostAddress() + ": " + message);
-                    VirtualGameManagerSerializer.deserializeMethod(message, socket);
+                    VirtualGameManagerSerializer.deserializeMethod(message, socket, null);
                     //broadcastMessage("Client " + socket.getInetAddress().getHostAddress() + ": " + message);
                 }
             } catch (IOException e) {
@@ -153,44 +167,27 @@ public class ServerMain {
         }
     }
 
-    public static void StartRMI() {
-        try {
-            MyRemoteInterface remoteObj = new MyRemoteObject();
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("MyRemoteObject", remoteObj);
-            System.out.println("Server pronto.");
-        } catch (RemoteException e) {
-            System.err.println("Error starting RMI server: " + e.getMessage());
-        }
-    }
-
 
     public static ServerMain server;
 
     public static void main(String[] args) {
-      //per socket:
-         int port = 1234;
+        //per socket:
+        int port = 1234;
         server = new ServerMain(port);
-        System.out.println("Starting server on port " + port);
-        StartRMI(); // Aggiunta della chiamata a StartRMI()
-        server.start();
-
-        /*
+        System.out.println("Starting server socket on port " + port);
         //per rmi:
+        MyRemoteObject obj = new MyRemoteObject();
         try {
-            MyRemoteInterface remoteObj = new MyRemoteObject();
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("MyRemoteObject", remoteObj);
-            System.out.println("Server pronto.");
+            MyRemoteInterface stub = (MyRemoteInterface) UnicastRemoteObject.exportObject(obj, 1099);
+            Registry registry = null;
+            registry = LocateRegistry.createRegistry(1099);
+            registry.bind("MyRemoteInterface", stub);
+            System.out.println("Server RMI ready");
 
-            // Attendi indefinitamente per mantenere il server in esecuzione
-            Object lock = new Object();
-            synchronized (lock) {
-                lock.wait();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        } catch (RemoteException | AlreadyBoundException e) {
+            throw new RuntimeException(e);
+        }
+        server.start();
     }
 
 }

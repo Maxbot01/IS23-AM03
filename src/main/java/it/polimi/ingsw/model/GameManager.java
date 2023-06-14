@@ -11,9 +11,16 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
+import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
+import it.polimi.ingsw.server.ServerMain;
 
 import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Singleton that represents the front-end logic of the server and exposes the endpoint method that every client can call, it manages the requests creating and deleting the games
@@ -27,7 +34,7 @@ public class GameManager extends GameObservable{
     private HashMap<GameLobby, Game> currentGames;
     private HashMap<String, String> nicknames;
     //private HashMap<String, String> userIDs;
-    public HashMap<String, RemoteUserInfo> userIdentification;
+    public static HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
 
     private HashMap<String, ArrayList<Pair<String, String>>> chats;
@@ -40,6 +47,12 @@ public class GameManager extends GameObservable{
         playersInLobby = new HashMap<>();
         chats = new HashMap<>();
     }
+
+    //getter useridentification
+    public HashMap<String, RemoteUserInfo> getUserIdentification() {
+        return this.userIdentification;
+    }
+
 
 
     public void selectGame(String ID, String user){
@@ -117,8 +130,9 @@ public class GameManager extends GameObservable{
         }
     }
 
-    public void createGame(Integer numPlayers, String username){
-        currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
+    public void createGame(Integer numPlayers, String username, String clientId){
+        //userIdentification.get(username).setGameID(UUID.randomUUID().toString());
+        currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers, clientId), null);
         if(playersInLobby.containsKey(username)){ //It notifies every player still outside the lobby when a new game is created, and activates launchGameManager in the view
             this.playersInLobby.remove(username);
             this.playersInLobby.put(username,true);
@@ -136,7 +150,7 @@ public class GameManager extends GameObservable{
 
 
 
-    public void ping(RemoteUserInfo fromClientInfo){
+    public void ping(RemoteUserInfo fromClientInfo) {
         //received ping message
         //send pong
         //TODO: server.send(new NetworkMessage("pong"));
@@ -177,7 +191,7 @@ public class GameManager extends GameObservable{
             }else{
                 //username wrong password
                 //sends error
-                super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword,"Wrong password"), false, "-");
+                 super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword,"Wrong password"), false, "-");
             }
         }else{
             //new user
@@ -191,14 +205,18 @@ public class GameManager extends GameObservable{
         if(loggedSuccesful){
             //TODO: save map of user -> RMI or socket id
             userIdentification.put(username, userInfo);
+            ServerMain.addUserToHashMap(username, userInfo);
+            //stampa userIdentification
+            System.out.println("userIdentification: " + ServerMain.getUserIdentification());
             super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
         }
-
     }
 
     /**
      * It sends the available games when a player wants to play again
+     *
      * @param
+     * @return
      */
     //TODO: Fix this method
     public void lookForNewGames(String username){
@@ -216,11 +234,11 @@ public class GameManager extends GameObservable{
     Gest methods LOBBIES and forward them to the exact game and lobby
      */
 
-    public void startMatch(String ID, String user){
+    public void startMatch(String ID, String user, MyRemoteInterface stub){
         boolean found = false;
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
-                x.startMatch(user);
+                x.startMatch(user, stub);
                 found = true;
             }
         }

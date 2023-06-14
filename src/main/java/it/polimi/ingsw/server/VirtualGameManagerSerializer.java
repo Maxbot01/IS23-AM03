@@ -41,7 +41,7 @@ public class VirtualGameManagerSerializer {
         return gson.toJson(virtualGameManagerSerializer);
     }
 
-    public static <token> void deserializeMethod(String jsonString, Socket socket) {
+    public static <token> void deserializeMethod(String jsonString, Socket socket, MyRemoteInterface stub) {
         //FOR SURE WE ARE IN SOCKET
         GameManager gameManager = GameManager.getInstance();
         Gson gson = new Gson();
@@ -64,7 +64,7 @@ public class VirtualGameManagerSerializer {
                 Double numPlayersDouble = (Double) virtualGameManagerSerializer.getArgs()[0];
                 int numPlayers = numPlayersDouble.intValue();
                 String user1 = (String) virtualGameManagerSerializer.getArgs()[1];
-                gameManager.createGame(numPlayers, user1);
+                gameManager.createGame(numPlayers, user1, null);
                 break;
             case "sendAck":
                 gameManager.sendAck();
@@ -72,7 +72,7 @@ public class VirtualGameManagerSerializer {
             case "startMatch":
                 String ID = (String) virtualGameManagerSerializer.getArgs()[0];
                 String user2 = (String) virtualGameManagerSerializer.getArgs()[1];
-                gameManager.startMatch(ID, user2);
+                gameManager.startMatch(ID, user2, null);
                 break;
             case "selectedCards":
                 String user3 = (String) virtualGameManagerSerializer.getArgs()[1];

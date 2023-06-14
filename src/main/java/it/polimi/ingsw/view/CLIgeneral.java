@@ -15,7 +15,6 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import org.apache.commons.cli.*;
 import java.util.*;
-
 public class CLIgeneral extends View{
     private GameStateType gameState;
     private String gameID;
@@ -249,13 +248,18 @@ public class CLIgeneral extends View{
                     }else{
                         System.out.println("The game hasn't ended, you can't leave yet");
                     }
-                } else {
+                }
+                else {
+                    Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                    ClientManager.clientReceiveMessage(message);
                     System.out.println("gameCommands section");//DEBUG
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
-            } catch (ParseException pe) {
+            } catch (ParseException | RemoteException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
                 formatter.printHelp("Available Commands", options);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
         System.out.println("You have left gameCommands");//DEBUG
@@ -271,10 +275,11 @@ public class CLIgeneral extends View{
         String username = in.next();
         String password = in.next();
         this.userPlayer = new Player(username);
+        System.out.println("GameManagerController: " + ClientManager.gameManagerController);
         System.out.println("Your username is: "+username);
         System.out.println("Your password is: "+password);
         GameManagerController gameManagerController = ClientManager.gameManagerController;
-        gameManagerController.onSetCredentials(username, password);
+        gameManagerController.onSetCredentials(username, password, stub);
     }
     @Override
     public void launchGameManager(HashMap<String, List<String>> availableGames){
@@ -336,7 +341,7 @@ public class CLIgeneral extends View{
                     }
                     if (valid) {
                         finished = true;
-                        super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname());
+                        super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname(), stub);
                     } else {
                         System.out.println("Incorrect ID, please select a valid ID");
                     }
@@ -345,19 +350,25 @@ public class CLIgeneral extends View{
                     if (numOfPlayers >= 2 && numOfPlayers <= 4) {
                         host = userPlayer.getNickname();
                         finished = true;
-                        super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname());
+                        super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname(),stub);
                     } else if (numOfPlayers > 4) {
                         System.out.println("You can't have more than 4 players in a game");
                     } else {
                         System.out.println("You need to have at least 2 player for the game");
                     }
                 } else {
+                    Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                    ClientManager.clientReceiveMessage(message);
                     System.out.println("launchGameManager section");//DEBUG
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
             } catch (ParseException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
                 formatter.printHelp("Available Commands", options);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
         System.out.println("You have left the manager");
@@ -449,14 +460,18 @@ public class CLIgeneral extends View{
                     super.lobbyController.onStartMatch(gameID, userPlayer.getNickname());
                 } else if (cmd.hasOption(ready)) {
                     finished = true;
-                    super.gameController.setReady();//After this command the game is shown
+                    super.gameController.setReady(gameID, userPlayer.getNickname());//After this command the game is shown
                 } else {
+                    Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                    ClientManager.clientReceiveMessage(message);
                     System.out.println("launchGameLobby section");
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
             } catch (ParseException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
                 formatter.printHelp("Available Commands", options);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
         System.out.println("You have left the lobby");
@@ -584,6 +599,16 @@ public class CLIgeneral extends View{
             System.out.println("Select a column within range, from 0 to 4.");
             column = Integer.parseInt(in3.next());
         }
+//        try {
+//            stub.updateState();
+//        } catch (RemoteException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            System.err.println(stub.getFlag());
+//        } catch (RemoteException e) {
+//            throw new RuntimeException(e);
+//        }
         super.gameController.onSelectedColumn(selectedCards, column, userPlayer.getNickname());
     }
     @Override
@@ -607,7 +632,7 @@ public class CLIgeneral extends View{
                     //TODO: Terminates the connection to the server
                     finished = true;
                 } else if (cmd.hasOption(play_again)) {
-                    super.gameManagerController.onLookForNewGames(userPlayer.getNickname());
+                    gameManagerController.onLookForNewGames(userPlayer.getNickname(), stub);
                     finished = true;
                 } else {
                     System.out.println("Unavailable command, remember to type '-' and the desired command");
