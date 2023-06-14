@@ -3,12 +3,13 @@ package it.polimi.ingsw.model.modelSupport;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 
 
-public class PersonalGoal {
+public class PersonalGoal implements Serializable {
 
     //TODO: riempire queste
     private static final List<Pair<colorType, Pair<Integer, Integer>>> first = Arrays.asList(new Pair<>(colorType.LIGHT_BLUE, new Pair<>(5, 2)), new Pair<>(colorType.YELLOW, new Pair<>(3, 1)), new Pair<>(colorType.WHITE, new Pair<>(2, 3)), new Pair<>(colorType.GREEN, new Pair<>(1, 4)), new Pair<>(colorType.PURPLE, new Pair<>(0, 0)), new Pair<>(colorType.BLUE, new Pair<>(0, 2)));

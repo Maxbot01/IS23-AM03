@@ -2,16 +2,19 @@ package it.polimi.ingsw.model.virtual_model;
 
 import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
+import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 import it.polimi.ingsw.server.MyRemoteInterface;
+import it.polimi.ingsw.server.MyRemoteObject;
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 
-import java.rmi.RemoteException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 //TODO: mettere interfaccia GameManager e VirtualGameManager così hanno stessi metodi di endpoint
@@ -36,24 +39,30 @@ public class VirtualGameManager {
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
             //serializeMethod(serializedGameManager);
         } else {
-            RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
+           /* RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
             remoteUserInfo.setRemoteObject(remoteObject);
-            remoteObject.receiveChatMessage(gameID, fromUser, message, fullChat, inGame);
+            remoteObject.receiveChatMessage(gameID, fromUser, message, fullChat, inGame);*/
         }
     }
 
     //setter for remoteObject
 
     public void ping(MyRemoteInterface stub) {
+        System.out.println("Sono socket o rmi? " + isSocketClient);
         if (isSocketClient) {
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("ping", new Object[]{});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
             //serializeMethod(serializedGameManager);
         } else {
+            RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
             try {
-                RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
-                ClientManager.clientReceiveMessage(stub.ping(remoteUserInfo, stub));
-            } catch (RemoteException e) {
+                stub.addMultiMatchClientMessage("SetupID",new HashMap<>());
+                stub.ping(remoteUserInfo);
+                Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                //Message message = stub.getMultiMatchClientMessage(ClientManager.clientIP,"SetupID");
+                System.out.println("Message received: " + message);
+                ClientManager.clientReceiveMessage(message);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -65,10 +74,16 @@ public class VirtualGameManager {
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
+            System.out.println("vediamo se clientIP è null: " + ClientManager.clientIP);
+            RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
+            System.out.println(remoteUserInfo.getRmiUID());
             try {
-                RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
-                ClientManager.clientReceiveMessage(stub.setCredentials(username, password, remoteUserInfo));
-            } catch (RemoteException e) {
+                stub.addRemoteUser(username,remoteUserInfo);
+                stub.setCredentials(username, password, remoteUserInfo);
+                Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                //Message message = stub.getMultiMatchClientMessage(ClientManager.clientIP,"SetupID");
+                ClientManager.clientReceiveMessage(message);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -80,9 +95,14 @@ public class VirtualGameManager {
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
             try {
-                ClientManager.clientReceiveMessage(stub.selectGame(gameID, user));
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                try {
+                    stub.selectGame(gameID, user);
+                    Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                    //Message message = stub.getMultiMatchClientMessage(ClientManager.clientIP,"SetupID");
+                    ClientManager.clientReceiveMessage(message);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } catch (LobbyFullException e) {
                 throw new RuntimeException(e);
             }
@@ -97,21 +117,26 @@ public class VirtualGameManager {
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
             try {
-                ClientManager.clientReceiveMessage(stub.createGame(numPlayers, user));
-            } catch (RemoteException e) {
+                stub.createGame(numPlayers, user,ClientManager.clientIP);
+                stub.setHostID(ClientManager.clientIP);
+                Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                ClientManager.clientReceiveMessage(message);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    public void sendAck() {
+    public void sendAck(MyRemoteInterface stub) {
         if (isSocketClient) {
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("sendAck", new Object[]{});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
             try {
-                remoteObject.sendAck();
-            } catch (RemoteException e) {
+                stub.sendAck();
+                Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                ClientManager.clientReceiveMessage(message);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -123,8 +148,10 @@ public class VirtualGameManager {
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
             try {
-                ClientManager.clientReceiveMessage(stub.lookForNewGames(user));
-            } catch (RemoteException e) {
+                stub.lookForNewGames(user);
+                Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                ClientManager.clientReceiveMessage(message);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -139,8 +166,10 @@ public class VirtualGameManager {
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
             try {
-                ClientManager.clientReceiveMessage(stub.startMatch(ID, user));
-            } catch (RemoteException e) {
+                stub.startMatch(ID, user,stub);
+                Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                ClientManager.clientReceiveMessage(message);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -156,9 +185,14 @@ public class VirtualGameManager {
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
             try {
-                ClientManager.clientReceiveMessage(stub.selectedCards(selected, user, gameID));
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                try {
+                    stub.selectedCards(selected, user, gameID);
+                    Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                    ClientManager.clientReceiveMessage(message);
+                    // per tutti i client in clients
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } catch (UnselectableCardException e) {
                 throw new RuntimeException(e);
             }
@@ -171,8 +205,10 @@ public class VirtualGameManager {
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
             try {
-                ClientManager.clientReceiveMessage(stub.selectedColumn(selected, column, user, gameID));
-            } catch (RemoteException e) {
+                stub.selectedColumn(selected, column, user, gameID);
+                Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                ClientManager.clientReceiveMessage(message);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }

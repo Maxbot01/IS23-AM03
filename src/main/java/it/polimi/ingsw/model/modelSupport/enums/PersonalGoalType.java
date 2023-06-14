@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.modelSupport.enums;
 
-public enum PersonalGoalType {
+import java.io.Serializable;
+
+public enum PersonalGoalType implements Serializable {
 }
 
 // da completare

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.helpers;
 
-public class Pair<T, S> {
+import java.io.Serializable;
+
+public class Pair<T, S> implements Serializable {
     private final T first;
     private final S second;
 

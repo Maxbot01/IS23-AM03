@@ -121,7 +121,6 @@ public class GameManagerController extends Controller implements GameManagerView
                 this.lastLoginMessage = (loginGameMessage)message;
                 Pair<String, List<String>> addedGame = new Pair<>(addedGameId, addedGamePlayers);
                 ClientManager.view.addNewGame(addedGame);
-
             }
             /*if(lastThread != null){
                 System.out.println("launchGameManager "+lastThread.getName()+" interrupted");

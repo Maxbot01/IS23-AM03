@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
-import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
@@ -14,6 +13,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
+import it.polimi.ingsw.server.ServerMain;
 
 import java.util.*;
 
@@ -34,7 +34,7 @@ public class GameManager extends GameObservable{
     private HashMap<GameLobby, Game> currentGames;
     private HashMap<String, String> nicknames;
     //private HashMap<String, String> userIDs;
-    public HashMap<String, RemoteUserInfo> userIdentification;
+    public static HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
 
     private HashMap<String, ArrayList<Pair<String, String>>> chats;
@@ -48,8 +48,14 @@ public class GameManager extends GameObservable{
         chats = new HashMap<>();
     }
 
+    //getter useridentification
+    public HashMap<String, RemoteUserInfo> getUserIdentification() {
+        return this.userIdentification;
+    }
 
-    public Message selectGame(String ID, String user){
+
+
+    public void selectGame(String ID, String user){
         //currentGames.put(new GameLobby());
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID) && !x.isKilled()){
@@ -65,11 +71,10 @@ public class GameManager extends GameObservable{
                     }
                 }catch(LobbyFullException e){
                     //lobby is full, returns error
-                    return super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull,e.info), false, "-");
+                    super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull,e.info), false, "-");
                 }
             }
         }
-        return null;
     }
 
     /**
@@ -112,39 +117,39 @@ public class GameManager extends GameObservable{
                     }
                     Collections.reverse(lastFive);
                     System.out.println("GM 2");
-                    return super.notifyAllObservers(x.getPlayers(),new ChatMessage(lastFive,inGame),true,gameID);
+                    super.notifyAllObservers(x.getPlayers(),new ChatMessage(lastFive,inGame),true,gameID);
                 }
                 break;
             }
         }
     }
 
-    public Message createGame(Integer numPlayers, String username){
-        currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers), null);
+    public void createGame(Integer numPlayers, String username, String clientId){
+        //userIdentification.get(username).setGameID(UUID.randomUUID().toString());
+        currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers, clientId), null);
         if(playersInLobby.containsKey(username)){ //It notifies every player still outside the lobby when a new game is created, and activates launchGameManager in the view
             this.playersInLobby.remove(username);
             this.playersInLobby.put(username,true);
             for(String s: this.playersInLobby.keySet()) {
                 if (this.playersInLobby.get(s).equals(false)) {
-                    return super.notifyObserver(s, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+                    super.notifyObserver(s, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
                 }
             }
         }else{
             System.out.println("Player is not present");
         }
         System.out.println("new current games: " + currentGames.keySet());
-        return null;
     }
 
 
 
 
-    public Message ping(RemoteUserInfo fromClientInfo, MyRemoteInterface stub) {
+    public void ping(RemoteUserInfo fromClientInfo) {
         //received ping message
         //send pong
         //TODO: server.send(new NetworkMessage("pong"));
         System.out.println("called ping() on server");
-        return super.notifyNetworkClient(fromClientInfo, new NetworkMessage("pong"), stub);
+        super.notifyNetworkClient(fromClientInfo, new NetworkMessage("pong"));
     }
 
 
@@ -165,7 +170,7 @@ public class GameManager extends GameObservable{
     }
 
 
-    public Message setCredentials(String username, String password, RemoteUserInfo userInfo){
+    public void setCredentials(String username, String password, RemoteUserInfo userInfo){
         //check if there was, else send message of erroneous username set request.
         boolean loggedSuccesful = false;
         if(nicknames.containsKey(username)){
@@ -180,7 +185,7 @@ public class GameManager extends GameObservable{
             }else{
                 //username wrong password
                 //sends error
-                super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword,"Wrong password"), false, "-");
+                 super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword,"Wrong password"), false, "-");
             }
         }else{
             //new user
@@ -194,10 +199,11 @@ public class GameManager extends GameObservable{
         if(loggedSuccesful){
             //TODO: save map of user -> RMI or socket id
             userIdentification.put(username, userInfo);
-            return super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+            ServerMain.addUserToHashMap(username, userInfo);
+            //stampa userIdentification
+            System.out.println("userIdentification: " + ServerMain.getUserIdentification());
+            super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
         }
-
-        return null;
     }
 
     /**
@@ -207,8 +213,8 @@ public class GameManager extends GameObservable{
      * @return
      */
     //TODO: Fix this method
-    public Message lookForNewGames(String username){
-        return super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+    public void lookForNewGames(String username){
+        super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
     }
 
 
@@ -222,18 +228,17 @@ public class GameManager extends GameObservable{
     Gest methods LOBBIES and forward them to the exact game and lobby
      */
 
-    public Message startMatch(String ID, String user){
+    public void startMatch(String ID, String user, MyRemoteInterface stub){
         boolean found = false;
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
-                x.startMatch(user);
+                x.startMatch(user, stub);
                 found = true;
             }
         }
         if(!found){
             //TODO: Manage "ID not found" error
         }
-        return null;
     }
     public void createMatchFromLobby(String ID, ArrayList<String> withPlayers){
         System.out.println("createMatchFromLobby");
@@ -261,27 +266,25 @@ public class GameManager extends GameObservable{
     /*
     GAME methods
      */
-    public Message selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
         for(Game x: currentGames.values()){
             if(x.getID().equals(gameID)){
                 try{
                     x.selectedCards(selected, user);
                 }catch (UnselectableCardException e){
-                    return super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError, e.info),true,gameID);
+                    super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError, e.info),true,gameID);
                 }
 
             }
         }
-        return null;
     }
 
-    public Message selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
+    public void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
         for(Game x: currentGames.values()){
             if(x.getID().equals(gameID)){
                 x.selectedColumn(selected,column,user); // Per i try catch, non basta averli nel "game"?
             }
         }
-        return null;
     }
     /*
     Thread safe GameManager instance creator

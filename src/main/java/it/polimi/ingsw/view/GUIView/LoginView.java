@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-import static it.polimi.ingsw.client.ClientRMI.stub;
+import static it.polimi.ingsw.client.ClientMain.stub;
 
 public class LoginView {
     private ScreenSwitcher screenSwitcher;

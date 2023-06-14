@@ -1,41 +1,41 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.client.MessageSerializer;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.ServerMain;
-import it.polimi.ingsw.server.ServerRMI;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+
+import static it.polimi.ingsw.model.GameManager.userIdentification;
+import static it.polimi.ingsw.server.MyRemoteObject.*;
 
 public abstract class GameObservable {
 
     /**
      * Notifies a single client, given the username gets the latest socket/rmi id and sends the message
+     *
      * @param toPlayer
      * @param withMessage
      * @param inLobbyOrGame
      * @param gameID
      */
-    protected Message notifyObserver(String toPlayer, Message withMessage, boolean inLobbyOrGame, String gameID){
+    protected void notifyObserver(String toPlayer, Message withMessage, boolean inLobbyOrGame, String gameID){
         //if we are in a lobby or in a game needs to send the id of the lobby/game
 
-        System.out.println("sending out");
+        System.out.println(withMessage.toString());
+        System.out.println("Sending message to " + toPlayer);
         sendMessageToNetworkUser(toPlayer, withMessage, gameID);
 
-
         //withMessage.printMessage();
-        return withMessage;
     }
 
-    protected Message notifyNetworkClient(RemoteUserInfo client, Message withMessage, MyRemoteInterface stub){
+    protected void notifyNetworkClient(RemoteUserInfo client, Message withMessage){
         System.out.println("sending out");
-        if(client.isConnectionSocket()){
+        if(client.getSocketID() != null){
             //send socket
             MessageSerializer messageSerializer = new MessageSerializer();
             String serializedMessage;
@@ -45,11 +45,10 @@ public abstract class GameObservable {
             ServerMain.server.sendMessageToSocket(serializedMessage, client.getSocketID());
         }else{
             System.out.println("sending out");
+            SetMessage(withMessage, client.getRmiUID());
+            //setMultiMatchClientMessage(client.getRmiUID(), client.getGameIDforRMI(), withMessage);
             //send rmi
-            return withMessage;
         }
-
-        return withMessage;
     }
 
 
@@ -69,6 +68,7 @@ public abstract class GameObservable {
         }
 
         withMessage.printMessage();
+
     }
 
     /**
@@ -77,9 +77,9 @@ public abstract class GameObservable {
      * @param withMessage
      * @param gameID
      */
-    private Message sendMessageToNetworkUser(String toPlayer, Message withMessage, String gameID) {
+    private void sendMessageToNetworkUser(String toPlayer, Message withMessage, String gameID) {
         System.out.println("sending out");
-        /*if(GameManager.getInstance().userIdentification.get(toPlayer).isConnectionSocket()){
+      if(ServerMain.getUserIdentification().get(toPlayer).getIsSocket()){
             //user is socket
             MessageSerializer messageSerializer = new MessageSerializer();
             String serializedMessage;
@@ -88,13 +88,13 @@ public abstract class GameObservable {
             serializedMessage = messageSerializer.serialize(withMessage, toPlayer, gameID);
             System.out.println("Sending message to " + toPlayer + ": " + serializedMessage.toString());
 
-            ServerMain.server.sendMessageToSocket(serializedMessage, GameManager.getInstance().userIdentification.get(toPlayer).getSocketID());
+            ServerMain.server.sendMessageToSocket(serializedMessage, ServerMain.getUserIdentification().get(toPlayer).getSocketID());
         }else{
-            //TODO: user is RMI
-            return withMessage;
-        }*/
-        System.out.println("Sending message to " + toPlayer + ": " + withMessage);
-        return withMessage;
+          System.out.println("Sending message to " + toPlayer + ": " + withMessage);
+          System.out.println(getRemoteUsers());
+          SetMessage(withMessage, getRemoteUsers().get(toPlayer).getRmiUID());
+        }
+
     }
 
     /*

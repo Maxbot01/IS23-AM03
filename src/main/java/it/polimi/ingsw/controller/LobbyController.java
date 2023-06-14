@@ -8,12 +8,9 @@ import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
-import it.polimi.ingsw.model.modelSupport.Client;
 import it.polimi.ingsw.view.View;
 
-import java.util.HashMap;
-
-import static it.polimi.ingsw.client.ClientRMI.stub;
+import static it.polimi.ingsw.client.ClientMain.stub;
 
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 

@@ -49,7 +49,7 @@ public class VirtualGameManagerSerializer {
 
         switch(virtualGameManagerSerializer.getMethod()) {
             case "ping":
-                gameManager.ping(new RemoteUserInfo(true, socket, null), stub);
+                gameManager.ping(new RemoteUserInfo(true, socket, null));
                 break;
             case "setCredentials":
                 String username = (String) virtualGameManagerSerializer.getArgs()[0];
@@ -65,7 +65,7 @@ public class VirtualGameManagerSerializer {
                 Double numPlayersDouble = (Double) virtualGameManagerSerializer.getArgs()[0];
                 int numPlayers = numPlayersDouble.intValue();
                 String user1 = (String) virtualGameManagerSerializer.getArgs()[1];
-                gameManager.createGame(numPlayers, user1);
+                gameManager.createGame(numPlayers, user1, null);
                 break;
             case "sendAck":
                 gameManager.sendAck();
@@ -73,7 +73,7 @@ public class VirtualGameManagerSerializer {
             case "startMatch":
                 String ID = (String) virtualGameManagerSerializer.getArgs()[0];
                 String user2 = (String) virtualGameManagerSerializer.getArgs()[1];
-                gameManager.startMatch(ID, user2);
+                gameManager.startMatch(ID, user2, null);
                 break;
             case "selectedCards":
                 String user3 = (String) virtualGameManagerSerializer.getArgs()[1];

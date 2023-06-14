@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.modelSupport.enums;
 
-public enum ConnectionType {
+import java.io.Serializable;
+
+public enum ConnectionType implements Serializable {
     Socket,
     RMI
 }

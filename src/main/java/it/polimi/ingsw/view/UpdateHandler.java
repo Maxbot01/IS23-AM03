@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,7 @@ public interface UpdateHandler {
     void launchGameManager(HashMap<String, List<String>> availableGames);
     void addNewGame(Pair<String, List<String>> newGame);
     void addNewLobbyPlayer(String addedPlayer);
-    void gameCommands();
+    void gameCommands() throws RemoteException;
     void updatePlayingPlayer(String playingPlayer);
     /**
      * Calls the command section of GameLobby, enabling the user to write which command to execute.

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.modelSupport.enums;
 
-public enum colorType {
+import java.io.Serializable;
+
+public enum colorType implements Serializable {
     PURPLE,
     BLUE,
     LIGHT_BLUE,

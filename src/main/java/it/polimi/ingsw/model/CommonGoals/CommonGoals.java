@@ -4,10 +4,11 @@ import it.polimi.ingsw.model.CommonGoals.Strategy.*;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.enums.CommonGoalType;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class CommonGoals {
+public class CommonGoals implements Serializable {
     /**
      * It refers to the first goal chosen
      */

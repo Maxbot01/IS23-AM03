@@ -15,7 +15,7 @@ import javafx.util.Callback;
 
 import java.util.*;
 
-import static it.polimi.ingsw.client.ClientRMI.stub;
+import static it.polimi.ingsw.client.ClientMain.stub;
 
 public class GameManagerView {
     private ScreenSwitcher screenSwitcher;

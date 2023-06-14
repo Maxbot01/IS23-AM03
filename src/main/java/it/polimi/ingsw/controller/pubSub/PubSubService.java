@@ -36,8 +36,6 @@ public class PubSubService {
             subscribers.remove(subscriber);
             topicSubMap.put(topic, subscribers);
         }
-
-
     }
 
     //possibility to hava a callback to ack if the sub received
@@ -48,9 +46,8 @@ public class PubSubService {
                 s.receiveSubscriberMessages(message);
             }
         }else{
+            System.err.println("No topic exists");
             //TODO: handle with exception noTopicExists
         }
-
     }
-
 }

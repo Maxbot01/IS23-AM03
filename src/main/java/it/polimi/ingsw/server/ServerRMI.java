@@ -12,10 +12,21 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerRMI extends GameManager implements MyRemoteInterface{
+public class ServerRMI{
+    /*
     static int PORT = 1099;
+    static Message message;
 
     private static List<String> clients = new ArrayList<>();
+
+    public Message ReceiveMessageRMI() {
+        return message;
+    }
+
+    public static void SetMessage(Message withMessage) {
+        System.out.println("Setting message" + withMessage);
+        message = withMessage;
+    }
 
     public void registerClient(String ipAddress) {
         System.out.println("Registering client " + ipAddress);
@@ -31,7 +42,7 @@ public class ServerRMI extends GameManager implements MyRemoteInterface{
             Registry registry = null;
             registry = LocateRegistry.createRegistry(PORT);
             registry.bind("MyRemoteInterface", stub);
-            System.err.println("Server ready");
+            System.out.println("Server ready");
         } catch (RemoteException | AlreadyBoundException e) {
             throw new RuntimeException(e);
         }
@@ -42,5 +53,5 @@ public class ServerRMI extends GameManager implements MyRemoteInterface{
     @Override
     public void receiveChatMessage(String gameID, String fromUser, String message) {
 
-    }
+    }*/
 }
