@@ -5,9 +5,11 @@ import it.polimi.ingsw.controller.GameManagerController;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.modelSupport.*;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
@@ -15,6 +17,9 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import org.apache.commons.cli.*;
 import java.util.*;
+
+import static it.polimi.ingsw.client.ClientMain.stub;
+
 public class CLIgeneral extends View{
     private GameStateType gameState;
     private String gameID;
@@ -244,7 +249,7 @@ public class CLIgeneral extends View{
                     if(gameState.equals(GameStateType.FINISHED)) {
                         finished = true;
                         System.out.println("You have left the game");
-                        super.gameController.setReady();
+                        super.gameController.setReady(gameID, userPlayer.getNickname());
                     }else{
                         System.out.println("The game hasn't ended, you can't leave yet");
                     }
@@ -535,15 +540,49 @@ public class CLIgeneral extends View{
                     }
                     if(present){
                         chosenCardsCorrectly = false;
-                        coord.clear();
                         System.out.println("You can't choose the same coordinates twice");
                     } else {
                         coord.add(tmp);
                     }
                 }
+                //Check if the shelf has enough spaces for the chosen cards
+                if(chosenCardsCorrectly){
+                    int numberOfCardsChosen = s.length()/3;
+                    for(Player p: players){
+                        if(p.getNickname().equals(userPlayer.getNickname()) && p.getNickname().equals(playingPlayer)){
+                            boolean validColumnFound = false;
+                            int maxNumberOfCardsPossible = 0;
+                            for(int j = 0; j < p.getPlayersShelf().getShelfCards()[0].length && !validColumnFound; j++){
+                                int freeSpots = 0;
+                                for(int i = 0; i < p.getPlayersShelf().getShelfCards().length; i++) {
+                                    if(p.getPlayersShelf().getShelfCards()[i][j].getColor().equals(colorType.EMPTY_SPOT)){
+                                        freeSpots++;
+                                    }
+                                }
+                                if(freeSpots > maxNumberOfCardsPossible){
+                                    maxNumberOfCardsPossible = freeSpots;
+                                }
+                                if(freeSpots >= numberOfCardsChosen){
+                                    validColumnFound = true;
+                                }
+                            }
+                            if(!validColumnFound){
+                                chosenCardsCorrectly = false;
+                                if(maxNumberOfCardsPossible > 1) {
+                                    System.out.println("Look at your shelf, you can't insert more than " + maxNumberOfCardsPossible + " cards in one of your columns");
+                                }else{
+                                    System.out.println("Look at your shelf, you can't insert more than " + maxNumberOfCardsPossible + " card in one of your columns");
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
             }
             if(chosenCardsCorrectly){
                 break;
+            }else{
+                coord.clear();
             }
         } while(true);
         // Choose order phase:

@@ -211,7 +211,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             try {
                 ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.pieces, mess.selecectables,
                         mess.playersShelves, playersPoints, mess.gameState);
-            } catch (IOException e) {
+            } catch (IOException e) {//TODO: Perché devo metterel'exception????
                 throw new RuntimeException(e);
             }
             ClientManager.view.printLivingRoom();
@@ -263,7 +263,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             ClientManager.view.printShelves();
             this.playerReady = false;
-            ClientManager.view.showErrorMessage("Exit the game with the command \"-close\"");
+            ClientManager.view.showErrorMessage("Exit the game with the command \"-leave_game\"");
             while (!playerReady){
                 Thread.onSpinWait();
             }
