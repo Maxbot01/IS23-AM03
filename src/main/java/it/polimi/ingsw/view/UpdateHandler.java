@@ -30,9 +30,6 @@ public interface UpdateHandler {
     void initializeGame(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals,
                            BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
                            HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException;
-
-    void initializeGame(List<String> players, int[] indexes, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String, BoardCard[][]>> playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException;
-
     /**
      * It contains all the available command the CLI user can call while waiting for his turn
      */
@@ -40,8 +37,6 @@ public interface UpdateHandler {
     void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String, Integer>
                                         updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf);
 
-    //void waitingCommands(); // The controller continues to call this method until the playing player changes to the CLI user
-    void waitingCommands(); //The controller continues to call this method until the playing player changes to the CLI user
     /**
      * Requests Username from Command Line
      * @return String
@@ -92,16 +87,10 @@ public interface UpdateHandler {
      */
     void showErrorMessage(String error);
     /**
-     * Prints the playing player
-     * @param playingPlayer
-     */
-    void showPlayingPlayer(String playingPlayer);
-    /**
      * Prints the final scoreboard
      * @param finalScoreBoard
      * @param winner
      */
     void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner,GameStateType gameState);
-
     //void readInput() throws InterruptedException; CLIInputThread
 }

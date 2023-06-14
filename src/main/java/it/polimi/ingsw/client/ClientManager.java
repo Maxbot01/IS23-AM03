@@ -19,6 +19,7 @@ import it.polimi.ingsw.view.CLIgeneral;
 import it.polimi.ingsw.view.GUIView.GUIView;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -125,7 +126,7 @@ public class ClientManager {
     }
 
     //accessible from ClientMain (socket) and RMI
-    public static void clientReceiveMessage(Message receivedMessageDecoded){
+    public static void clientReceiveMessage(Message receivedMessageDecoded) throws IOException {
         if(receivedMessageDecoded instanceof NetworkMessage){
             //received a network message (like ping or request of username)
             pubsub.publishMessage(TopicType.networkMessageState, receivedMessageDecoded);

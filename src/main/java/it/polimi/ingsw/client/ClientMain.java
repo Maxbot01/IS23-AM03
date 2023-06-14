@@ -82,7 +82,11 @@ public class ClientMain implements Runnable{
 
                     Thread newThread = new Thread(() -> { //This is the execution thread
                         System.out.println("New thread created: "+Thread.currentThread().getName());//DEBUG
-                        ClientManager.clientReceiveMessage(serializedMessage);
+                        try {
+                            ClientManager.clientReceiveMessage(serializedMessage);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     });
                     newThread.start();
                     //previousThread = newThread;

@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 import static it.polimi.ingsw.client.ClientManager.createdControllers;
@@ -22,7 +23,7 @@ public class MyRemoteObject extends GameManager implements MyRemoteInterface {
     }
 
     @Override
-    public void receiveMessage(Message withMessage, String rmiUID) {
+    public void receiveMessage(Message withMessage, String rmiUID) throws IOException {
         System.out.println("Received message from " + rmiUID + " with content: " + withMessage);
         if(withMessage instanceof NetworkMessage){
             //received a network message (like ping or request of username)

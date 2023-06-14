@@ -36,7 +36,7 @@ import java.util.List;
 
 
 public class HelloController {
-    @FXML
+    /*@FXML
     private Label welcomeText;
     @FXML
     public ImageView shelf3;
@@ -347,7 +347,7 @@ public class HelloController {
                 }
             } ;
 
-
+*/
    /* int trovaindex(int i, int j){
         int range = 0;
         int bonus = 3;
@@ -386,7 +386,7 @@ public class HelloController {
 
     */
 
-        }
+/*        }
 
         public String scegliBoardCard(colorType color, ornamentType ornament) {
             String start = new String("C:\\Users\\Maxbot\\IdeaProjects\\IS23-AM03\\src\\main\\resources\\it\\polimi\\ingsw\\fx\\myshelfie\\item_tiles\\");
@@ -416,6 +416,6 @@ public class HelloController {
             return scelta;
 
         }
-    };
+    };*/
 }
 

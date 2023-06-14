@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 
+import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -23,6 +24,6 @@ public interface MyRemoteInterface extends Remote {
         void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID) throws RemoteException, UnselectableCardException;
         void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID) throws RemoteException;
         void sendAck();
-        void receiveMessage(Message withMessage, String rmiUID);
+        void receiveMessage(Message withMessage, String rmiUID) throws IOException;
         void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame);
 }

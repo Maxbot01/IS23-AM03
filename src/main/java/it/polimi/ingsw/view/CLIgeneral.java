@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import org.apache.commons.cli.*;
 import java.util.*;
+
 public class CLIgeneral extends View{
     private GameStateType gameState;
     private String gameID;
@@ -145,12 +146,6 @@ public class CLIgeneral extends View{
             this.players.get(j).updateScore(playersPoints.get(players.get(j).getNickname())-players.get(j).getScore());
         }
     }
-
-    @Override
-    public void initializeGame(List<String> players, int[] indexes, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String, BoardCard[][]>> playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException {
-
-    }
-
     @Override
     public void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState){
         this.livingRoom = livingRoom;
@@ -159,28 +154,21 @@ public class CLIgeneral extends View{
     }
     @Override
     public void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String,
-            Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf){
+            Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf) {
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
-        for(int i = 0; i < players.size(); i++){
-            if(players.get(i).getNickname().equals(updatedPlayerPoints.getFirst())){
-                this.players.get(i).updateScore(updatedPlayerPoints.getSecond()-players.get(i).getScore());
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getNickname().equals(updatedPlayerPoints.getFirst())) {
+                this.players.get(i).updateScore(updatedPlayerPoints.getSecond() - players.get(i).getScore());
                 BoardCard[][] updatedShelf = updatedPlayerShelf.getSecond();
-                for(int j = 0; j < updatedShelf.length; j++){
-                    for(int z = 0; z < updatedShelf[0].length; z++){
+                for (int j = 0; j < updatedShelf.length; j++) {
+                    for (int z = 0; z < updatedShelf[0].length; z++) {
                         this.players.get(i).getPlayersShelf().getShelfCards()[j][z] = updatedShelf[j][z];
                     }
                 }
             }
-        }
-
-    }
-
-    @Override
-    public void waitingCommands() {
-
-    }
+        }    }
 
     @Override
     public void updatePlayingPlayer(String playingPlayer){
@@ -287,10 +275,6 @@ public class CLIgeneral extends View{
         System.out.println("Your password is: "+password);
         GameManagerController gameManagerController = ClientManager.gameManagerController;
         gameManagerController.onSetCredentials(username, password);
-    }
-    @Override
-    public void showPlayingPlayer(String playingPlayer){//TODO: Delete because I'll have the chairedPlayer now
-        System.out.println(playingPlayer+" is playing...");
     }
     @Override
     public void launchGameManager(HashMap<String, List<String>> availableGames){
