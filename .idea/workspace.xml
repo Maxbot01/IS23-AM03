@@ -9,9 +9,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ec8e130-1547-44b0-a8fc-87da53df7eb3" name="Changes" comment="minor fixes of the game flow">
+    <list default="true" id="5ec8e130-1547-44b0-a8fc-87da53df7eb3" name="Changes" comment="javadoc additions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/CLIgeneral.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/CLIgeneral.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/UpdateHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/UpdateHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +68,7 @@
     "WebServerToolWindowFactoryState": "false",
     "extract.method.default.visibility": "private",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "/Users/enricoalberti/Desktop/UNI/ANNO 3/INGEGNERIA DEL SOFTWARE/code/ProgettoIDS23/src/main/java/it/polimi/ingsw/view/GUIView/imgs/boards",
+    "last_opened_file_path": "C:/Users/pc/IdeaProjects/IDS Progetto/IS23-AM03_javafx_version",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -201,13 +200,6 @@
       <workItem from="1685962317046" duration="53585000" />
       <workItem from="1686332379745" duration="19396000" />
       <workItem from="1686587252070" duration="17041000" />
-    </task>
-    <task id="LOCAL-00020" summary="fixed stuff and some forbidden tests">
-      <created>1679938997085</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1679938997085</updated>
     </task>
     <task id="LOCAL-00021" summary="fixed stuff and some forbidden tests">
       <created>1679939611760</created>
@@ -545,7 +537,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686765422137</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="javadoc additions">
+      <created>1686768732947</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1686768732947</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -590,7 +589,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="created CommonGoals, some error messages, Pair and worked on Game" />
     <MESSAGE value="modified pattern" />
     <MESSAGE value="added PersonalGoal and player" />
     <MESSAGE value="finished first version of Game, also finished first version of player and implemented a way of managing the personal goals" />
@@ -615,7 +613,8 @@
     <MESSAGE value="some stuff" />
     <MESSAGE value="RMI" />
     <MESSAGE value="minor fixes of the game flow" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor fixes of the game flow" />
+    <MESSAGE value="javadoc additions" />
+    <option name="LAST_COMMIT_MESSAGE" value="javadoc additions" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/IS23_AM03$Server.ic" NAME="Server Coverage Results" MODIFIED="1686085256602" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

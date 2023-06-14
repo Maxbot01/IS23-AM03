@@ -76,7 +76,7 @@ public interface UpdateHandler {
      * Method relative to the activation of the available commands that the player has during the game
      * @throws RemoteException
      */
-    void gameCommands() throws RemoteException;//TODO: Check if remoteException is necessary
+    void gameCommands();
 
     /**
      * It updates the playing player
