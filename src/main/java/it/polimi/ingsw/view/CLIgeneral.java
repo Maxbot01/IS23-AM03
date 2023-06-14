@@ -118,6 +118,17 @@ public class CLIgeneral extends View{
             .desc("starts the cards and column selection phase")
             .required(false)
             .build();
+    /**
+     * It initializes the game parameters at the start of the match or, in case of reconnection it sets them based on the last changes
+     * @param playersNick
+     * @param commonGoals
+     * @param personalGoals
+     * @param livingRoom
+     * @param selectables
+     * @param playersShelves
+     * @param playersPoints
+     * @param gameState
+     */
     @Override
     public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals,
                                BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>>
@@ -150,12 +161,26 @@ public class CLIgeneral extends View{
             this.players.get(j).updateScore(playersPoints.get(players.get(j).getNickname())-players.get(j).getScore());
         }
     }
+    /**
+     * It updates the game parameters relative to the selection of cards from the living room by the playing player
+     * @param livingRoom
+     * @param selectables
+     * @param gameState
+     */
     @Override
     public void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState){
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
     }
+    /**
+     * It updates the game parameters relative to the selection of the column by the playing player
+     * @param livingRoom
+     * @param selectables
+     * @param gameState
+     * @param updatedPlayerPoints
+     * @param updatedPlayerShelf
+     */
     @Override
     public void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String,
             Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf) {
@@ -173,7 +198,10 @@ public class CLIgeneral extends View{
                 }
             }
         }    }
-
+    /**
+     * It updates the playing player
+     * @param playingPlayer
+     */
     @Override
     public void updatePlayingPlayer(String playingPlayer){
         this.playingPlayer = playingPlayer;
@@ -183,7 +211,9 @@ public class CLIgeneral extends View{
             System.out.println("\033[1;97m" + playingPlayer + " is playing..."+ "\033[0m");
         }
     }
-
+    /**
+     * Method relative to the activation of the available commands that the player has during the game
+     */
     /*@Override
     public void setFinishedFlag(boolean value){
         this.finishedFlag = value;
@@ -269,14 +299,14 @@ public class CLIgeneral extends View{
         }
         System.out.println("You have left gameCommands");//DEBUG
     }
+    /**
+     * Method relative to the acquisition of the client's credentials through the command line interface
+     */
     @Override
     public void requestCredentials(){
         System.out.println("Insert Username and a Password, that you will need in case of disconnection.\n" +
                 "If you are reconnecting use your previously inserted password:");
         Scanner in = new Scanner(System.in);
-        if (Thread.currentThread().isInterrupted()) {
-            return; // Exit the loop gracefully
-        }
         String username = in.next();
         String password = in.next();
         this.userPlayer = new Player(username);
@@ -286,6 +316,10 @@ public class CLIgeneral extends View{
         GameManagerController gameManagerController = ClientManager.gameManagerController;
         gameManagerController.onSetCredentials(username, password, stub);
     }
+    /**
+     * Method relative to the activation of the available commands that the player has during the game selection phase
+     * @param availableGames
+     */
     @Override
     public void launchGameManager(HashMap<String, List<String>> availableGames){
         Options options = new Options();
@@ -378,6 +412,10 @@ public class CLIgeneral extends View{
         }
         System.out.println("You have left the manager");
     }
+    /**
+     * Whenever a new game lobby is created it updates the available games
+     * @param newGame
+     */
     @Override
     public void addNewGame(Pair<String, List<String>> newGame){
         boolean found = false;
@@ -411,6 +449,12 @@ public class CLIgeneral extends View{
         }
         System.out.println();
     }
+    /**
+     * Method relative to the activation of the available commands that the player has during the game's lobby phase
+     * @param gameID
+     * @param lobbyPlayers
+     * @param lobbyHost
+     */
     @Override
     public void launchGameLobby(String gameID, ArrayList<String> lobbyPlayers, String lobbyHost){
         this.gameID = gameID;
@@ -481,6 +525,10 @@ public class CLIgeneral extends View{
         }
         System.out.println("You have left the lobby");
     }
+    /**
+     * Whenever a new player enters the lobby it updates the lobby's players
+     * @param addedPlayer
+     */
     @Override
     public void addNewLobbyPlayer(String addedPlayer){
         Player p = new Player(addedPlayer);
@@ -492,6 +540,9 @@ public class CLIgeneral extends View{
         }
         System.out.println();
     }
+    /**
+     * Method relative to the card and order selection phase
+     */
     @Override
     public void chooseCards(){
         ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
@@ -629,6 +680,9 @@ public class CLIgeneral extends View{
         this.selectedCards = selected;
         super.gameController.onSelectedCards(coord, userPlayer.getNickname());
     }
+    /**
+     * Method relative to the column selection phase
+     */
     @Override
     public void chooseColumn(){
         System.out.println("Insert the shelf's column for the selected cards. From 0 to 4.");
@@ -650,6 +704,9 @@ public class CLIgeneral extends View{
 //        }
         super.gameController.onSelectedColumn(selectedCards, column, userPlayer.getNickname());
     }
+    /**
+     * Method relative to the activation of the available commands that the player has after he has left the game
+     */
     @Override
     public void endCommands(){
         Options options = new Options();
@@ -682,6 +739,9 @@ public class CLIgeneral extends View{
             }
         }
     }
+    /**
+     * Shows the current living room / board
+     */
     @Override
     public void printLivingRoom() {
         BoardCard[][] pieces = livingRoom;
@@ -707,6 +767,10 @@ public class CLIgeneral extends View{
         }
         System.out.print("\n");
     }
+    /**
+     * Shows the chat messages. It can show the full chat or the last five messages based on the player's choice
+     * @param messages
+     */
     @Override
     public void printChat(ArrayList<Pair<String, String>> messages) {
         if(!messages.isEmpty()) {
@@ -717,6 +781,9 @@ public class CLIgeneral extends View{
             System.out.println("Chat is empty");
         }
     }
+    /**
+     * Shows all the players' current shelves
+     */
     @Override
     public void printShelves(){
         System.out.println("\n"+"Game State: "+gameState.toString());
@@ -736,10 +803,20 @@ public class CLIgeneral extends View{
             }
         }
     }
+    /**
+     * Shows error messages
+     * @param error
+     */
     @Override
     public void showErrorMessage(String error){
         System.err.println(error);
     }
+    /**
+     * Shows the final scoreboard, winner and the players' shelves
+     * @param finalScoreBoard
+     * @param winner
+     * @param finalGameState
+     */
     @Override
     public void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner, GameStateType finalGameState){
         System.out.println("\n"+"Game State: "+finalGameState.toString());
