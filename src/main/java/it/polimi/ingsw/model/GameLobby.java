@@ -3,16 +3,14 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
+import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
 
-import java.io.Serializable;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class GameLobby extends GameObservable implements Serializable, Remote {
+public class GameLobby extends GameObservable {
 
-    private final String HostID;
     private String ID;
     private String host;
     private int numOfPlayers;
@@ -26,7 +24,7 @@ public class GameLobby extends GameObservable implements Serializable, Remote {
         return this.host;
     }
 
-    public void startMatch(String user, it.polimi.ingsw.model.MyRemoteInterface stub) {
+    public void startMatch(String user) throws IOException {
         System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
             GameManager.getInstance().createMatchFromLobby(ID, players);
@@ -41,8 +39,7 @@ public class GameLobby extends GameObservable implements Serializable, Remote {
         return ID;
     }
 
-    GameLobby(String ID, String host, int numOfPlayers, String HostID){
-        this.HostID = HostID;
+    GameLobby(String ID, String host, int numOfPlayers) throws IOException {
         this.ID = ID;
         this.host = host;
         this.numOfPlayers = numOfPlayers;
@@ -52,7 +49,7 @@ public class GameLobby extends GameObservable implements Serializable, Remote {
         //TODO: Send a message to all observers not in game (or don't show it) with the new available games (remember that there's the method lookForNewGames)
     }
 
-    public void addPlayer(String player) throws LobbyFullException {
+    public void addPlayer(String player) throws LobbyFullException, IOException {
         if(players.size() + 1 > numOfPlayers){
             throw new LobbyFullException("The selected lobby is full");
         }else{

@@ -1,13 +1,13 @@
 package it.polimi.ingsw.server;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.model.GameManager;
-import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.model.helpers.*;
-import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
+import com.google.gson.Gson;
+import it.polimi.ingsw.model.modelSupport.BoardCard;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -15,72 +15,39 @@ public class VirtualGameManagerSerializer {
     private String method;
     private Object[] args;
 
-
-
-    /**
-     * Class Constructor, sets the initial method and args
-     * @param method
-     * @param args
-     */
     public VirtualGameManagerSerializer(String method, Object[] args) {
         this.method = method;
         this.args = args;
     }
 
-    /**
-     * Getter for method
-     * @return method
-     */
+    //getter and setter
     public String getMethod() {
         return method;
     }
 
-    /**
-     * Getter for args
-     * @return args
-     */
     public Object[] getArgs() {
         return args;
     }
 
-    /**
-     * Setter of method
-     * @param method
-     */
     public void setMethod(String method) {
         this.method = method;
     }
 
-    /**
-     * Setter of args
-     * @param args
-     */
     public void setArgs(Object[] args) {
         this.args = args;
     }
 
-    /**
-     * Serializer of method
-     * @param virtualGameManagerSerializer
-     * @return String
-     */
     public static String serializeMethod(VirtualGameManagerSerializer virtualGameManagerSerializer) {
         Gson gson = new Gson();
         return gson.toJson(virtualGameManagerSerializer);
     }
 
-    /**
-     * Recreates the method from the String received
-     * @param jsonString
-     * @param socket
-     * @param stub
-     * @param <token>
-     */
-    public static <token> void deserializeMethod(String jsonString, Socket socket, MyRemoteInterface stub) {
+    public static <token> void deserializeMethod(String jsonString, Socket socket) throws IOException {
         //FOR SURE WE ARE IN SOCKET
         GameManager gameManager = GameManager.getInstance();
         Gson gson = new Gson();
         VirtualGameManagerSerializer virtualGameManagerSerializer = gson.fromJson(jsonString, VirtualGameManagerSerializer.class);
+
         switch(virtualGameManagerSerializer.getMethod()) {
             case "ping":
                 gameManager.ping(new RemoteUserInfo(true, socket, null));
@@ -99,7 +66,7 @@ public class VirtualGameManagerSerializer {
                 Double numPlayersDouble = (Double) virtualGameManagerSerializer.getArgs()[0];
                 int numPlayers = numPlayersDouble.intValue();
                 String user1 = (String) virtualGameManagerSerializer.getArgs()[1];
-                gameManager.createGame(numPlayers, user1, null);
+                gameManager.createGame(numPlayers, user1);
                 break;
             case "sendAck":
                 gameManager.sendAck();
@@ -107,7 +74,7 @@ public class VirtualGameManagerSerializer {
             case "startMatch":
                 String ID = (String) virtualGameManagerSerializer.getArgs()[0];
                 String user2 = (String) virtualGameManagerSerializer.getArgs()[1];
-                gameManager.startMatch(ID, user2, null);
+                gameManager.startMatch(ID, user2);
                 break;
             case "selectedCards":
                 String user3 = (String) virtualGameManagerSerializer.getArgs()[1];
@@ -123,23 +90,20 @@ public class VirtualGameManagerSerializer {
                 gameManager.selectedColumn(getBoardCardFormat(getElementsFromObject(virtualGameManagerSerializer.getArgs()[0])),
                         Character.getNumericValue(virtualGameManagerSerializer.getArgs()[1].toString().charAt(0)), user4, gameID2);
                 //gameManager.selectedColumn((ArrayList<BoardCard>) virtualGameManagerSerializer.getArgs()[0], (Integer)virtualGameManagerSerializer.getArgs()[1], user4, gameID2);
-                break;
             case "lookForNewGames":
-                String user5 = (String) virtualGameManagerSerializer.getArgs()[0];
+                String user5 = virtualGameManagerSerializer.getArgs()[0].toString();
                 gameManager.lookForNewGames(user5);
-                break;
             case "receiveChatMessage":
-                String gameID3 = (String) virtualGameManagerSerializer.getArgs()[0];
-                String toUser = (String) virtualGameManagerSerializer.getArgs()[1];
-                String fromUser = (String) virtualGameManagerSerializer.getArgs()[2];
-                String mex = (String) virtualGameManagerSerializer.getArgs()[3];
-                boolean fullChat = (boolean) virtualGameManagerSerializer.getArgs()[4];
-                boolean inGame = (boolean) virtualGameManagerSerializer.getArgs()[5];
-                gameManager.receiveChatMessage(gameID3, toUser, fromUser, mex, fullChat, inGame);
-                break;
-            default:
-                System.err.println("Unknown method: "+virtualGameManagerSerializer.getMethod());
-                break;
+                gameID = (String) virtualGameManagerSerializer.getArgs()[0];
+                String fromUser = (String) virtualGameManagerSerializer.getArgs()[1];
+                String mex = (String) virtualGameManagerSerializer.getArgs()[2];
+                boolean fullChat = (boolean) virtualGameManagerSerializer.getArgs()[3];
+                boolean inGame = (boolean) virtualGameManagerSerializer.getArgs()[4];
+                System.out.println("VGMS 1");
+                gameManager.receiveChatMessage(gameID, fromUser, mex, fullChat, inGame);
+
+
+                //TODO: Uncomment this instruction -> gameManager.lookForNewGames(user5);
         }
     }
     /**
@@ -166,7 +130,10 @@ public class VirtualGameManagerSerializer {
                 }
             }
         }
-
+        /*System.out.println("Printing strings inside getElementsFromObject");
+        for(String t: strings){
+            System.out.print(" -- "+t+" -- ");
+        }*/
         return strings;
     }
     /**
@@ -234,7 +201,10 @@ public class VirtualGameManagerSerializer {
                 System.out.println("il formato delle stringhe non era corretto");
             }
         }
-
+        /*System.out.println("Printing boardCards inside getBoardCardFormat");
+        for(BoardCard b: boardCards){
+            System.out.print(" -- color:"+b.getColor().toString()+" ornament: "+b.getOrnament().toString()+" -- ");
+        }*/
         return boardCards;
     }
 }

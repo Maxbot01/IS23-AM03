@@ -3,19 +3,23 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.helpers.Pair;
+import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
+import it.polimi.ingsw.model.messageModel.errorMessages.SelectedColumnsMessageError;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.*;
+import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
+import it.polimi.ingsw.model.modelSupport.enums.TurnStateType;
+import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
-import it.polimi.ingsw.server.ServerMain;
+import it.polimi.ingsw.view.CLIColors;
 
-import java.io.Serializable;
-import java.rmi.Remote;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +33,7 @@ import java.util.stream.Collectors;
  * This class is the core of a game.
  * Represents the implementation of the API that the controller can use during the game, updates the state after the clients calls
  */
-public class Game extends GameObservable implements Serializable, Remote {
+public class Game extends GameObservable{
 
     /**
      * A list of all the players playing the game, the order of the list is also the order of the match
@@ -54,8 +58,6 @@ public class Game extends GameObservable implements Serializable, Remote {
     private GameStateType gameState;
 
     private String ID;
-    private String host;
-
 
 
     /**
@@ -66,7 +68,7 @@ public class Game extends GameObservable implements Serializable, Remote {
      *
      * @param fromPlayers players playing the game
      */
-    public Game(ArrayList<Player> fromPlayers, String ID, String host){
+    public Game(ArrayList<Player> fromPlayers, String ID) throws IOException {
         this.ID = ID;
         this.players = new ArrayList<Player>(fromPlayers);
         //all the players need to have a separate commonGoal, generates different indexes from 0 to 11 for creation
@@ -75,9 +77,7 @@ public class Game extends GameObservable implements Serializable, Remote {
         for (int i = 0; i < indexes.length; i++) {
             players.get(i).setPersonalGoalFromIndex(indexes[i]);
         }
-
         //set the livingroom
-        this.host = host;
         this.livingRoom = new LivingRoom(players.size());
         //set common goals
         this.commonGoals = new CommonGoals();
@@ -104,18 +104,13 @@ public class Game extends GameObservable implements Serializable, Remote {
         return ID;
     }
 
-    //getter host
-    public String getHost(){
-        return host;
-    }
-
 
     /**
      * The player knew which cards he could select, he chose them. This method updates the board and returns the update to everyone.
      * Broadcasts the selected cards so that everyone can see them via a SelectedCardsMessage.
      * @param selected selected cards from the user
      */
-    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) throws UnselectableCardException {
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) throws UnselectableCardException, IOException {
         /*
         l'utente sa che carte poteva scegliere, le ha scelte. Il metodo aggiorna la board (i pezzi) chiamando updateBoard di Livingroom.
         Invia il messaggio al controller
@@ -123,11 +118,11 @@ public class Game extends GameObservable implements Serializable, Remote {
         //TODO: check to be sure that the right player played
         ArrayList<BoardCard> selectedCardsTypes = new ArrayList<>();
         //try {//Exception handled in GameManager
-        for (Pair<Integer, Integer> pr: selected) {
-            selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
-        }
-        this.livingRoom.updateBoard(selected);
-        super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
+            for (Pair<Integer, Integer> pr: selected) {
+                selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
+            }
+            this.livingRoom.updateBoard(selected);
+            super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
         /*} catch (UnselectableCardException e) {
             super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError, e.info),true,ID);
             //throw new RuntimeException(e);
@@ -139,7 +134,6 @@ public class Game extends GameObservable implements Serializable, Remote {
             throw new RuntimeException(e);
         }*/
         //It is sent only if successful -> super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
-
     }
 
     private List<String> getAllNicks(){
@@ -154,7 +148,7 @@ public class Game extends GameObservable implements Serializable, Remote {
      * @param selCards selected cards by the player
      * @param colIndex selected column by the player
      */
-    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) { //TODO: See if user is necessary
+    public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) throws IOException { //TODO: See if user is necessary
         try {
             /*testing
             System.out.println("PRINTING THE SELECTED CARDS:");
@@ -176,7 +170,6 @@ public class Game extends GameObservable implements Serializable, Remote {
                 System.out.print("\n");
             }*/
             this.playingPlayer.getPlayersShelf().insertInColumn(selCards, colIndex);
-            this.playingPlayer.setPlayerShelf(this.playingPlayer.getPlayersShelf());
             /*System.out.println("PRINTING THE MODIFIED SHELF AFTER:");
             for(int i = 0; i < playingPlayer.getPlayersShelf().getShelfCards().length; i++){
                 for(int j = 0; j < playingPlayer.getPlayersShelf().getShelfCards()[0].length; j++){
@@ -204,23 +197,17 @@ public class Game extends GameObservable implements Serializable, Remote {
         }
         //the playing players shelf is updated
         //calculate players points gained from the move
-        this.playingPlayer.updateScore(this.commonGoals.calculateAllPoints(playingPlayer, players.size()));
+        this.commonGoals.calculateAllPoints(playingPlayer, players.size());
         //if we are in the last round and the next player has the chair we can set the state as FINISHED and terminate the match
         if(gameState == GameStateType.LAST_ROUND && getNextPlayer().hasChair()){
             this.gameState = GameStateType.FINISHED;
             ArrayList<Pair<String, Integer>> finalScoreBoard = new ArrayList<>();
-            //Sending the last shelf update before the final score because the calculateAdiacentPoints sosbstitutes the cards with empty_spot
-            super.notifyAllObservers(getAllNicks(), new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(),
-                    playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname(),this.playingPlayer.getPlayersShelf().
-                    getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()), true, this.ID);
-
             for (Player pl:players){
                 //TODO: possibility to put an observer from the player to the shelf to automatically update points
                 //get final score adds personal points to the score so it has to be called only once
                 finalScoreBoard.add(new Pair<>(pl.getNickname(), pl.getFinalScore()));
             }
             String winnerNickname = finalScoreBoard.stream().reduce((a, b) -> a.getSecond() > b.getSecond() ? a : b).get().getFirst();
-            //Sending the last shelf update
             super.notifyAllObservers(getAllNicks(), new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname), true, this.ID);
             return;
         }

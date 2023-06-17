@@ -4,6 +4,8 @@ module it.polimi.ingsw {
     requires commons.cli;
     requires java.rmi;
     requires com.google.gson;
+    requires java.rmi;
+    requires java.management.rmi;
 
     opens it.polimi.ingsw to javafx.fxml;
     exports it.polimi.ingsw;
