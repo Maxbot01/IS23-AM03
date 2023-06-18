@@ -1,10 +1,11 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
+import it.polimi.ingsw.server.RemoteUserInfo;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -44,6 +45,7 @@ public interface MyRemoteInterface extends Remote, Serializable {
         void addRemoteUser(String username, RemoteUserInfo remoteUserInfo) throws RemoteException;
 
         void setHostID(String ID) throws RemoteException;
+        void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame) throws RemoteException;
 
         String getHostID() throws RemoteException;
 
@@ -57,4 +59,5 @@ public interface MyRemoteInterface extends Remote, Serializable {
         void updateState() throws RemoteException;
         boolean getFlag() throws RemoteException;
         void updateStateFalse() throws RemoteException;
+        String getGameLobbyHost(String gameID) throws RemoteException;
 }

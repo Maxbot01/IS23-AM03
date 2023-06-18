@@ -87,10 +87,10 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
     }
     @Override
     public void onSendChatMessage(String message){
-        ClientManager.virtualGameManager.receiveChatMessage(this.ID,ClientManager.userNickname,message,false,false);
+        ClientManager.virtualGameManager.receiveChatMessage(this.ID,ClientManager.userNickname,message,false,false,stub);
     }
     @Override
     public void onGetChat(boolean fullChat){
-        ClientManager.virtualGameManager.receiveChatMessage(this.ID,ClientManager.userNickname,null,fullChat,false);
+        ClientManager.virtualGameManager.receiveChatMessage(this.ID,ClientManager.userNickname,null,fullChat,false,stub);
     }
 }

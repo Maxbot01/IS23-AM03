@@ -2,18 +2,18 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.client.MessageSerializer;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.ServerMain;
 
-import java.util.HashMap;
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.List;
 
+import static it.polimi.ingsw.model.GameManager.SetMessage;
+import static it.polimi.ingsw.model.GameManager.getRemoteUsers;
 
-import static it.polimi.ingsw.model.GameManager.userIdentification;
-import static it.polimi.ingsw.server.MyRemoteObject.*;
 
-public abstract class GameObservable {
+public abstract class GameObservable implements Serializable, Remote {
 
     /**
      * Notifies a single client, given the username gets the latest socket/rmi id and sends the message
@@ -84,17 +84,17 @@ public abstract class GameObservable {
             MessageSerializer messageSerializer = new MessageSerializer();
             String serializedMessage;
             //GameManager.getInstance().getUID(t
+            GameManager.SetMessage(withMessage,toPlayer);
 
             serializedMessage = messageSerializer.serialize(withMessage, toPlayer, gameID);
             System.out.println("Sending message to " + toPlayer + ": " + serializedMessage.toString());
 
             ServerMain.server.sendMessageToSocket(serializedMessage, ServerMain.getUserIdentification().get(toPlayer).getSocketID());
-        }else{
+      }else{
           System.out.println("Sending message to " + toPlayer + ": " + withMessage);
           System.out.println(getRemoteUsers());
           SetMessage(withMessage, getRemoteUsers().get(toPlayer).getRmiUID());
-        }
-
+      }
     }
 
     /*

@@ -1,16 +1,10 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.messageModel.NetworkMessage;
-import it.polimi.ingsw.server.MyRemoteInterface;
+import it.polimi.ingsw.model.MyRemoteInterface;
 
 import java.net.InetAddress;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.security.SecureRandom;
-
-import static it.polimi.ingsw.server.ServerMain.server;
 
 public class ClientRMI {
     static int PORT = 1099;

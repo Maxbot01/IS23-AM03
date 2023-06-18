@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
+import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
@@ -11,10 +12,12 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
-import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.ServerMain;
 
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ import java.util.UUID;
 /**
  * Singleton that represents the front-end logic of the server and exposes the endpoint method that every client can call, it manages the requests creating and deleting the games
  */
-public class GameManager extends GameObservable{
+public class GameManager extends GameObservable implements Serializable, Remote, MyRemoteInterface {
 
     //this instance is used whenever we want the singleton
     private static GameManager instance;
@@ -39,7 +42,32 @@ public class GameManager extends GameObservable{
 
     private HashMap<String, ArrayList<Pair<String, String>>> chats;
     private final HashMap<String,Boolean> playersInLobby; // boolean true means the player is in lobby
-    protected GameManager(){
+    static int PORT = 1099;
+    static Message message;
+
+    private static List<String> clients = new ArrayList<>();
+    private static Map<String, Message> clientMessages = new HashMap<>();
+    private static Map<String, Map<String, Message>> MultiMatchClientMessage = new HashMap<>();
+    public static HashMap<String, RemoteUserInfo> remoteUsers = new HashMap<>();
+    private String hostID;
+    private static Map<String, Message> previousClientMessages = new HashMap<>();
+
+    private boolean flag = false;
+
+    public void updateState() {
+        flag = true;
+    }
+
+    public boolean getFlag() {
+        return flag;
+    }
+
+    public void updateStateFalse(){
+        flag = false;
+    }
+
+
+    public GameManager(){
         nicknames = new HashMap<>();
         currentGames = new HashMap<>();
         userMatches = new HashMap<>();
@@ -49,13 +77,13 @@ public class GameManager extends GameObservable{
     }
 
     //getter useridentification
-    public HashMap<String, RemoteUserInfo> getUserIdentification() {
-        return this.userIdentification;
+    public synchronized HashMap<String, RemoteUserInfo> getUserIdentification() {
+        return userIdentification;
     }
 
 
 
-    public void selectGame(String ID, String user){
+    public synchronized void selectGame(String ID, String user){
         //currentGames.put(new GameLobby());
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID) && !x.isKilled()){
@@ -88,7 +116,7 @@ public class GameManager extends GameObservable{
      * @param message
      * @param fullChat
      */
-    public void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame){
+    public synchronized void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame){
         for(GameLobby x: this.currentGames.keySet()){
             if(x.getID().equals(gameID) || currentGames.get(x).getID().equals(gameID)){
                 System.out.println("GM 1");
@@ -124,7 +152,7 @@ public class GameManager extends GameObservable{
         }
     }
 
-    public void createGame(Integer numPlayers, String username, String clientId){
+    public synchronized void createGame(Integer numPlayers, String username, String clientId){
         //userIdentification.get(username).setGameID(UUID.randomUUID().toString());
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers, clientId), null);
         if(playersInLobby.containsKey(username)){ //It notifies every player still outside the lobby when a new game is created, and activates launchGameManager in the view
@@ -144,7 +172,7 @@ public class GameManager extends GameObservable{
 
 
 
-    public void ping(RemoteUserInfo fromClientInfo) {
+    public synchronized void ping(RemoteUserInfo fromClientInfo) {
         //received ping message
         //send pong
         //TODO: server.send(new NetworkMessage("pong"));
@@ -159,7 +187,7 @@ public class GameManager extends GameObservable{
      * Gets all the lobbies that have not been tombstoned (joinable)
      * @return
      */
-    private HashMap<String, List<String>> getAllCurrentJoinableLobbiesIDs(){
+    private synchronized HashMap<String, List<String>> getAllCurrentJoinableLobbiesIDs(){
         HashMap<String, List<String>> out = new HashMap<>();
         for(GameLobby x: this.currentGames.keySet()){
             if(!x.isKilled()){
@@ -170,7 +198,7 @@ public class GameManager extends GameObservable{
     }
 
 
-    public void setCredentials(String username, String password, RemoteUserInfo userInfo){
+    public synchronized void setCredentials(String username, String password, RemoteUserInfo userInfo){
         //check if there was, else send message of erroneous username set request.
         boolean loggedSuccesful = false;
         if(nicknames.containsKey(username)){
@@ -195,13 +223,15 @@ public class GameManager extends GameObservable{
             this.playersInLobby.put(username,false);
             loggedSuccesful = true;
         }
-
         if(loggedSuccesful){
             //TODO: save map of user -> RMI or socket id
             userIdentification.put(username, userInfo);
             ServerMain.addUserToHashMap(username, userInfo);
             //stampa userIdentification
             System.out.println("userIdentification: " + ServerMain.getUserIdentification());
+            if(ServerMain.getUserIdentification().get(username).getIsSocket()){
+                registerClient(username);
+            }
             super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
         }
     }
@@ -213,7 +243,7 @@ public class GameManager extends GameObservable{
      * @return
      */
     //TODO: Fix this method
-    public void lookForNewGames(String username){
+    public synchronized void lookForNewGames(String username){
         super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
     }
 
@@ -228,7 +258,7 @@ public class GameManager extends GameObservable{
     Gest methods LOBBIES and forward them to the exact game and lobby
      */
 
-    public void startMatch(String ID, String user, MyRemoteInterface stub){
+    public synchronized void startMatch(String ID, String user, MyRemoteInterface stub){
         boolean found = false;
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
@@ -240,7 +270,7 @@ public class GameManager extends GameObservable{
             //TODO: Manage "ID not found" error
         }
     }
-    public void createMatchFromLobby(String ID, ArrayList<String> withPlayers){
+    public synchronized void createMatchFromLobby(String ID, ArrayList<String> withPlayers){
         System.out.println("createMatchFromLobby");
         ArrayList<Player> players = new ArrayList<>();
         for(String p: withPlayers){
@@ -249,7 +279,11 @@ public class GameManager extends GameObservable{
         //TODO: nel caso in cui il giocatore stia creando una nuova partita dopo che ne ha terminata un'altra, devo controllare che ci sia giò e nel caso rimpiazzare il game a cui è collegato
         for(GameLobby x: currentGames.keySet()){
             if(x.getID().equals(ID)){
-                currentGames.put(x, new Game(players,ID));
+                if(ServerMain.userIdentificationInServer.get(x.getHost()).getIsSocket()){
+                    currentGames.put(x, new Game(players,ID, x.getHost()));
+                } else {
+                    currentGames.put(x, new Game(players,ID, ServerMain.userIdentificationInServer.get(x.getHost()).getRmiUID()));
+                }
                 x.killLobby();
                 for(String s: withPlayers){
                     if(!s.equals(x.getHost())){
@@ -266,7 +300,7 @@ public class GameManager extends GameObservable{
     /*
     GAME methods
      */
-    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
+    public synchronized void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
         for(Game x: currentGames.values()){
             if(x.getID().equals(gameID)){
                 try{
@@ -279,7 +313,7 @@ public class GameManager extends GameObservable{
         }
     }
 
-    public void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
+    public synchronized void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
         for(Game x: currentGames.values()){
             if(x.getID().equals(gameID)){
                 x.selectedColumn(selected,column,user); // Per i try catch, non basta averli nel "game"?
@@ -308,9 +342,130 @@ public class GameManager extends GameObservable{
      */
 
 
+        public synchronized Message ReceiveMessageRMI(String ipAddress) {
+            System.out.println("CLient che fa Get: " + ipAddress);
+            for (Map.Entry<String, Message> entry : clientMessages.entrySet()) {
+                System.out.println("\u001B[33m" + entry.getKey() + " Facciamo Get: " + entry.getValue() + "\u001B[0m");
+            }
+            return clientMessages.get(ipAddress);
+        }
+
+        //gettter MUltiMatchClientMessage
+        public synchronized Message getMultiMatchClientMessage(String ipAddress, String gameID) {
+            if (MultiMatchClientMessage.containsKey(gameID)) {
+                if (MultiMatchClientMessage.get(gameID).containsKey(ipAddress)) {
+                    return MultiMatchClientMessage.get(gameID).get(ipAddress);
+                }
+            }
+            return null;
+        }
+
+        //add MultiMatchClientMessage
+        public synchronized void addMultiMatchClientMessage(String gameID, Map<String, Message> clientMessages) {
+            MultiMatchClientMessage.put(gameID, clientMessages);
+        }
+
+        //setter MultiMatchClientMessage
+        public synchronized static void setMultiMatchClientMessage(String ipAddress, String gameID, Message message) {
+            if (MultiMatchClientMessage.containsKey(gameID)) {
+                if (clientMessages.containsKey(ipAddress)) {
+                    clientMessages.put(ipAddress, message);
+                }
+            }
+        }
 
 
+        //remoteUsers
+        public synchronized void addRemoteUser(String username, RemoteUserInfo remoteUserInfo){
+            remoteUsers.put(username, remoteUserInfo);
+        }
 
+        public synchronized void setHostID(String ID) throws RemoteException {
+            System.out.println("Setting host ID to " + ID);
+            this.hostID = ID;
+        }
+
+        //getter remoteUsers
+        public synchronized static HashMap<String, RemoteUserInfo> getRemoteUsers(){
+            return remoteUsers;
+        }
+
+        //getter clients
+        public synchronized List<String> getClients() {
+            return clients;
+        }
+
+
+        //getter clientMessages
+        public synchronized Map<String, Message> getClientMessages() {
+            return clientMessages;
+        }
+
+        public synchronized boolean update(String ipAddress) throws RemoteException {
+            for (Map.Entry<String, Message> entry : clientMessages.entrySet()) {
+                String key = entry.getKey();
+                Message currentMessage = entry.getValue();
+                Message previousMessage = previousClientMessages.get(key);
+
+                if (previousMessage == null || !currentMessage.equals(previousMessage)) {
+                    // Il valore associato alla chiave è diverso dal valore precedente
+                    previousClientMessages.put(key, currentMessage);
+                    System.out.println("TRUE");
+                    return true;
+                }
+            }
+            System.out.println("FALSE");
+            return false;
+        }
+
+
+        public synchronized static void SetMessage(Message withMessage, String ipAddress) {
+            clientMessages.put(ipAddress, withMessage);
+            System.out.println("Message set for: " + ipAddress + " " + withMessage.toString());
+            //output clientMessages
+            for (Map.Entry<String, Message> entry : clientMessages.entrySet()) {
+                System.out.println(entry.getKey() + " Stiamo settando: " + entry.getValue());
+            } //per tutti i client diversi da me
+       /* if(message instanceof MatchStateMessage){
+            //facciamo fare a tutti la get
+            SetAllCLientsMessage(message);
+        }*/
+        }
+
+        public synchronized static void SetAllCLientsMessage(Message message) {
+            for (String client : clients) {
+                clientMessages.put(client, message);
+            }
+        }
+
+
+        public synchronized void registerClient(String ipAddress) {
+            System.out.println("Registering client " + ipAddress);
+            clients.add(ipAddress);
+            clientMessages.put(ipAddress, null);
+        }
+
+        public synchronized String getHostID() {
+            return hostID;
+        }
+
+        // getter gamelobby from currentGames
+        public synchronized String getGameLobbyHost(String gameID) {
+            System.err.println("GameID: " + gameID);
+            //stampa tutti i currentGames
+            for(GameLobby x: currentGames.keySet()){
+                System.err.println("GameLobby: " + x.getID());
+            }
+            // itera su game
+            for(Game x: currentGames.values()){
+                if(x.getID().equals(gameID)){
+                    System.err.println("HostID dentro equals: " + x.getHost());
+                    return x.getHost();
+                }
+            }
+            System.err.println("HostID: " + null);
+            return null;
+        }
 }
 
 

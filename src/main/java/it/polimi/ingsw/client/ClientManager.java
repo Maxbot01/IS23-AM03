@@ -14,18 +14,16 @@ import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
-import it.polimi.ingsw.server.MyRemoteInterface;
+import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.view.CLIgeneral;
 import it.polimi.ingsw.view.GUIView.GUIView;
 import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.rmi.RemoteException;
 
 public class ClientManager {
 
+    public static boolean isSocketClient;
     //SINGLETON
     private static ClientManager instance;
     public static PubSubService pubsub;

@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
+import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.Message;
@@ -41,10 +42,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
     @Override
     public void setReady(String gameID, String nickname) {
         this.playerReady = true;
-        if (stub != null) {
+        if (!ClientManager.isSocketClient && stub != null) {
             Message message = null;
             try {
-                message = stub.ReceiveMessageRMI(stub.getHostID());
+                String lobbyhost = stub.getGameLobbyHost(gameID);
+                System.err.println("sto gettando da:" + lobbyhost);
+                message = stub.ReceiveMessageRMI(lobbyhost);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -302,11 +305,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
      */
     @Override
     public void onSendChatMessage(String message){
-        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,message,false,true);
+        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,message,false,true,stub);
     }
     @Override
     public void onGetChat(boolean fullChat){
-        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,null,fullChat,true);
+        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,null,fullChat,true,stub);
     }
     //TODO: make this!!!
     private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {

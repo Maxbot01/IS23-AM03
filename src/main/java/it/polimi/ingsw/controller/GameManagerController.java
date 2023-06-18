@@ -1,28 +1,19 @@
 package it.polimi.ingsw.controller;
 
 
-import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.helpers.Pair;
-import it.polimi.ingsw.model.messageModel.ChatMessage;
-import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.MatchStateMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedCardsMessage;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
-import it.polimi.ingsw.model.modelSupport.Client;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
-import it.polimi.ingsw.server.MyRemoteInterface;
+import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.view.View;
 
-import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {

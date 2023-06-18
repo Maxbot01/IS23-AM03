@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.model.MyRemoteInterface;
+
 import java.io.Serializable;
 import java.net.Socket;
 

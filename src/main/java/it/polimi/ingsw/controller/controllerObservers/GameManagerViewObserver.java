@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller.controllerObservers;
 
-import it.polimi.ingsw.model.helpers.Pair;
-import it.polimi.ingsw.server.MyRemoteInterface;
+import it.polimi.ingsw.model.MyRemoteInterface;
 
 public interface GameManagerViewObserver {
     void onSetCredentials(String username, String password, MyRemoteInterface stub);

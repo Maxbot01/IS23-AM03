@@ -560,6 +560,7 @@ public class CLIgeneral extends View{
                     finished = true;
                     super.gameController.setReady(gameID, userPlayer.getNickname());//After this command the game is shown
                 } else {
+                    System.out.println("Aggiornamento Client per RMI");
                     Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
                     ClientManager.clientReceiveMessage(message);
                     System.out.println("launchGameLobby section");

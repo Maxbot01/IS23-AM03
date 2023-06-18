@@ -3,23 +3,19 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.helpers.Pair;
-import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
-import it.polimi.ingsw.model.messageModel.errorMessages.SelectedColumnsMessageError;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.messageModel.matchStateMessages.*;
 import it.polimi.ingsw.model.modelSupport.*;
-import it.polimi.ingsw.model.modelSupport.enums.PersonalGoalType;
-import it.polimi.ingsw.model.modelSupport.enums.TurnStateType;
-import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
-import it.polimi.ingsw.server.MyRemoteInterface;
-import it.polimi.ingsw.view.CLIColors;
+import it.polimi.ingsw.server.ServerMain;
 
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +29,7 @@ import java.util.stream.Collectors;
  * This class is the core of a game.
  * Represents the implementation of the API that the controller can use during the game, updates the state after the clients calls
  */
-public class Game extends GameObservable{
+public class Game extends GameObservable implements Serializable, Remote {
 
     /**
      * A list of all the players playing the game, the order of the list is also the order of the match
@@ -58,6 +54,7 @@ public class Game extends GameObservable{
     private GameStateType gameState;
 
     private String ID;
+    private String host;
 
 
     /**
@@ -68,7 +65,7 @@ public class Game extends GameObservable{
      *
      * @param fromPlayers players playing the game
      */
-    public Game(ArrayList<Player> fromPlayers, String ID){
+    public Game(ArrayList<Player> fromPlayers, String ID, String host){
         this.ID = ID;
         this.players = new ArrayList<Player>(fromPlayers);
         //all the players need to have a separate commonGoal, generates different indexes from 0 to 11 for creation
@@ -78,6 +75,7 @@ public class Game extends GameObservable{
             players.get(i).setPersonalGoalFromIndex(indexes[i]);
         }
         //set the livingroom
+        this.host = host;
         this.livingRoom = new LivingRoom(players.size());
         //set common goals
         this.commonGoals = new CommonGoals();
@@ -102,6 +100,11 @@ public class Game extends GameObservable{
 
     public String getID(){
         return ID;
+    }
+
+    //getter host
+    public String getHost(){
+        return host;
     }
 
 

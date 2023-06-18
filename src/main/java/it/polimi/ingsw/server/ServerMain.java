@@ -1,14 +1,16 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.model.helpers.Pair;
-import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
+import it.polimi.ingsw.model.GameManager;
+import it.polimi.ingsw.model.MyRemoteInterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.AlreadyBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -21,7 +23,7 @@ import java.util.List;
 /**
  * This class manages the server socket, is multi threaded to handle multiple clients and messages
  */
-public class ServerMain {
+public class ServerMain implements Remote, Serializable {
 
     private ServerSocket serverSocket;
     private List<ClientHandler> clients;
@@ -176,7 +178,7 @@ public class ServerMain {
         server = new ServerMain(port);
         System.out.println("Starting server socket on port " + port);
         //per rmi:
-        MyRemoteObject obj = new MyRemoteObject();
+        GameManager obj = GameManager.getInstance();
         try {
             MyRemoteInterface stub = (MyRemoteInterface) UnicastRemoteObject.exportObject(obj, 1099);
             Registry registry = null;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.model.GameManager;
+import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.model.helpers.*;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;

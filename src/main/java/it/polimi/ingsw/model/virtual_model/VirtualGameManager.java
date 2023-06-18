@@ -5,14 +5,16 @@ import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
-import it.polimi.ingsw.server.MyRemoteInterface;
-import it.polimi.ingsw.server.MyRemoteObject;
+import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,7 +24,7 @@ import java.util.HashMap;
 import static it.polimi.ingsw.server.VirtualGameManagerSerializer.serializeMethod;
 
 
-public class VirtualGameManager {
+public class VirtualGameManager implements Remote, Serializable {
 
     public boolean isSocketClient;
     private MyRemoteInterface remoteObject;
@@ -33,15 +35,21 @@ public class VirtualGameManager {
     }
 
 
-    public void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame){
+    public void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame,MyRemoteInterface stub){
         if (isSocketClient) {
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("receiveChatMessage", new Object[]{gameID,fromUser,message,fullChat,inGame});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
             //serializeMethod(serializedGameManager);
         } else {
-           /* RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
-            remoteUserInfo.setRemoteObject(remoteObject);
-            remoteObject.receiveChatMessage(gameID, fromUser, message, fullChat, inGame);*/
+            try {
+                stub.receiveChatMessage(gameID,fromUser,message,fullChat,inGame);
+                Message netMessage = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                //Message message = stub.getMultiMatchClientMessage(ClientManager.clientIP,"SetupID");
+                System.out.println("Message received: " + netMessage);
+                ClientManager.clientReceiveMessage(netMessage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
