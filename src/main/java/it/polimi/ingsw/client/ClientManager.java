@@ -21,6 +21,9 @@ import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 
+/**
+ * The ClientManager class manages the client-side operations and controllers for the game.
+ */
 public class ClientManager {
 
     public static boolean isSocketClient;
@@ -39,17 +42,25 @@ public class ClientManager {
 
     public static String clientIP;
 
-    // rest of the class
-
-    // Private constructor to prevent instantiation from outside the class
-
-
-    // Public static method to get the singleton instance and be sure to never initialize the ClientManager twice
-    public static ClientManager initializeClientManagerSingleton(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject, String ipAddress){
+    /**
+     * Initializes the ClientManager singleton instance.
+     *
+     * @param isCLI           Flag indicating if the client is using CLI.
+     * @param isSocketClient  Flag indicating if the client is using socket-based communication.
+     * @param remoteObject    The remote object for RMI-based communication.
+     * @param ipAddress       The IP address for RMI-based communication.
+     * @return The initialized ClientManager instance.
+     */
+    public static ClientManager initializeClientManagerSingleton(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject, String ipAddress) {
         if (instance == null) {
             instance = new ClientManager(isCLI, isSocketClient, remoteObject, ipAddress);
         }
         return instance;
+    }
+
+    //getter userNickname
+    public static String getUserNickname() {
+        return userNickname;
     }
 
     private ClientManager(boolean isCLI, boolean isSocketClient, MyRemoteInterface remoteObject, String ipAddress) {
@@ -57,11 +68,11 @@ public class ClientManager {
         lobbyController = null;
         pubsub = new PubSubService();
         isCli = isCLI;
-        if(isCLI){
+        if (isCLI) {
             //cli mode
             view = new CLIgeneral();
             //gameController = new GameController(new CLIgeneral(), new VirtualGame());
-        }else{
+        } else {
             view = new GUIView();
         }
         if (!(isSocketClient)) {
@@ -78,78 +89,78 @@ public class ClientManager {
         virtualGameManager.ping(remoteObject);
     }
 
-    /*public static void startReceivingCommands(){ CLIInputThread
-        try {
-            view.readInput();
-        } catch (InterruptedException e) {
-            System.out.println(Thread.currentThread().getName()+" relative to the commands input is interrupted");
-        }
-    }*/
-
-
-
-    public static void createdControllers(String ID){
+    /**
+     * Creates new instances of controllers based on the received game ID.
+     *
+     * @param ID The game ID.
+     */
+    public static void createdControllers(String ID) {
         //GameManagerController sees that a game has been created with an ID, the game controller gets instantiated
-       //unsubscribes previous controllers anc subsucribes the new ones
-        //TODO: check if the ones created has the same id if it does do not remove
+        //unsubscribes previous controllers and subscribes the new ones
+        //TODO: check if the ones created have the same ID, if they do not remove
         //Changes: I've put the "new" inside every second nested if, and added a check for the registerObserver
         boolean created = false;
-        if(gameController != null){
-            if(!gameController.getGameID().equals(ID)) {
+        if (gameController != null) {
+            if (!gameController.getGameID().equals(ID)) {
                 pubsub.removeSubscriber(TopicType.matchState, gameController);
                 gameController = new GameController(view, ID);
                 created = true;
             }
-        }else{
+        } else {
             gameController = new GameController(view, ID);
             created = true;
         }
-        if(lobbyController != null){
-            if(!lobbyController.getID().equals(ID)) {
+        if (lobbyController != null) {
+            if (!lobbyController.getID().equals(ID)) {
                 pubsub.removeSubscriber(TopicType.lobbyState, lobbyController);
                 lobbyController = new LobbyController(view, ID);
                 created = true;
             }
-        }else{
+        } else {
             lobbyController = new LobbyController(view, ID);
             created = true;
         }
-        if(created) {
+        if (created) {
             view.registerObserver(gameManagerController, lobbyController, gameController);
         }
     }
 
-    //accessible from ClientMain (socket) and RMI
+    /**
+     * Receives a message from the server and dispatches it to the appropriate controllers.
+     *
+     * @param receivedMessageDecoded The received message.
+     * @throws IOException If an I/O error occurs.
+     */
     public static void clientReceiveMessage(Message receivedMessageDecoded) throws IOException {
-        if(receivedMessageDecoded instanceof NetworkMessage){
+        if (receivedMessageDecoded instanceof NetworkMessage) {
             //received a network message (like ping or request of username)
             pubsub.publishMessage(TopicType.networkMessageState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof ErrorMessage){
+        } else if (receivedMessageDecoded instanceof ErrorMessage) {
             pubsub.publishMessage(TopicType.errorMessageState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof GameManagerMessage){
+        } else if (receivedMessageDecoded instanceof GameManagerMessage) {
             pubsub.publishMessage(TopicType.gameManagerState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof LobbyInfoMessage){
+        } else if (receivedMessageDecoded instanceof LobbyInfoMessage) {
             //Crea dei nuovi controller ogni volta che gli arriva un messaggio, in base alle condizioni
-            createdControllers(((LobbyInfoMessage)receivedMessageDecoded).ID);
+            createdControllers(((LobbyInfoMessage) receivedMessageDecoded).ID);
             pubsub.publishMessage(TopicType.lobbyState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof InitStateMessage){
+        } else if (receivedMessageDecoded instanceof InitStateMessage) {
             //message with all the info about the game
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof GameStateMessage){
+        } else if (receivedMessageDecoded instanceof GameStateMessage) {
             //message with all the info about the game
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof SelectedCardsMessage){
+        } else if (receivedMessageDecoded instanceof SelectedCardsMessage) {
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof loginGameMessage){
+        } else if (receivedMessageDecoded instanceof loginGameMessage) {
             pubsub.publishMessage(TopicType.gameManagerState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof SelectedColumnsMessage){
+        } else if (receivedMessageDecoded instanceof SelectedColumnsMessage) {
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof FinishedGameMessage){
+        } else if (receivedMessageDecoded instanceof FinishedGameMessage) {
             pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
-        }else if(receivedMessageDecoded instanceof ChatMessage){
-            if(((ChatMessage) receivedMessageDecoded).inGame){
+        } else if (receivedMessageDecoded instanceof ChatMessage) {
+            if (((ChatMessage) receivedMessageDecoded).inGame) {
                 pubsub.publishMessage(TopicType.matchState, receivedMessageDecoded);
-            }else {
+            } else {
                 pubsub.publishMessage(TopicType.lobbyState, receivedMessageDecoded);
             }
         }

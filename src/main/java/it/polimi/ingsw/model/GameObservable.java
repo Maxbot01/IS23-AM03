@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.List;
 
-import static it.polimi.ingsw.model.GameManager.SetMessage;
+import static it.polimi.ingsw.model.GameManager.setMessageRMI;
 import static it.polimi.ingsw.model.GameManager.getRemoteUsers;
 
 
@@ -44,7 +44,7 @@ public abstract class GameObservable implements Serializable, Remote {
             ServerMain.server.sendMessageToSocket(serializedMessage, client.getSocketID());
         }else{
             System.out.println("sending out");
-            SetMessage(withMessage, client.getRmiUID());
+            setMessageRMI(withMessage, client.getRmiUID());
             //setMultiMatchClientMessage(client.getRmiUID(), client.getGameIDforRMI(), withMessage);
             //send rmi
         }
@@ -83,7 +83,7 @@ public abstract class GameObservable implements Serializable, Remote {
             MessageSerializer messageSerializer = new MessageSerializer();
             String serializedMessage;
             //GameManager.getInstance().getUID(t
-            GameManager.SetMessage(withMessage,toPlayer);
+            GameManager.setMessageRMI(withMessage,toPlayer);
 
             serializedMessage = messageSerializer.serialize(withMessage, toPlayer, gameID);
             System.out.println("Sending message to " + toPlayer + ": " + serializedMessage.toString());
@@ -92,7 +92,7 @@ public abstract class GameObservable implements Serializable, Remote {
       }else{
           System.out.println("Sending message to " + toPlayer + ": " + withMessage);
           System.out.println(getRemoteUsers());
-          SetMessage(withMessage, getRemoteUsers().get(toPlayer).getRmiUID());
+          setMessageRMI(withMessage, getRemoteUsers().get(toPlayer).getRmiUID());
       }
     }
 

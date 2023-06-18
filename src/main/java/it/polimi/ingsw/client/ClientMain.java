@@ -16,6 +16,9 @@ import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.util.UUID;
 
+/**
+ * The main class for the client application.
+ */
 public class ClientMain implements Runnable, Remote {
 
     private Socket socket;
@@ -25,7 +28,15 @@ public class ClientMain implements Runnable, Remote {
     public static boolean isSocketClient;
     public static MyRemoteInterface stub;
 
-
+    /**
+     * Constructs a new ClientMain instance.
+     *
+     * @param socket          The socket for socket-based communication.
+     * @param isCLi           Flag indicating if the client is using CLI.
+     * @param isSocketClient  Flag indicating if the client is using socket-based communication.
+     * @param remoteObject    The remote object for RMI-based communication.
+     * @param ipAddr          The IP address for RMI-based communication.
+     */
     public ClientMain(Socket socket, boolean isCLi, boolean isSocketClient, MyRemoteInterface remoteObject, String ipAddr) {
         if (isSocketClient) {
             this.socket = socket;
@@ -50,6 +61,11 @@ public class ClientMain implements Runnable, Remote {
         ClientManager.initializeClientManagerSingleton(isCLi, isSocketClient, remoteObject, ipAddr);
     }
 
+    /**
+     * Sends a message to the server.
+     *
+     * @param message The message to send.
+     */
     public static void sendMessage(String message) {
         try {
             output.writeObject(message);
@@ -103,6 +119,9 @@ public class ClientMain implements Runnable, Remote {
         }
     }
 
+    /**
+     * Stops the client and closes the connections.
+     */
     public void stop() {
         isRunning = false;
         try {
@@ -115,13 +134,21 @@ public class ClientMain implements Runnable, Remote {
         }
     }
 
+    /**
+     * Sets the stub for RMI-based communication.
+     *
+     * @param stub The stub to set.
+     */
     public static void setStub(MyRemoteInterface stub) {
         ClientMain.stub = stub;
     }
 
-
-
-
+    /**
+     * The main entry point of the client application.
+     *
+     * @param args The command-line arguments.
+     * @throws IOException If an I/O error occurs.
+     */
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
 
@@ -166,7 +193,3 @@ public class ClientMain implements Runnable, Remote {
         } while(true);
     }
 }
-
-
-
-

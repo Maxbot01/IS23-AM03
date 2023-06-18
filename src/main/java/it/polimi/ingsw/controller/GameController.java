@@ -228,11 +228,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.waitingCommands(); // it needs to be sent continuously until it's his turn, or maybe a notify to the cli that blocks a while cycle
             }*/
             ClientManager.view.updatePlayingPlayer(mess.chairedPlayer);
-            try {
-                ClientManager.view.gameCommands();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            ClientManager.view.gameCommands();
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
             //TODO: Basically identical to initStateMessage, be careful
         } else if (message instanceof SelectedCardsMessage) {
@@ -256,11 +252,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             }*/
             ClientManager.view.updatePlayingPlayer(mess.newPlayer);
             if(ClientManager.userNickname.equals(currentPlayerSelecting)){
-                try {
-                    ClientManager.view.gameCommands();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                ClientManager.view.gameCommands();
             }
         } else if (message instanceof FinishedGameMessage mess) {
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);

@@ -19,9 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 /**
- * This class manages the server socket, is multi threaded to handle multiple clients and messages
+ * This class manages the server socket, is multi-threaded to handle multiple clients and messages.
  */
 public class ServerMain implements Remote, Serializable {
 
@@ -29,12 +28,18 @@ public class ServerMain implements Remote, Serializable {
     private List<ClientHandler> clients;
     public MyRemoteInterface stubProva;
 
+    /**
+     * HashMap to store user identification information on the server.
+     */
     public static HashMap<String, RemoteUserInfo> userIdentificationInServer = new HashMap<>();
-
-
 
     private boolean isRunning;
 
+    /**
+     * Constructs a ServerMain object with the specified port number.
+     *
+     * @param port The port number for the server socket.
+     */
     public ServerMain(int port) {
         try {
             serverSocket = new ServerSocket(port);
@@ -46,31 +51,54 @@ public class ServerMain implements Remote, Serializable {
         }
     }
 
-    //add user to hashmap
-    public static void addUserToHashMap(String username, RemoteUserInfo remoteUserInfo){
+    /**
+     * Adds a user to the user identification HashMap.
+     *
+     * @param username       The username of the user.
+     * @param remoteUserInfo The remote user information.
+     */
+    public static void addUserToHashMap(String username, RemoteUserInfo remoteUserInfo) {
         userIdentificationInServer.put(username, remoteUserInfo);
     }
 
-    //getter for hashmap
-    public static HashMap<String, RemoteUserInfo> getUserIdentification(){
+    /**
+     * Retrieves the user identification HashMap.
+     *
+     * @return The user identification HashMap.
+     */
+    public static HashMap<String, RemoteUserInfo> getUserIdentification() {
         return userIdentificationInServer;
     }
 
-    public void sendMessageToSocket(String message, Socket socket){
+    /**
+     * Sends a message to the specified socket.
+     *
+     * @param message The message to send.
+     * @param socket  The socket to send the message to.
+     */
+    public void sendMessageToSocket(String message, Socket socket) {
         for (ClientHandler client : clients) {
-            if(client.socket.equals(socket)){
-                //right socket to send message to
+            if (client.socket.equals(socket)) {
+                // Right socket to send the message to
                 client.sendMessage(message);
             }
         }
     }
+
+    /**
+     * Broadcasts a message to all connected clients.
+     *
+     * @param message The message to broadcast.
+     */
     public void broadcastMessageSocket(String message) {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
     }
 
-
+    /**
+     * Starts the server and listens for client connections.
+     */
     public void start() {
         while (isRunning) {
             try {
@@ -85,7 +113,9 @@ public class ServerMain implements Remote, Serializable {
         }
     }
 
-
+    /**
+     * Stops the server and closes all client connections.
+     */
     public void stop() {
         isRunning = false;
         try {
@@ -98,6 +128,9 @@ public class ServerMain implements Remote, Serializable {
         }
     }
 
+    /**
+     * Represents a client connection and handles sending and receiving messages.
+     */
     private class ClientHandler extends Thread {
         private Socket socket;
         private ObjectOutputStream output;
@@ -116,6 +149,11 @@ public class ServerMain implements Remote, Serializable {
             }
         }
 
+        /**
+         * Sends a message to the client.
+         *
+         * @param message The message to send.
+         */
         public void sendMessage(String message) {
             try {
                 output.writeObject(message);
@@ -126,6 +164,9 @@ public class ServerMain implements Remote, Serializable {
             }
         }
 
+        /**
+         * Receives messages from the client.
+         */
         public void receiveMessages() {
             try {
                 while (isRunning) {
@@ -143,6 +184,9 @@ public class ServerMain implements Remote, Serializable {
             }
         }
 
+        /**
+         * Stops the client handler and closes the client connection.
+         */
         public void stopServer() {
             isRunning = false;
             try {
@@ -154,6 +198,11 @@ public class ServerMain implements Remote, Serializable {
             }
         }
 
+        /**
+         * Broadcasts a message to all connected clients except the sender.
+         *
+         * @param message The message to broadcast.
+         */
         private void broadcastMessage(String message) {
             for (ClientHandler client : clients) {
                 if (client != this) {
@@ -162,22 +211,20 @@ public class ServerMain implements Remote, Serializable {
             }
         }
 
-
         @Override
         public void run() {
             receiveMessages();
         }
     }
 
-
     public static ServerMain server;
 
     public static void main(String[] args) {
-        //per socket:
+        // per socket:
         int port = 1234;
         server = new ServerMain(port);
         System.out.println("Starting server socket on port " + port);
-        //per rmi:
+        // per rmi:
         GameManager obj = GameManager.getInstance();
         try {
             MyRemoteInterface stub = (MyRemoteInterface) UnicastRemoteObject.exportObject(obj, 1099);
@@ -191,7 +238,6 @@ public class ServerMain implements Remote, Serializable {
         }
         server.start();
     }
-
 }
 
     /*

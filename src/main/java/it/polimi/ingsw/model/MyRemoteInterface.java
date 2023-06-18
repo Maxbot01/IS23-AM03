@@ -44,20 +44,7 @@ public interface MyRemoteInterface extends Remote, Serializable {
 
         void addRemoteUser(String username, RemoteUserInfo remoteUserInfo) throws RemoteException;
 
-        void setHostID(String ID) throws RemoteException;
         void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame) throws RemoteException;
 
-        String getHostID() throws RemoteException;
-
-        List<String> getClients() throws RemoteException;
-
-        Map<String, Message> getClientMessages() throws RemoteException;
-
-        boolean update(String ipAddress) throws RemoteException;
-        void addMultiMatchClientMessage(String gameID, Map<String, Message> clientMessages) throws RemoteException;
-        Message getMultiMatchClientMessage(String ipAddress, String gameID) throws RemoteException;
-        void updateState() throws RemoteException;
-        boolean getFlag() throws RemoteException;
-        void updateStateFalse() throws RemoteException;
         String getGameLobbyHost(String gameID) throws RemoteException;
 }

@@ -64,7 +64,6 @@ public class VirtualGameManager implements Remote, Serializable {
         } else {
             RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientManager.clientIP);
             try {
-                stub.addMultiMatchClientMessage("SetupID",new HashMap<>());
                 stub.ping(remoteUserInfo);
                 Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
                 //Message message = stub.getMultiMatchClientMessage(ClientManager.clientIP,"SetupID");
@@ -126,7 +125,6 @@ public class VirtualGameManager implements Remote, Serializable {
         } else {
             try {
                 stub.createGame(numPlayers, user,ClientManager.clientIP);
-                stub.setHostID(ClientManager.clientIP);
                 Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
                 ClientManager.clientReceiveMessage(message);
             } catch (IOException e) {

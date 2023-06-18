@@ -66,7 +66,9 @@ public class GameManager extends GameObservable implements Serializable, Remote,
         flag = false;
     }
 
-
+    /**
+     * Constructs a new GameManager instance.
+     */
     public GameManager(){
         nicknames = new HashMap<>();
         currentGames = new HashMap<>();
@@ -76,34 +78,42 @@ public class GameManager extends GameObservable implements Serializable, Remote,
         chats = new HashMap<>();
     }
 
-    //getter useridentification
+    /**
+     * Gets the map of user identification.
+     *
+     * @return The map of user identification.
+     */
     public synchronized HashMap<String, RemoteUserInfo> getUserIdentification() {
         return userIdentification;
     }
 
-
-
-    public synchronized void selectGame(String ID, String user){
-        //currentGames.put(new GameLobby());
-        for(GameLobby x: currentGames.keySet()){
-            if(x.getID().equals(ID) && !x.isKilled()){
-                //joins this lobby
+    /**
+     * Selects a game lobby with the specified ID and adds the user to the lobby.
+     *
+     * @param ID   The ID of the game lobby.
+     * @param user The username of the user.
+     */
+    public synchronized void selectGame(String ID, String user) {
+        for (GameLobby x : currentGames.keySet()) {
+            if (x.getID().equals(ID) && !x.isKilled()) {
+                // joins this lobby
                 try {
                     x.addPlayer(user);
-                    this.playersInLobby.put(user,true);
-                    //It notifies the not-in-lobby players that a game has been entered by someone (the players are updated)
-                    for(String s: playersInLobby.keySet()){
-                        if(playersInLobby.get(s).equals(false)){
-                            super.notifyObserver(s,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(),user),false,"-");
+                    this.playersInLobby.put(user, true);
+                    // It notifies the not-in-lobby players that a game has been entered by someone (the players are updated)
+                    for (String s : playersInLobby.keySet()) {
+                        if (playersInLobby.get(s).equals(false)) {
+                            super.notifyObserver(s, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), user), false, "-");
                         }
                     }
-                }catch(LobbyFullException e){
-                    //lobby is full, returns error
-                    super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull,e.info), false, "-");
+                } catch (LobbyFullException e) {
+                    // lobby is full, returns error
+                    super.notifyObserver(user, new ErrorMessage(ErrorType.lobbyIsFull, e.info), false, "-");
                 }
             }
         }
     }
+
 
     /**
      * User has either requested to see messages (fromUser and message null), or add message and get chat messages
@@ -158,84 +168,99 @@ public class GameManager extends GameObservable implements Serializable, Remote,
         }
     }
 
-    public synchronized void createGame(Integer numPlayers, String username, String clientId){
+    /**
+     * Creates a game lobby with the specified number of players, username, and client ID.
+     *
+     * @param numPlayers The number of players for the game.
+     * @param username   The username of the player.
+     * @param clientId   The client ID.
+     */
+    public synchronized void createGame(Integer numPlayers, String username, String clientId) {
         //userIdentification.get(username).setGameID(UUID.randomUUID().toString());
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers, clientId), null);
-        if(playersInLobby.containsKey(username)){ //It notifies every player still outside the lobby when a new game is created, and activates launchGameManager in the view
+        if (playersInLobby.containsKey(username)) {
+            // It notifies every player still outside the lobby when a new game is created and activates launchGameManager in the view
             this.playersInLobby.remove(username);
-            this.playersInLobby.put(username,true);
-            for(String s: this.playersInLobby.keySet()) {
+            this.playersInLobby.put(username, true);
+            for (String s : this.playersInLobby.keySet()) {
                 if (this.playersInLobby.get(s).equals(false)) {
                     super.notifyObserver(s, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
                 }
             }
-        }else{
+        } else {
             System.out.println("Player is not present");
         }
         System.out.println("new current games: " + currentGames.keySet());
     }
 
-
-
-
+    /**
+     * Handles the ping message from the client and sends a pong message in response.
+     *
+     * @param fromClientInfo The information of the client sending the ping message.
+     */
     public synchronized void ping(RemoteUserInfo fromClientInfo) {
-        //received ping message
-        //send pong
-        //TODO: server.send(new NetworkMessage("pong"));
+        // received ping message
+        // send pong
+        // TODO: server.send(new NetworkMessage("pong"));
         System.out.println("called ping() on server");
         super.notifyNetworkClient(fromClientInfo, new NetworkMessage("pong"));
     }
 
-
-    //LOBBY METHODS
-
     /**
-     * Gets all the lobbies that have not been tombstoned (joinable)
-     * @return
+     * Gets all the joinable lobby IDs.
+     *
+     * @return A map of joinable lobby IDs and their corresponding player lists.
      */
-    private synchronized HashMap<String, List<String>> getAllCurrentJoinableLobbiesIDs(){
+    private synchronized HashMap<String, List<String>> getAllCurrentJoinableLobbiesIDs() {
         HashMap<String, List<String>> out = new HashMap<>();
-        for(GameLobby x: this.currentGames.keySet()){
-            if(!x.isKilled()){
+        for (GameLobby x : this.currentGames.keySet()) {
+            if (!x.isKilled()) {
                 out.put(x.getID(), x.getPlayers());
             }
         }
         return out;
     }
 
-
-    public synchronized void setCredentials(String username, String password, RemoteUserInfo userInfo){
-        //check if there was, else send message of erroneous username set request.
-        boolean loggedSuccesful = false;
-        if(nicknames.containsKey(username)){
-            //already exists, checks if psw is right
-            if (nicknames.get(username).equals(password)){
-                //ok login
-                //sends all the games
-                //userIDs.put(username, UID);
-                System.out.println(username + "connected");
+    /**
+     * Sets the credentials for the specified username, password, and user information.
+     * If the user already exists, it checks the password; otherwise, it creates a new user.
+     *
+     * @param username  The username.
+     * @param password  The password.
+     * @param userInfo  The user information.
+     */
+    public synchronized void setCredentials(String username, String password, RemoteUserInfo userInfo) {
+        // check if there was, else send message of erroneous username set request.
+        boolean loggedSuccessful = false;
+        if (nicknames.containsKey(username)) {
+            // already exists, check if the password is correct
+            if (nicknames.get(username).equals(password)) {
+                // ok login
+                // send all the games
+                // userIDs.put(username, UID);
+                System.out.println(username + " connected");
                 System.out.println("current games: " + getAllCurrentJoinableLobbiesIDs());
-                loggedSuccesful = true;
-            }else{
-                //username wrong password
-                //sends error
-                 super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword,"Wrong password"), false, "-");
+                loggedSuccessful = true;
+            } else {
+                // username wrong password
+                // send error
+                super.notifyObserver(username, new ErrorMessage(ErrorType.wrongPassword, "Wrong password"), false, "-");
             }
-        }else{
-            //new user
-            System.out.println(username + "connected");
+        } else {
+            // new user
+            System.out.println(username + " connected");
             System.out.println("current games: " + getAllCurrentJoinableLobbiesIDs());
             nicknames.put(username, password);
-            this.playersInLobby.put(username,false);
-            loggedSuccesful = true;
+            this.playersInLobby.put(username, false);
+            loggedSuccessful = true;
         }
-        if(loggedSuccesful){
-            //TODO: save map of user -> RMI or socket id
+        if (loggedSuccessful) {
+            // TODO: save map of user -> RMI or socket id
             userIdentification.put(username, userInfo);
             ServerMain.addUserToHashMap(username, userInfo);
-            //stampa userIdentification
+            // print userIdentification
             System.out.println("userIdentification: " + ServerMain.getUserIdentification());
-            if(ServerMain.getUserIdentification().get(username).getIsSocket()){
+            if (ServerMain.getUserIdentification().get(username).getIsSocket()) {
                 registerClient(username);
             }
             super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
@@ -243,15 +268,14 @@ public class GameManager extends GameObservable implements Serializable, Remote,
     }
 
     /**
-     * It sends the available games when a player wants to play again
+     * Sends the available games when a player wants to play again.
      *
-     * @param
-     * @return
+     * @param username The username of the player.
      */
-    //TODO: Fix this method
-    public synchronized void lookForNewGames(String username){
-        super.notifyObserver(username,new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
+    public synchronized void lookForNewGames(String username) {
+        super.notifyObserver(username, new loginGameMessage(getAllCurrentJoinableLobbiesIDs(), username), false, "-");
     }
+
 
 
     //TODO: to do!!
@@ -264,81 +288,114 @@ public class GameManager extends GameObservable implements Serializable, Remote,
     Gest methods LOBBIES and forward them to the exact game and lobby
      */
 
-    public synchronized void startMatch(String ID, String user, MyRemoteInterface stub){
+    /**
+     * Starts the match for the specified game ID, user, and remote interface stub.
+     *
+     * @param ID   The ID of the game.
+     * @param user The username of the user.
+     * @param stub The remote interface stub.
+     */
+    public synchronized void startMatch(String ID, String user, MyRemoteInterface stub) {
         boolean found = false;
-        for(GameLobby x: currentGames.keySet()){
-            if(x.getID().equals(ID)){
+        for (GameLobby x : currentGames.keySet()) {
+            if (x.getID().equals(ID)) {
                 x.startMatch(user, stub);
                 found = true;
             }
         }
-        if(!found){
-            //TODO: Manage "ID not found" error
+        if (!found) {
+            // TODO: Manage "ID not found" error
         }
     }
-    public synchronized void createMatchFromLobby(String ID, ArrayList<String> withPlayers){
+
+    /**
+     * Creates a match from the specified lobby ID and list of players.
+     *
+     * @param ID          The ID of the lobby.
+     * @param withPlayers The list of players.
+     */
+    public synchronized void createMatchFromLobby(String ID, ArrayList<String> withPlayers) {
         System.out.println("createMatchFromLobby");
         ArrayList<Player> players = new ArrayList<>();
-        for(String p: withPlayers){
+        for (String p : withPlayers) {
             players.add(new Player(p));
         }
-        //TODO: nel caso in cui il giocatore stia creando una nuova partita dopo che ne ha terminata un'altra, devo controllare che ci sia giò e nel caso rimpiazzare il game a cui è collegato
-        for(GameLobby x: currentGames.keySet()){
-            if(x.getID().equals(ID)){
-                if(ServerMain.userIdentificationInServer.get(x.getHost()).getIsSocket()){
-                    currentGames.put(x, new Game(players,ID, x.getHost()));
+        // TODO: In the case where the player is creating a new game after finishing another one, I need to check if it already exists and replace the associated game if necessary.
+        for (GameLobby x : currentGames.keySet()) {
+            if (x.getID().equals(ID)) {
+                if (ServerMain.userIdentificationInServer.get(x.getHost()).getIsSocket()) {
+                    currentGames.put(x, new Game(players, ID, x.getHost()));
                 } else {
-                    currentGames.put(x, new Game(players,ID, ServerMain.userIdentificationInServer.get(x.getHost()).getRmiUID()));
+                    currentGames.put(x, new Game(players, ID, ServerMain.userIdentificationInServer.get(x.getHost()).getRmiUID()));
                 }
                 x.killLobby();
-                for(String s: withPlayers){
-                    if(!s.equals(x.getHost())){
-                        super.notifyObserver(s,new LobbyInfoMessage(ID,x.getHost(), withPlayers.size(), withPlayers,true),true,ID);
+                for (String s : withPlayers) {
+                    if (!s.equals(x.getHost())) {
+                        super.notifyObserver(s, new LobbyInfoMessage(ID, x.getHost(), withPlayers.size(), withPlayers, true), true, ID);
                     }
                 }
                 break;
-            }//It's certainly there
+            } // It's certainly there
         }
-        //game has been created
+        // The game has been created
     }
+
 
 
     /*
     GAME methods
      */
-    public synchronized void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
-        for(Game x: currentGames.values()){
-            if(x != null) {
+    /**
+     * Processes the selected cards for the specified user and game ID.
+     *
+     * @param selected The list of selected card pairs.
+     * @param user     The username of the user.
+     * @param gameID   The ID of the game.
+     */
+    public synchronized void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID) {
+        for (Game x : currentGames.values()) {
+            if (x != null) {
                 if (x.getID().equals(gameID)) {
                     try {
                         x.selectedCards(selected, user);
                     } catch (UnselectableCardException e) {
                         super.notifyObserver(user, new ErrorMessage(ErrorType.selectedCardsMessageError, e.info), true, gameID);
                     }
-
                 }
             }
         }
     }
 
-    public synchronized void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID){
-        for(Game x: currentGames.values()){
-            if(x.getID().equals(gameID)){
-                x.selectedColumn(selected,column,user); // Per i try catch, non basta averli nel "game"?
+    /**
+     * Processes the selected column for the specified user, column, and game ID.
+     *
+     * @param selected The list of selected board cards.
+     * @param column   The column index of the selected cards.
+     * @param user     The username of the user.
+     * @param gameID   The ID of the game.
+     */
+    public synchronized void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID) {
+        for (Game x : currentGames.values()) {
+            if (x.getID().equals(gameID)) {
+                x.selectedColumn(selected, column, user); // Per i try catch, non basta averli nel "game"?
             }
         }
     }
-    /*
-    Thread safe GameManager instance creator
+
+    /**
+     * Returns the thread-safe instance of the GameManager.
+     *
+     * @return The GameManager instance.
      */
     public static synchronized GameManager getInstance() {
-            synchronized (GameManager.class) {
-                if (instance == null) {
-                    instance = new GameManager();
-                }
+        synchronized (GameManager.class) {
+            if (instance == null) {
+                instance = new GameManager();
             }
+        }
         return instance;
     }
+
 
     public void sendAck() {
     }
@@ -349,131 +406,89 @@ public class GameManager extends GameObservable implements Serializable, Remote,
     }
      */
 
+//RMI methods
+    /**
+     * Receives a message for the specified IP address.
+     *
+     * @param ipAddress The IP address of the client.
+     * @return The message associated with the IP address.
+     */
+    public synchronized Message ReceiveMessageRMI(String ipAddress) {
+        System.out.println("\u001B[33mFaccio GET da: " + ipAddress + "\u001B[0m");
+        return clientMessages.get(ipAddress);
+    }
 
-        public synchronized Message ReceiveMessageRMI(String ipAddress) {
-            System.out.println("CLient che fa Get: " + ipAddress);
-            for (Map.Entry<String, Message> entry : clientMessages.entrySet()) {
-                System.out.println("\u001B[33m" + entry.getKey() + " Facciamo Get: " + entry.getValue() + "\u001B[0m");
-            }
-            return clientMessages.get(ipAddress);
+    /**
+     * Adds a remote user to the collection.
+     *
+     * @param username       The username of the remote user.
+     * @param remoteUserInfo Information about the remote user.
+     */
+    public synchronized void addRemoteUser(String username, RemoteUserInfo remoteUserInfo) {
+        remoteUsers.put(username, remoteUserInfo);
+    }
+
+    /**
+     * Returns the collection of remote users.
+     *
+     * @return The collection of remote users.
+     */
+    public synchronized static HashMap<String, RemoteUserInfo> getRemoteUsers() {
+        return remoteUsers;
+    }
+
+    /**
+     * Sets the message for the specified IP address.
+     *
+     * @param withMessage The message to set.
+     * @param ipAddress   The IP address associated with the message.
+     */
+    public synchronized static void setMessageRMI(Message withMessage, String ipAddress) {
+        clientMessages.put(ipAddress, withMessage);
+        System.out.println("\u001B[33mMessage set for: " + ipAddress + " " + withMessage.toString() + "\u001B[0m");
+        System.out.println("\u001B[33mStampiamo tutto il clientMessages\u001B[0m");
+        // Output clientMessages
+        for (Map.Entry<String, Message> entry : clientMessages.entrySet()) {
+            System.out.println("\u001B[33m" + entry.getKey() + " Stiamo settando: " + entry.getValue() + "\u001B[0m");
         }
+    }
 
-        //gettter MUltiMatchClientMessage
-        public synchronized Message getMultiMatchClientMessage(String ipAddress, String gameID) {
-            if (MultiMatchClientMessage.containsKey(gameID)) {
-                if (MultiMatchClientMessage.get(gameID).containsKey(ipAddress)) {
-                    return MultiMatchClientMessage.get(gameID).get(ipAddress);
-                }
-            }
-            return null;
-        }
+    /**
+     * Registers a client with the specified IP address.
+     *
+     * @param ipAddress The IP address of the client to register.
+     */
+    public synchronized void registerClient(String ipAddress) {
+        System.out.println("\u001B[33mRegistering client " + ipAddress + "\u001B[0m");
+        clients.add(ipAddress);
+        clientMessages.put(ipAddress, null);
+    }
 
-        //add MultiMatchClientMessage
-        public synchronized void addMultiMatchClientMessage(String gameID, Map<String, Message> clientMessages) {
-            MultiMatchClientMessage.put(gameID, clientMessages);
-        }
+    /**
+     * Returns the host ID.
+     *
+     * @return The host ID.
+     */
+    public synchronized String getHostID() {
+        return hostID;
+    }
 
-        //setter MultiMatchClientMessage
-        public synchronized static void setMultiMatchClientMessage(String ipAddress, String gameID, Message message) {
-            if (MultiMatchClientMessage.containsKey(gameID)) {
-                if (clientMessages.containsKey(ipAddress)) {
-                    clientMessages.put(ipAddress, message);
-                }
-            }
-        }
-
-
-        //remoteUsers
-        public synchronized void addRemoteUser(String username, RemoteUserInfo remoteUserInfo){
-            remoteUsers.put(username, remoteUserInfo);
-        }
-
-        public synchronized void setHostID(String ID) throws RemoteException {
-            System.out.println("Setting host ID to " + ID);
-            this.hostID = ID;
-        }
-
-        //getter remoteUsers
-        public synchronized static HashMap<String, RemoteUserInfo> getRemoteUsers(){
-            return remoteUsers;
-        }
-
-        //getter clients
-        public synchronized List<String> getClients() {
-            return clients;
-        }
-
-
-        //getter clientMessages
-        public synchronized Map<String, Message> getClientMessages() {
-            return clientMessages;
-        }
-
-        public synchronized boolean update(String ipAddress) throws RemoteException {
-            for (Map.Entry<String, Message> entry : clientMessages.entrySet()) {
-                String key = entry.getKey();
-                Message currentMessage = entry.getValue();
-                Message previousMessage = previousClientMessages.get(key);
-
-                if (previousMessage == null || !currentMessage.equals(previousMessage)) {
-                    // Il valore associato alla chiave è diverso dal valore precedente
-                    previousClientMessages.put(key, currentMessage);
-                    System.out.println("TRUE");
-                    return true;
-                }
-            }
-            System.out.println("FALSE");
-            return false;
-        }
-
-
-        public synchronized static void SetMessage(Message withMessage, String ipAddress) {
-            clientMessages.put(ipAddress, withMessage);
-            System.out.println("Message set for: " + ipAddress + " " + withMessage.toString());
-            //output clientMessages
-            for (Map.Entry<String, Message> entry : clientMessages.entrySet()) {
-                System.out.println(entry.getKey() + " Stiamo settando: " + entry.getValue());
-            } //per tutti i client diversi da me
-       /* if(message instanceof MatchStateMessage){
-            //facciamo fare a tutti la get
-            SetAllCLientsMessage(message);
-        }*/
-        }
-
-        public synchronized static void SetAllCLientsMessage(Message message) {
-            for (String client : clients) {
-                clientMessages.put(client, message);
+    /**
+     * Returns the host of the game lobby associated with the specified game ID.
+     *
+     * @param gameID The ID of the game.
+     * @return The host of the game lobby.
+     */
+    public synchronized String getGameLobbyHost(String gameID) {
+        for (Game x : currentGames.values()) {
+            if (x.getID().equals(gameID)) {
+                return x.getHost();
             }
         }
+        return null;
+    }
 
 
-        public synchronized void registerClient(String ipAddress) {
-            System.out.println("Registering client " + ipAddress);
-            clients.add(ipAddress);
-            clientMessages.put(ipAddress, null);
-        }
-
-        public synchronized String getHostID() {
-            return hostID;
-        }
-
-        // getter gamelobby from currentGames
-        public synchronized String getGameLobbyHost(String gameID) {
-            System.err.println("GameID: " + gameID);
-            //stampa tutti i currentGames
-            for(GameLobby x: currentGames.keySet()){
-                System.err.println("GameLobby: " + x.getID());
-            }
-            // itera su game
-            for(Game x: currentGames.values()){
-                if(x.getID().equals(gameID)){
-                    System.err.println("HostID dentro equals: " + x.getHost());
-                    return x.getHost();
-                }
-            }
-            System.err.println("HostID: " + null);
-            return null;
-        }
 }
 
 
