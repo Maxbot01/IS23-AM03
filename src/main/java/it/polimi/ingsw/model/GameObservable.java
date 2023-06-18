@@ -17,7 +17,6 @@ public abstract class GameObservable implements Serializable, Remote {
 
     /**
      * Notifies a single client, given the username gets the latest socket/rmi id and sends the message
-     *
      * @param toPlayer
      * @param withMessage
      * @param inLobbyOrGame
@@ -61,7 +60,7 @@ public abstract class GameObservable implements Serializable, Remote {
      */
     protected void notifyAllObservers(List<String> observers, Message withMessage, boolean inLobbyOrGame, String gameID){
         //send the message for every given nick (TO CHANGE MAYBE)
-        System.out.println("Sending message to everyone" + observers);
+        System.out.println("Sending message to everyone " + observers);
         //TODO: change format for this
         for(String player: observers){
             sendMessageToNetworkUser(player, withMessage, gameID);

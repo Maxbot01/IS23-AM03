@@ -214,7 +214,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
             try {
                 ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.pieces, mess.selecectables,
                         mess.playersShelves, playersPoints, mess.gameState);
-            } catch (IOException e) {
+            } catch (IOException e) {//TODO: Perché devo metterel'exception????
                 throw new RuntimeException(e);
             }
             ClientManager.view.printLivingRoom();
@@ -255,7 +255,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.waitingCommands();
             }*/
             ClientManager.view.updatePlayingPlayer(mess.newPlayer);
-            System.out.println("Calling gameCommands for player: "+currentPlayerSelecting);
             if(ClientManager.userNickname.equals(currentPlayerSelecting)){
                 try {
                     ClientManager.view.gameCommands();
@@ -267,11 +266,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             ClientManager.view.printShelves();
             this.playerReady = false;
-            ClientManager.view.showErrorMessage("Exit the game with the command \"-close\"");
+            ClientManager.view.showErrorMessage("Exit the game with the command \"-leave_game\"");
             while (!playerReady){
                 Thread.onSpinWait();
             }
-            ClientManager.view.endCommands();//TODO: I will need to change this too, in order that it happens after the player has written "close" to exit the game
+            ClientManager.view.endCommands();
         } else if (message instanceof ErrorMessage mess) {
             switch (mess.error.toString()) {
                 case "selectedColumnsError":

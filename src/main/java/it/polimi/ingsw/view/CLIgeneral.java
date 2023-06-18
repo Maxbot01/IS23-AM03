@@ -1,13 +1,11 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.ClientMain;
 import it.polimi.ingsw.client.ClientManager;
 import it.polimi.ingsw.controller.GameManagerController;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.model.messageModel.matchStateMessages.SelectedColumnsMessage;
 import it.polimi.ingsw.model.modelSupport.*;
 
 import java.io.IOException;
@@ -15,6 +13,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
+import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
+import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import org.apache.commons.cli.*;
 import java.util.*;
 
@@ -103,9 +103,9 @@ public class CLIgeneral extends View{
             .desc("takes you back to the game selection and creation section")
             .required(false)
             .build();
-    private final Option close = Option.builder("close")//TODO: Delete after debug
+    private final Option leave_game = Option.builder("leave_game")
             .hasArg(false)
-            .desc("closes the game")
+            .desc("you leave the game")
             .required(false)
             .build();
     private final Option ready = Option.builder("ready")//Used for entering the game once it's created, and exiting the lobby
@@ -118,6 +118,17 @@ public class CLIgeneral extends View{
             .desc("starts the cards and column selection phase")
             .required(false)
             .build();
+    /**
+     * It initializes the game parameters at the start of the match or, in case of reconnection it sets them based on the last changes
+     * @param playersNick
+     * @param commonGoals
+     * @param personalGoals
+     * @param livingRoom
+     * @param selectables
+     * @param playersShelves
+     * @param playersPoints
+     * @param gameState
+     */
     @Override
     public void initializeGame(List<String> playersNick, CommonGoals commonGoals, HashMap<String,PersonalGoal> personalGoals,
                                BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>>
@@ -150,147 +161,65 @@ public class CLIgeneral extends View{
             this.players.get(j).updateScore(playersPoints.get(players.get(j).getNickname())-players.get(j).getScore());
         }
     }
-
-    @Override
-    public void initializeGame(List<String> players, int[] indexes, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String, BoardCard[][]>> playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException {
-
-    }
-
+    /**
+     * It updates the game parameters relative to the selection of cards from the living room by the playing player
+     * @param livingRoom
+     * @param selectables
+     * @param gameState
+     */
     @Override
     public void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState){
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
     }
+    /**
+     * It updates the game parameters relative to the selection of the column by the playing player
+     * @param livingRoom
+     * @param selectables
+     * @param gameState
+     * @param updatedPlayerPoints
+     * @param updatedPlayerShelf
+     */
     @Override
     public void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String,
-            Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf){
+            Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf) {
         this.livingRoom = livingRoom;
         this.selectables = selectables;
         this.gameState = gameState;
-        if (Thread.currentThread().isInterrupted()) {
-            return;
-        }
-        for(int i = 0; i < players.size(); i++){
-            if (Thread.currentThread().isInterrupted()) {
-                return;
-            }
-            if(players.get(i).getNickname().equals(updatedPlayerPoints.getFirst())){
-                this.players.get(i).updateScore(updatedPlayerPoints.getSecond()-players.get(i).getScore());
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getNickname().equals(updatedPlayerPoints.getFirst())) {
+                this.players.get(i).updateScore(updatedPlayerPoints.getSecond() - players.get(i).getScore());
                 BoardCard[][] updatedShelf = updatedPlayerShelf.getSecond();
-                for(int j = 0; j < updatedShelf.length; j++){
-
-                    for(int z = 0; z < updatedShelf[0].length; z++){
-
+                for (int j = 0; j < updatedShelf.length; j++) {
+                    for (int z = 0; z < updatedShelf[0].length; z++) {
                         this.players.get(i).getPlayersShelf().getShelfCards()[j][z] = updatedShelf[j][z];
                     }
                 }
             }
-        }
-
-    }
-
-    public void updtateplayersRMI(){
-            Message message = null;
-            try {
-                message = stub.ReceiveMessageRMI(ClientManager.clientIP);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                ClientManager.clientReceiveMessage(message);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            System.err.println("FLAG");
-    }
-
-    @Override
-    public void waitingCommands() {
-
-    }
-
+        }    }
+    /**
+     * It updates the playing player
+     * @param playingPlayer
+     */
     @Override
     public void updatePlayingPlayer(String playingPlayer){
         this.playingPlayer = playingPlayer;
         if(playingPlayer.equals(userPlayer.getNickname())){
-            System.out.println("You are playing...");
+            System.out.println("\033[1;97m" + "You are playing..."+ "\033[0m");
         }else {
-            System.out.println(playingPlayer + " is playing...");
+            System.out.println("\033[1;97m" + playingPlayer + " is playing..."+ "\033[0m");
         }
     }
-
+    /**
+     * Method relative to the activation of the available commands that the player has during the game
+     */
     /*@Override
     public void setFinishedFlag(boolean value){
         this.finishedFlag = value;
     }*/
-    //@Override
-    /*public void waitingCommands(){
-        Options options = new Options();
-        options.addOption(show_gameId);
-        options.addOption(chat);
-        options.addOption(show_commonGoals);
-        options.addOption(show_personalGoal);
-        options.addOption(help);
-        //options.addOption(stop);//TODO: Delete after debug
-        // Printing section commands
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Section Commands", options);
-
-        CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = null;
-        try{
-            /*if (Thread.currentThread().isInterrupted()) {
-                return; // Exit the loop gracefully
-            }*/
-            //while(qualcosa che mi arriva dal controller che continua a mandarlo e che successivamente lo rompe)
-            //RIMETTILO cmd = parser.parse(options, scanf());
-            //while(!cmd.hasOption(stop)) {
-                /*if (Thread.currentThread().isInterrupted()) {
-                    return;
-                }*/
-                /*RIMETTILOif (cmd.hasOption(show_gameId)) {
-                    System.out.println("Your gameId is: " + gameID);
-                } else if (cmd.hasOption(show_commonGoals)) {
-                    System.out.println("First common goal: " + commonGoals.getFirstGoal().toString() + "\nSecond commmon" +
-                            "goal: " + commonGoals.getSecondGoal().toString());
-                } else if (cmd.hasOption(show_personalGoal)) {
-                    Shelf personalGoalShelf = new Shelf();
-                    for (int i = 0; i < this.personalGoal.getSelectedGoal().size(); i++) {
-                        Pair<colorType, Pair<Integer, Integer>> tmp = this.personalGoal.getSelectedGoal().get(i);
-                        BoardCard card = new BoardCard(tmp.getFirst(), ornamentType.A);
-                        personalGoalShelf.getShelfCards()[tmp.getSecond().getFirst()][tmp.getSecond().getSecond()] = card;
-                    }
-                    System.out.println("Your personal goal is:");
-                    printShelf(personalGoalShelf);
-                } else if (cmd.hasOption(help)) {
-                    formatter.printHelp("Available Commands", options);
-                } else if (cmd.hasOption(chat)) { // Example of chat implementation
-                    Scanner scan = new Scanner(System.in);
-                    String msg = scan.nextLine();
-                    super.gameController.onGetChatMessage(msg);
-                    // It also needs to show the past messages
-                } else {
-                    System.out.println("waitingCommands section");
-                    System.out.println("Unavailable command, remember to type '-' and the desired command");
-                }
-                cmd = parser.parse(options, scanf());
-                /*if (Thread.currentThread().isInterrupted()) {
-                    return; // Exit the loop gracefully
-                }*/
-            /*}
-            if(cmd.hasOption(stop)){
-                System.out.println("You have left waitingCommands");
-            }*/
-        /*} catch (ParseException pe){
-            System.out.println("waitingCommands section");
-            System.out.println("Error parsing command-line arguments");
-            formatter.printHelp("Parsing Error Section Commands", options);
-        }
-        System.out.println("You have left waitingCommands, but not with 'stop'");
-    }*/
     @Override
-    public void gameCommands() throws RemoteException {
+    public void gameCommands(){
         Options options = new Options();
         options.addOption(show_gameId);
         options.addOption(chat);
@@ -300,11 +229,12 @@ public class CLIgeneral extends View{
         options.addOption(show_personalGoal);
         options.addOption(help);
         options.addOption(select_cards);
-        options.addOption(close);//TODO: Create a check with a flag variable changed when finishedGameMessage arrives
+        options.addOption(leave_game);
         boolean finished = false;
         // Printing section commands
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Section Commands", options);
+        formatter.printHelp("Available Commands", options);
+
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
         while(!finished) {
@@ -317,7 +247,7 @@ public class CLIgeneral extends View{
                     String secondGoal = commonGoals.getSecondGoal().getClass().getName().replaceAll("it.polimi.ingsw.model.CommonGoals.Strategy.","");
                     System.out.println("First common goal: " + firstGoal.replaceAll("Strategy","") +
                             "\nSecond common goal: " + secondGoal.replaceAll("Strategy",""));
-                }else if (cmd.hasOption(show_personalGoal)) {
+                } else if (cmd.hasOption(show_personalGoal)) {
                     Shelf personalGoalShelf = new Shelf();
                     for (int i = 0; i < this.personalGoal.getSelectedGoal().size(); i++) {
                         Pair<colorType, Pair<Integer, Integer>> tmp = this.personalGoal.getSelectedGoal().get(i);
@@ -326,7 +256,7 @@ public class CLIgeneral extends View{
                     }
                     System.out.println("Your personal goal is:");
                     printShelf(personalGoalShelf);
-                }else if (cmd.hasOption(help)) {
+                } else if (cmd.hasOption(help)) {
                     formatter.printHelp("Available Commands", options);
                 } else if (cmd.hasOption(chat)) { // Example of chat implementation
                     Scanner scan = new Scanner(System.in);
@@ -345,13 +275,13 @@ public class CLIgeneral extends View{
                     } else {
                         System.out.println("It's not your turn to pick");
                     }
-                } else if (cmd.hasOption(close)) {
+                } else if (cmd.hasOption(leave_game)) {
                     if(gameState.equals(GameStateType.FINISHED)) {
                         finished = true;
                         System.out.println("You have left the game");
                         super.gameController.setReady(gameID, userPlayer.getNickname());
                     }else{
-                        System.out.println("The game hasn't ended, yoku can't leave yet");
+                        System.out.println("The game hasn't ended, you can't leave yet");
                     }
                 }
                 else {
@@ -369,25 +299,27 @@ public class CLIgeneral extends View{
         }
         System.out.println("You have left gameCommands");//DEBUG
     }
+    /**
+     * Method relative to the acquisition of the client's credentials through the command line interface
+     */
     @Override
     public void requestCredentials(){
         System.out.println("Insert Username and a Password, that you will need in case of disconnection.\n" +
                 "If you are reconnecting use your previously inserted password:");
         Scanner in = new Scanner(System.in);
-        if (Thread.currentThread().isInterrupted()) {
-            return; // Exit the loop gracefully
-        }
         String username = in.next();
         String password = in.next();
         this.userPlayer = new Player(username);
         System.out.println("GameManagerController: " + ClientManager.gameManagerController);
+        System.out.println("Your username is: "+username);
+        System.out.println("Your password is: "+password);
         GameManagerController gameManagerController = ClientManager.gameManagerController;
         gameManagerController.onSetCredentials(username, password, stub);
     }
-    @Override
-    public void showPlayingPlayer(String playingPlayer){//TODO: Delete because I'll have the chairedPlayer now
-        System.out.println(playingPlayer+" is playing...");
-    }
+    /**
+     * Method relative to the activation of the available commands that the player has during the game selection phase
+     * @param availableGames
+     */
     @Override
     public void launchGameManager(HashMap<String, List<String>> availableGames){
         Options options = new Options();
@@ -404,7 +336,7 @@ public class CLIgeneral extends View{
         this.availableGames = tmp;
         // Printing section commands
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Section Commands", options);
+        formatter.printHelp("Available Commands", options);
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
@@ -412,7 +344,7 @@ public class CLIgeneral extends View{
         while(!finished) {
             try {
                 cmd = parser.parse(options, scanf());
-                if (cmd.hasOption(show_games)) { // AvailableGames is only used in this method, therefore it is not saved as a parameter
+                if (cmd.hasOption(show_games)) {
                     if (this.availableGames.size() == 0) {
                         System.out.println("No games available");
                     } else {
@@ -421,13 +353,13 @@ public class CLIgeneral extends View{
                             System.out.println("GameId " + z + ": " + this.availableGames.get(i).getFirst());
                             System.out.print("Players: ");
                             for(int j = 0; j < this.availableGames.get(i).getSecond().size(); j++){
-                                System.out.print(this.availableGames.get(i).getSecond().get(j));
+                                System.out.print(this.availableGames.get(i).getSecond().get(j)+"\t");
                             }
                             System.out.println();
                         }
                     }
                 } else if (cmd.hasOption(help)) {
-                    formatter.printHelp("Section Commands", options);
+                    formatter.printHelp("Available Commands", options);
                 } else if (cmd.hasOption(select_game)) {
                     boolean valid = true;
                     String lobbyID = cmd.getOptionValue(select_game);
@@ -480,30 +412,49 @@ public class CLIgeneral extends View{
         }
         System.out.println("You have left the manager");
     }
+    /**
+     * Whenever a new game lobby is created it updates the available games
+     * @param newGame
+     */
     @Override
     public void addNewGame(Pair<String, List<String>> newGame){
         boolean found = false;
+        int index = -1;
         if(!availableGames.isEmpty()) {
             for (Pair<String, List<String>> availableGame : availableGames) {
                 if (availableGame.getFirst().equals(newGame.getFirst())) {
                     found = true;
+                    index = availableGames.indexOf(availableGame)+1;
+                    for(String s: newGame.getSecond()){
+                        if(!availableGame.getSecond().contains(s)){
+                            this.availableGames.get(index-1).getSecond().add(s);
+                        }
+                    }
                     break;
                 }
             }
         }
-        if(found)
+        if(found) {
             System.out.println("A player has entered the following game");
-        else{
+        }else{
             System.out.println("A new game was created");
+            Pair<String,List<String>> tmp = new Pair<>(newGame.getFirst(),newGame.getSecond());
+            this.availableGames.add(tmp);
+            index = this.availableGames.size();
         }
-        this.availableGames.add(new Pair<>(newGame.getFirst(),newGame.getSecond()));
-        System.out.println("GameId "+this.availableGames.size()+": "+newGame.getFirst());
+        System.out.println("GameId "+ index +": "+newGame.getFirst());
         System.out.print("Players: ");
         for (String player : newGame.getSecond()) {
             System.out.print(player + "\t");
         }
         System.out.println();
     }
+    /**
+     * Method relative to the activation of the available commands that the player has during the game's lobby phase
+     * @param gameID
+     * @param lobbyPlayers
+     * @param lobbyHost
+     */
     @Override
     public void launchGameLobby(String gameID, ArrayList<String> lobbyPlayers, String lobbyHost){
         this.gameID = gameID;
@@ -534,7 +485,7 @@ public class CLIgeneral extends View{
         boolean finished = false;
         // Printing section commands
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Section Commands", options);
+        formatter.printHelp("Available Commands", options);
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
 
@@ -544,7 +495,7 @@ public class CLIgeneral extends View{
                 if (cmd.hasOption(show_gameId)) {
                     System.out.println("Your gameId is: " + gameID);
                 } else if (cmd.hasOption(help)) {
-                    formatter.printHelp("Section Commands", options);
+                    formatter.printHelp("Available Commands", options);
                 } else if (cmd.hasOption(chat)) { // Example of chat implementation
                     Scanner scan = new Scanner(System.in);
                     String msg = scan.nextLine();
@@ -575,6 +526,10 @@ public class CLIgeneral extends View{
         }
         System.out.println("You have left the lobby");
     }
+    /**
+     * Whenever a new player enters the lobby it updates the lobby's players
+     * @param addedPlayer
+     */
     @Override
     public void addNewLobbyPlayer(String addedPlayer){
         Player p = new Player(addedPlayer);
@@ -586,6 +541,9 @@ public class CLIgeneral extends View{
         }
         System.out.println();
     }
+    /**
+     * Method relative to the card and order selection phase
+     */
     @Override
     public void chooseCards(){
         ArrayList<Pair<Integer,Integer>> coord = new ArrayList<>();
@@ -598,10 +556,32 @@ public class CLIgeneral extends View{
         do{
             s = in.nextLine();
             boolean chosenCardsCorrectly = true;
+            //Check if the number of coordinates is correct
             if(s.length() != 11 && s.length() != 3 && s.length() != 7){
                 System.out.println("Insert coordinates through the right pattern\n" + "Example: '5 5 5 6 5 7' where 5 5 is the first couple");
                 chosenCardsCorrectly = false;
             } else {
+                //Check if the spaces are in the right spot
+                for(int i = 1; i < s.length(); i+=2){
+                    if(s.charAt(i) != ' '){
+                        chosenCardsCorrectly = false;
+                        System.out.println("Insert coordinates through the right pattern\n" + "Example: '5 5 5 6 5 7' where 5 5 is the first couple");
+                        break;
+                    }
+                }
+                //Check if the coordinates are numbers
+                for(int i = 0; i < s.length() && chosenCardsCorrectly; i+=2){
+                    if(!Character.isDigit(s.charAt(i))){
+                        chosenCardsCorrectly = false;
+                        System.out.println("All coordinates must be numbers\n" + "Example: '5 5 5 6 5 7' where 5 5 is the first couple");
+                        break;
+                    }else if(Character.getNumericValue(s.charAt(i)) == 9){//Check if coordinate is in range
+                        chosenCardsCorrectly = false;
+                        System.out.println("Coordinates range from 0 to 8, choose again");
+                        break;
+                    }
+                }
+                //Check if there are equal coordinates chosen
                 for(int i = 0; i < s.length() && chosenCardsCorrectly; i+=4){
                     Pair<Integer,Integer> tmp = new Pair<>(Character.getNumericValue(s.charAt(i)),Character.getNumericValue(s.charAt(i+2)));
                     boolean present = false;
@@ -612,15 +592,49 @@ public class CLIgeneral extends View{
                     }
                     if(present){
                         chosenCardsCorrectly = false;
-                        coord.clear();
                         System.out.println("You can't choose the same coordinates twice");
                     } else {
                         coord.add(tmp);
                     }
                 }
+                //Check if the shelf has enough spaces for the chosen cards
+                if(chosenCardsCorrectly){
+                    int numberOfCardsChosen = s.length()/3;
+                    for(Player p: players){
+                        if(p.getNickname().equals(userPlayer.getNickname()) && p.getNickname().equals(playingPlayer)){
+                            boolean validColumnFound = false;
+                            int maxNumberOfCardsPossible = 0;
+                            for(int j = 0; j < p.getPlayersShelf().getShelfCards()[0].length && !validColumnFound; j++){
+                                int freeSpots = 0;
+                                for(int i = 0; i < p.getPlayersShelf().getShelfCards().length; i++) {
+                                    if(p.getPlayersShelf().getShelfCards()[i][j].getColor().equals(colorType.EMPTY_SPOT)){
+                                        freeSpots++;
+                                    }
+                                }
+                                if(freeSpots > maxNumberOfCardsPossible){
+                                    maxNumberOfCardsPossible = freeSpots;
+                                }
+                                if(freeSpots >= numberOfCardsChosen){
+                                    validColumnFound = true;
+                                }
+                            }
+                            if(!validColumnFound){
+                                chosenCardsCorrectly = false;
+                                if(maxNumberOfCardsPossible > 1) {
+                                    System.out.println("Look at your shelf, you can't insert more than " + maxNumberOfCardsPossible + " cards in one of your columns");
+                                }else{
+                                    System.out.println("Look at your shelf, you can't insert more than " + maxNumberOfCardsPossible + " card in one of your columns");
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
             }
             if(chosenCardsCorrectly){
                 break;
+            }else{
+                coord.clear();
             }
         } while(true);
         // Choose order phase:
@@ -667,6 +681,9 @@ public class CLIgeneral extends View{
         this.selectedCards = selected;
         super.gameController.onSelectedCards(coord, userPlayer.getNickname());
     }
+    /**
+     * Method relative to the column selection phase
+     */
     @Override
     public void chooseColumn(){
         System.out.println("Insert the shelf's column for the selected cards. From 0 to 4.");
@@ -688,6 +705,9 @@ public class CLIgeneral extends View{
 //        }
         super.gameController.onSelectedColumn(selectedCards, column, userPlayer.getNickname());
     }
+    /**
+     * Method relative to the activation of the available commands that the player has after he has left the game
+     */
     @Override
     public void endCommands(){
         Options options = new Options();
@@ -696,7 +716,7 @@ public class CLIgeneral extends View{
         options.addOption(play_again);
 
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Section Commands", options);
+        formatter.printHelp("Available Commands", options);
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         boolean finished = false;
@@ -704,7 +724,7 @@ public class CLIgeneral extends View{
             try {
                 cmd = parser.parse(options, scanf());
                 if (cmd.hasOption(help)) {
-                    formatter.printHelp("Section Commands", options);
+                    formatter.printHelp("Available Commands", options);
                 } else if (cmd.hasOption(exit)) {
                     //TODO: Terminates the connection to the server
                     finished = true;
@@ -720,6 +740,9 @@ public class CLIgeneral extends View{
             }
         }
     }
+    /**
+     * Shows the current living room / board
+     */
     @Override
     public void printLivingRoom() {
         BoardCard[][] pieces = livingRoom;
@@ -745,6 +768,10 @@ public class CLIgeneral extends View{
         }
         System.out.print("\n");
     }
+    /**
+     * Shows the chat messages. It can show the full chat or the last five messages based on the player's choice
+     * @param messages
+     */
     @Override
     public void printChat(ArrayList<Pair<String, String>> messages) {
         if(!messages.isEmpty()) {
@@ -755,6 +782,9 @@ public class CLIgeneral extends View{
             System.out.println("Chat is empty");
         }
     }
+    /**
+     * Shows all the players' current shelves
+     */
     @Override
     public void printShelves(){
         System.out.println("\n"+"Game State: "+gameState.toString());
@@ -774,10 +804,20 @@ public class CLIgeneral extends View{
             }
         }
     }
+    /**
+     * Shows error messages
+     * @param error
+     */
     @Override
     public void showErrorMessage(String error){
-        System.out.println(error);
+        System.err.println(error);
     }
+    /**
+     * Shows the final scoreboard, winner and the players' shelves
+     * @param finalScoreBoard
+     * @param winner
+     * @param finalGameState
+     */
     @Override
     public void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner, GameStateType finalGameState){
         System.out.println("\n"+"Game State: "+finalGameState.toString());
@@ -799,7 +839,6 @@ public class CLIgeneral extends View{
         }
         throw new InterruptedException();
     }*/
-
     private Pair<String,String> getColor(BoardCard tmp){
         String colorBackground;
         String colorValue;

@@ -47,7 +47,6 @@ public class VirtualGameManagerSerializer {
         GameManager gameManager = GameManager.getInstance();
         Gson gson = new Gson();
         VirtualGameManagerSerializer virtualGameManagerSerializer = gson.fromJson(jsonString, VirtualGameManagerSerializer.class);
-
         switch(virtualGameManagerSerializer.getMethod()) {
             case "ping":
                 gameManager.ping(new RemoteUserInfo(true, socket, null));
@@ -90,20 +89,22 @@ public class VirtualGameManagerSerializer {
                 gameManager.selectedColumn(getBoardCardFormat(getElementsFromObject(virtualGameManagerSerializer.getArgs()[0])),
                         Character.getNumericValue(virtualGameManagerSerializer.getArgs()[1].toString().charAt(0)), user4, gameID2);
                 //gameManager.selectedColumn((ArrayList<BoardCard>) virtualGameManagerSerializer.getArgs()[0], (Integer)virtualGameManagerSerializer.getArgs()[1], user4, gameID2);
+                break;
             case "lookForNewGames":
-                String user5 = virtualGameManagerSerializer.getArgs()[0].toString();
+                String user5 = (String) virtualGameManagerSerializer.getArgs()[0];
                 gameManager.lookForNewGames(user5);
+                break;
             case "receiveChatMessage":
-                gameID = (String) virtualGameManagerSerializer.getArgs()[0];
+                String gameID3 = (String) virtualGameManagerSerializer.getArgs()[0];
                 String fromUser = (String) virtualGameManagerSerializer.getArgs()[1];
                 String mex = (String) virtualGameManagerSerializer.getArgs()[2];
                 boolean fullChat = (boolean) virtualGameManagerSerializer.getArgs()[3];
                 boolean inGame = (boolean) virtualGameManagerSerializer.getArgs()[4];
-                System.out.println("VGMS 1");
-                gameManager.receiveChatMessage(gameID, fromUser, mex, fullChat, inGame);
-
-
-                //TODO: Uncomment this instruction -> gameManager.lookForNewGames(user5);
+                gameManager.receiveChatMessage(gameID3, fromUser, mex, fullChat, inGame);
+                break;
+            default:
+                System.err.println("Unknown method: "+virtualGameManagerSerializer.getMethod());
+                break;
         }
     }
     /**

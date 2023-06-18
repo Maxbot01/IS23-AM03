@@ -107,19 +107,26 @@ public class GameManager extends GameObservable implements Serializable, Remote,
 
     /**
      * User has either requested to see messages (fromUser and message null), or add message and get chat messages
-     * (gameId, null, null, true) -> receive all the messages //WE NEED THE USER TOO
-     * (gameId, null, null. false) -> receive last 5 messages //WE NEED THE USER TOO
-     * (gameID, fromUser, message, false) -> send message and receive all the messages
-     * (gameID, fromUser, message, true) -> send message and receive last 5 messages
+     * (gameId, fromUser, null, true, inGame) -> receive all the messages
+     * (gameId, fromUser, null, false, inGame) -> receive last 5 messages
+     * (gameID, fromUser, message, false, inGame) -> send message and receive last 5 messages
      * @param gameID
      * @param fromUser
      * @param message
      * @param fullChat
+     * @param inGame
      */
     public synchronized void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame){
+        boolean found = false;
         for(GameLobby x: this.currentGames.keySet()){
-            if(x.getID().equals(gameID) || currentGames.get(x).getID().equals(gameID)){
-                System.out.println("GM 1");
+            if(x.getID().equals(gameID)){
+                found = true;
+            }else if(x.isKilled() && currentGames.get(x) != null){
+                if(currentGames.get(x).getID().equals(gameID)){
+                    found = true;
+                }
+            }
+            if(found){
                 if(message == null){//We are sending the chat
                     ArrayList<Pair<String, String>> lastFive = new ArrayList<>();
                     if(chats.containsKey(gameID)) {
@@ -144,7 +151,6 @@ public class GameManager extends GameObservable implements Serializable, Remote,
                         lastFive.add(chats.get(gameID).get(i));
                     }
                     Collections.reverse(lastFive);
-                    System.out.println("GM 2");
                     super.notifyAllObservers(x.getPlayers(),new ChatMessage(lastFive,inGame),true,gameID);
                 }
                 break;
@@ -302,13 +308,15 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      */
     public synchronized void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID){
         for(Game x: currentGames.values()){
-            if(x.getID().equals(gameID)){
-                try{
-                    x.selectedCards(selected, user);
-                }catch (UnselectableCardException e){
-                    super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError, e.info),true,gameID);
-                }
+            if(x != null) {
+                if (x.getID().equals(gameID)) {
+                    try {
+                        x.selectedCards(selected, user);
+                    } catch (UnselectableCardException e) {
+                        super.notifyObserver(user, new ErrorMessage(ErrorType.selectedCardsMessageError, e.info), true, gameID);
+                    }
 
+                }
             }
         }
     }

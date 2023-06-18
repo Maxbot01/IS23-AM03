@@ -152,7 +152,7 @@ public class LivingRoom implements Serializable {
             int i = coordinates.getFirst();
             int j = coordinates.getSecond();
             if (!(isPresent(i, j) && freeCorner(i, j))) {//TODO: This check can be removed, be sure first
-                throw new UnselectableCardException("No card present at position "+i+" "+j);
+                throw new UnselectableCardException("No card available at position "+i+" "+j);
             }
         }
         for (Pair<Integer, Integer> coordinates : selected) {

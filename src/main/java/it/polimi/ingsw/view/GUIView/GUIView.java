@@ -23,11 +23,6 @@ public class GUIView extends View {
     }
 
     @Override
-    public void initializeGame(List<String> players, int[] indexes, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals, BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String, BoardCard[][]>> playersShelves, HashMap<String, Integer> playersPoints, GameStateType gameState) throws IOException {
-
-    }
-
-    @Override
     public void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState) {
         //MAX
     }
@@ -36,16 +31,6 @@ public class GUIView extends View {
     public void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState, Pair<String, Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf) {
         //MAX
     }
-
-    @Override
-        public void waitingCommands() {
-//NO
-        }
-
-    /*@Override
-    public void waitingCommands() {
-
-    }*/
     @Override
     public void addNewGame(Pair<String, List<String>> newGame){}
     @Override
@@ -105,12 +90,6 @@ public class GUIView extends View {
     public void showErrorMessage(String error) {
         //MAX
     }
-
-    @Override
-    public void showPlayingPlayer(String playingPlayer) {
-        //NO
-    }
-
     @Override
     public void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner, GameStateType gameState) {
         //NO

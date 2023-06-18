@@ -28,7 +28,7 @@ public class GameView {
     @FXML
     ImageView boardimage;
 
-    public Scene createContent(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals,
+    /*public Scene createContent(List<String> players, CommonGoals commonGoals, HashMap<String, PersonalGoal> personalGoals,
                                BoardCard[][] livingRoom, Boolean[][] selectables, ArrayList<Pair<String,BoardCard[][]>> playersShelves,
                                HashMap<String, Integer> playersPoints, GameStateType gameState) {
         // Create the root container
@@ -106,7 +106,7 @@ public class GameView {
         root.setBottom(gameStateLabel);
 
         return new Scene(root, 700, 600);
-    }
+    }*/
 
 
     public GameView(ScreenSwitcher screenSwitcher){
