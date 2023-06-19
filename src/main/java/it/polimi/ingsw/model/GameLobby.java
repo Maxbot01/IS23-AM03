@@ -1,16 +1,20 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
+import it.polimi.ingsw.server.MyRemoteInterface;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class GameLobby extends GameObservable {
 
+    private final String HostID;
     private String ID;
     private String host;
     private int numOfPlayers;
@@ -24,10 +28,18 @@ public class GameLobby extends GameObservable {
         return this.host;
     }
 
-    public void startMatch(String user) throws IOException {
+    public void startMatch(String user, MyRemoteInterface stub) throws IOException {
         System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
-            GameManager.getInstance().createMatchFromLobby(ID, players);
+            if(stub == null){
+                GameManager.getInstance().createMatchFromLobby(ID, players);
+            } else {
+                try {
+                    stub.createMatchFromLobby(ID, players);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }else if (players.size() < numOfPlayers){
             super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers,"There aren't enough players to start the match"), false, "-");
         }else if(!user.equals(host)){//TODO: This check is not needed, it is done inside the cli, maybe it's needed for the gui, check before removing
@@ -39,7 +51,8 @@ public class GameLobby extends GameObservable {
         return ID;
     }
 
-    GameLobby(String ID, String host, int numOfPlayers) throws IOException {
+    GameLobby(String ID, String host, int numOfPlayers, String HostID){
+        this.HostID = HostID;
         this.ID = ID;
         this.host = host;
         this.numOfPlayers = numOfPlayers;
@@ -49,7 +62,7 @@ public class GameLobby extends GameObservable {
         //TODO: Send a message to all observers not in game (or don't show it) with the new available games (remember that there's the method lookForNewGames)
     }
 
-    public void addPlayer(String player) throws LobbyFullException, IOException {
+    public void addPlayer(String player) throws LobbyFullException {
         if(players.size() + 1 > numOfPlayers){
             throw new LobbyFullException("The selected lobby is full");
         }else{

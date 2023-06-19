@@ -507,7 +507,9 @@ public class CLIgeneral extends View{
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
 
-        while(!finished) {
+        while(!finished) {.if (\ == null) {
+            \ = new ();
+        }
             try {
                 cmd = parser.parse(options, scanf());
                 if (cmd.hasOption(show_gameId)) {

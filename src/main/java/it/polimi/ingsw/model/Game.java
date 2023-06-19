@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
+import it.polimi.ingsw.server.MyRemoteInterface;
 import it.polimi.ingsw.view.CLIColors;
 
 import java.io.IOException;
@@ -118,11 +119,12 @@ public class Game extends GameObservable{
         //TODO: check to be sure that the right player played
         ArrayList<BoardCard> selectedCardsTypes = new ArrayList<>();
         //try {//Exception handled in GameManager
-            for (Pair<Integer, Integer> pr: selected) {
-                selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
-            }
-            this.livingRoom.updateBoard(selected);
-            super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
+        for (Pair<Integer, Integer> pr: selected) {
+
+            selectedCardsTypes.add(this.livingRoom.getBoardCardAt(pr));
+        }
+        this.livingRoom.updateBoard(selected);
+        super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
         /*} catch (UnselectableCardException e) {
             super.notifyObserver(user,new ErrorMessage(ErrorType.selectedCardsMessageError, e.info),true,ID);
             //throw new RuntimeException(e);
@@ -134,6 +136,7 @@ public class Game extends GameObservable{
             throw new RuntimeException(e);
         }*/
         //It is sent only if successful -> super.notifyAllObservers(getAllNicks(), new SelectedCardsMessage(GameStateType.IN_PROGRESS, "ID", selectedCardsTypes, livingRoom.calculateSelectable(), livingRoom.getPieces(), playingPlayer), true, this.ID);
+
     }
 
     private List<String> getAllNicks(){
