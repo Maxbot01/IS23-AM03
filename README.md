@@ -3,30 +3,37 @@
 # Progress
 ## Schema
 UML:<br />
-![80%](https://progress-bar.dev/80)
+![100%](https://progress-bar.dev/100)
 
 Connection protocol:<br />
-![95%](https://progress-bar.dev/95)
+![100%](https://progress-bar.dev/100)
 
 ## Code
 Model:<br />
-![90%](https://progress-bar.dev/90)
+![100%](https://progress-bar.dev/100)
 
 Controller:<br />
-![90%](https://progress-bar.dev/90)
+![100%](https://progress-bar.dev/100)
 
 Socket:<br />
-![90%](https://progress-bar.dev/90)
+![100%](https://progress-bar.dev/100)
 
 RMI:<br />
-![80%](https://progress-bar.dev/80)
-
-Chat:<br />
-![80%](https://progress-bar.dev/80)
+![100%](https://progress-bar.dev/100)
 
 CLI:<br />
-![90%](https://progress-bar.dev/90)
+![100%](https://progress-bar.dev/100)
 
 GUI:<br />
-![30%](https://progress-bar.dev/30)
+![100%](https://progress-bar.dev/100)
+
+#Advanced Features
+
+Chat:<br />
+![100%](https://progress-bar.dev/100)
+
+Multiple concurrent games:<br />
+![100%](https://progress-bar.dev/100)
+
+
 
