@@ -2,40 +2,30 @@
 
 ### How to play the game
 
-# Progress
+# Completed features
 ## Schema
-UML:<br />
-![100%](https://progress-bar.dev/100)
+🟢 UML:<br />
 
-Connection protocol:<br />
-![100%](https://progress-bar.dev/100)
+🟢 Connection protocol:<br />
 
 ## Basic Features
-Model:<br />
-![100%](https://progress-bar.dev/100)
+🟢 Model:<br />
 
-Controller:<br />
-![100%](https://progress-bar.dev/100)
+🟢 Controller:<br />
 
-Socket:<br />
-![100%](https://progress-bar.dev/100)
+🟢 Socket:<br />
 
-RMI:<br />
-![100%](https://progress-bar.dev/100)
+🟢 RMI:<br />
 
-CLI:<br />
-![100%](https://progress-bar.dev/100)
+🟢 CLI:<br />
 
-GUI:<br />
-![100%](https://progress-bar.dev/100)
+🟢 GUI:<br />
 
 ## Advanced Features
 
-Chat:<br />
-![100%](https://progress-bar.dev/100)
+🟢 Chat:<br />
 
-Multiple concurrent games:<br />
-![100%](https://progress-bar.dev/100)
+🟢 Multiple concurrent games:<br />
 
 
 
