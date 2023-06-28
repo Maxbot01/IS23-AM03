@@ -8,7 +8,7 @@ UML:<br />
 Connection protocol:<br />
 ![100%](https://progress-bar.dev/100)
 
-## Code
+## Basic Features
 Model:<br />
 ![100%](https://progress-bar.dev/100)
 
@@ -27,7 +27,7 @@ CLI:<br />
 GUI:<br />
 ![100%](https://progress-bar.dev/100)
 
-#Advanced Features
+## Advanced Features
 
 Chat:<br />
 ![100%](https://progress-bar.dev/100)
