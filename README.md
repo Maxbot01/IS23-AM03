@@ -4,28 +4,28 @@
 
 # Completed features
 ## Schema
-🟢 UML:<br />
+🟢 UML<br />
 
-🟢 Connection protocol:<br />
+🟢 Connection protocol<br />
 
 ## Basic Features
-🟢 Model:<br />
+🟢 Model<br />
 
-🟢 Controller:<br />
+🟢 Controller<br />
 
-🟢 Socket:<br />
+🟢 Socket<br />
 
-🟢 RMI:<br />
+🟢 RMI<br />
 
-🟢 CLI:<br />
+🟢 CLI<br />
 
-🟢 GUI:<br />
+🟢 GUI<br />
 
 ## Advanced Features
 
-🟢 Chat:<br />
+🟢 Chat<br />
 
-🟢 Multiple concurrent games:<br />
+🟢 Multiple concurrent games<br />
 
 
 
