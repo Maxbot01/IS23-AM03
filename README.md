@@ -1,5 +1,7 @@
 # IS23-AM03
 
+### How to play the game
+
 # Progress
 ## Schema
 UML:<br />
