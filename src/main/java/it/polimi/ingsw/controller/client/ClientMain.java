@@ -3,12 +3,10 @@ package it.polimi.ingsw.controller.client;
 import it.polimi.ingsw.App;
 import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.model.messageModel.Message;
-import it.polimi.ingsw.view.GUIView.ScreenSwitcher;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
