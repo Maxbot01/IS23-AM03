@@ -29,7 +29,7 @@ import java.util.UUID;
 /**
  * Singleton that represents the front-end logic of the server and exposes the endpoint method that every client can call, it manages the requests creating and deleting the games
  */
-public class GameManager extends GameObservable implements Serializable, Remote, it.polimi.ingsw.model.MyRemoteInterface {
+public class GameManager extends GameObservable implements Serializable, Remote, MyRemoteInterface {
 
     //this instance is used whenever we want the singleton
     private static GameManager instance;
@@ -304,7 +304,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param user The username of the user.
      * @param stub The remote interface stub.
      */
-    public void startMatch(String ID, String user, it.polimi.ingsw.model.MyRemoteInterface stub) {
+    public void startMatch(String ID, String user, MyRemoteInterface stub) {
         boolean found = false;
         for (GameLobby x : currentGames.keySet()) {
             if (x.getID().equals(ID)) {

@@ -26,7 +26,7 @@ public class GameLobby extends GameObservable implements Serializable, Remote {
         return this.host;
     }
 
-    public void startMatch(String user, it.polimi.ingsw.model.MyRemoteInterface stub) {
+    public void startMatch(String user, MyRemoteInterface stub) {
         System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
             GameManager.getInstance().createMatchFromLobby(ID, players);

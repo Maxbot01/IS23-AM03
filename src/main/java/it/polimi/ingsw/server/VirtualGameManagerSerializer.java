@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.GameManager;
+import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.model.helpers.*;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
