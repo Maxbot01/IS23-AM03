@@ -221,8 +221,8 @@ public class ServerMain {
             System.out.println("Error retrieving server IP: " + e.getMessage());
         }
         //per rmi:
-        System.setProperty("java.rmi.server.hostname", args[0]);
-        System.out.println("ip: " +  args[0]);
+        //System.setProperty("java.rmi.server.hostname", args[0]);
+        //System.out.println("ip: " +  args[0]);
         GameManager obj = GameManager.getInstance();
         try {
             MyRemoteInterface stub = (MyRemoteInterface) UnicastRemoteObject.exportObject(obj, portRMI);

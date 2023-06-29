@@ -442,7 +442,7 @@ public class GameView {
     public void setPlayingPlayer(String playingPlayer) {
         Platform.runLater(() -> {
             this.playingPlayerProp.set(playingPlayer);
-            if (playingPlayer.equals(ClientManager.userNickname)) {
+            if (playingPlayer.equals(ClientManager.userNickname) && !gameStateProp.get().equals(GameStateType.FINISHED.toString())) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, null, ButtonType.OK);
                 alert.setTitle("Turn Change");
                 alert.setHeaderText("It's your turn");
@@ -657,6 +657,9 @@ public class GameView {
         for (int i = 0; i < shelf[0].length; i++) {
             root.getColumnConstraints().add(new ColumnConstraints(cellWidth));
         }
+
+        // Colora il gap di marrone
+        root.setStyle("-fx-background-color: #863c14;");
 
         // Itera attraverso la livingRoom e crea le celle
         for (int row = 0; row < shelf.length; row++) {
@@ -1156,27 +1159,24 @@ public class GameView {
                 root.getChildren().add(label);
             }
 
-            // Create a scene with the root VBox
-            Scene scene = new Scene(root, 500, 400);
+            // Create a "Close" button
+            Button closeButton = new Button("Leave game");
 
-            // Set the title of the stage
-            stage.setTitle("Scoreboard Test");
-
-            // Set the scene of the stage
-            stage.setScene(scene);
-
-            // Show the stage
-            stage.show();
-
-            // Set the action to be performed when the stage is closed
-            stage.setOnCloseRequest(event -> {
+            // Set the action to be performed when the button is clicked
+            closeButton.setOnAction(event -> {
                 // Close the stage
                 stage.close();
                 // Terminate the JavaFX application
                 Platform.exit();
             });
+
+            // Add the button to the VBox
+            root.getChildren().add(closeButton);
+            livingRoomGrid.getChildren().clear();
+            sxRoot.getChildren().set(2, root);
         });
     }
+
     private boolean checkRuleDiagonal(ArrayList<Pair<Integer, Integer>> coordinates) {
         // Verifica che l'ArrayList contenga almeno 1 e al massimo 3 coordinate
         if (coordinates.size() < 1 || coordinates.size() > 3) {
@@ -1309,11 +1309,8 @@ public class GameView {
      */
     public void disableAllButtons() {
         Platform.runLater(() -> {
-            for (Button[] row : livingRoomButtons) {
-                for (Button button : row) {
-                    button.setDisable(true);
-                }
-            }
+            livingRoomGrid.getChildren().clear();
+            sxRoot.getChildren().set(2, livingRoomGrid);
         });
     }
 
