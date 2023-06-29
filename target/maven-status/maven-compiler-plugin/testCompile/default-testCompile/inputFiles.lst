@@ -1,20 +1,20 @@
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\view\CLIColorsTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\SixOfTwoGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\TwoOf5DiffGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourCornersGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\BoardCardTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\TwoOf6DiffGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\PersonalGoalTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourLines3DiffGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\CommonGoalsTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\LivingRoomTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\PlayerTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\TriangularGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\client\MessageSerializerTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FiveXGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourOfFourGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\ShelfTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\RandomShelfTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\EightTilesGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FiveDiagonalGoalStrategyTest.java
-C:\Users\XZ6\IdeaProjects\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\Double2x2GoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\PersonalGoalTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourCornersGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\client\MessageSerializerTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\RandomShelfTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\EightTilesGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\ShelfTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\TriangularGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\BoardCardTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\Double2x2GoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\PlayerTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FiveXGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\modelSupport\LivingRoomTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\view\CLIColorsTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FiveDiagonalGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\TwoOf6DiffGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\TwoOf5DiffGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourLines3DiffGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\SixOfTwoGoalStrategyTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\CommonGoalsTest.java
+C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\test\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourOfFourGoalStrategyTest.java
