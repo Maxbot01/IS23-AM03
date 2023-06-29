@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.CommonGoals.Strategy.CommonGoalStrategy;
 import it.polimi.ingsw.model.CommonGoals.Strategy.SixOfTwoGoalStrategy;
 import it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy;
+import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
