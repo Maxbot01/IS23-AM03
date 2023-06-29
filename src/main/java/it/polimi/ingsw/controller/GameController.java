@@ -23,9 +23,6 @@ import static it.polimi.ingsw.controller.client.ClientMain.stub;
 import static it.polimi.ingsw.controller.client.ClientManager.lobbyController;
 import static it.polimi.ingsw.controller.client.ClientManager.virtualGameManager;
 
-/**
- * This controller manages the game phase, getting messages from the server, updating the view, and responding to user inputs
- */
 public class GameController extends Controller implements GameViewObserver, Subscriber {
 
     private InitStateMessage latestInit;
@@ -57,13 +54,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
      */
     @Override
     public void setReady(String gameID, String nickname) {
-        virtualGameManager.userReady(nickname, gameID, stub);
         this.playerReady = true;
         if (!ClientManager.isSocketClient && stub != null) {
             Message message = null;
             try {
                 String lobbyhost = stub.getGameLobbyHost(gameID);
-                System.err.println("sto gettando da:" + lobbyhost);
                 message = stub.ReceiveMessageRMI(lobbyhost);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -77,54 +72,40 @@ public class GameController extends Controller implements GameViewObserver, Subs
     }
 
     /**
-     *User has selected the cards. The relative GameManager endpoint method is called
-     * @param selected array list of the user-ordered selected cards
-     * @param user usenrname
+     *
+     * @param selected
+     * @param user
      */
     @Override
     public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
-
-            System.err.println("sending selected cards");
+        //view has selected cards
+        //check if selection was correct
+        if (isSelectionPossible(selected)) {
+/*            if(!ClientManager.isCli){
+                ClientManager.view.chooseColumn();
+            }*/
             virtualGameManager.selectedCards(selected, user, gameID, stub);
-
+        }else{
+            ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least one other chosen card");
+            ClientManager.view.chooseCards();
+        }
     }
-
-    /**
-     * User has selected the column, it is selectable (checked by the controller). The relative GameManager endpoint method is called
-     * @param selCards selected cards in order
-     * @param colIndex
-     * @param user
-     */
     @Override
     public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) {
         //view has selected columns
         virtualGameManager.selectedColumn(selCards, colIndex, user, gameID, stub);
     }
-
-    /**
-     *
-     */
     @Override
     public void onAcceptFinishedGame() {
         //view has accepted finished game
         //virtualGame.acceptFinishedGame();
     }
-
-    /**
-     * User can start choosing cards
-     */
     @Override
     public void startCardsSelection(){
         ClientManager.view.chooseCards();
     }
 
-    /**
-     * Returns the common goals to the view
-     * @param goalString
-     * @return
-     */
     private CommonGoalStrategy getCommonGoalStrategy(String goalString) {
-        System.out.println("goalString: "+goalString);
         switch (goalString) {
             case "SixOfTwoGoalStrategy":
                 return new SixOfTwoGoalStrategy();
@@ -154,12 +135,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 throw new IllegalArgumentException("Invalid goal strategy: " + goalString);
         }
     }
-
-    /**
-     * The GameController received the message from a topic on which it has a subscription, the message is coming from the server
-     * @param message Received message
-     * @return
-     */
     @Override
     public boolean receiveSubscriberMessages(Message message){
         //a message has been received
@@ -175,29 +150,21 @@ public class GameController extends Controller implements GameViewObserver, Subs
             // Supponendo che tu abbia già un'istanza di InitStateMessage chiamata initStateMessage
             String firstGoalString = mess.firstGoal;
             String secondGoalString = mess.secondGoal;
-            System.out.println(firstGoalString);
-            System.out.println(secondGoalString);
 
             CommonGoals commonGoals = new CommonGoals();
             commonGoals.setFirstGoal(getCommonGoalStrategy(firstGoalString));
             commonGoals.setSecondGoal(getCommonGoalStrategy(secondGoalString));
 
+
             // Command "-ready" section:
             if(ClientManager.userNickname.equals(lobbyController.lastLobbyMessage.host)){
                 this.playerReady = true;
             }else{
-                /*while (true) {
-                    if (this.playerReady){
-                        System.out.println("Sono nel while, nell'if");
-                        break;
-                    }
-                }*/
                 while (!this.playerReady) {
                     Thread.onSpinWait();
                 }
             }
             try {
-                System.out.println(commonGoals.getFirstGoal() + " " + commonGoals.getSecondGoal());
                 ClientManager.view.initializeGame(mess.players, commonGoals, mess.personalGoals, mess.pieces, mess.selecectables,
                         mess.playersShelves, playersPoints, mess.gameState);
             } catch (IOException e) {
@@ -216,9 +183,8 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.updatePlayingPlayer(mess.chairedPlayer);
             ClientManager.view.gameCommands();
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
-            //TODO: Basically identical to initStateMessage, be careful
+            //Basically identical to initStateMessage, resilience section
         } else if (message instanceof SelectedCardsMessage) {
-            System.out.println("Sono nel selectedCardsMessage");
             SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
             ClientManager.view.printLivingRoom();
@@ -227,7 +193,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.chooseColumn();
             }
         } else if (message instanceof SelectedColumnsMessage) {
-            System.out.println("Sono nel selectedColumnsMessage");
             SelectedColumnsMessage mess = (SelectedColumnsMessage) message;
             ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
             ClientManager.view.printShelves();
@@ -246,7 +211,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printShelves();
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             this.playerReady = false;
-            ClientManager.view.showErrorMessage("Exit the game with the command \"leave_game\"");
             while (!playerReady){
                 Thread.onSpinWait();
             }
@@ -254,21 +218,16 @@ public class GameController extends Controller implements GameViewObserver, Subs
         } else if (message instanceof ErrorMessage mess) {
             switch (mess.error.toString()) {
                 case "selectedColumnsError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseColumn();
                     break;
                 case "shelfFullError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     break;
                 case "acceptFinishedGameError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
-                    //TODO: Manage error
                     break;
                 case "selectedCardsMessageError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseCards();
                     break;
@@ -279,24 +238,18 @@ public class GameController extends Controller implements GameViewObserver, Subs
         return true;
     }
     //every controller HAS to be subscribed to a topic and HAS to observe the view
-
-    /**
-     * User send chat message. The relative GameManager endpoint method is called
-     * @param message
-     * @param toUser
+    /*
+    Types of messages
      */
     @Override
     public void onSendChatMessage(String message,String toUser){
         virtualGameManager.receiveChatMessage(this.gameID,toUser,ClientManager.userNickname,message,false,true,stub);
     }
-
-    /**
-     * User received chat info
-     * @param fullChat
-     */
     @Override
     public void onGetChat(boolean fullChat){
         virtualGameManager.receiveChatMessage(this.gameID,null,ClientManager.userNickname,null,fullChat,true,stub);
     }
-
+    private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
+        return true;
+    }
 }

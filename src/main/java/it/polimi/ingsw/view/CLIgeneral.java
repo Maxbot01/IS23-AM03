@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.modelSupport.*;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import org.apache.commons.cli.*;
-import org.fusesource.jansi.AnsiConsole;
+import org.fusesource.jansi.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -213,10 +213,6 @@ public class CLIgeneral extends View{
     /**
      * Method relative to the activation of the available commands that the player has during the game
      */
-    /*@Override
-    public void setFinishedFlag(boolean value){
-        this.finishedFlag = value;
-    }*/
     @Override
     public void gameCommands(){
         Options options = new Options();
@@ -323,7 +319,6 @@ public class CLIgeneral extends View{
                 formatter.printHelp("Available Commands", options);
             }
         }
-        System.out.println("You have left gameCommands");//DEBUG
     }
     /**
      * Method relative to the acquisition of the client's credentials through the command line interface
@@ -336,7 +331,6 @@ public class CLIgeneral extends View{
         String username = in.next();
         String password = in.next();
         this.userPlayer = new Player(username);
-        System.out.println("GameManagerController: " + ClientManager.gameManagerController);
         System.out.println("Your username is: "+username);
         System.out.println("Your password is: "+password);
         GameManagerController gameManagerController = ClientManager.gameManagerController;
@@ -430,7 +424,6 @@ public class CLIgeneral extends View{
                 formatter.printHelp("Available Commands", options);
             }
         }
-        System.out.println("You have left the manager");
     }
     /**
      * Whenever a new game lobby is created it updates the available games
@@ -750,16 +743,6 @@ public class CLIgeneral extends View{
             System.out.println("Select a column within range, from 0 to 4.");
             column = Integer.parseInt(in3.next());
         }
-//        try {
-//            stub.updateState();
-//        } catch (RemoteException e) {
-//            throw new RuntimeException(e);
-//        }
-//        try {
-//            System.err.println(stub.getFlag());
-//        } catch (RemoteException e) {
-//            throw new RuntimeException(e);
-//        }
         super.gameController.onSelectedColumn(selectedCards, column, userPlayer.getNickname());
     }
     /**
@@ -836,9 +819,9 @@ public class CLIgeneral extends View{
         if(!messages.isEmpty()) {
             for (Pair<String, Pair<String,String>> p : messages) {
                 if(p.getFirst().equals("All")){
-                    System.out.println("[Public]  \u001b[1;37m" + p.getSecond().getFirst() + "\u001b[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
+                    System.out.println("[Public]  \033[1;37m" + p.getSecond().getFirst() + "\033[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
                 } else if (p.getFirst().equals(userPlayer.getNickname())) {
-                    System.out.println("[Private]  \u001b[1;37m" + p.getSecond().getFirst() + "\u001b[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
+                    System.out.println("[Private]  \033[1;37m" + p.getSecond().getFirst() + "\033[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
                 }
             }
         }else{

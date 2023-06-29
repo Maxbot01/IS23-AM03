@@ -17,6 +17,9 @@ import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.util.UUID;
 
+/**
+ * The main class for the client-side of the game.
+ */
 public class ClientMain implements Runnable {
 
     private Socket socket;
@@ -26,10 +29,17 @@ public class ClientMain implements Runnable {
     public static boolean isSocketClient;
     public static MyRemoteInterface stub;
 
-
     public static ClienRMIObjectInterface clienRMIInstance;
 
-
+    /**
+     * Constructor for the ClientMain class.
+     *
+     * @param socket          The socket for socket-based communication.
+     * @param isCLi           Flag indicating whether the client is a CLI client or not.
+     * @param isSocketClient  Flag indicating whether the client is using socket-based communication or RMI.
+     * @param remoteObject    The remote object for RMI-based communication.
+     * @param ipAddr          The IP address of the server.
+     */
     public ClientMain(Socket socket, boolean isCLi, boolean isSocketClient, MyRemoteInterface remoteObject, String ipAddr) {
         if (isSocketClient) {
             this.socket = socket;
@@ -54,6 +64,11 @@ public class ClientMain implements Runnable {
         ClientManager.initializeClientManagerSingleton(isCLi, isSocketClient, remoteObject, ipAddr);
     }
 
+    /**
+     * Sends a message to the server.
+     *
+     * @param message The message to send.
+     */
     public static void sendMessage(String message) {
         try {
             output.writeObject(message);
@@ -66,27 +81,14 @@ public class ClientMain implements Runnable {
 
     public void run() {
         try {
-            //Thread previousThread = null;
-
-            /*Thread commandThread = new Thread(()->{//Added input thread for cli
-               ClientManager.startReceivingCommands();
-            });
-            commandThread.start();*/
             while (isRunning) {
                 String message = (String) input.readObject();
-                System.out.println("Received message from server: " + message);
+                //System.out.println("Received message from server: " + message);
                 MessageSerializer messageSerializer = new MessageSerializer();
                 Message serializedMessage = messageSerializer.deserialize(message);
                 if (serializedMessage != null) {
-                    //if it's meant for us
-                    //TODO: add exception to handle wrongly received message to react accordingly
-                    //TODO: put this into thread to stop cli from blocking this loop
-                    /*if(previousThread != null){
-                        previousThread.interrupt();
-                    }*/
-
-                    Thread newThread = new Thread(() -> { //This is the execution thread
-                        System.out.println("New thread created: " + Thread.currentThread().getName());//DEBUG
+                    Thread newThread = new Thread(() -> {
+                        //System.out.println("New thread created: " + Thread.currentThread().getName());
                         try {
                             ClientManager.clientReceiveMessage(serializedMessage);
                         } catch (IOException e) {
@@ -94,10 +96,8 @@ public class ClientMain implements Runnable {
                         }
                     });
                     newThread.start();
-                    //previousThread = newThread;
                 }
             }
-            //commandThread.interrupt(); relative to the cliInput thread
         } catch (IOException e) {
             System.out.println("Error receiving message from server: " + e.getMessage());
             isRunning = false;
@@ -107,22 +107,34 @@ public class ClientMain implements Runnable {
         }
     }
 
+    /**
+     * Stops the client.
+     */
     public void stop() {
         isRunning = false;
         try {
             output.close();
             input.close();
             socket.close();
-
         } catch (IOException e) {
             System.out.println("Error stopping client: " + e.getMessage());
         }
     }
 
+    /**
+     * Sets the remote object stub.
+     *
+     * @param stub The remote object stub.
+     */
     public static void setStub(MyRemoteInterface stub) {
         ClientMain.stub = stub;
     }
 
+    /**
+     * Runs the RMI-based communication with the server.
+     *
+     * @param ipAddress The IP address of the server.
+     */
     public static void runRMI(String ipAddress) {
         try {
             while (isRunning) {
@@ -134,7 +146,7 @@ public class ClientMain implements Runnable {
                         throw new RuntimeException(e);
                     }
                     try {
-                        if(stub.getFlag()) {
+                        if (stub.getFlag()) {
                             try {
                                 ClientManager.clientReceiveMessage(messageRMI);
                             } catch (IOException e) {
@@ -154,34 +166,38 @@ public class ClientMain implements Runnable {
         isRunning = false;
     }
 
-
+    /**
+     * The main method of the client.
+     *
+     * @param args The command line arguments.
+     * @throws IOException If an I/O error occurs.
+     */
     public static void main(String[] args) throws IOException {
         int port = 8089;
         int portRMI = 1919;
 
-        //System.out.print("Seleziona il tipo di connessione (socket/rmi): ");
         String connectionType;
 
-        boolean isCLI = true;  // Imposta a true o false a seconda delle tue esigenze
+        boolean isCLI = true;
         ClientMain client;
 
         String interfaceType;
 
-        do{
+        do {
             System.out.print("Select your interface (CLI/GUI): ");
             Scanner scan1 = new Scanner(System.in);
             interfaceType = scan1.next();
-            if(interfaceType.equals("GUI")){
+            if (interfaceType.equals("GUI")) {
                 App.main(null);
             } else if (interfaceType.equals("CLI")) {
                 do {
-                    System.out.print("Seleziona il tipo di connessione (socket/rmi): ");
+                    System.out.print("Select the type of connection (socket/rmi): ");
                     Scanner scan2 = new Scanner(System.in);
                     connectionType = scan2.nextLine();
                     if (connectionType.equalsIgnoreCase("socket")) {
                         isSocketClient = true;
                         System.out.println("Socket mode selected.");
-                        System.out.print("Inserisci l'indirizzo IP del server: ");
+                        System.out.print("Enter the server IP address: ");
                         String serverIP = scan2.nextLine();
                         Socket socket = new Socket(serverIP, port);
                         client = new ClientMain(socket, isCLI, true, null, null);
@@ -192,12 +208,10 @@ public class ClientMain implements Runnable {
                         System.out.println("RMI mode selected.");
                         isSocketClient = false;
 
-                        System.out.print("Inserisci l'indirizzo IP del server: ");
+                        System.out.print("Enter the server IP address: ");
                         String serverIP = scan2.nextLine();
 
-
                         clienRMIInstance = new ClienRMIObject();
-
 
                         Registry registry = LocateRegistry.getRegistry(serverIP, portRMI);
                         MyRemoteInterface stub = null;
@@ -209,23 +223,20 @@ public class ClientMain implements Runnable {
                         }
 
                         setStub(stub);
-//                InetAddress localAddress = InetAddress.getLocalHost();
-//                String ipAddress = localAddress.getHostAddress();
+
                         String ipAddress = UUID.randomUUID().toString();
                         stub.registerClient(ipAddress);
                         new ClientMain(null, isCLI, false, stub, ipAddress);
                         return;
                     } else {
-                        System.out.println("Tipo di connessione non valido.");
+                        System.out.println("Invalid connection type.");
                     }
-                }while(true);
+                } while (true);
             }
 
-        }while(true);
+        } while (true);
     }
 
 }
-
-
 
 

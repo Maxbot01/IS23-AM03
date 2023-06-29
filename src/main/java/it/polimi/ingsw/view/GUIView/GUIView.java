@@ -52,9 +52,7 @@ public class GUIView extends View {
         ScreenSwitcher.createGameView(players, commonGoals, personalGoals, livingRoom, selectables, playersShelves, playersPoints, gameState);
         ScreenSwitcher.gameView.setGameState(gameState.toString());
         ScreenSwitcher.showGameView();
-        // MAX, non c'era niente
     }
-
     /**
      * Overrides the method to update the match after selected cards.
      * Sets the living room cards, selectability, and game state in the game view.
@@ -65,8 +63,6 @@ public class GUIView extends View {
      */
     @Override
     public void updateMatchAfterSelectedCards(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState) {
-        // MAX
-        System.err.println("updateMatchAfterSelectedCards");
         ScreenSwitcher.gameView.setLivingRoom(livingRoom);
         ScreenSwitcher.gameView.setGameState(gameState.toString());
         ScreenSwitcher.gameView.setSelectables(selectables);
@@ -85,7 +81,6 @@ public class GUIView extends View {
     @Override
     public void updateMatchAfterSelectedColumn(BoardCard[][] livingRoom, Boolean[][] selectables, GameStateType gameState,
                                                Pair<String, Integer> updatedPlayerPoints, Pair<String, BoardCard[][]> updatedPlayerShelf) {
-        // MAX
         ScreenSwitcher.gameView.setShelf(updatedPlayerShelf);
         ScreenSwitcher.gameView.setGameState(gameState.toString());
         ScreenSwitcher.gameView.setLivingRoom(livingRoom);
@@ -122,7 +117,6 @@ public class GUIView extends View {
      */
     @Override
     public void requestCredentials() throws IOException {
-        System.out.println("requestedCred");
         ScreenSwitcher.showLoginView();
     }
 
@@ -159,7 +153,6 @@ public class GUIView extends View {
      */
     @Override
     public void launchGameLobby(String gameId, ArrayList<String> players, String host) {
-        System.out.println("gameLobby");
         boolean isHost = host.equals(ClientManager.userNickname);
         ScreenSwitcher.createGameLobbyView(isHost, players, host);
         ScreenSwitcher.showGameLobbyView();
@@ -245,7 +238,6 @@ public class GUIView extends View {
     @Override
     public void printChat(ArrayList<Pair<String, Pair<String, String>>> chat) {
         this.chatMessages = chat;
-        // TODO: See if there's a better way of checking
         if (ScreenSwitcher.getPrimaryStage().getScene().equals(ScreenSwitcher.gameLobbyViewScene)) {
             ScreenSwitcher.gameLobbyView.updateChatMessages(chat);
         } else {

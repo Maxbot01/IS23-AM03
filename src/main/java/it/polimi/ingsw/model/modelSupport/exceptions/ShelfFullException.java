@@ -8,7 +8,8 @@ public class ShelfFullException extends Exception implements Serializable {
         this.info = info;
     }
 
-    public String getInfo(){
-        return this.info;
+    public String getInfo() {
+        return info;
     }
+
 }
