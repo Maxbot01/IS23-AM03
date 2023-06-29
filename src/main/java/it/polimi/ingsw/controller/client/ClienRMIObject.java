@@ -29,8 +29,6 @@ public class ClienRMIObject extends UnicastRemoteObject implements ClienRMIObjec
      * @throws IOException If an I/O error occurs.
      */
     public void callback(Message rec) throws IOException {
-        //System.out.println(who_what);
-        System.out.println("GOT CALLBACK with " + rec);
         ClientManager.clientReceiveMessage(rec);
     }
 }

@@ -213,10 +213,6 @@ public class CLIgeneral extends View{
     /**
      * Method relative to the activation of the available commands that the player has during the game
      */
-    /*@Override
-    public void setFinishedFlag(boolean value){
-        this.finishedFlag = value;
-    }*/
     @Override
     public void gameCommands(){
         Options options = new Options();
@@ -567,7 +563,6 @@ public class CLIgeneral extends View{
                 formatter.printHelp("Available Commands", options);
             }
         }
-        System.out.println("You have left the lobby");
     }
     /**
      * Whenever a new player enters the lobby it updates the lobby's players
