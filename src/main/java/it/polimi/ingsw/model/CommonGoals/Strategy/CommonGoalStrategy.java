@@ -9,4 +9,6 @@ public interface CommonGoalStrategy {
      * @return boolean
      */
     boolean goalCompleted(BoardCard[][] Mat);
+    int getIndex();
+    String toStringCommonGoal();
 }

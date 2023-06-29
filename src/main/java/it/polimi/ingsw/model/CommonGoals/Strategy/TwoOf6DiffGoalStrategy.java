@@ -45,5 +45,11 @@ public class TwoOf6DiffGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
-    };
+    }
+    public String toStringCommonGoal() {
+        return "TwoOf6DiffGoalStrategy"; // Restituisci una rappresentazione significativa del nome della strategia
+    }
+    public int getIndex(){
+        return 2;
+    }
 }

@@ -126,4 +126,12 @@ public class SixOfTwoGoalStrategy implements CommonGoalStrategy{
         }
         return false;
     }
+
+    //toStringCommonGoal
+    public String toStringCommonGoal(){
+        return "SixOfTwoGoalStrategy";
+    }
+    public int getIndex(){
+        return 4;
+    }
 }

@@ -2,10 +2,9 @@ package it.polimi.ingsw.model.CommonGoals;
 
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
 import it.polimi.ingsw.model.modelSupport.Player;
-import it.polimi.ingsw.model.modelSupport.enums.CommonGoalType;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommonGoals implements Serializable {
@@ -104,17 +103,16 @@ public class CommonGoals implements Serializable {
             case 11:
                 secondGoal = new TriangularGoalStrategy();
         }
-        /* Assegnamento Strategy per i casi di Test */
-        /* firstGoal = new TriangularGoalStrategy();
-        secondGoal = new FiveDiagonalGoalStrategy(); */
     }
     /**
+     * Getter for the first commonGoal
      * @return CommonGoalStrategy
      */
     public CommonGoalStrategy getFirstGoal() {
         return firstGoal;
     }
     /**
+     * Getter for the second commonGoal
      * @return CommonGoalStrategy
      */
     public CommonGoalStrategy getSecondGoal() {
@@ -144,48 +142,6 @@ public class CommonGoals implements Serializable {
         int ris;
         int pointsOfFirst;
         int pointsOfSecond;
-
-        /* TEST RANDOMICO */
-        /*
-        colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
-        Random random = new Random();
-        int range = colors.length;
-        for (int i = 0; i < 6; i++) {
-            for(int j = 0; j < 5; j++) {
-                int chosen = random.nextInt(range);
-                BoardCard piece = new BoardCard(colors[chosen]);
-                prova[i][j] = piece;
-            }
-        }
-        */
-        /* CASI DI TEST: sezione di assegnamento delle carte desiderate sulla shelf */
-        /*
-        ArrayList<colorType[]> testColors = new ArrayList<>();
-        testColors.add(firstLine);
-        testColors.add(secondLine);
-        testColors.add(thirdLine);
-        testColors.add(fourthLine);
-        testColors.add(fifthLine);
-        testColors.add(sixthLine);
-        BoardCard[][] prova = new BoardCard[6][5];
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 5; j++){
-                BoardCard piece = new BoardCard(testColors.get(i)[j]);
-                prova[i][j] = piece;
-            }
-        }
-
-        System.out.println("Stampo 'prova:'");
-        for(int i = 0; i < 6; i++){
-            for(int j = 0;j < 5; j++){
-                System.out.print(prova[i][j].getColor() + "  ");
-            }
-            System.out.print("\n");
-        }
-        System.out.println("\n");
-        System.out.println("reachedFirstGoal:\n" + reachedFirstGoal + "\n");
-        System.out.println("reachedSecondGoal:\n" + reachedSecondGoal + "\n");
-        */
 
         if(!reachedFirstGoal.contains(player)){
             if (firstGoal.goalCompleted(player.getPlayersShelf().getShelfCards())) {

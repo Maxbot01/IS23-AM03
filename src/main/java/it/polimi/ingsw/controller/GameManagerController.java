@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 
-import it.polimi.ingsw.client.ClientManager;
+import it.polimi.ingsw.controller.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
@@ -14,10 +14,11 @@ import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.util.List;
 
 public class GameManagerController extends Controller implements GameManagerViewObserver, Subscriber {
-    private VirtualGameManager virtualGameManager;
+    private final VirtualGameManager virtualGameManager;
     private loginGameMessage lastLoginMessage = null;
     private Thread lastThread;
     public GameManagerController(View view, VirtualGameManager virtualGameManager, MyRemoteInterface stub) {
@@ -51,7 +52,7 @@ public class GameManagerController extends Controller implements GameManagerView
     }
 
     @Override
-    public boolean receiveSubscriberMessages(Message message) {
+    public boolean receiveSubscriberMessages(Message message) throws IOException {
         if(message instanceof NetworkMessage){
             //this message holds Messages useful for network
             switch (((NetworkMessage) message).message){

@@ -29,4 +29,10 @@ public class FourCornersGoalStrategy implements CommonGoalStrategy{
             return false;
         }
     }
+    public String toStringCommonGoal() {
+        return "FourCornersGoalStrategy";
+    }
+    public int getIndex(){
+        return 8;
+    }
 }

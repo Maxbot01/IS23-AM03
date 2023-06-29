@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model.helpers;
 
 import java.io.Serializable;
-import java.rmi.Remote;
 
-public class Quartet<Z,F,S,T> implements Serializable, Remote {
+public class Quartet<Z,F,S,T> implements Serializable {
     private final Z first;
     private final F second;
     private final S third;

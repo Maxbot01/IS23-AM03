@@ -3,10 +3,8 @@ package it.polimi.ingsw.model.messageModel.matchStateMessages;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
-import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SelectedColumnsMessage extends MatchStateMessage{

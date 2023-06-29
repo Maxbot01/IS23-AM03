@@ -47,5 +47,12 @@ public class ThreeColumns3DiffGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
+
+    }
+    public String toStringCommonGoal(){
+        return "ThreeColumns3DiffGoalStrategy";
+    }
+    public int getIndex(){
+        return 5;
     }
 }

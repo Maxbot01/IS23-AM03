@@ -27,23 +27,23 @@ public class FourOfFourGoalStrategy implements CommonGoalStrategy {
         int correctLines = 0;
         ArrayList<Pair<Integer,Integer>> savedNumbOfCoord = new ArrayList<>();
         ArrayList<Pair<Integer,Integer>> savedTotalCoord = new ArrayList<>();
-/*
-inserisco un arraylist di savedCoord in cui metto tutte le coordinate che ho visto, così da ottenere
-il numero totale per quel colore, e non considerarla nei for annidati, così da evitarmi di rifare il calcolo
-delle combinazioni
- */
+
+        //I save in a ArrayList all the coordinates already visited, so that I can save time in the following iterations
+
         for(int i = 0; i < rows && completed == 0; i++){
             for(int j = 0; j < cols && completed == 0; j++){
                 if(Mat[i][j].getColor() != colorType.EMPTY_SPOT){
                     Pair<Integer,Integer> tmp = new Pair<>(i,j);
                     if(!pairIsPresent(tmp,savedTotalCoord)) {
-/* resetto il numero di carte viste e il numero di combinazioni trovate per il colore precedente */
+
+                    // resets the visited card visited and found combination
+
                         savedNumbOfCoord.removeAll(savedNumbOfCoord);
                         combinations.removeAll(combinations);
 
                         startSearchOfCombinations(Mat, Mat[i][j].getColor(), i, j, savedTotalCoord, combinations, savedNumbOfCoord);
 
-                        /* stampo i risultati che mi interessano:
+                        /*
                         System.out.println("\nNumero di combinazioni trovate per " + i + "-" + j + ": " + combinations.size() + "\nNumero di" +
                                 " BoardCards relative" + " alle combinazioni: " + savedNumbOfCoord.size() + "\n");
 
@@ -88,28 +88,21 @@ delle combinazioni
                 Pair<Integer,Integer>,Pair<Integer,Integer>, Pair<Integer,Integer>>> combinations,
                 ArrayList<Pair<Integer,Integer>> savedNumbOfCoord){
 /*
-W-S-E-N mi servono er le combinazioni a T
+W-S-E-N are used in combination search
  */
         int W = 0;
         int S = 0;
         int E = 0;
         int N = 0;
 /*
-aggiungo l'elemento a savedNumbOfCoord per tenere traccia del numero di tessere totali considerate per quel colore, nel main verrà resettato per ogni
-elemento di partenza studiato
+add the element to savedNumbOfCoord, which keeps track of the total amount of card of that color, main will reset it at every change of sta
  */
         Pair<Integer,Integer> val = new Pair<>(x,y);
         if(!pairIsPresent(val,savedNumbOfCoord)) {
             savedNumbOfCoord.add(val);
         }
 /*
-aggiungo l'elemento nuovo alla lista di considered così da mantenere le coordinate viste e la size della
-combinazione fino a quel momento
-*/
-        considered.add(new Pair<>(x,y));
-/*
-se la size di considered è 4 allora salvo la combinazione nel quartetto di pair (ovvero delle coordinate)
-combinations, così da averla per il controllo finale, solo se non è già presente
+add the new element to the considered list
  */
         if(considered.size() == 4){
             Pair<Integer,Integer> first = new Pair<>(considered.get(0).getFirst(),considered.get(0).getSecond());
@@ -121,8 +114,7 @@ combinations, così da averla per il controllo finale, solo se non è già prese
                 combinations.add(tmp);
             }
 /*
-se la size non è 4 mando ricorsivamente la funzione nelle 4 direzioni se possibile, creando un branch alla volta
-in cui cercare una combinazione
+recursion is used to spread the serach towards the confinant cards
  */
         }else{
             if(y-1 >= 0 && mat[x][y-1].getColor().equals(chosenColor) && y-1 != yPrec) { /* W card */
@@ -142,8 +134,7 @@ in cui cercare una combinazione
                 N = 1;
             }
 /*
-controllo la possibilità di sequenze a T (ovvero 3 cards in fila e 1 card adiacente all'elemento centrale della
-riga di 3)
+Checks possible confinant boardCard
  */
             if(W == 1 && S == 1 && E == 1){
                 Pair<Integer,Integer> first = new Pair<>(x,y-1);
@@ -191,9 +182,9 @@ riga di 3)
             }
         }
 /*
-alla fine rimuovo l'ultimo elemento così da non finire in iterazioni infinite (loop), evitando anche duplicati,
-tornando indietro per cercare possibili altre combinazioni con gli elementi precedenti
+at last the starting card is remove to stop endless cycles
  */
+
         considered.remove(considered.size()-1);
     }
 
@@ -377,5 +368,12 @@ per ogni pair di interi nel primo quartetto cerco un pair uguale nel secondo, se
             }
         }
         return present == 1;
+    }
+    // toStringCommonGoal
+    public String toStringCommonGoal(){
+        return "FourOfFourGoalStrategy";
+    }
+    public int getIndex(){
+        return 3;
     }
 }

@@ -10,17 +10,13 @@ import java.util.ArrayList;
  * Strategy of Double2x2: it looks for 2 groups of 4 boardCards of the same color in a square formation (the two groups can be of a different color)
  */
 public class Double2x2GoalStrategy implements CommonGoalStrategy {
-    /*private String description = "Sei gruppi separati formati ciascuno da due tessere adiacenti dello stesso tipo (non necessariamente come mostrato in figura). Le tessere di un gruppo possono essere diverse da quelle di un altro gruppo.";
-    public String getDescription() {
-        return this.description;
-    }*///TODO: Decide whether to add this description or not
 
     /**
      * Algorithm of Double2x2
      * @param Mat
      * @return boolean
      */
-    public boolean goalCompleted(BoardCard[][] Mat) {
+    public boolean OldgoalCompleted(BoardCard[][] Mat) {
         ArrayList<Pair<Integer, Integer>> blocksCoordinates = new ArrayList<>();
         ArrayList<colorType> colors = new ArrayList<>();
         int completed = 0;
@@ -108,6 +104,24 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy {
             return false;
         }
     }
+
+    public boolean goalCompleted(BoardCard[][] mat) {
+        int count = 0;
+        boolean found = false;
+        for(int i = 0; i < 5 && !found; i++){
+            for(int j = 0; j<4 && !found; j++){
+                if(!mat[i][j].getColor().equals(colorType.EMPTY_SPOT) && mat[i][j].getColor().equals(mat[i+1][j+1].getColor())){
+                    if(!mat[i][j+1].getColor().equals(colorType.EMPTY_SPOT) && mat[i][j+1].getColor().equals(mat[i+1][j].getColor())){
+                        count++;
+                        if(count == 2){found = true;}
+                    }
+                }
+            }
+        }
+        return found;
+
+
+    }
     /**
      * Private method to check if the pair of coordinates is in a given list
      * @param tmp
@@ -122,5 +136,22 @@ public class Double2x2GoalStrategy implements CommonGoalStrategy {
             }
         }
         return present == 1;
+    }
+
+    /**
+     * Returns the index of the CommonGoal
+     * @return
+     */
+    public int getIndex(){
+        return 1;
+    }
+
+    /**
+     * Returns the name of the CommonGoal
+     * @return String
+     */
+    @Override
+    public String toStringCommonGoal() {
+        return "Double2x2GoalStrategy";
     }
 }

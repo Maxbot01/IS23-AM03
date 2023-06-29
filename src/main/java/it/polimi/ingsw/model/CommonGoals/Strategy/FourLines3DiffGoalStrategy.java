@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.CommonGoals.Strategy;
 
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
+
 import java.util.ArrayList;
 
 /**
@@ -46,5 +47,11 @@ public class FourLines3DiffGoalStrategy implements CommonGoalStrategy{
         }else{
             return false;
         }
+    }
+    public String toStringCommonGoal() {
+        return "FourLines3DiffGoalStrategy";
+    }
+    public int getIndex(){
+        return 7;
     }
 }

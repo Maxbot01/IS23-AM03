@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model.messageModel.GameManagerMessages;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameLobby;
-
 import java.util.HashMap;
 import java.util.List;
 

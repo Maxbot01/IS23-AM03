@@ -7,14 +7,22 @@ import java.util.Scanner;
 
 public class EchoServerClientHandler implements Runnable{
         private Socket socket;
+    /**
+     * Constructor of the socket
+     * @param socket
+     */
         public EchoServerClientHandler(Socket socket) {
             this.socket = socket;
         }
+    /**
+     * Opens the connection for in/out messages.
+     * Closes it with the message "quit"
+     */
         public void run() {
             try {
                 Scanner in = new Scanner(socket.getInputStream());
                 PrintWriter out = new PrintWriter(socket.getOutputStream());
-                // Leggo e scrivo nella connessione finche' non ricevo "quit"
+                // Can read and write until I receive "quit"
                 while (true) {
                     String line = in.nextLine();
                     if (line.equals("quit")) {
@@ -24,7 +32,7 @@ public class EchoServerClientHandler implements Runnable{
                         out.flush();
                     }
                 }
-                // Chiudo gli stream e il socket
+                // stream and socket are closed
                 in.close();
                 out.close();
                 socket.close();

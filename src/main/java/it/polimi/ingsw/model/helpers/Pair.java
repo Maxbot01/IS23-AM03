@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.helpers;
 
 import java.io.Serializable;
-import java.rmi.Remote;
 
-public class Pair<T, S> implements Serializable, Remote {
+public class Pair<T, S> implements Serializable {
     private final T first;
     private final S second;
+    private T key;
+    private S value;
 
     public Pair(T first, S second) {
         this.first = first;
@@ -18,4 +19,6 @@ public class Pair<T, S> implements Serializable, Remote {
     public S getSecond(){
         return second;
     }
+
+
 }

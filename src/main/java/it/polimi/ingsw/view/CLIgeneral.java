@@ -1,24 +1,21 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.client.ClientManager;
+import it.polimi.ingsw.controller.client.ClientManager;
 import it.polimi.ingsw.controller.GameManagerController;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
-import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.modelSupport.*;
-
-import java.io.IOException;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
-import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
-import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
 import org.apache.commons.cli.*;
-import java.util.*;
 
-import static it.polimi.ingsw.client.ClientMain.stub;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+
+import static it.polimi.ingsw.controller.client.ClientMain.stub;
 
 public class CLIgeneral extends View{
     private GameStateType gameState;
@@ -220,9 +217,6 @@ public class CLIgeneral extends View{
     }*/
     @Override
     public void gameCommands(){
-        if(!playingPlayer.equals(userPlayer.getNickname()) && stub != null && !ClientManager.isSocketClient){
-            System.out.println("Waiting for " + playingPlayer + " to play...");
-        }
         Options options = new Options();
         options.addOption(show_gameId);
         options.addOption(chat);
@@ -242,27 +236,6 @@ public class CLIgeneral extends View{
         CommandLine cmd = null;
         while(!finished) {
             try {
-//                if (!playingPlayer.equals(userPlayer.getNickname()) && stub != null && !ClientManager.isSocketClient) {
-//                    System.out.println("Waiting for " + playingPlayer + " to play...");
-//                    Timer timer = new Timer();
-//                    TimerTask task = new TimerTask() {
-//                        @Override
-//                        public void run() {
-//                            Message message = null;
-//                            try {
-//                                message = stub.ReceiveMessageRMI(ClientManager.clientIP);
-//                            } catch (RemoteException e) {
-//                                throw new RuntimeException(e);
-//                            }
-//                            try {
-//                                ClientManager.clientReceiveMessage(message);
-//                            } catch (IOException e) {
-//                                throw new RuntimeException(e);
-//                            }
-//                        }
-//                    };
-//                    timer.schedule(task, 30000); // 30000 millisecondi = 30 secondi
-//                }
                 cmd = parser.parse(options, scanf());
                 if (cmd.hasOption(show_gameId)) {
                     System.out.println("Your gameId is: " + gameID);
@@ -283,9 +256,40 @@ public class CLIgeneral extends View{
                 } else if (cmd.hasOption(help)) {
                     formatter.printHelp("Available Commands", options);
                 } else if (cmd.hasOption(chat)) { // Example of chat implementation
-                    Scanner scan = new Scanner(System.in);
-                    String msg = scan.nextLine();
-                    super.gameController.onSendChatMessage(msg);
+                    System.out.print("Choose receiver\nPossible receivers: 'All', ");
+                    for(int i = 0; i < players.size(); i++){
+                        if(i+1 == players.size()){
+                            System.out.println("'"+players.get(i).getNickname()+"'");
+                        }else {
+                            System.out.print("'"+players.get(i).getNickname()+"'" + ", ");
+                        }
+                    }
+                    boolean found = false;
+                    String toUser;
+                    do {
+                        Scanner scan = new Scanner(System.in);
+                        toUser = scan.next();
+                        ArrayList<String> users = new ArrayList<>();
+                        for(Player p: players){
+                            users.add(p.getNickname());
+                        }
+                        if (users.contains(toUser) || toUser.equals("All")) {
+                            found = true;
+                        }
+                        if(!found){
+                            System.out.println("Invalid Destination");
+                        }
+                    }while(!found);
+                    System.out.println("Enter your Message");
+                    String msg;
+                    do {
+                        Scanner scan2 = new Scanner(System.in);
+                        msg = scan2.nextLine();
+                        if(msg.isEmpty()){
+                            System.out.println("No message inserted");
+                        }
+                    }while(msg.isEmpty());
+                    super.gameController.onSendChatMessage(msg,toUser);
                     // It also needs to show the past messages
                 } else if (cmd.hasOption(show_chat)) {
                     super.gameController.onGetChat(false);
@@ -309,19 +313,12 @@ public class CLIgeneral extends View{
                     }
                 }
                 else {
-                    if(ClientManager.isSocketClient && stub != null){
-                        Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
-                        ClientManager.clientReceiveMessage(message);
-                    } else {
-                        System.out.println("gameCommands section");//DEBUG
-                        System.out.println("Unavailable command, remember to type '-' and the desired command");
-                    }
+                    System.out.println("gameCommands section");//DEBUG
+                    System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
-            } catch (ParseException | RemoteException pe) {
+            } catch (ParseException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
                 formatter.printHelp("Available Commands", options);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
         System.out.println("You have left gameCommands");//DEBUG
@@ -371,73 +368,64 @@ public class CLIgeneral extends View{
         while(!finished) {
             try {
                 cmd = parser.parse(options, scanf());
-                    if (cmd.hasOption(show_games)) {
-                        if (this.availableGames.size() == 0) {
-                            System.out.println("No games available");
-                        } else {
-                            for(int i = 0; i < this.availableGames.size(); i++){
-                                int z = i+1;
-                                System.out.println("GameId " + z + ": " + this.availableGames.get(i).getFirst());
-                                System.out.print("Players: ");
-                                if(ClientManager.isSocketClient || stub == null){
-                                    for(int j = 0; j < this.availableGames.get(i).getSecond().size(); j++){
-                                        System.out.print(this.availableGames.get(i).getSecond().get(j)+"\t");
-                                    }
-                                    System.out.println();
-                                }
-                            }
-                        }
-                    } else if (cmd.hasOption(help)) {
-                        formatter.printHelp("Available Commands", options);
-                    } else if (cmd.hasOption(select_game)) {
-                        boolean valid = true;
-                        String lobbyID = cmd.getOptionValue(select_game);
-                        if (lobbyID.length() == 1) {
-                            int IDnumber = Integer.parseInt(lobbyID);
-                            if (IDnumber - 1 < this.availableGames.size() && IDnumber - 1 >= 0) {
-                                lobbyID = this.availableGames.get(IDnumber-1).getFirst();
-                            } else {
-                                valid = false;
-                            }
-                        } else {
-                            valid = false;
-                            for(int i = 0; i < this.availableGames.size(); i++){
-                                if(this.availableGames.get(i).getFirst().equals(lobbyID)){
-                                    valid = true;
-                                }
-                            }
-                        }
-                        if (valid) {
-                            finished = true;
-                            super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname(), stub);
-                        } else {
-                            System.out.println("Incorrect ID, please select a valid ID");
-                        }
-                    } else if (cmd.hasOption(create_game)) {
-                        int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
-                        if (numOfPlayers >= 2 && numOfPlayers <= 4) {
-                            host = userPlayer.getNickname();
-                            finished = true;
-                            super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname(),stub);
-                        } else if (numOfPlayers > 4) {
-                            System.out.println("You can't have more than 4 players in a game");
-                        } else {
-                            System.out.println("You need to have at least 2 player for the game");
-                        }
+                if (cmd.hasOption(show_games)) {
+                    if (this.availableGames.size() == 0) {
+                        System.out.println("No games available");
                     } else {
-                        if(ClientManager.isSocketClient && stub != null){
-                            Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
-                            ClientManager.clientReceiveMessage(message);
-                        } else {
-                            System.out.println("launchGameManager section");//DEBUG
-                            System.out.println("Unavailable command, remember to type '-' and the desired command");
+                        for(int i = 0; i < this.availableGames.size(); i++){
+                            int z = i+1;
+                            System.out.println("GameId " + z + ": " + this.availableGames.get(i).getFirst());
+                            System.out.print("Players: ");
+                            for(int j = 0; j < this.availableGames.get(i).getSecond().size(); j++){
+                                System.out.print(this.availableGames.get(i).getSecond().get(j)+"\t");
+                            }
+                            System.out.println();
                         }
                     }
+                } else if (cmd.hasOption(help)) {
+                    formatter.printHelp("Available Commands", options);
+                } else if (cmd.hasOption(select_game)) {
+                    boolean valid = true;
+                    String lobbyID = cmd.getOptionValue(select_game);
+                    if (lobbyID.length() == 1) {
+                        int IDnumber = Integer.parseInt(lobbyID);
+                        if (IDnumber - 1 < this.availableGames.size() && IDnumber - 1 >= 0) {
+                            lobbyID = this.availableGames.get(IDnumber-1).getFirst();
+                        } else {
+                            valid = false;
+                        }
+                    } else {
+                        valid = false;
+                        for(int i = 0; i < this.availableGames.size(); i++){
+                            if(this.availableGames.get(i).getFirst().equals(lobbyID)){
+                                valid = true;
+                            }
+                        }
+                    }
+                    if (valid) {
+                        finished = true;
+                        super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname(), stub);
+                    } else {
+                        System.out.println("Incorrect ID, please select a valid ID");
+                    }
+                } else if (cmd.hasOption(create_game)) {
+                    int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
+                    if (numOfPlayers >= 2 && numOfPlayers <= 4) {
+                        host = userPlayer.getNickname();
+                        finished = true;
+                        super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname(),stub);
+                    } else if (numOfPlayers > 4) {
+                        System.out.println("You can't have more than 4 players in a game");
+                    } else {
+                        System.out.println("You need to have at least 2 player for the game");
+                    }
+                } else {
+                    System.out.println("launchGameManager section");//DEBUG
+                    System.out.println("Unavailable command, remember to type '-' and the desired command");
+                }
             } catch (ParseException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
                 formatter.printHelp("Available Commands", options);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
         System.out.println("You have left the manager");
@@ -527,9 +515,40 @@ public class CLIgeneral extends View{
                 } else if (cmd.hasOption(help)) {
                     formatter.printHelp("Available Commands", options);
                 } else if (cmd.hasOption(chat)) { // Example of chat implementation
-                    Scanner scan = new Scanner(System.in);
-                    String msg = scan.nextLine();
-                    super.lobbyController.onSendChatMessage(msg);
+                    System.out.print("Choose receiver\nPossible receivers: 'All', ");
+                    for(int i = 0; i < players.size(); i++){
+                        if(i+1 == players.size()){
+                            System.out.println("'"+players.get(i).getNickname()+"'");
+                        }else {
+                            System.out.print("'"+players.get(i).getNickname()+"'" + ", ");
+                        }
+                    }
+                    boolean found = false;
+                    String toUser;
+                    do {
+                        Scanner scan = new Scanner(System.in);
+                        toUser = scan.next();
+                        ArrayList<String> users = new ArrayList<>();
+                        for(Player p: players){
+                            users.add(p.getNickname());
+                        }
+                        if (users.contains(toUser) || toUser.equals("All")) {
+                            found = true;
+                        }
+                        if(!found){
+                            System.out.println("Invalid Destination");
+                        }
+                    }while(!found);
+                    System.out.println("Enter your Message");
+                    String msg;
+                    do {
+                        Scanner scan2 = new Scanner(System.in);
+                        msg = scan2.nextLine();
+                        if(msg.isEmpty()){
+                            System.out.println("No message inserted");
+                        }
+                    }while(msg.isEmpty());
+                    super.gameController.onSendChatMessage(msg,toUser);
                 } else if (cmd.hasOption(show_chat)) {
                     super.lobbyController.onGetChat(false);
                 } else if (cmd.hasOption(show_full_chat)) {
@@ -541,19 +560,12 @@ public class CLIgeneral extends View{
                     finished = true;
                     super.gameController.setReady(gameID, userPlayer.getNickname());//After this command the game is shown
                 } else {
-                    if(ClientManager.isSocketClient && stub != null){
-                        Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
-                        ClientManager.clientReceiveMessage(message);
-                    } else {
-                        System.out.println("gameCommands section");//DEBUG
-                        System.out.println("Unavailable command, remember to type '-' and the desired command");
-                    }
+                    System.out.println("launchGameLobby section");
+                    System.out.println("Unavailable command, remember to type '-' and the desired command");
                 }
             } catch (ParseException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
                 formatter.printHelp("Available Commands", options);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
         System.out.println("You have left the lobby");
@@ -660,6 +672,18 @@ public class CLIgeneral extends View{
                                 break;
                             }
                         }
+                    }
+                }
+                if (chosenCardsCorrectly){
+                    if(!checkRule(coord) || !checkRuleDiagonal(coord)){
+                        System.out.println("You can't choose cards that are not in the same row or column");
+                        chosenCardsCorrectly = false;
+                    }
+                }
+                if (chosenCardsCorrectly){
+                    if (!inAdiacent(coord)){
+                        System.out.println("You can't choose cards that are not adiacent");
+                        chosenCardsCorrectly = false;
                     }
                 }
             }
@@ -805,10 +829,14 @@ public class CLIgeneral extends View{
      * @param messages
      */
     @Override
-    public void printChat(ArrayList<Pair<String, String>> messages) {
+    public void printChat(ArrayList<Pair<String, Pair<String,String>>> messages) {
         if(!messages.isEmpty()) {
-            for (Pair<String, String> p : messages) {
-                System.out.println("\033[1;97m" + p.getFirst() + "\033[0m" + ": " + p.getSecond()); //Names in bold white
+            for (Pair<String, Pair<String,String>> p : messages) {
+                if(p.getFirst().equals("All")){
+                    System.out.println("[Public]  \033[1;37m" + p.getSecond().getFirst() + "\033[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
+                } else if (p.getFirst().equals(userPlayer.getNickname())) {
+                    System.out.println("[Private]  \033[1;37m" + p.getSecond().getFirst() + "\033[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
+                }
             }
         }else{
             System.out.println("Chat is empty");
@@ -864,13 +892,6 @@ public class CLIgeneral extends View{
             System.out.println(p.getFirst()+"\tFinal Score: "+p.getSecond());
         }
     }
-    /*@Override CLIInputThread
-    public void readInput() throws InterruptedException {
-        while(!Thread.currentThread().isInterrupted()){
-            this.dataInput = scanf();
-        }
-        throw new InterruptedException();
-    }*/
     private Pair<String,String> getColor(BoardCard tmp){
         String colorBackground;
         String colorValue;
@@ -923,5 +944,125 @@ public class CLIgeneral extends View{
             }
             System.out.print("\n");
         }
+    }
+    private boolean checkRuleDiagonal(ArrayList<Pair<Integer, Integer>> coordinates) {
+        // Verifica che l'ArrayList contenga almeno 1 e al massimo 3 coordinate
+        if (coordinates.size() < 1 || coordinates.size() > 3) {
+            return false;
+        }
+
+        // Verifica che le coordinate siano valide
+        int dim = 9; // Dimensione della matrice
+        for (Pair<Integer, Integer> coord : coordinates) {
+            int row = coord.getFirst();
+            int col = coord.getSecond();
+            if (row < 0 || row >= dim || col < 0 || col >= dim) {
+                return false;
+            }
+        }
+
+        // Se l'ArrayList contiene solo 1 carta, ritorna true (la regola è rispettata)
+        if (coordinates.size() == 1) {
+            return true;
+        }
+
+        // Se l'ArrayList contiene 2 o 3 carte, verifica se formano una retta orizzontale o verticale
+        Pair<Integer, Integer> coord1 = coordinates.get(0);
+        Pair<Integer, Integer> coord2 = coordinates.get(1);
+
+        // Controlla se le carte formano una retta in orizzontale o verticale
+        boolean isHorizontalLine = coord1.getFirst().equals(coord2.getFirst());
+        boolean isVerticalLine = coord1.getSecond().equals(coord2.getSecond());
+
+        // Controlla se le carte formano una linea retta
+        if (!isHorizontalLine && !isVerticalLine) {
+            return false;
+        }
+
+        // Controlla se le carte sono adiacenti e hanno almeno un lato libero
+        boolean isAdjacentAndHasFreeSide = (
+                Math.abs(coord1.getSecond() - coord2.getSecond()) <= 1 ||
+                        Math.abs(coord1.getFirst() - coord2.getFirst()) <= 1
+        );
+
+        return isAdjacentAndHasFreeSide;
+    }
+    private boolean checkRule(ArrayList<Pair<Integer, Integer>> coordinates) {
+        // Verifica che l'ArrayList contenga almeno 1 e al massimo 3 coordinate
+        if (coordinates.size() < 1 || coordinates.size() > 3) {
+            return false;
+        }
+
+        // Verifica che le coordinate siano valide
+        int dim = 9; // Dimensione della matrice
+        for (Pair<Integer, Integer> coord : coordinates) {
+            int row = coord.getFirst();
+            int col = coord.getSecond();
+            if (row < 0 || row >= dim || col < 0 || col >= dim) {
+                return false;
+            }
+        }
+
+        // Se l'ArrayList contiene solo 1 carta, ritorna true (la regola è rispettata)
+        if (coordinates.size() == 1) {
+            return true;
+        }
+
+        // Se l'ArrayList contiene 2 o 3 carte, verifica se formano una retta
+        Pair<Integer, Integer> coord1 = coordinates.get(0);
+        Pair<Integer, Integer> coord2 = coordinates.get(1);
+
+        // Controlla se le carte formano una retta in orizzontale o verticale
+        boolean isHorizontalLine = true;
+        boolean isVerticalLine = true;
+
+        for (int i = 2; i < coordinates.size(); i++) {
+            Pair<Integer, Integer> currentCoord = coordinates.get(i);
+            if (!currentCoord.getFirst().equals(coord1.getFirst()) || !currentCoord.getFirst().equals(coord2.getFirst())) {
+                isHorizontalLine = false;
+            }
+            if (!currentCoord.getSecond().equals(coord1.getSecond()) || !currentCoord.getSecond().equals(coord2.getSecond())) {
+                isVerticalLine = false;
+            }
+        }
+
+        return isHorizontalLine || isVerticalLine;
+    }
+    private boolean inRowTwo(Pair<Integer,Integer> coordA, Pair<Integer,Integer> coordB){
+        int xA = coordA.getFirst();
+        int yA = coordA.getSecond();
+        int xB = coordB.getFirst();
+        int yB = coordB.getSecond();
+
+        if(xA == xB && (yA == yB+1 || yB == yA+1)){
+            return true;
+        }
+        else return yA == yB && (xA == xB + 1 || xB == xA + 1);
+
+    }
+    private boolean inAdiacent(ArrayList<Pair<Integer, Integer>> coordinates){
+        if (coordinates.size() == 1){
+            return true;
+        } else if (coordinates.size() == 2){
+            return inRowTwo(coordinates.get(0),coordinates.get(1));
+        } else if (coordinates.size() == 3){
+            return inRowThree(coordinates.get(0),coordinates.get(1),coordinates.get(2));
+        } else {
+            return false;
+        }
+    }
+    private boolean inRowThree(Pair<Integer,Integer> coordA, Pair<Integer,Integer> coordB, Pair<Integer,Integer> coordC){
+        int xA = coordA.getFirst();
+        int yA = coordA.getSecond();
+        int xB = coordB.getFirst();
+        int yB = coordB.getSecond();
+        int xC = coordC.getFirst();
+        int yC = coordC.getSecond();
+        if(!((xA==xB && xB==xC) || (yA == yB && yB == yC)))
+            return false;
+        else {
+            return inRowTwo(coordA,coordB) && inRowTwo(coordB,coordC);
+        }
+
     }
 }

@@ -5,13 +5,11 @@ import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
 import it.polimi.ingsw.model.modelSupport.PersonalGoal;
-import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class InitStateMessage extends MatchStateMessage {
 
@@ -32,8 +30,8 @@ public class InitStateMessage extends MatchStateMessage {
         this.matchID = matchID;
         this.pieces = pieces;
         this.selecectables = selecectables;
-        this.firstGoal = commonGoals.getFirstGoal().toString();
-        this.secondGoal = commonGoals.getSecondGoal().toString();
+        this.firstGoal = commonGoals.getFirstGoal().toStringCommonGoal();
+        this.secondGoal = commonGoals.getSecondGoal().toStringCommonGoal();
         this.personalGoals = personalGoals;
         this.players = players;
         this.chairedPlayer = chairedPlayer;

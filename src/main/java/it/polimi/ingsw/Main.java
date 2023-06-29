@@ -1,22 +1,5 @@
 package it.polimi.ingsw;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-
-import it.polimi.ingsw.model.CommonGoals.CommonGoals;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameStateType;
-import it.polimi.ingsw.model.helpers.Pair;
-import it.polimi.ingsw.model.modelSupport.*;
-import it.polimi.ingsw.model.modelSupport.enums.colorType;
-import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
-import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
-import it.polimi.ingsw.view.CLIColors;
-import it.polimi.ingsw.view.CLIgeneral;
-
-import javax.swing.*;
-
 public class
 Main {
     public static void main(String[] args) {

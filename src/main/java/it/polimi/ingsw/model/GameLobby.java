@@ -29,7 +29,7 @@ public class GameLobby extends GameObservable implements Serializable, Remote {
     public void startMatch(String user, MyRemoteInterface stub) {
         System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
-                GameManager.getInstance().createMatchFromLobby(ID, players);
+            GameManager.getInstance().createMatchFromLobby(ID, players);
         }else if (players.size() < numOfPlayers){
             super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers,"There aren't enough players to start the match"), false, "-");
         }else if(!user.equals(host)){//TODO: This check is not needed, it is done inside the cli, maybe it's needed for the gui, check before removing

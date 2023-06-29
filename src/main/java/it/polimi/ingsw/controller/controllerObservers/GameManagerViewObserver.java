@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.controllerObservers;
 
+
 import it.polimi.ingsw.model.MyRemoteInterface;
 
 public interface GameManagerViewObserver {

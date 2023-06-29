@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ClientManager;
+import it.polimi.ingsw.controller.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.LobbyViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
 import it.polimi.ingsw.view.View;
 
-import static it.polimi.ingsw.client.ClientMain.stub;
+import static it.polimi.ingsw.controller.client.ClientMain.stub;
 
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 
@@ -86,11 +86,11 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
         return true;
     }
     @Override
-    public void onSendChatMessage(String message){
-        ClientManager.virtualGameManager.receiveChatMessage(this.ID,ClientManager.userNickname,message,false,false,stub);
+    public void onSendChatMessage(String message,String toUser){
+        ClientManager.virtualGameManager.receiveChatMessage(this.ID,toUser,ClientManager.userNickname,message,false,false,stub);
     }
     @Override
     public void onGetChat(boolean fullChat){
-        ClientManager.virtualGameManager.receiveChatMessage(this.ID,ClientManager.userNickname,null,fullChat,false,stub);
+        ClientManager.virtualGameManager.receiveChatMessage(this.ID,null,ClientManager.userNickname,null,fullChat,false,stub);
     }
 }

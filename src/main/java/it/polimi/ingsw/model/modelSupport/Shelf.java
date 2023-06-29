@@ -6,9 +6,9 @@ import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import it.polimi.ingsw.model.modelSupport.exceptions.ColumnNotSelectable;
 import it.polimi.ingsw.model.modelSupport.exceptions.ShelfFullException;
 
-import javax.swing.plaf.synth.ColorType;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class representing a shelf that can hold BoardCard objects.
@@ -17,6 +17,10 @@ public class Shelf implements Serializable {
     private BoardCard[][] shelfCards;
     private static final int ROWS_LEN = 6;
     private static final int COLUMNS_LEN = 5;
+    private static int[] groupCounts3 = new int[6];
+    private static int[] groupCounts4 = new int[6];
+    private static int[] groupCounts5 = new int[6];
+    private static int[] groupCounts6 = new int[6];
     private final static BoardCard EMPTY_SPOT_CARD = new BoardCard(colorType.EMPTY_SPOT, ornamentType.A);
     /**
      * Constructs a new Shelf object with a 2D array of BoardCard objects. Initially all EMPTY_SPOT card types
@@ -31,7 +35,6 @@ public class Shelf implements Serializable {
     }
     /**
      * Returns the maximum number of empty spots in any column.
-     *
      * @return an integer value representing the maximum number of empty spots in any column
      */
     public int getEmptyColumn(){
@@ -144,146 +147,162 @@ public class Shelf implements Serializable {
         return shelfCards[row][column];
     }
 
-    public int calculateAdiacentPoints(){
-        int ris = 0;
-        ArrayList<Pair<Integer,Integer>> savedCoord = new ArrayList<>();
-        ArrayList<colorType> colors = new ArrayList<>();
-        int [] numberOfCards = {2,2,2,2,2,2};
 
-/*  Sezione per il calcolo delle sequenze massime per ogni colore. Il valore di ognuna è messo in numberOfCards. */
-        for(int i = ROWS_LEN-1; i >= 0; i--){
-            for(int j = COLUMNS_LEN-1; j >= 0; j--){
-                Pair<Integer,Integer> tmp = new Pair<>(i,j);
-                colorType chosenColor = shelfCards[i][j].getColor();
-                /* System.out.println("Prima dell'if sull'empty nella prima sezione, in cui chosenColor vale " +
-                        chosenColor + " la pair di tmp è fatta da: i = "+tmp.getFirst()+" j = "+tmp.getSecond()+"\n"); */
-                if(!chosenColor.equals(colorType.EMPTY_SPOT) &&
-                    !pairIsPresent(tmp,savedCoord)){
-                    /* System.out.println("Ho superato empty e pairispresent in savedcoord\n"); */
-                    int cont = findLenght(savedCoord, chosenColor, i, j);
-                    /* System.out.println("cont vale: " + cont); */
-                    if(!colors.contains(chosenColor)){
-                        colors.add(chosenColor);
-                        /* System.out.println("ho aggiunto un colore in colors alla posizione: " + colors.indexOf(chosenColor) + "\n"); */
+    /**
+     * Computes the score performed via groups of similarly colored cards
+     * @return int, adjacent points
+     */
+    public int calculateAdiacentPoints(){
+        BoardCard[][] board = new BoardCard[6][5]; // a new shelf is created, allowing the algorithm to modify it
+        for(int i=0; i<6; i++){
+            for(int j=0; j<5; j++){
+                colorType selColor = shelfCards[i][j].getColor();
+                ornamentType selOrnament = shelfCards[i][j].getOrnament();
+                BoardCard tmp = new BoardCard(selColor, selOrnament);
+                board[i][j] = tmp; //shelf is populated
+            }
+        }
+        generateVectors(board); //4 vectors of Adjacent counters are created, respectively for groups of 6, 5, 4, 3 cards
+
+        //score is computed by summing the contents of every Counters-Array and moltiplying the result fot the weight of the group
+        int sum6 = calculateSum(groupCounts6, 8);
+        int sum5 = calculateSum(groupCounts5, 5);
+        int sum4 = calculateSum(groupCounts4, 3);
+        int sum3 = calculateSum(groupCounts3, 2);
+        int sum = sum3 + sum4 +sum5 + sum6;
+        return sum;
+    }
+
+    //Computes the internal sum of an array and moltiplies it for the array-weight
+    private int calculateSum(int[] counts, int weight){
+        int sum = 0;
+        for(int i=0; i<counts.length; i++) {
+            sum = sum + counts[i] * weight;
+        }
+        return sum;
+    }
+
+    // Generates the counters-Array for every group cardinality.
+    // Every cell corresponds to a color and his content indicates the number of groups of that specific color.
+    private void generateVectors(BoardCard[][] board){
+        int i = 0;
+        int dim = 6;
+        // counters are set for every color
+        // every block of code computes one array
+        // (possible implementation with a for cycle)
+        for (colorType color: colorType.values()) {
+            groupCounts6[i] = countAdjacentCardGroups(board, color, dim);
+            setEmptySpotForCardGroups(board,color, dim);
+            i++;
+            if(i>5){break;}
+        }
+        dim--;
+        i = 0;
+        for (colorType color: colorType.values()) { // we start from the largest groups, then we reduce them
+            groupCounts5[i] = countAdjacentCardGroups(board, color, dim); // TRICK: after finding a group, it gets removed (possible implementation with back-propagation)
+            setEmptySpotForCardGroups(board, color, dim); //only 6 color are needed (TOMBSTONE nor EMPTY_SPOT)
+            i++;
+            if (i > 5) {break;}
+        }
+        dim--;
+        i = 0;
+        for (colorType color: colorType.values()) {
+            groupCounts4[i] = countAdjacentCardGroups(board, color, dim);
+            setEmptySpotForCardGroups(board, color, dim);
+            i++;
+            if (i > 5) {break;}
+        }
+        dim--;
+        i = 0;
+        for (colorType color: colorType.values()) {
+            groupCounts3[i] = countAdjacentCardGroups(board, color, dim);
+            setEmptySpotForCardGroups(board, color, dim);
+            i++;
+            if (i > 5) {break;}
+        }
+
+    }
+    /**
+     * Computes for every color the amount of groups having dim cardinality
+     * @param board
+     * @param color
+     * @param dim
+     * @return int
+     */
+    public static int countAdjacentCardGroups(BoardCard[][] board, colorType color, int dim) {
+        int count = 0;
+        boolean[][] visited = new boolean[ROWS_LEN][COLUMNS_LEN];
+
+        for (int row = 0; row < ROWS_LEN; row++) {
+            for (int col = 0; col < COLUMNS_LEN; col++) {
+                if (!visited[row][col] && board[row][col].getColor() == color) {
+                    int groupCount = countCardGroupSize(board, row, col, color, visited);
+                    if (groupCount >= dim) {
+                        count++;
                     }
-                    if(cont > numberOfCards[colors.indexOf(chosenColor)]){
-                        numberOfCards[colors.indexOf(chosenColor)] = cont;
-                        /* System.out.println("cont era maggiore del valore precedente in numberofcards che ora vale: " + numberOfCards[colors.indexOf(chosenColor)] + "\n"); */
-                    }
-                    /* System.out.println("Fine del ciclo per questa posizione: i = " + i + " j = " + j + "\n"); */
                 }
             }
         }
-/*  Sezione per il calcolo dei punti. La sezione precedente potrebbe avere una funzione tutta sua. */
-        /* System.out.println("Prima della sezione per il calcolo dei punti ris vale: " + ris); */
-        for(int i = 0; i < numberOfCards.length; i++){
-            if(numberOfCards[i] >= 3){
-                /* System.out.println("il numero di carte di questo colore è maggiore uguale a 3\n"); */
-                if(numberOfCards[i] >= 4){
-                    if(numberOfCards[i] >= 5){
-                        if(numberOfCards[i] >= 6){
-                            ris += 8; /* punti aggiunti per 6+ cards uguali adiacenti */
-                        }else{
-                            ris += 5; /* punti aggiunti per 5 cards uguali adiacenti */
-                        }
-                    }else{
-                        ris += 3; /* punti aggiunti per 4 cards uguali adiacenti */
+
+        return count;
+    }
+    /**
+     * Group searcher, recursively moves from one BoardCard to the next trying to increment the size of the group
+     * @param board
+     * @param row
+     * @param col
+     * @param color
+     * @param visited
+     * @return int, size of the found group
+     */
+
+    private static int countCardGroupSize(BoardCard[][] board, int row, int col, colorType color,
+                                          boolean[][] visited) {
+        if (row < 0 || row >= ROWS_LEN || col < 0 || col >= COLUMNS_LEN || visited[row][col]
+                || board[row][col].getColor() != color) {
+            return 0; // if the color differs, 0 is returned
+        }
+
+        //else, the recursion continues
+
+        visited[row][col] = true;
+        int size = 1; // BASE CASE!
+
+        size += countCardGroupSize(board, row - 1, col, color, visited);
+        size += countCardGroupSize(board, row + 1, col, color, visited);
+        size += countCardGroupSize(board, row, col - 1, color, visited);
+        size += countCardGroupSize(board, row, col + 1, color, visited);
+
+        return size;
+    }
+     // Group eraser, card of the specific color are searched again and groups larger than dim are deleted.
+     // This prevents to double count subgroups.
+
+    private static void setEmptySpotForCardGroups(BoardCard[][] board, colorType color, int dim) {
+        boolean[][] visited = new boolean[ROWS_LEN][COLUMNS_LEN];
+
+        for (int row = 0; row < ROWS_LEN; row++) {
+            for (int col = 0; col < COLUMNS_LEN; col++) {
+                if (!visited[row][col] && board[row][col].getColor() == color) {
+                    int groupCount = countCardGroupSize(board, row, col, color, visited);
+                    if (groupCount >= dim) {
+                        setEmptySpotForCardGroup(board, row, col, color); //whenever the cardinality is sufficient, the deletion starts
                     }
-                }else{
-                    ris += 2; /* punti aggiunti per 3 cards uguali adiacenti */
                 }
             }
         }
-        /* System.out.println("Dopo la sezione per il calcolo dei punti ris vale: " + ris); */
-        return ris;
     }
-    private int findLenght(ArrayList<Pair<Integer,Integer>> savedCoord, colorType chosenColor, int x, int y){
-        int cont = 1;
-        Pair<Integer,Integer> tmp = new Pair<>(x,y);
-        if(!pairIsPresent(tmp,savedCoord)) {
-            savedCoord.add(tmp);
+    //Adjacent similarly colored card are recursively set as empty
+    private static void setEmptySpotForCardGroup(BoardCard[][] board, int row, int col, colorType color) {
+        if (row < 0 || row >= ROWS_LEN || col < 0 || col >= COLUMNS_LEN || board[row][col].getColor() != color) {
+            return; // if color differs, no need to erase further
         }
-        /* System.out.println("Sono in findLenght per il colore '" + chosenColor + "' in posizione: i = " + x + " j = " + y + "\n"); */
-        if(y-1 >= 0 && shelfCards[x][y-1].getColor().equals(chosenColor)) { /* W Card */
-            Pair<Integer,Integer> val = new Pair<>(x,y-1);
-            if(!pairIsPresent(val,savedCoord)) {
-                cont += findLenght(savedCoord, chosenColor, x, y - 1);
-            }
-        }
-        if(x+1 < ROWS_LEN && shelfCards[x+1][y].getColor().equals(chosenColor)) {
-            Pair<Integer, Integer> val = new Pair<>(x+1,y);
-            if (!pairIsPresent(val, savedCoord)) {
-                cont += findLenght(savedCoord, chosenColor, x + 1, y);
-            }
-        }
-        if(y+1 < COLUMNS_LEN && shelfCards[x][y+1].getColor().equals(chosenColor)){
-            Pair<Integer,Integer> val = new Pair<>(x,y+1);
-            if(!pairIsPresent(val,savedCoord)) {
-                cont += findLenght(savedCoord, chosenColor, x, y + 1);
-            }
-        }
-        if(x-1 >= 0 && shelfCards[x-1][y].getColor().equals(chosenColor)){
-            Pair<Integer,Integer> val = new Pair<>(x-1,y);
-            if(!pairIsPresent(val,savedCoord)) {
-                cont += findLenght(savedCoord, chosenColor, x - 1, y);
-            }
-        }
-        /* System.out.println("Sono alla fine di findLenght e cont vale " + cont + "\n"); */
-        return cont;
+        board[row][col].setColor(colorType.EMPTY_SPOT);
+        setEmptySpotForCardGroup(board, row - 1, col, color);
+        setEmptySpotForCardGroup(board, row + 1, col, color);
+        setEmptySpotForCardGroup(board, row, col - 1, color);
+        setEmptySpotForCardGroup(board, row, col + 1, color);
     }
-    private boolean pairIsPresent(Pair<Integer,Integer> tmp, ArrayList<Pair<Integer,Integer>> savedTotalCoord){
-        int present = 0;
-        for(int i = 0; i < savedTotalCoord.size() && present == 0; i++){
-            if(savedTotalCoord.get(i).getFirst().equals(tmp.getFirst()) && savedTotalCoord.get(i).getSecond().equals(tmp.getSecond())){
-                present = 1;
-            }
-        }
-        return present == 1;
-    }
-    /* public void initializeShelfForTesting(){ */
-        /*
-        Caso limite con tante combinazioni da 2 una sola da 3:
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] secondLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.WHITE};
-        colorType[] thirdLine = {colorType.GREEN,colorType.WHITE,colorType.BLUE,colorType.WHITE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.YELLOW,colorType.YELLOW};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.WHITE,colorType.LIGHT_BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.WHITE,colorType.LIGHT_BLUE};
-        */
-        /*
-        Caso limite preso dal testing di SixOfTwo, con una combinazione da 8 cards uguali vicine e una da 4 dello stesso colore
-        separata, deve calcolare solo i punti di quella maggiore
-        colorType[] firstLine = {colorType.GREEN,colorType.YELLOW,colorType.GREEN,colorType.YELLOW,colorType.GREEN};
-        colorType[] secondLine = {colorType.WHITE,colorType.LIGHT_BLUE,colorType.WHITE,colorType.LIGHT_BLUE,colorType.WHITE};
-        colorType[] thirdLine = {colorType.GREEN,colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.BLUE};
-        colorType[] fourthLine = {colorType.BLUE,colorType.BLUE,colorType.BLUE,colorType.YELLOW,colorType.LIGHT_BLUE};
-        colorType[] fifthLine = {colorType.GREEN,colorType.BLUE,colorType.GREEN,colorType.BLUE,colorType.BLUE};
-        colorType[] sixthLine = {colorType.BLUE,colorType.YELLOW,colorType.BLUE,colorType.BLUE,colorType.LIGHT_BLUE};
-        */
-        /*
-        ArrayList<colorType[]> testColors = new ArrayList<>();
-        testColors.add(firstLine);
-        testColors.add(secondLine);
-        testColors.add(thirdLine);
-        testColors.add(fourthLine);
-        testColors.add(fifthLine);
-        testColors.add(sixthLine);
-        BoardCard[][] prova = new BoardCard[6][5];
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 5; j++){
-                BoardCard piece = new BoardCard(testColors.get(i)[j]);
-                prova[i][j] = piece;
-            }
-        }
-        this.shelfCards = prova;
-        System.out.println("\nStampo 'prova:'");
-        for(int i = 0; i < 6; i++){
-            for(int j = 0;j < 5; j++){
-                System.out.print(prova[i][j].getColor() + "  ");
-            }
-            System.out.print("\n");
-        }
-        System.out.println("\n");
-    }*/
+
 }
 

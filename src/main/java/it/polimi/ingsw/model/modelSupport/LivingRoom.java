@@ -8,9 +8,8 @@ import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
-import java.util.Random;
+import java.util.List;
 
 
 public class LivingRoom implements Serializable {
@@ -31,11 +30,11 @@ public class LivingRoom implements Serializable {
     /**
      * Integer matrix that represents the "footprint" of the generic three-players game, {x,z} where x is the starting column and z the number of items in the row
      */
-    private final static Integer[][] fp3 = {{3,1}, {3,2}, {2,5}, {2,7}, {1,7}, {0,7}, {2,5}, {4,2}, {0,0}};
+    private final static Integer[][] fp3 = {{3,1}, {3,2}, {2,5}, {2,7}, {1,7}, {0,7}, {2,5}, {4,2}, {5,1}};
     /**
      * Integer matrix that represents the "footprint" of generic the four-players game, {x,z} where x is the starting column and z the number of items in the row
      */
-    private final static Integer[][] fp4 = {{3,2}, {3,3}, {2,5}, {1,7}, {0,9}, {0,8}, {2, 5}, {3,3}, {4,2}};
+    private final static Integer[][] fp4 = {{3,2}, {3,3}, {2,5}, {1,8}, {0,9}, {0,8}, {2, 5}, {3,3}, {4,2}};
 
     private final static ArrayList<Integer[][]> posItms = new ArrayList<>();
 
@@ -56,14 +55,13 @@ public class LivingRoom implements Serializable {
      * @param numOfPLayers number of players, needed to know how to fill the board
      */
     public LivingRoom(int numOfPLayers) {
-        //preparo due vettori da cui prendere le tipologie carte da aggiungere al bag
+        //I prepare two vectors from which to take the types of cards to add to the bag
         colorType[] colors = {colorType.PURPLE, colorType.BLUE, colorType.LIGHT_BLUE, colorType.YELLOW, colorType.WHITE, colorType.GREEN};
         ornamentType[] ornaments = {ornamentType.A, ornamentType.B, ornamentType.C};
-
-        //preparo il deck ordinato con le prime 126 carte
+        //  I prepare the ordered deck with the first 126 cards
         for (int j = 0; j < COLORS; j++) {
             for (int i = 0; i < NUMORNAMENTS; i++) {
-                int orn = 0;
+                int orn = i;
                 for (int k = 0; k < ORNAMENTXCOLOR; k++) {
                     BoardCard card = new BoardCard(colors[j], ornaments[orn]);
                     this.bag.add(card);
@@ -71,7 +69,7 @@ public class LivingRoom implements Serializable {
             }
         }
 
-        //aggiungo "manualmente" le 6 carte rimanenti (dando ornamento A)
+        //I manually add the remaining 6 cards (giving ornament A)
 
         for(int i=0; i<COLORS; i++) {
             BoardCard card = new BoardCard(colors[i], ornaments[0]);
@@ -101,11 +99,16 @@ public class LivingRoom implements Serializable {
         }
 
     }
+
+    /**
+     * @return matrix of the Boardcards in the livingRoom
+     */
     public BoardCard[][] getPieces() {
         return pieces;
     }
     /**
      * Refills the board only if needed and returns the updated (or not if not needed) livingroom
+     * @return matrix of new Boardcards
      */
     public BoardCard[][] refillBoard() throws NoMoreCardsException{
         //CHECK dei refill requirements
@@ -137,6 +140,7 @@ public class LivingRoom implements Serializable {
     }
     /**
      * Calculates all the selectable items in the board
+     * @return matrix of boolean (true -> Boardcard selectable)
      */
     public Boolean[][] calculateSelectable() {
         Boolean[][] selectable = new Boolean[DIM][DIM];
@@ -147,6 +151,11 @@ public class LivingRoom implements Serializable {
        }
        return selectable;
     }
+    /**
+     * Removes from the livingroom the Boardcard selected by a player, turning them into tombstone
+     * @param selected
+     * @throws UnselectableCardException
+     */
     public void updateBoard(ArrayList<Pair<Integer ,Integer>> selected ) throws UnselectableCardException {
         for (Pair<Integer, Integer> coordinates : selected) {
             int i = coordinates.getFirst();
@@ -174,6 +183,12 @@ public class LivingRoom implements Serializable {
             throw new UnselectableCardException("No card present at position "+i+" "+j);
         else return this.pieces[i][j];
     }
+    /**
+     * Checks whether a BoardCard is or not selectable
+     * @param i
+     * @param j
+     * @return boolean (true -> selectable)
+     */
     public boolean cardIsSelectable(int i, int j){
         return isPresent(i,j) && freeCorner(i,j);
     }
@@ -181,7 +196,7 @@ public class LivingRoom implements Serializable {
      * Checks if an item in the board has adjacent items
      * @param i i coordinate
      * @param j j coordinate
-     * @return boolean
+     * @return boolean (true -> adjacent BoardCard)
      */
     private boolean adiacent(int i, int j) {
         if (i == 0) {
@@ -194,7 +209,7 @@ public class LivingRoom implements Serializable {
             return isPresent(i - 1, j) || (isPresent(i + 1, j) || isPresent(i, j + 1));
 
         } else if (j == (DIM - 1)) {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
+            return isPresent(i, j - 1) || isPresent(i + 1, j ) || isPresent(i - 1, j);
 
         } else {
                 return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j) || isPresent(i + 1, j);

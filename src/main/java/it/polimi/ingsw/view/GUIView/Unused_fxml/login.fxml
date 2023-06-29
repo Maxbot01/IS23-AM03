@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="386.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUIView.LoginView">
+   <children>
+      <VBox fx:id="titleLabel" alignment="CENTER" layoutX="214.0" layoutY="14.0" prefHeight="38.0" prefWidth="100.0" />
+      <VBox layoutX="216.0" layoutY="139.0" prefHeight="80.0" prefWidth="114.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Username" textAlignment="CENTER" />
+            <TextField />
+            <Label alignment="CENTER" text="Password" textAlignment="CENTER" />
+            <PasswordField />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="114.0" text="login" />
+         </children>
+      </VBox>
+      <Label fx:id="loginLabel" layoutX="242.0" layoutY="52.0" text="Login">
+         <font>
+            <Font name="Times New Roman Bold" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullEx
 import it.polimi.ingsw.server.RemoteUserInfo;
 import it.polimi.ingsw.server.ServerMain;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -39,8 +40,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
     //private HashMap<String, String> userIDs;
     public static HashMap<String, RemoteUserInfo> userIdentification;
     private HashMap<String, Game> userMatches;
-
-    private HashMap<String, ArrayList<Pair<String, String>>> chats;
+    private HashMap<String, ArrayList<Pair<String, Pair<String,String>>>> chats;
     private final HashMap<String,Boolean> playersInLobby; // boolean true means the player is in lobby
     static int PORT = 1099;
     static Message message;
@@ -81,7 +81,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      *
      * @return The map of user identification.
      */
-    public synchronized HashMap<String, RemoteUserInfo> getUserIdentification() {
+    public HashMap<String, RemoteUserInfo> getUserIdentification() {
         return userIdentification;
     }
 
@@ -91,7 +91,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param ID   The ID of the game lobby.
      * @param user The username of the user.
      */
-    public synchronized void selectGame(String ID, String user) {
+    public void selectGame(String ID, String user) {
         for (GameLobby x : currentGames.keySet()) {
             if (x.getID().equals(ID) && !x.isKilled()) {
                 // joins this lobby
@@ -111,61 +111,75 @@ public class GameManager extends GameObservable implements Serializable, Remote,
             }
         }
     }
-
-
     /**
-     * User has either requested to see messages (fromUser and message null), or add message and get chat messages
-     * (gameId, fromUser, null, true, inGame) -> receive all the messages
-     * (gameId, fromUser, null, false, inGame) -> receive last 5 messages
-     * (gameID, fromUser, message, false, inGame) -> send message and receive last 5 messages
+     * User has either requested to see messages (fromUser,message,toUser are null), or add message and get chat messages
+     * (gameId, null, fromUser, null, true, inGame) -> receive all the messages
+     * (gameId, null, fromUser, null, false, inGame) -> receive last 5 messages
+     * (gameID, recipient, fromUser, message, false, inGame) -> send message and receive last 5 messages
      * @param gameID
+     * @param toUser
      * @param fromUser
      * @param message
      * @param fullChat
      * @param inGame
      */
-    public synchronized void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame){
+    public void receiveChatMessage(String gameID, String toUser, String fromUser, String message, boolean fullChat, boolean inGame){
         boolean found = false;
-        for(GameLobby x: this.currentGames.keySet()){
-            if(x.getID().equals(gameID)){
+        for(GameLobby x: this.currentGames.keySet()) {
+            if (x.getID().equals(gameID)) {
                 found = true;
-            }else if(x.isKilled() && currentGames.get(x) != null){
-                if(currentGames.get(x).getID().equals(gameID)){
+            } else if (x.isKilled() && currentGames.get(x) != null) {
+                if (currentGames.get(x).getID().equals(gameID)) {
                     found = true;
                 }
             }
             if(found){
                 if(message == null){//We are sending the chat
-                    ArrayList<Pair<String, String>> lastFive = new ArrayList<>();
-                    if(chats.containsKey(gameID)) {
+                    //Send section
+                    ArrayList<Pair<String, Pair<String,String>>> chatToSend = new ArrayList<>();
+                    if(chats.containsKey(gameID)){
                         if (!fullChat) {
                             for (int i = chats.get(gameID).size() - 1; i >= 0 && i > chats.get(gameID).size() - 6; i--) {
-                                lastFive.add(chats.get(gameID).get(i));
+                                if(chats.get(gameID).get(i).getFirst().equals(fromUser)|| chats.get(gameID).get(i).getFirst().equals("All")) {
+                                    chatToSend.add(chats.get(gameID).get(i));
+                                }
                             }
-                            Collections.reverse(lastFive);
-                            super.notifyObserver(fromUser, new ChatMessage(lastFive,inGame), true, gameID);
+                            Collections.reverse(chatToSend);
+                            super.notifyObserver(fromUser, new ChatMessage(chatToSend,inGame), true, gameID);
                         } else {
-                            super.notifyObserver(fromUser, new ChatMessage(chats.get(gameID),inGame), true, gameID);
+                            for (int i = chats.get(gameID).size() - 1; i >= 0; i--) {
+                                if(chats.get(gameID).get(i).getFirst().equals(fromUser)|| chats.get(gameID).get(i).getFirst().equals("All")) {
+                                    chatToSend.add(chats.get(gameID).get(i));
+                                }
+                            }
+                            Collections.reverse(chatToSend);
+                            super.notifyObserver(fromUser, new ChatMessage(chatToSend,inGame), true, gameID);
                         }
                     }else{//It sent an empty list if there are no messages
-                        super.notifyObserver(fromUser,new ChatMessage(lastFive,inGame),true,gameID);
+                        super.notifyObserver(fromUser,new ChatMessage(chatToSend,inGame),true,gameID);
                     }
                 }else{//We got a message to add to the chat
+                    //Add section
                     chats.computeIfAbsent(gameID, k -> new ArrayList<>());
-                    Pair<String, String> myPair = new Pair<>(fromUser, message);
+                    Pair<String,String> newChat = new Pair<>(fromUser, message);
+                    Pair<String, Pair<String,String>> myPair = new Pair<>(toUser,newChat);
                     chats.get(gameID).add(myPair);
-                    ArrayList<Pair<String, String>> lastFive = new ArrayList<>();
+                    //Send Section
+                    ArrayList<Pair<String, Pair<String,String>>> lastFive = new ArrayList<>();
                     for (int i = chats.get(gameID).size() - 1; i >= 0 && i > chats.get(gameID).size() - 6; i--) {
                         lastFive.add(chats.get(gameID).get(i));
                     }
                     Collections.reverse(lastFive);
-                    super.notifyAllObservers(x.getPlayers(),new ChatMessage(lastFive,inGame),true,gameID);
+                    if(toUser.equals("All")){//If the message is to everyone, the recipient is set as 'All'
+                        super.notifyAllObservers(x.getPlayers(),new ChatMessage(lastFive,inGame),true,gameID);
+                    }else{
+                        super.notifyObserver(toUser,new ChatMessage(lastFive,inGame),true,gameID);
+                    }
                 }
                 break;
             }
         }
     }
-
     /**
      * Creates a game lobby with the specified number of players, username, and client ID.
      *
@@ -173,7 +187,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param username   The username of the player.
      * @param clientId   The client ID.
      */
-    public synchronized void createGame(Integer numPlayers, String username, String clientId) {
+    public void createGame(Integer numPlayers, String username, String clientId) {
         //userIdentification.get(username).setGameID(UUID.randomUUID().toString());
         currentGames.put(new GameLobby(UUID.randomUUID().toString(), username, numPlayers, clientId), null);
         if (playersInLobby.containsKey(username)) {
@@ -196,12 +210,16 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      *
      * @param fromClientInfo The information of the client sending the ping message.
      */
-    public synchronized void ping(RemoteUserInfo fromClientInfo) {
+    public void ping(RemoteUserInfo fromClientInfo) {
         // received ping message
         // send pong
         // TODO: server.send(new NetworkMessage("pong"));
         System.out.println("called ping() on server");
-        super.notifyNetworkClient(fromClientInfo, new NetworkMessage("pong"));
+        try {
+            super.notifyNetworkClient(fromClientInfo, new NetworkMessage("pong"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -209,7 +227,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      *
      * @return A map of joinable lobby IDs and their corresponding player lists.
      */
-    private synchronized HashMap<String, List<String>> getAllCurrentJoinableLobbiesIDs() {
+    private HashMap<String, List<String>> getAllCurrentJoinableLobbiesIDs() {
         HashMap<String, List<String>> out = new HashMap<>();
         for (GameLobby x : this.currentGames.keySet()) {
             if (!x.isKilled()) {
@@ -227,7 +245,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param password  The password.
      * @param userInfo  The user information.
      */
-    public synchronized void setCredentials(String username, String password, RemoteUserInfo userInfo) {
+    public void setCredentials(String username, String password, RemoteUserInfo userInfo) {
         // check if there was, else send message of erroneous username set request.
         boolean loggedSuccessful = false;
         if (nicknames.containsKey(username)) {
@@ -275,13 +293,6 @@ public class GameManager extends GameObservable implements Serializable, Remote,
     }
 
 
-
-    //TODO: to do!!
-    public void receiveAck(){
-
-    }
-
-
     /*
     Gest methods LOBBIES and forward them to the exact game and lobby
      */
@@ -293,16 +304,13 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param user The username of the user.
      * @param stub The remote interface stub.
      */
-    public synchronized void startMatch(String ID, String user, MyRemoteInterface stub) {
+    public void startMatch(String ID, String user, MyRemoteInterface stub) {
         boolean found = false;
         for (GameLobby x : currentGames.keySet()) {
             if (x.getID().equals(ID)) {
                 x.startMatch(user, stub);
                 found = true;
             }
-        }
-        if (!found) {
-            // TODO: Manage "ID not found" error
         }
     }
 
@@ -312,7 +320,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param ID          The ID of the lobby.
      * @param withPlayers The list of players.
      */
-    public synchronized void createMatchFromLobby(String ID, ArrayList<String> withPlayers) {
+    public void createMatchFromLobby(String ID, ArrayList<String> withPlayers) {
         System.out.println("createMatchFromLobby");
         ArrayList<Player> players = new ArrayList<>();
         for (String p : withPlayers) {
@@ -321,11 +329,8 @@ public class GameManager extends GameObservable implements Serializable, Remote,
         // TODO: In the case where the player is creating a new game after finishing another one, I need to check if it already exists and replace the associated game if necessary.
         for (GameLobby x : currentGames.keySet()) {
             if (x.getID().equals(ID)) {
-                if (ServerMain.userIdentificationInServer.get(x.getHost()).getIsSocket()) {
                     currentGames.put(x, new Game(players, ID, x.getHost()));
-                } else {
-                    currentGames.put(x, new Game(players, ID, ServerMain.userIdentificationInServer.get(x.getHost()).getRmiUID()));
-                }
+
                 x.killLobby();
                 for (String s : withPlayers) {
                     if (!s.equals(x.getHost())) {
@@ -350,7 +355,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param user     The username of the user.
      * @param gameID   The ID of the game.
      */
-    public synchronized void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID) {
+    public void selectedCards(ArrayList<Pair<Integer, Integer>> selected, String user, String gameID) {
         for (Game x : currentGames.values()) {
             if (x != null) {
                 if (x.getID().equals(gameID)) {
@@ -372,7 +377,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param user     The username of the user.
      * @param gameID   The ID of the game.
      */
-    public synchronized void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID) {
+    public void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID) {
         for (Game x : currentGames.values()) {
             if (x.getID().equals(gameID)) {
                 x.selectedColumn(selected, column, user); // Per i try catch, non basta averli nel "game"?
@@ -385,7 +390,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      *
      * @return The GameManager instance.
      */
-    public static synchronized GameManager getInstance() {
+    public static GameManager getInstance() {
         synchronized (GameManager.class) {
             if (instance == null) {
                 instance = new GameManager();
@@ -411,7 +416,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param ipAddress The IP address of the client.
      * @return The message associated with the IP address.
      */
-    public synchronized Message ReceiveMessageRMI(String ipAddress) {
+    public Message ReceiveMessageRMI(String ipAddress) {
         System.out.println("\u001B[33mFaccio GET da: " + ipAddress + "\u001B[0m");
         return clientMessages.get(ipAddress);
     }
@@ -422,7 +427,8 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param username       The username of the remote user.
      * @param remoteUserInfo Information about the remote user.
      */
-    public synchronized void addRemoteUser(String username, RemoteUserInfo remoteUserInfo) {
+    public  void addRemoteUser(String username, RemoteUserInfo remoteUserInfo) {
+        System.out.println("hello");
         remoteUsers.put(username, remoteUserInfo);
     }
 
@@ -431,7 +437,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      *
      * @return The collection of remote users.
      */
-    public synchronized static HashMap<String, RemoteUserInfo> getRemoteUsers() {
+    public  static HashMap<String, RemoteUserInfo> getRemoteUsers() {
         return remoteUsers;
     }
 
@@ -441,7 +447,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param withMessage The message to set.
      * @param ipAddress   The IP address associated with the message.
      */
-    public synchronized static void setMessageRMI(Message withMessage, String ipAddress) {
+    public  static void setMessageRMI(Message withMessage, String ipAddress) {
         previousClientMessages = clientMessages;
         clientMessages.put(ipAddress, withMessage);
         System.out.println("\u001B[33mMessage set for: " + ipAddress + " " + withMessage.toString() + "\u001B[0m");
@@ -453,7 +459,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
     }
 
     // getter for previousClientMessages message with ip
-    public synchronized Message getPreviousMessageRMI(String ipAddress) {
+    public Message getPreviousMessageRMI(String ipAddress) {
         return previousClientMessages.get(ipAddress);
     }
 
@@ -465,7 +471,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      *
      * @param ipAddress The IP address of the client to register.
      */
-    public synchronized void registerClient(String ipAddress) {
+    public void registerClient(String ipAddress) {
         System.out.println("\u001B[33mRegistering client " + ipAddress + "\u001B[0m");
         clients.add(ipAddress);
         clientMessages.put(ipAddress, null);
@@ -486,7 +492,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param gameID The ID of the game.
      * @return The host of the game lobby.
      */
-    public synchronized String getGameLobbyHost(String gameID) {
+    public String getGameLobbyHost(String gameID) {
         for (Game x : currentGames.values()) {
             if (x.getID().equals(gameID)) {
                 return x.getHost();

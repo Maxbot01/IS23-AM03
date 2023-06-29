@@ -7,9 +7,9 @@ import java.io.Serializable;
 
 public class BoardCard implements Serializable {
 
-    public final colorType color;
+    public colorType color;
 
-    public final ornamentType ornament;
+    public ornamentType ornament;
 
 
     public BoardCard(colorType color, ornamentType ornament) {
@@ -21,5 +21,12 @@ public class BoardCard implements Serializable {
         return color;
     }
     public ornamentType getOrnament(){return ornament;};
+
+    public void setColor(colorType colorType) {
+        this.color = colorType;
+    }
+    public void setOrnament(ornamentType ornament){
+        this.ornament = ornament;
+    }
 
 }

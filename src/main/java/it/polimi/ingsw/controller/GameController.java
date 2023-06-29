@@ -1,12 +1,11 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.client.ClientManager;
+import it.polimi.ingsw.controller.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.CommonGoals.Strategy.*;
-import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.ChatMessage;
 import it.polimi.ingsw.model.messageModel.Message;
@@ -20,8 +19,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static it.polimi.ingsw.client.ClientMain.stub;
-import static it.polimi.ingsw.client.ClientManager.*;
+import static it.polimi.ingsw.controller.client.ClientMain.stub;
+import static it.polimi.ingsw.controller.client.ClientManager.lobbyController;
+import static it.polimi.ingsw.controller.client.ClientManager.virtualGameManager;
+
 public class GameController extends Controller implements GameViewObserver, Subscriber {
 
     private InitStateMessage latestInit;
@@ -29,6 +30,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
     private String currentPlayerSelecting;
     public volatile boolean playerReady;
 
+
+    /**
+     * Creates the controller that handles the game
+     * @param view the view which methods the controller calls
+     * @param gameID keeps the game id from the server calls
+     */
     public GameController(View view,  String gameID) {
         super(view);
         this.gameID = gameID;
@@ -39,6 +46,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
     public String getGameID() {
         return gameID;
     }
+
+    /**
+     * The user is ready and the view calls this method. The relative GameManager endpoint method is called
+     * @param gameID the id of the current game
+     * @param nickname the nickname of the user making the request
+     */
     @Override
     public void setReady(String gameID, String nickname) {
         this.playerReady = true;
@@ -58,13 +71,22 @@ public class GameController extends Controller implements GameViewObserver, Subs
             }
         }
     }
+
+    /**
+     *
+     * @param selected
+     * @param user
+     */
     @Override
     public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
         //view has selected cards
         //check if selection was correct
         if (isSelectionPossible(selected)) {
-            //ClientManager.view.chooseColumn();
-            ClientManager.virtualGameManager.selectedCards(selected, user, gameID, stub);
+/*            if(!ClientManager.isCli){
+                ClientManager.view.chooseColumn();
+            }*/
+            System.err.println("sending selected cards");
+            virtualGameManager.selectedCards(selected, user, gameID, stub);
         }else{
             ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least one other chosen card");
             ClientManager.view.chooseCards();
@@ -84,6 +106,38 @@ public class GameController extends Controller implements GameViewObserver, Subs
     public void startCardsSelection(){
         ClientManager.view.chooseCards();
     }
+
+    private CommonGoalStrategy getCommonGoalStrategy(String goalString) {
+        System.out.println("goalString: "+goalString);
+        switch (goalString) {
+            case "SixOfTwoGoalStrategy":
+                return new SixOfTwoGoalStrategy();
+            case "FiveDiagonalGoalStrategy":
+                return new FiveDiagonalGoalStrategy();
+            case "FourOfFourGoalStrategy":
+                return new FourOfFourGoalStrategy();
+            case "FourCornersGoalStrategy":
+                return new FourCornersGoalStrategy();
+            case "Double2x2GoalStrategy":
+                return new Double2x2GoalStrategy();
+            case "ThreeColumns3DiffGoalStrategy":
+                return new ThreeColumns3DiffGoalStrategy();
+            case "EightTilesGoalStrategy":
+                return new EightTilesGoalStrategy();
+            case "FourLines3DiffGoalStrategy":
+                return new FourLines3DiffGoalStrategy();
+            case "TwoOf6DiffGoalStrategy":
+                return new TwoOf6DiffGoalStrategy();
+            case "TwoOf5DiffGoalStrategy":
+                return new TwoOf5DiffGoalStrategy();
+            case "FiveXGoalStrategy":
+                return new FiveXGoalStrategy();
+            case "TriangularGoalStrategy":
+                return new TriangularGoalStrategy();
+            default:
+                throw new IllegalArgumentException("Invalid goal strategy: " + goalString);
+        }
+    }
     @Override
     public boolean receiveSubscriberMessages(Message message){
         //a message has been received
@@ -91,115 +145,110 @@ public class GameController extends Controller implements GameViewObserver, Subs
         //after it receives it, updates the view accordingly
         if (message instanceof InitStateMessage) {
             InitStateMessage mess = (InitStateMessage) message;
-            CommonGoals common = new CommonGoals();
             //if the message was for this client send ack
             HashMap<String, Integer> playersPoints = new HashMap<>(); // updatedMatchDetails needs an input of points, but all the points are set at 0
             for (String s : mess.players) {
                 playersPoints.put(s, 0);
             }
-            switch (mess.firstGoal) {
-                case "SixOfTwoGoalStrategy":
-                    SixOfTwoGoalStrategy firstGoal = new SixOfTwoGoalStrategy();
-                    common.setFirstGoal(firstGoal);
-                    break;
-                case "FiveDiagonalGoalStrategy":
-                    FiveDiagonalGoalStrategy firstGoal1 = new FiveDiagonalGoalStrategy();
-                    common.setFirstGoal(firstGoal1);
-                    break;
-                case "FourOfFourGoalStrategy":
-                    FourOfFourGoalStrategy firstGoal2 = new FourOfFourGoalStrategy();
-                    common.setFirstGoal(firstGoal2);
-                    break;
-                case "FourCornersGoalStrategy":
-                    FourCornersGoalStrategy firstGoal3 = new FourCornersGoalStrategy();
-                    common.setFirstGoal(firstGoal3);
-                    break;
-                case "Double2x2GoalStrategy":
-                    Double2x2GoalStrategy firstGoal4 = new Double2x2GoalStrategy();
-                    common.setFirstGoal(firstGoal4);
-                    break;
-                case "EightTilesGoalStrategy":
-                    EightTilesGoalStrategy firstGoal5 = new EightTilesGoalStrategy();
-                    common.setFirstGoal(firstGoal5);
-                    break;
-                case "FourLines3DiffGoalStrategy":
-                    FourLines3DiffGoalStrategy firstGoal6 = new FourLines3DiffGoalStrategy();
-                    common.setFirstGoal(firstGoal6);
-                    break;
-                case "ThreeColumns3DiffGoalStrategy":
-                    ThreeColumns3DiffGoalStrategy firstGoal7 = new ThreeColumns3DiffGoalStrategy();
-                    common.setFirstGoal(firstGoal7);
-                    break;
-                case "TwoOf6DiffGoalStrategy":
-                    TwoOf6DiffGoalStrategy firstGoal8 = new TwoOf6DiffGoalStrategy();
-                    common.setFirstGoal(firstGoal8);
-                    break;
-                case "TwoOf5DiffGoalStrategy":
-                    TwoOf5DiffGoalStrategy firstGoal9 = new TwoOf5DiffGoalStrategy();
-                    common.setFirstGoal(firstGoal9);
-                    break;
-                case "FiveXGoalStrategy":
-                    FiveXGoalStrategy firstGoal10 = new FiveXGoalStrategy();
-                    common.setFirstGoal(firstGoal10);
-                    break;
-                case "TriangularGoalStrategy":
-                    TriangularGoalStrategy firstGoal11 = new TriangularGoalStrategy();
-                    common.setFirstGoal(firstGoal11);
-            }
-            switch (mess.secondGoal) {
-                case "SixOfTwoGoalStrategy":
-                    SixOfTwoGoalStrategy secondGoal = new SixOfTwoGoalStrategy();
-                    common.setSecondGoal(secondGoal);
-                    break;
-                case "FiveDiagonalGoalStrategy":
-                    FiveDiagonalGoalStrategy secondGoal1 = new FiveDiagonalGoalStrategy();
-                    common.setSecondGoal(secondGoal1);
-                    break;
-                case "FourOfFourGoalStrategy":
-                    FourOfFourGoalStrategy secondGoal2 = new FourOfFourGoalStrategy();
-                    common.setSecondGoal(secondGoal2);
-                    break;
-                case "FourCornersGoalStrategy":
-                    FourCornersGoalStrategy secondGoal3 = new FourCornersGoalStrategy();
-                    common.setSecondGoal(secondGoal3);
-                    break;
-                case "Double2x2GoalStrategy":
-                    Double2x2GoalStrategy secondGoal4 = new Double2x2GoalStrategy();
-                    common.setSecondGoal(secondGoal4);
-                    break;
-                case "EightTilesGoalStrategy":
-                    EightTilesGoalStrategy secondGoal5 = new EightTilesGoalStrategy();
-                    common.setSecondGoal(secondGoal5);
-                    break;
-                case "FourLines3DiffGoalStrategy":
-                    FourLines3DiffGoalStrategy secondGoal6 = new FourLines3DiffGoalStrategy();
-                    common.setSecondGoal(secondGoal6);
-                    break;
-                case "ThreeColumns3DiffGoalStrategy":
-                    ThreeColumns3DiffGoalStrategy secondGoal7 = new ThreeColumns3DiffGoalStrategy();
-                    common.setSecondGoal(secondGoal7);
-                    break;
-                case "TwoOf6DiffGoalStrategy":
-                    TwoOf6DiffGoalStrategy secondGoal8 = new TwoOf6DiffGoalStrategy();
-                    common.setSecondGoal(secondGoal8);
-                    break;
-                case "TwoOf5DiffGoalStrategy":
-                    TwoOf5DiffGoalStrategy secondGoal9 = new TwoOf5DiffGoalStrategy();
-                    common.setSecondGoal(secondGoal9);
-                    break;
-                case "FiveXGoalStrategy":
-                    FiveXGoalStrategy secondGoal10 = new FiveXGoalStrategy();
-                    common.setSecondGoal(secondGoal10);
-                    break;
-                case "TriangularGoalStrategy":
-                    TriangularGoalStrategy secondGoal11 = new TriangularGoalStrategy();
-                    common.setSecondGoal(secondGoal11);
-            }
+            // Supponendo che tu abbia già un'istanza di InitStateMessage chiamata initStateMessage
+            String firstGoalString = mess.firstGoal;
+            String secondGoalString = mess.secondGoal;
+            System.out.println(firstGoalString);
+            System.out.println(secondGoalString);
+
+            CommonGoals commonGoals = new CommonGoals();
+            commonGoals.setFirstGoal(getCommonGoalStrategy(firstGoalString));
+            commonGoals.setSecondGoal(getCommonGoalStrategy(secondGoalString));
+
+            //TODO sistemare questo che non funziona
+            //Imposta il firstGoal
+            //commonGoals.setFirstGoal(getCommonGoalStrategy(firstGoalString));
+//            // Imposta il secondGoal
+//           commonGoals.setSecondGoal(getCommonGoalStrategy(secondGoalString));
+//            System.out.println(commonGoals.getFirstGoal());
+//            System.out.println(commonGoals.getSecondGoal());
+
+
+//            if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.SixOfTwoGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new SixOfTwoGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FiveDiagonalGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new FiveDiagonalGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourOfFourGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new FourOfFourGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourCornersGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new FourCornersGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.Double2x2GoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new Double2x2GoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.EightTilesGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new EightTilesGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourLines3DiffGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new FourLines3DiffGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.ThreeColumns3DiffGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new ThreeColumns3DiffGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf6DiffGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new TwoOf6DiffGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf5DiffGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new TwoOf5DiffGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FiveXGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new FiveXGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy")) {
+//                CommonGoalStrategy firstGoal = new TriangularGoalStrategy();
+//                commonGoals.setFirstGoal(firstGoal);
+//            }
+//
+//            if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.SixOfTwoGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new SixOfTwoGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FiveDiagonalGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new FiveDiagonalGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourOfFourGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new FourOfFourGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourCornersGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new FourCornersGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.Double2x2GoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new Double2x2GoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.EightTilesGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new EightTilesGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourLines3DiffGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new FourLines3DiffGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.ThreeColumns3DiffGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new ThreeColumns3DiffGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf6DiffGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new TwoOf6DiffGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf5DiffGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new TwoOf5DiffGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FiveXGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new FiveXGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy")) {
+//                CommonGoalStrategy secondGoal = new TriangularGoalStrategy();
+//                commonGoals.setSecondGoal(secondGoal);
+//            }
             // Command "-ready" section:
             if(ClientManager.userNickname.equals(lobbyController.lastLobbyMessage.host)){
                 this.playerReady = true;
             }else{
-                ClientManager.view.showErrorMessage("The game has started\nEnter the game with the command \"-ready\"");
+                ClientManager.view.showErrorMessage("The game has started\nEnter the game with the command \"ready\"");
                 /*while (true) {
                     if (this.playerReady){
                         System.out.println("Sono nel while, nell'if");
@@ -209,12 +258,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 while (!this.playerReady) {
                     Thread.onSpinWait();
                 }
-                ClientManager.view.showErrorMessage("You entered the game");
             }
             try {
-                ClientManager.view.initializeGame(mess.players, common, mess.personalGoals, mess.pieces, mess.selecectables,
+                System.out.println(commonGoals.getFirstGoal() + " " + commonGoals.getSecondGoal());
+                ClientManager.view.initializeGame(mess.players, commonGoals, mess.personalGoals, mess.pieces, mess.selecectables,
                         mess.playersShelves, playersPoints, mess.gameState);
-            } catch (IOException e) {//TODO: Perché devo metterel'exception????
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             ClientManager.view.printLivingRoom();
@@ -232,6 +281,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
             //TODO: Basically identical to initStateMessage, be careful
         } else if (message instanceof SelectedCardsMessage) {
+            System.out.println("Sono nel selectedCardsMessage");
             SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
             ClientManager.view.printLivingRoom();
@@ -240,6 +290,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.chooseColumn();
             }
         } else if (message instanceof SelectedColumnsMessage) {
+            System.out.println("Sono nel selectedColumnsMessage");
             SelectedColumnsMessage mess = (SelectedColumnsMessage) message;
             ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
             ClientManager.view.printShelves();
@@ -255,10 +306,10 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.gameCommands();
             }
         } else if (message instanceof FinishedGameMessage mess) {
-            ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             ClientManager.view.printShelves();
+            ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             this.playerReady = false;
-            ClientManager.view.showErrorMessage("Exit the game with the command \"-leave_game\"");
+            ClientManager.view.showErrorMessage("Exit the game with the command \"leave_game\"");
             while (!playerReady){
                 Thread.onSpinWait();
             }
@@ -295,12 +346,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
     Types of messages
      */
     @Override
-    public void onSendChatMessage(String message){
-        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,message,false,true,stub);
+    public void onSendChatMessage(String message,String toUser){
+        virtualGameManager.receiveChatMessage(this.gameID,toUser,ClientManager.userNickname,message,false,true,stub);
     }
     @Override
     public void onGetChat(boolean fullChat){
-        ClientManager.virtualGameManager.receiveChatMessage(this.gameID,ClientManager.userNickname,null,fullChat,true,stub);
+        virtualGameManager.receiveChatMessage(this.gameID,null,ClientManager.userNickname,null,fullChat,true,stub);
     }
     //TODO: make this!!!
     private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {

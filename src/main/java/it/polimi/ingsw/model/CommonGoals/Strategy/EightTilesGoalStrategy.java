@@ -38,4 +38,20 @@ public class EightTilesGoalStrategy implements CommonGoalStrategy{
             return false;
         }
     }
+
+    /**
+     * Returns the name of the CommonGoal
+     * @return String
+     */
+    public String toStringCommonGoal() {
+        return "EightTilesGoalStrategy";
+    }
+
+    /**
+     * Returns the index of the commongoal
+     * @return int
+     */
+    public int getIndex(){
+        return 9;
+    }
 }

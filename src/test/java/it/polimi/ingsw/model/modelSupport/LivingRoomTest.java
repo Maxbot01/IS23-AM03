@@ -14,16 +14,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LivingRoomTest {
 
-    // stupid way to test whether the starting angles are empty spot
+    // way to test whether the starting angles are empty spot
     // EXPECTED: TRUE
     @Test
     void Empty_Angles_getPieces() {
         LivingRoom l = new LivingRoom(4);
         BoardCard[][] mat = l.getPieces();
-        assertTrue(mat[0][0].getColor() == colorType.EMPTY_SPOT );
-        assertTrue(mat[0][8].getColor() == colorType.EMPTY_SPOT );
-        assertTrue(mat[8][0].getColor() == colorType.EMPTY_SPOT );
-        assertTrue(mat[8][8].getColor() == colorType.EMPTY_SPOT );
+        assertSame(mat[0][0].getColor(), colorType.EMPTY_SPOT);
+        assertSame(mat[0][8].getColor(), colorType.EMPTY_SPOT);
+        assertSame(mat[8][0].getColor(), colorType.EMPTY_SPOT);
+        assertSame(mat[8][8].getColor(), colorType.EMPTY_SPOT);
 
 
     }
@@ -36,7 +36,7 @@ class LivingRoomTest {
         BoardCard[][] mat = l.getPieces();
         for(int i=0; i<9;i++){
             for(int j=0; j<9;j++){
-                assertFalse(mat[i][j].getColor() == colorType.TOMBSTONE);
+                assertNotSame(mat[i][j].getColor(), colorType.TOMBSTONE);
             }
         }
 
@@ -59,7 +59,7 @@ class LivingRoomTest {
         BoardCard[][] mat = l.getPieces();
         for(int i=0; i<9;i++){
             for(int j=0; j<9;j++){
-               if(!mat[i][j].equals(colorType.EMPTY_SPOT)){
+               if(!mat[i][j].getColor().equals(colorType.EMPTY_SPOT)){
                    BoardCard c = new BoardCard(colorType.TOMBSTONE, ornamentType.A);
                    mat[i][j] = c;
                }
@@ -69,16 +69,13 @@ class LivingRoomTest {
         int count = 0;
         for(int i=0; i<9;i++){
             for(int j=0; j<9;j++) {
-                if(!mat[i][j].getColor().equals(colorType.TOMBSTONE)){
+                if(mat[i][j].getColor().equals(colorType.TOMBSTONE)){
                     count++;
                 }
             }
         }
-        assertEquals(81,count);
-
-
+        assertEquals(0,count);
     }
-
 
     // tests the actual starting selectable in 4 players
     @Test
@@ -103,11 +100,9 @@ class LivingRoomTest {
         assertTrue(matBool[7][5]);
         assertTrue(matBool[8][4]);
         assertTrue(matBool[8][5]);
-
-
+         // plus one card not selectable
+        assertFalse(matBool[2][1]);
     }
-
-
 
     // tests whether updateBoard method creates TOMBSTONE cards in a randomly selected position
     // EXPECTED: TRUE
@@ -122,10 +117,11 @@ class LivingRoomTest {
             j = random.nextInt(8);
         } while (!l.cardIsSelectable(i,j));
             ArrayList<Pair<Integer, Integer>> a = new ArrayList<>();
-            Pair<Integer, Integer> p = new Pair(i, j);
+            Pair<Integer, Integer> p = new Pair<>(i, j);
             a.add(p);
             l.updateBoard(a);
-            BoardCard[][] mat = l.getPieces();assertTrue(mat[i][j].getColor() == colorType.TOMBSTONE);
+            BoardCard[][] mat = l.getPieces();
+        assertSame(mat[i][j].getColor(), colorType.TOMBSTONE);
 
     }
 
@@ -150,7 +146,7 @@ class LivingRoomTest {
         LivingRoom l = new LivingRoom(3);
         BoardCard[][] mat = l.getPieces();
         Pair<Integer,Integer> p = new Pair(i,j);
-        assertTrue(mat[i][j].getColor() == l.getBoardCardAt(p).getColor());
+        assertTrue(mat[i][j].getColor() == l.getBoardCardAt(p).getColor() && mat[i][j].getOrnament() == l.getBoardCardAt(p).getOrnament() );
     }
 }
 

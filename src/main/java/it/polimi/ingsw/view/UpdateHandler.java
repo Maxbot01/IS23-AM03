@@ -1,14 +1,10 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
-import it.polimi.ingsw.model.GameLobby;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
-import it.polimi.ingsw.model.modelSupport.LivingRoom;
 import it.polimi.ingsw.model.modelSupport.PersonalGoal;
-import it.polimi.ingsw.model.modelSupport.Player;
-import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -53,7 +49,7 @@ public interface UpdateHandler {
     /**
      * Method relative to the acquisition of the client's credentials
      */
-    void requestCredentials();
+    void requestCredentials() throws IOException;
     /**
      * Method relative to the activation of the available commands that the player has during the game selection phase
      * @param availableGames
@@ -111,7 +107,7 @@ public interface UpdateHandler {
      * Shows the chat messages. It can show the full chat or the last five messages based on the player's choice
      * @param messages
      */
-    void printChat(ArrayList<Pair<String, String>> messages);
+    void printChat(ArrayList<Pair<String, Pair<String,String>>> messages);
     /**
      * Shows all the players' current shelves
      */

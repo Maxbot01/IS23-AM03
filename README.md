@@ -1,32 +1,31 @@
 # IS23-AM03
 
-# Progress
+### How to play the game
+
+# Completed features
 ## Schema
-UML:<br />
-![80%](https://progress-bar.dev/80)
+🟢 UML<br />
 
-Connection protocol:<br />
-![95%](https://progress-bar.dev/95)
+🟢 Connection protocol<br />
 
-## Code
-Model:<br />
-![90%](https://progress-bar.dev/90)
+## Basic Features
+🟢 Model<br />
 
-Controller:<br />
-![90%](https://progress-bar.dev/90)
+🟢 Controller<br />
 
-Socket:<br />
-![90%](https://progress-bar.dev/90)
+🟢 Socket<br />
 
-RMI:<br />
-![80%](https://progress-bar.dev/80)
+🟢 RMI<br />
 
-Chat:<br />
-![80%](https://progress-bar.dev/80)
+🟢 CLI<br />
 
-CLI:<br />
-![90%](https://progress-bar.dev/90)
+🟢 GUI<br />
 
-GUI:<br />
-![30%](https://progress-bar.dev/30)
+## Advanced Features
+
+🟢 Chat<br />
+
+🟢 Multiple concurrent games<br />
+
+
 

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MyRemoteInterface extends Remote, Serializable {
-        // Altri metodi remoti...
+        // further remote methods
 
         void selectGame(String ID, String user) throws RemoteException, LobbyFullException;
 
@@ -37,14 +37,13 @@ public interface MyRemoteInterface extends Remote, Serializable {
 
         void sendAck() throws RemoteException;
 
-        //void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame);
         void registerClient(String ipAddress) throws RemoteException;
 
         Message ReceiveMessageRMI(String clientIP) throws RemoteException;
 
         void addRemoteUser(String username, RemoteUserInfo remoteUserInfo) throws RemoteException;
 
-        void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame) throws RemoteException;
+        void receiveChatMessage(String gameID, String toUser, String fromUser, String message, boolean fullChat, boolean inGame) throws RemoteException;
 
         String getGameLobbyHost(String gameID) throws RemoteException;
         Message getPreviousMessageRMI(String ipAddress) throws RemoteException;

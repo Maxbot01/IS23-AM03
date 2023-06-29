@@ -12,6 +12,6 @@ public interface GameViewObserver {
     void onAcceptFinishedGame();
     void startCardsSelection();
     void setReady(String gameID, String nickname);
-    void onSendChatMessage(String message);
+    void onSendChatMessage(String message,String toUser);
     void onGetChat(boolean fullChat);
 }

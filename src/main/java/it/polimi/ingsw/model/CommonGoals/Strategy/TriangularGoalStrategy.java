@@ -17,8 +17,7 @@ public class TriangularGoalStrategy implements CommonGoalStrategy{
         int rows = Mat.length;
         int valid = 0;
 /*
-Al contrario di FiveDiagonalGoalStrategy, qui non ho bisogno di controllare tutti i casi,
-poiché secondo l'ordine dei casi, quello prima elimina la possibilità del successivo
+this time I don't need four cases
  */
         if(Mat[0][0].getColor() != colorType.EMPTY_SPOT) {
             int found = 1;
@@ -66,5 +65,11 @@ poiché secondo l'ordine dei casi, quello prima elimina la possibilità del succ
         }else{
             return false;
         }
+    }
+    public String toStringCommonGoal(){
+        return "TriangularGoalStrategy";
+    }
+    public int getIndex(){
+        return 12;
     }
 }

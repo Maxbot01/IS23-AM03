@@ -1,11 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.controllerObservers.GameViewObserver;
 import it.polimi.ingsw.controller.controllerObservers.LobbyViewObserver;
-
-import java.util.ArrayList;
 
 public abstract class View implements ViewObservable, UpdateHandler{
 
