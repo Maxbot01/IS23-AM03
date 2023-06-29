@@ -1,93 +1,93 @@
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\ClienRMIObject.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\GameManagerView.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\PubSubService.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\EightTilesGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\Shelf.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\Player.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\GameStateType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\GameLobby.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\NetworkMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\TopicType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\ornamentType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\LivingRoom.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\Controller.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\PubSubMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\ShelfFullException.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\TwoOf5DiffGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\Publisher.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\helpers\Pair.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\server\ServerMain.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\GameObservable.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\CommonGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\errorMessages\ErrorMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\ThreeColumns3DiffGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\MyRemoteInterface.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\App.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\GameController.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\GameLobbyView.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\lobbyExceptions\LobbyFullException.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\controllerObservers\LobbyViewObserver.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FiveDiagonalGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\GameManager.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\TwoOf6DiffGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\InitStateMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\Subscriber.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\Client.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\Double2x2GoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\MatchStateMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\module-info.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\MessageSerializer.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\GameManagerMessages\loginGameMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\virtual_model\VirtualGameManager.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\CLIgeneral.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\FinishedGameMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\UpdateHandler.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\View.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\Game.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\PersonalGoalType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourLines3DiffGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\ConnectionType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\errorMessages\ErrorType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FiveXGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\GameStateMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\ColumnNotSelectable.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\ClienRMIObjectInterface.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourCornersGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\NoMoreCardsException.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\GameManagerController.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\lobbyMessages\LobbyInfoMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\UnselectableCardException.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\SelectedColumnsMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\LobbyController.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\SenderConnectionStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\ClientManager.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\server\EchoServerClientHandler.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\GameView.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\CommonGoals.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\server\VirtualGameManagerSerializer.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\controllerObservers\GameViewObserver.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\ConnectionView.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\SixOfTwoGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\PersonalGoal.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\colorType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\LoginView.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\TurnStateType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\CLIColors.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\ViewObservable.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\Main.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\ChatMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\helpers\Quartet.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\Message.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\GameManagerMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\BoardCard.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\GameManagerMessages\GameManagerMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\CommonGoalType.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourOfFourGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\TriangularGoalStrategy.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\controllerObservers\GameManagerViewObserver.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\ScreenSwitcher.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\server\RemoteUserInfo.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\SelectedCardsMessage.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\ClientMain.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\GUIView.java
-C:\Users\pc\IdeaProjects\IDS Progetto\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\errorMessages\SelectedColumnsMessageError.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\UnselectableCardException.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\lobbyMessages\LobbyInfoMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\ScreenSwitcher.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\ChatMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\errorMessages\ErrorType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\GUIView.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourCornersGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\NoMoreCardsException.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\ClientManager.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\Client.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\ConnectionView.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\ClienRMIObject.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\LivingRoom.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\PersonalGoal.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\server\EchoServerClientHandler.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\CommonGoalType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\ClientMain.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\errorMessages\SelectedColumnsMessageError.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\FinishedGameMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\controllerObservers\GameViewObserver.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\GameManagerView.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\SelectedColumnsMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\Game.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\ornamentType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\CommonGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\server\VirtualGameManagerSerializer.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\SixOfTwoGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\TurnStateType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\ViewObservable.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\Main.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\GameManager.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\CLIgeneral.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\Publisher.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FiveDiagonalGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\MyRemoteInterface.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\ShelfFullException.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\TwoOf6DiffGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\helpers\Pair.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\GameObservable.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\ClienRMIObjectInterface.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\UpdateHandler.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\PubSubMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\colorType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\GameManagerController.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\EightTilesGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourLines3DiffGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\GameStateType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\CommonGoals.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\errorMessages\ErrorMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\GameManagerMessages\loginGameMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\ThreeColumns3DiffGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\Shelf.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\App.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\NetworkMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\GameView.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FiveXGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\LoginView.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\InitStateMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\GameController.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\PubSubService.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\TopicType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\TwoOf5DiffGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\GameManagerMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\module-info.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\MatchStateMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\GameStateMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\server\RemoteUserInfo.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\CLIColors.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\lobbyExceptions\LobbyFullException.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\pubSub\Subscriber.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\controllerObservers\LobbyViewObserver.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\matchStateMessages\SelectedCardsMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\virtual_model\VirtualGameManager.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\helpers\Quartet.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\PersonalGoalType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\Player.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\GameManagerMessages\GameManagerMessage.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\Controller.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\enums\ConnectionType.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\controllerObservers\GameManagerViewObserver.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\client\MessageSerializer.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\messageModel\Message.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\controller\LobbyController.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\TriangularGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\GUIView\GameLobbyView.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\view\View.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\BoardCard.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\Double2x2GoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\server\ServerMain.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\CommonGoals\Strategy\FourOfFourGoalStrategy.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\GameLobby.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\exceptions\ColumnNotSelectable.java
+C:\Users\XZ6\IdeaProjects\IS23-AM03\src\main\java\it\polimi\ingsw\model\modelSupport\SenderConnectionStrategy.java
