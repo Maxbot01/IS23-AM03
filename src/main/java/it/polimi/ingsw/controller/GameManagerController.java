@@ -40,7 +40,6 @@ public class GameManagerController extends Controller implements GameManagerView
      */
     @Override
     public void onSetCredentials(String username, String password, MyRemoteInterface stub) {
-        System.out.println("Credentials set");
         ClientManager.userNickname = username;
         virtualGameManager.setCredentials(username, password, stub);
     }
@@ -90,7 +89,6 @@ public class GameManagerController extends Controller implements GameManagerView
             switch (((NetworkMessage) message).message){
                 case "pong":
                     System.out.println(ClientManager.gameManagerController);
-                    System.out.println("pong received");
                     ClientManager.view.requestCredentials();
                     break;
                 default:
@@ -99,12 +97,10 @@ public class GameManagerController extends Controller implements GameManagerView
         }else if(message instanceof ErrorMessage mess){
             switch (mess.error.toString()) {
                 case "wrongPassword":
-                    //System.out.println("error case in GameManagerController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.requestCredentials();
                     break;
                 case "lobbyIsFull":
-                    //System.out.println("error case in GameManagerController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.launchGameManager(lastLoginMessage.gamesPlayers);
                     break;
@@ -146,15 +142,6 @@ public class GameManagerController extends Controller implements GameManagerView
                 Pair<String, List<String>> addedGame = new Pair<>(addedGameId, addedGamePlayers);
                 ClientManager.view.addNewGame(addedGame);
             }
-            /*if(lastThread != null){
-                System.out.println("launchGameManager "+lastThread.getName()+" interrupted");
-                lastThread.interrupt();
-            }else{
-                System.out.println("First launchGameManager");
-            }
-            this.lastThread = Thread.currentThread();
-            System.out.println("launchGameManager Thread name: "+Thread.currentThread().getName());
-            ClientManager.view.launchGameManager(this.lastLoginMessage.gamesPlayers);*/
         }
         return true;
     }

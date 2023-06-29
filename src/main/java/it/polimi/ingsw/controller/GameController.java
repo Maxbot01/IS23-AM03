@@ -63,7 +63,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             Message message = null;
             try {
                 String lobbyhost = stub.getGameLobbyHost(gameID);
-                System.err.println("sto gettando da:" + lobbyhost);
                 message = stub.ReceiveMessageRMI(lobbyhost);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -216,9 +215,8 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.updatePlayingPlayer(mess.chairedPlayer);
             ClientManager.view.gameCommands();
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
-            //TODO: Basically identical to initStateMessage, be careful
+            //Basically identical to initStateMessage, resilience section
         } else if (message instanceof SelectedCardsMessage) {
-            System.out.println("Sono nel selectedCardsMessage");
             SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
             ClientManager.view.printLivingRoom();
@@ -227,7 +225,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.chooseColumn();
             }
         } else if (message instanceof SelectedColumnsMessage) {
-            System.out.println("Sono nel selectedColumnsMessage");
             SelectedColumnsMessage mess = (SelectedColumnsMessage) message;
             ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
             ClientManager.view.printShelves();
@@ -246,7 +243,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printShelves();
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             this.playerReady = false;
-            ClientManager.view.showErrorMessage("Exit the game with the command \"leave_game\"");
             while (!playerReady){
                 Thread.onSpinWait();
             }
@@ -254,21 +250,16 @@ public class GameController extends Controller implements GameViewObserver, Subs
         } else if (message instanceof ErrorMessage mess) {
             switch (mess.error.toString()) {
                 case "selectedColumnsError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseColumn();
                     break;
                 case "shelfFullError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     break;
                 case "acceptFinishedGameError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
-                    //TODO: Manage error
                     break;
                 case "selectedCardsMessageError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseCards();
                     break;
@@ -298,5 +289,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
     public void onGetChat(boolean fullChat){
         virtualGameManager.receiveChatMessage(this.gameID,null,ClientManager.userNickname,null,fullChat,true,stub);
     }
-
+    private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
+        return true;
+    }
 }

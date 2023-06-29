@@ -80,10 +80,9 @@ public class ClientManager {
         } else {
             clientIP = null;
         }
-        System.out.println("Client IP: " + clientIP);
+        //System.out.println("Client IP: " + clientIP);
 
         virtualGameManager = new VirtualGameManager(isSocketClient, remoteObject);
-        System.out.println("GameManagerController: " + ClientManager.gameManagerController);
         gameManagerController = new GameManagerController(view, virtualGameManager, remoteObject);
         view.registerObserver(gameManagerController, null, null);
         virtualGameManager.ping(remoteObject);
@@ -97,8 +96,6 @@ public class ClientManager {
     public static void createdControllers(String ID) {
         //GameManagerController sees that a game has been created with an ID, the game controller gets instantiated
         //unsubscribes previous controllers and subscribes the new ones
-        //TODO: check if the ones created have the same ID, if they do not remove
-        //Changes: I've put the "new" inside every second nested if, and added a check for the registerObserver
         boolean created = false;
         if (gameController != null) {
             if (!gameController.getGameID().equals(ID)) {

@@ -112,11 +112,6 @@ public class MessageSerializer {
                     return new Gson().fromJson(messageData, GameStateMessage.class);
                 case "ChatMessage":
                     return new Gson().fromJson(messageData, ChatMessage.class);
-
-
-                //TODO: add other cases for other message types that you want to deserialize
-
-                // Aggiungere altri casi per i diversi tipi di messaggio che si vogliono deserializzare
                 default:
                     throw new JsonParseException("Unknown message type: " + messageType);
             }
