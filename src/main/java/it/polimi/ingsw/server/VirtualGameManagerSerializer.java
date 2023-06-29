@@ -132,6 +132,7 @@ public class VirtualGameManagerSerializer {
                 String usr = (String) virtualGameManagerSerializer.getArgs()[0];
                 String gid = (String) virtualGameManagerSerializer.getArgs()[1];
                 gameManager.userReady(usr, gid);
+                break;
             case "receiveChatMessage":
                 String gameID3 = (String) virtualGameManagerSerializer.getArgs()[0];
                 String toUser = (String) virtualGameManagerSerializer.getArgs()[1];
