@@ -104,9 +104,7 @@ public class VirtualGameManager implements Remote, Serializable {
             VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("setCredentials", new Object[]{username, password});
             ClientMain.sendMessage(serializeMethod(serializedGameManager));
         } else {
-            System.out.println("vediamo se clientIP è null: " + ClientManager.clientIP);
             RemoteUserInfo remoteUserInfo = new RemoteUserInfo(false, null, ClientMain.clienRMIInstance);
-            System.out.println(remoteUserInfo.getRmiUID());
             try {
                 stub.addRemoteUser(username, remoteUserInfo);
                 stub.setCredentials(username, password, remoteUserInfo);

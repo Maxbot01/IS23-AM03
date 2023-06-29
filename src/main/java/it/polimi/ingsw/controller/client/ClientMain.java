@@ -225,7 +225,7 @@ public class ClientMain implements Runnable {
                         String ipAddress = UUID.randomUUID().toString();
                         stub.registerClient(ipAddress);
                         new ClientMain(null, isCLI, false, stub, ipAddress);
-                        break;
+                        return;
                     } else {
                         System.out.println("Invalid connection type.");
                     }

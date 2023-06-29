@@ -123,7 +123,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
      * @return
      */
     private CommonGoalStrategy getCommonGoalStrategy(String goalString) {
-        System.out.println("goalString: "+goalString);
         switch (goalString) {
             case "SixOfTwoGoalStrategy":
                 return new SixOfTwoGoalStrategy();
@@ -174,8 +173,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             // Supponendo che tu abbia già un'istanza di InitStateMessage chiamata initStateMessage
             String firstGoalString = mess.firstGoal;
             String secondGoalString = mess.secondGoal;
-            System.out.println(firstGoalString);
-            System.out.println(secondGoalString);
 
             CommonGoals commonGoals = new CommonGoals();
             commonGoals.setFirstGoal(getCommonGoalStrategy(firstGoalString));
@@ -185,18 +182,11 @@ public class GameController extends Controller implements GameViewObserver, Subs
             if(ClientManager.userNickname.equals(lobbyController.lastLobbyMessage.host)){
                 this.playerReady = true;
             }else{
-                /*while (true) {
-                    if (this.playerReady){
-                        System.out.println("Sono nel while, nell'if");
-                        break;
-                    }
-                }*/
                 while (!this.playerReady) {
                     Thread.onSpinWait();
                 }
             }
             try {
-                System.out.println(commonGoals.getFirstGoal() + " " + commonGoals.getSecondGoal());
                 ClientManager.view.initializeGame(mess.players, commonGoals, mess.personalGoals, mess.pieces, mess.selecectables,
                         mess.playersShelves, playersPoints, mess.gameState);
             } catch (IOException e) {
