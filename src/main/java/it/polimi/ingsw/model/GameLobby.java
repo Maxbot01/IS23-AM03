@@ -22,18 +22,28 @@ public class GameLobby extends GameObservable implements Serializable, Remote {
         return players;
     }
 
+    private ArrayList<String> readyPlayers;
+
     public String getHost(){
         return this.host;
     }
 
+    public void addReadyPlayer(String player){
+
+        readyPlayers.add(player);
+        System.out.println("ADDED" + player);
+    }
+
     public void startMatch(String user, MyRemoteInterface stub) {
-        System.out.println("startMatch from GameLobby");
-        if(user.equals(host) && numOfPlayers == players.size()){
-            GameManager.getInstance().createMatchFromLobby(ID, players);
-        }else if (players.size() < numOfPlayers){
+
+        if (players.size() < numOfPlayers){
             super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers,"There aren't enough players to start the match"), false, "-");
         }else if(!user.equals(host)){//TODO: This check is not needed, it is done inside the cli, maybe it's needed for the gui, check before removing
             super.notifyObserver(user, new ErrorMessage(ErrorType.onlyHostCanStartMatch,"Only the host can start the match"), false, "-");
+        }else if(!(numOfPlayers == readyPlayers.size()+1)){
+            super.notifyObserver(user, new ErrorMessage(ErrorType.notEveryoneReady,"Not everyone is ready"), false, "-");
+        }else if(numOfPlayers == players.size()){
+            GameManager.getInstance().createMatchFromLobby(ID, players);
         }
     }
 
@@ -46,6 +56,7 @@ public class GameLobby extends GameObservable implements Serializable, Remote {
         this.ID = ID;
         this.host = host;
         this.numOfPlayers = numOfPlayers;
+        readyPlayers = new ArrayList<>();
         players = new ArrayList<>();
         players.add(host);
         super.notifyObserver(host, new LobbyInfoMessage(ID, host, numOfPlayers, players, false), false, ID); //TODO: non dovrebbe essere true inLobbyorGame?

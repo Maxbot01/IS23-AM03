@@ -156,40 +156,8 @@ public class Game extends GameObservable implements Serializable, Remote {
      */
     public void selectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) { //TODO: See if user is necessary
         try {
-            /*testing
-            System.out.println("PRINTING THE SELECTED CARDS:");
-            for(BoardCard b: selCards){
-                System.out.println(" color: "+b.getColor().toString()+" ornament: "+b.getOrnament().toString());
-            }
-            System.out.println("PRINTING THE PLAYING PLAYER: "+playingPlayer.getNickname()+" PRINTING THE USER: "+user);
-            System.out.println("PRINTING THE MODIFIED SHELF BEFORE:");
-            for(int i = 0; i < playingPlayer.getPlayersShelf().getShelfCards().length; i++){
-                for(int j = 0; j < playingPlayer.getPlayersShelf().getShelfCards()[0].length; j++){
-                    BoardCard card = playingPlayer.getPlayersShelf().getCardAtPosition(i,j);
-                    Pair<String,Character> color;
-                    color = getColor(card);
-                    System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.BASE+color.getFirst()+color.getSecond()+ CLIColors.RESET);
-                    if(j != playingPlayer.getPlayersShelf().getShelfCards()[0].length-1){
-                        System.out.print(CLIColors.BLACK_BACKGROUND+" "+CLIColors.RESET);
-                    }
-                }
-                System.out.print("\n");
-            }*/
             this.playingPlayer.getPlayersShelf().insertInColumn(selCards, colIndex);
             this.playingPlayer.setPlayerShelf(this.playingPlayer.getPlayersShelf());
-            /*System.out.println("PRINTING THE MODIFIED SHELF AFTER:");
-            for(int i = 0; i < playingPlayer.getPlayersShelf().getShelfCards().length; i++){
-                for(int j = 0; j < playingPlayer.getPlayersShelf().getShelfCards()[0].length; j++){
-                    BoardCard card = playingPlayer.getPlayersShelf().getCardAtPosition(i,j);
-                    Pair<String,Character> color;
-                    color = getColor(card);
-                    System.out.print(CLIColors.BLACK_BACKGROUND+CLIColors.BASE+color.getFirst()+color.getSecond()+ CLIColors.RESET);
-                    if(j != playingPlayer.getPlayersShelf().getShelfCards()[0].length-1){
-                        System.out.print(CLIColors.BLACK_BACKGROUND+" "+CLIColors.RESET);
-                    }
-                }
-                System.out.print("\n");
-            }*/
         }catch(ColumnNotSelectable e) {
             //can't insert the items in the columns, send error message to client
             super.notifyObserver(playingPlayer.getNickname()/*TODO: Same as signature 'user'? be sure*/, new ErrorMessage(ErrorType.selectedColumnsError,e.info), true, this.ID);

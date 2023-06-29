@@ -37,6 +37,8 @@ public interface MyRemoteInterface extends Remote, Serializable {
 
         void sendAck() throws RemoteException;
 
+        void userReady(String username, String lobbyID) throws RemoteException;
+
         void registerClient(String ipAddress) throws RemoteException;
 
         Message ReceiveMessageRMI(String clientIP) throws RemoteException;

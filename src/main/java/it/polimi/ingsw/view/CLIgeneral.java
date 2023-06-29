@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.modelSupport.*;
 import it.polimi.ingsw.model.modelSupport.enums.colorType;
 import it.polimi.ingsw.model.modelSupport.enums.ornamentType;
 import org.apache.commons.cli.*;
+import org.fusesource.jansi.AnsiConsole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -201,6 +202,7 @@ public class CLIgeneral extends View{
      */
     @Override
     public void updatePlayingPlayer(String playingPlayer){
+        AnsiConsole.systemInstall();
         this.playingPlayer = playingPlayer;
         if(playingPlayer.equals(userPlayer.getNickname())){
             System.out.println("\033[1;97m" + "You are playing..."+ "\033[0m");
@@ -568,7 +570,6 @@ public class CLIgeneral extends View{
                 formatter.printHelp("Available Commands", options);
             }
         }
-        System.out.println("You have left the lobby");
     }
     /**
      * Whenever a new player enters the lobby it updates the lobby's players
@@ -801,6 +802,7 @@ public class CLIgeneral extends View{
      */
     @Override
     public void printLivingRoom() {
+        AnsiConsole.systemInstall();
         BoardCard[][] pieces = livingRoom;
         System.out.println("\n"+"Game state: " + gameState.toString());
         System.out.print("   0");
@@ -830,12 +832,13 @@ public class CLIgeneral extends View{
      */
     @Override
     public void printChat(ArrayList<Pair<String, Pair<String,String>>> messages) {
+        AnsiConsole.systemInstall();
         if(!messages.isEmpty()) {
             for (Pair<String, Pair<String,String>> p : messages) {
                 if(p.getFirst().equals("All")){
-                    System.out.println("[Public]  \033[1;37m" + p.getSecond().getFirst() + "\033[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
+                    System.out.println("[Public]  \u001b[1;37m" + p.getSecond().getFirst() + "\u001b[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
                 } else if (p.getFirst().equals(userPlayer.getNickname())) {
-                    System.out.println("[Private]  \033[1;37m" + p.getSecond().getFirst() + "\033[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
+                    System.out.println("[Private]  \u001b[1;37m" + p.getSecond().getFirst() + "\u001b[0m" + ": " + p.getSecond().getSecond()); //Names in bold white
                 }
             }
         }else{
@@ -847,6 +850,7 @@ public class CLIgeneral extends View{
      */
     @Override
     public void printShelves(){
+        AnsiConsole.systemInstall();
         System.out.println("\n"+"Game State: "+gameState.toString());
 /* Printing of shelves, starting from the playingPlayer's shelf */
         for(Player p: players){
@@ -880,6 +884,7 @@ public class CLIgeneral extends View{
      */
     @Override
     public void printScoreBoard(ArrayList<Pair<String, Integer>> finalScoreBoard, String winner, GameStateType finalGameState){
+        AnsiConsole.systemInstall();
         System.out.println("\n"+"Game State: "+finalGameState.toString());
         System.out.println("\n"+"The winner is "+winner);
         System.out.println();
@@ -935,6 +940,7 @@ public class CLIgeneral extends View{
         return args;
     }
     private void printShelf(Shelf tmp){
+        AnsiConsole.systemInstall();
         for(int i = 0; i < tmp.getShelfCards().length; i++){
             for(int j = 0; j < tmp.getShelfCards()[0].length; j++){
                 BoardCard card = tmp.getCardAtPosition(i,j);

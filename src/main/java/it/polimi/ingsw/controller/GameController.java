@@ -23,6 +23,9 @@ import static it.polimi.ingsw.controller.client.ClientMain.stub;
 import static it.polimi.ingsw.controller.client.ClientManager.lobbyController;
 import static it.polimi.ingsw.controller.client.ClientManager.virtualGameManager;
 
+/**
+ * This controller manages the game phase, getting messages from the server, updating the view, and responding to user inputs
+ */
 public class GameController extends Controller implements GameViewObserver, Subscriber {
 
     private InitStateMessage latestInit;
@@ -54,6 +57,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
      */
     @Override
     public void setReady(String gameID, String nickname) {
+        virtualGameManager.userReady(nickname, gameID, stub);
         this.playerReady = true;
         if (!ClientManager.isSocketClient && stub != null) {
             Message message = null;
@@ -73,40 +77,52 @@ public class GameController extends Controller implements GameViewObserver, Subs
     }
 
     /**
-     *
-     * @param selected
-     * @param user
+     *User has selected the cards. The relative GameManager endpoint method is called
+     * @param selected array list of the user-ordered selected cards
+     * @param user usenrname
      */
     @Override
     public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
-        //view has selected cards
-        //check if selection was correct
-        if (isSelectionPossible(selected)) {
-/*            if(!ClientManager.isCli){
-                ClientManager.view.chooseColumn();
-            }*/
+
             System.err.println("sending selected cards");
             virtualGameManager.selectedCards(selected, user, gameID, stub);
-        }else{
-            ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least one other chosen card");
-            ClientManager.view.chooseCards();
-        }
+
     }
+
+    /**
+     * User has selected the column, it is selectable (checked by the controller). The relative GameManager endpoint method is called
+     * @param selCards selected cards in order
+     * @param colIndex
+     * @param user
+     */
     @Override
     public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) {
         //view has selected columns
         virtualGameManager.selectedColumn(selCards, colIndex, user, gameID, stub);
     }
+
+    /**
+     *
+     */
     @Override
     public void onAcceptFinishedGame() {
         //view has accepted finished game
         //virtualGame.acceptFinishedGame();
     }
+
+    /**
+     * User can start choosing cards
+     */
     @Override
     public void startCardsSelection(){
         ClientManager.view.chooseCards();
     }
 
+    /**
+     * Returns the common goals to the view
+     * @param goalString
+     * @return
+     */
     private CommonGoalStrategy getCommonGoalStrategy(String goalString) {
         System.out.println("goalString: "+goalString);
         switch (goalString) {
@@ -138,6 +154,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 throw new IllegalArgumentException("Invalid goal strategy: " + goalString);
         }
     }
+
+    /**
+     * The GameController received the message from a topic on which it has a subscription, the message is coming from the server
+     * @param message Received message
+     * @return
+     */
     @Override
     public boolean receiveSubscriberMessages(Message message){
         //a message has been received
@@ -160,95 +182,10 @@ public class GameController extends Controller implements GameViewObserver, Subs
             commonGoals.setFirstGoal(getCommonGoalStrategy(firstGoalString));
             commonGoals.setSecondGoal(getCommonGoalStrategy(secondGoalString));
 
-            //TODO sistemare questo che non funziona
-            //Imposta il firstGoal
-            //commonGoals.setFirstGoal(getCommonGoalStrategy(firstGoalString));
-//            // Imposta il secondGoal
-//           commonGoals.setSecondGoal(getCommonGoalStrategy(secondGoalString));
-//            System.out.println(commonGoals.getFirstGoal());
-//            System.out.println(commonGoals.getSecondGoal());
-
-
-//            if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.SixOfTwoGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new SixOfTwoGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FiveDiagonalGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new FiveDiagonalGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourOfFourGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new FourOfFourGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourCornersGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new FourCornersGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.Double2x2GoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new Double2x2GoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.EightTilesGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new EightTilesGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourLines3DiffGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new FourLines3DiffGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.ThreeColumns3DiffGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new ThreeColumns3DiffGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf6DiffGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new TwoOf6DiffGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf5DiffGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new TwoOf5DiffGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FiveXGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new FiveXGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            } else if (Objects.equals(mess.firstGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy")) {
-//                CommonGoalStrategy firstGoal = new TriangularGoalStrategy();
-//                commonGoals.setFirstGoal(firstGoal);
-//            }
-//
-//            if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.SixOfTwoGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new SixOfTwoGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FiveDiagonalGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new FiveDiagonalGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourOfFourGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new FourOfFourGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourCornersGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new FourCornersGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.Double2x2GoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new Double2x2GoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.EightTilesGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new EightTilesGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FourLines3DiffGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new FourLines3DiffGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.ThreeColumns3DiffGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new ThreeColumns3DiffGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf6DiffGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new TwoOf6DiffGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TwoOf5DiffGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new TwoOf5DiffGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.FiveXGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new FiveXGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            } else if (Objects.equals(mess.secondGoal, "it.polimi.ingsw.model.CommonGoals.Strategy.TriangularGoalStrategy")) {
-//                CommonGoalStrategy secondGoal = new TriangularGoalStrategy();
-//                commonGoals.setSecondGoal(secondGoal);
-//            }
             // Command "-ready" section:
             if(ClientManager.userNickname.equals(lobbyController.lastLobbyMessage.host)){
                 this.playerReady = true;
             }else{
-                ClientManager.view.showErrorMessage("The game has started\nEnter the game with the command \"ready\"");
                 /*while (true) {
                     if (this.playerReady){
                         System.out.println("Sono nel while, nell'if");
@@ -342,71 +279,24 @@ public class GameController extends Controller implements GameViewObserver, Subs
         return true;
     }
     //every controller HAS to be subscribed to a topic and HAS to observe the view
-    /*
-    Types of messages
+
+    /**
+     * User send chat message. The relative GameManager endpoint method is called
+     * @param message
+     * @param toUser
      */
     @Override
     public void onSendChatMessage(String message,String toUser){
         virtualGameManager.receiveChatMessage(this.gameID,toUser,ClientManager.userNickname,message,false,true,stub);
     }
+
+    /**
+     * User received chat info
+     * @param fullChat
+     */
     @Override
     public void onGetChat(boolean fullChat){
         virtualGameManager.receiveChatMessage(this.gameID,null,ClientManager.userNickname,null,fullChat,true,stub);
     }
-    //TODO: make this!!!
-    private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
-        //TODO: check if is the selection is right
-        //latestInit.selecex
-        return true;
-    }
-    /*
-    private boolean selectableCards(ArrayList<Pair<Integer, Integer>> cards){
-        boolean accept = true;
-        int dim = cards.size();
-        for(int i = 0; i<dim && accept; i++){
-            int x = cards.get(i).getFirst();
-            int y = cards.get(i).getSecond();
-            if(!cardIsSelectable(x,y)) {
-                accept = false;
-            }
-        }
-        return consecutive(cards) && accept;
-    }
 
-    private boolean cardIsSelectable(int i, int j){
-        return isPresent(i,j) && freeCorner(i,j);
-    }
-
-    private boolean adiacent(int i, int j) {
-        if (i == 0) {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i + 1, j);
-
-        } else if (i == (DIM - 1)) {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
-
-        } else if (j == 0) {
-            return isPresent(i - 1, j) || (isPresent(i + 1, j) || isPresent(i, j + 1));
-
-        } else if (j == (DIM - 1)) {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
-
-        } else {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j) || isPresent(i + 1, j);
-
-        }
-
-    }
-
-    private boolean freeCorner(int i, int j){
-        if (i == 0 || i == DIM - 1 || j == 0 || j == DIM - 1) return true;
-        else {
-            return !isPresent(i, j - 1) || !isPresent(i, j + 1) || !isPresent(i - 1, j) || !isPresent(i + 1, j);
-        }
-    }
-
-    private boolean isPresent(int i, int j){
-        return (pieces[i][j].getColor() != colorType.TOMBSTONE) && (pieces[i][j].getColor() != colorType.EMPTY_SPOT);
-    }
-
-    */
 }

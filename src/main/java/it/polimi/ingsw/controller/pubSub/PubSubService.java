@@ -16,6 +16,11 @@ public class PubSubService {
         topicSubMap = new HashMap<>();
     }
 
+    /**
+     * Adds a subscriber to a topic
+     * @param topic
+     * @param subscriber
+     */
     public void addSubscriber(TopicType topic, Subscriber subscriber){
         if(topicSubMap.containsKey(topic)){
             ArrayList<Subscriber> subs = topicSubMap.get(topic);

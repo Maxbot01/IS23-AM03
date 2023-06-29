@@ -8,5 +8,6 @@ public enum ErrorType {
     wrongPassword,
     notEnoughPlayers,
     lobbyIsFull,
-    onlyHostCanStartMatch
+    onlyHostCanStartMatch,
+    notEveryoneReady
 }

@@ -128,6 +128,10 @@ public class VirtualGameManagerSerializer {
                 String user5 = (String) virtualGameManagerSerializer.getArgs()[0];
                 gameManager.lookForNewGames(user5);
                 break;
+            case "userReady":
+                String usr = (String) virtualGameManagerSerializer.getArgs()[0];
+                String gid = (String) virtualGameManagerSerializer.getArgs()[1];
+                gameManager.userReady(usr, gid);
             case "receiveChatMessage":
                 String gameID3 = (String) virtualGameManagerSerializer.getArgs()[0];
                 String toUser = (String) virtualGameManagerSerializer.getArgs()[1];

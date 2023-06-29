@@ -320,11 +320,11 @@ public class GameLobbyView {
         Platform.runLater(() -> {
             Alert alert;
             if(errorMessage.equals("The game has started\nEnter the game with the command \"ready\"")){
-                alert = new Alert(Alert.AlertType.INFORMATION, errorMessage, ButtonType.OK);
+                //alert = new Alert(Alert.AlertType.INFORMATION, errorMessage, ButtonType.OK); not used anymore
             }else {
                 alert = new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.OK);
+                alert.showAndWait();
             }
-            alert.showAndWait();
         });
     }
 

@@ -10,4 +10,8 @@ public class ColumnNotSelectable extends Exception implements Serializable {
         this.info = info;
     }
 
+    public String getInfo(){
+        return this.info;
+    }
+
 }

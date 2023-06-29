@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.modelSupport.BoardCard;
 import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 
@@ -128,6 +129,19 @@ public class VirtualGameManager implements Remote, Serializable {
                 //Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
                 //ClientManager.clientReceiveMessage(message);
             } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void userReady(String username, String lobbyID, MyRemoteInterface stub){
+        if (isSocketClient) {
+            VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("userReady", new Object[]{username, lobbyID});
+            ClientMain.sendMessage(serializeMethod(serializedGameManager));
+        } else {
+            try {
+                stub.userReady(username, lobbyID);
+            } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
         }

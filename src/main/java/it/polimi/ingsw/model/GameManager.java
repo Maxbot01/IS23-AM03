@@ -400,6 +400,15 @@ public class GameManager extends GameObservable implements Serializable, Remote,
     }
 
 
+    public void userReady(String username, String lobbyID){
+        System.out.println("USER READY " + username);
+        for (GameLobby x : currentGames.keySet()) {
+            if (x.getID().equals(lobbyID)) {
+                x.addReadyPlayer(username);
+            }
+        }
+    }
+
     public void sendAck() {
     }
 

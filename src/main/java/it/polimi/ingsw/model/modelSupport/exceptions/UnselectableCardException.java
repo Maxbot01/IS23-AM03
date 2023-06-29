@@ -7,4 +7,5 @@ public class UnselectableCardException extends Exception implements Serializable
     public UnselectableCardException(String info){
         this.info = info;
     };
+
 }
