@@ -39,7 +39,6 @@ public class PubSubService {
     }
 
     //possibility to hava a callback to ack if the sub received
-    //TODO: use PubSubMessage instead of generic message
     public void publishMessage(TopicType topic, Message message) throws IOException {
         if (topicSubMap.containsKey(topic)){
             for (Subscriber s: topicSubMap.get(topic)) {
@@ -47,7 +46,6 @@ public class PubSubService {
             }
         }else{
             System.err.println("No topic exists");
-            //TODO: handle with exception noTopicExists
         }
     }
 }
