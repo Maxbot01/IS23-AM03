@@ -83,12 +83,12 @@ public class ClientMain implements Runnable {
         try {
             while (isRunning) {
                 String message = (String) input.readObject();
-                System.out.println("Received message from server: " + message);
+                //System.out.println("Received message from server: " + message);
                 MessageSerializer messageSerializer = new MessageSerializer();
                 Message serializedMessage = messageSerializer.deserialize(message);
                 if (serializedMessage != null) {
                     Thread newThread = new Thread(() -> {
-                        System.out.println("New thread created: " + Thread.currentThread().getName());
+                        //System.out.println("New thread created: " + Thread.currentThread().getName());
                         try {
                             ClientManager.clientReceiveMessage(serializedMessage);
                         } catch (IOException e) {

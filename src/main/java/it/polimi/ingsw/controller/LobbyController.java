@@ -32,7 +32,6 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
 
     @Override
     public void onStartMatch(String ID, String user) { // The username sent is the host's username
-        //virtualGameLobby.startMatch(ID, user);
         ClientManager.virtualGameManager.startMatch(ID, user, stub);
     }
 
@@ -75,7 +74,6 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
         }else if(message instanceof ErrorMessage mess){
             switch (mess.error.toString()) {
                 case "notEnoughPlayers", "onlyHostCanStartMatch":
-                    //System.out.println("error case in LobbyController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.launchGameLobby(lastLobbyMessage.ID,lastLobbyMessage.players,lastLobbyMessage.host);
                     break;

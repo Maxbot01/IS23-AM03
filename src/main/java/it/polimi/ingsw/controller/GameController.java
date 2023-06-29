@@ -59,7 +59,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             Message message = null;
             try {
                 String lobbyhost = stub.getGameLobbyHost(gameID);
-                System.err.println("sto gettando da:" + lobbyhost);
                 message = stub.ReceiveMessageRMI(lobbyhost);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -85,7 +84,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
 /*            if(!ClientManager.isCli){
                 ClientManager.view.chooseColumn();
             }*/
-            System.err.println("sending selected cards");
             virtualGameManager.selectedCards(selected, user, gameID, stub);
         }else{
             ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least one other chosen card");
@@ -165,7 +163,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             if(ClientManager.userNickname.equals(lobbyController.lastLobbyMessage.host)){
                 this.playerReady = true;
             }else{
-                ClientManager.view.showErrorMessage("The game has started\nEnter the game with the command \"ready\"");
                 /*while (true) {
                     if (this.playerReady){
                         System.out.println("Sono nel while, nell'if");
@@ -196,9 +193,8 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.updatePlayingPlayer(mess.chairedPlayer);
             ClientManager.view.gameCommands();
         } else if (message instanceof GameStateMessage) {//Useful in case of disconnection
-            //TODO: Basically identical to initStateMessage, be careful
+            //Basically identical to initStateMessage, resilience section
         } else if (message instanceof SelectedCardsMessage) {
-            System.out.println("Sono nel selectedCardsMessage");
             SelectedCardsMessage mess = (SelectedCardsMessage) message;
             ClientManager.view.updateMatchAfterSelectedCards(mess.pieces, mess.selectables, mess.gameState);
             ClientManager.view.printLivingRoom();
@@ -207,7 +203,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 ClientManager.view.chooseColumn();
             }
         } else if (message instanceof SelectedColumnsMessage) {
-            System.out.println("Sono nel selectedColumnsMessage");
             SelectedColumnsMessage mess = (SelectedColumnsMessage) message;
             ClientManager.view.updateMatchAfterSelectedColumn(mess.pieces, mess.selectables, mess.gameState, mess.updatedPoints, mess.updatedPlayerShelf);
             ClientManager.view.printShelves();
@@ -226,7 +221,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             ClientManager.view.printShelves();
             ClientManager.view.printScoreBoard(mess.finalScoreBoard, mess.winnerNickname, mess.gameState);
             this.playerReady = false;
-            ClientManager.view.showErrorMessage("Exit the game with the command \"leave_game\"");
             while (!playerReady){
                 Thread.onSpinWait();
             }
@@ -234,21 +228,16 @@ public class GameController extends Controller implements GameViewObserver, Subs
         } else if (message instanceof ErrorMessage mess) {
             switch (mess.error.toString()) {
                 case "selectedColumnsError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseColumn();
                     break;
                 case "shelfFullError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     break;
                 case "acceptFinishedGameError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
-                    //TODO: Manage error
                     break;
                 case "selectedCardsMessageError":
-                    //System.out.println("error case in GameController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.chooseCards();
                     break;
@@ -270,60 +259,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
     public void onGetChat(boolean fullChat){
         virtualGameManager.receiveChatMessage(this.gameID,null,ClientManager.userNickname,null,fullChat,true,stub);
     }
-    //TODO: make this!!!
     private boolean isSelectionPossible(ArrayList<Pair<Integer, Integer>> selected) {
-        //TODO: check if is the selection is right
-        //latestInit.selecex
         return true;
     }
-    /*
-    private boolean selectableCards(ArrayList<Pair<Integer, Integer>> cards){
-        boolean accept = true;
-        int dim = cards.size();
-        for(int i = 0; i<dim && accept; i++){
-            int x = cards.get(i).getFirst();
-            int y = cards.get(i).getSecond();
-            if(!cardIsSelectable(x,y)) {
-                accept = false;
-            }
-        }
-        return consecutive(cards) && accept;
-    }
-
-    private boolean cardIsSelectable(int i, int j){
-        return isPresent(i,j) && freeCorner(i,j);
-    }
-
-    private boolean adiacent(int i, int j) {
-        if (i == 0) {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i + 1, j);
-
-        } else if (i == (DIM - 1)) {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
-
-        } else if (j == 0) {
-            return isPresent(i - 1, j) || (isPresent(i + 1, j) || isPresent(i, j + 1));
-
-        } else if (j == (DIM - 1)) {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j);
-
-        } else {
-            return isPresent(i, j - 1) || isPresent(i, j + 1) || isPresent(i - 1, j) || isPresent(i + 1, j);
-
-        }
-
-    }
-
-    private boolean freeCorner(int i, int j){
-        if (i == 0 || i == DIM - 1 || j == 0 || j == DIM - 1) return true;
-        else {
-            return !isPresent(i, j - 1) || !isPresent(i, j + 1) || !isPresent(i - 1, j) || !isPresent(i + 1, j);
-        }
-    }
-
-    private boolean isPresent(int i, int j){
-        return (pieces[i][j].getColor() != colorType.TOMBSTONE) && (pieces[i][j].getColor() != colorType.EMPTY_SPOT);
-    }
-
-    */
 }
