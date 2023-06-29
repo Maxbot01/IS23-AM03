@@ -47,4 +47,8 @@ public interface MyRemoteInterface extends Remote, Serializable {
         void receiveChatMessage(String gameID, String fromUser, String message, boolean fullChat, boolean inGame) throws RemoteException;
 
         String getGameLobbyHost(String gameID) throws RemoteException;
+        Message getPreviousMessageRMI(String ipAddress) throws RemoteException;
+        void setFlag(boolean flag) throws RemoteException;
+        boolean getFlag() throws RemoteException;
+
 }

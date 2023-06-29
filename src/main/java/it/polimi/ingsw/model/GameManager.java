@@ -54,17 +54,15 @@ public class GameManager extends GameObservable implements Serializable, Remote,
 
     private boolean flag = false;
 
-    public void updateState() {
-        flag = true;
+    //setter updtate
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
     public boolean getFlag() {
         return flag;
     }
 
-    public void updateStateFalse(){
-        flag = false;
-    }
 
     /**
      * Constructs a new GameManager instance.
@@ -444,6 +442,7 @@ public class GameManager extends GameObservable implements Serializable, Remote,
      * @param ipAddress   The IP address associated with the message.
      */
     public synchronized static void setMessageRMI(Message withMessage, String ipAddress) {
+        previousClientMessages = clientMessages;
         clientMessages.put(ipAddress, withMessage);
         System.out.println("\u001B[33mMessage set for: " + ipAddress + " " + withMessage.toString() + "\u001B[0m");
         System.out.println("\u001B[33mStampiamo tutto il clientMessages\u001B[0m");
@@ -452,6 +451,14 @@ public class GameManager extends GameObservable implements Serializable, Remote,
             System.out.println("\u001B[33m" + entry.getKey() + " Stiamo settando: " + entry.getValue() + "\u001B[0m");
         }
     }
+
+    // getter for previousClientMessages message with ip
+    public synchronized Message getPreviousMessageRMI(String ipAddress) {
+        return previousClientMessages.get(ipAddress);
+    }
+
+    //setter updtate
+
 
     /**
      * Registers a client with the specified IP address.
@@ -487,6 +494,8 @@ public class GameManager extends GameObservable implements Serializable, Remote,
         }
         return null;
     }
+
+
 
 
 }

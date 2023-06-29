@@ -220,6 +220,9 @@ public class CLIgeneral extends View{
     }*/
     @Override
     public void gameCommands(){
+        if(!playingPlayer.equals(userPlayer.getNickname()) && stub != null && !ClientManager.isSocketClient){
+            System.out.println("Waiting for " + playingPlayer + " to play...");
+        }
         Options options = new Options();
         options.addOption(show_gameId);
         options.addOption(chat);
@@ -239,6 +242,27 @@ public class CLIgeneral extends View{
         CommandLine cmd = null;
         while(!finished) {
             try {
+//                if (!playingPlayer.equals(userPlayer.getNickname()) && stub != null && !ClientManager.isSocketClient) {
+//                    System.out.println("Waiting for " + playingPlayer + " to play...");
+//                    Timer timer = new Timer();
+//                    TimerTask task = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            Message message = null;
+//                            try {
+//                                message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+//                            } catch (RemoteException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                            try {
+//                                ClientManager.clientReceiveMessage(message);
+//                            } catch (IOException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                        }
+//                    };
+//                    timer.schedule(task, 30000); // 30000 millisecondi = 30 secondi
+//                }
                 cmd = parser.parse(options, scanf());
                 if (cmd.hasOption(show_gameId)) {
                     System.out.println("Your gameId is: " + gameID);
@@ -285,10 +309,13 @@ public class CLIgeneral extends View{
                     }
                 }
                 else {
-                    Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
-                    ClientManager.clientReceiveMessage(message);
-                    System.out.println("gameCommands section");//DEBUG
-                    System.out.println("Unavailable command, remember to type '-' and the desired command");
+                    if(ClientManager.isSocketClient && stub != null){
+                        Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                        ClientManager.clientReceiveMessage(message);
+                    } else {
+                        System.out.println("gameCommands section");//DEBUG
+                        System.out.println("Unavailable command, remember to type '-' and the desired command");
+                    }
                 }
             } catch (ParseException | RemoteException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
@@ -344,68 +371,71 @@ public class CLIgeneral extends View{
         while(!finished) {
             try {
                 cmd = parser.parse(options, scanf());
-                if (cmd.hasOption(show_games)) {
-                    if (this.availableGames.size() == 0) {
-                        System.out.println("No games available");
-                    } else {
-                        for(int i = 0; i < this.availableGames.size(); i++){
-                            int z = i+1;
-                            System.out.println("GameId " + z + ": " + this.availableGames.get(i).getFirst());
-                            System.out.print("Players: ");
-                            for(int j = 0; j < this.availableGames.get(i).getSecond().size(); j++){
-                                System.out.print(this.availableGames.get(i).getSecond().get(j)+"\t");
+                    if (cmd.hasOption(show_games)) {
+                        if (this.availableGames.size() == 0) {
+                            System.out.println("No games available");
+                        } else {
+                            for(int i = 0; i < this.availableGames.size(); i++){
+                                int z = i+1;
+                                System.out.println("GameId " + z + ": " + this.availableGames.get(i).getFirst());
+                                System.out.print("Players: ");
+                                if(ClientManager.isSocketClient || stub == null){
+                                    for(int j = 0; j < this.availableGames.get(i).getSecond().size(); j++){
+                                        System.out.print(this.availableGames.get(i).getSecond().get(j)+"\t");
+                                    }
+                                    System.out.println();
+                                }
                             }
-                            System.out.println();
                         }
-                    }
-                } else if (cmd.hasOption(help)) {
-                    formatter.printHelp("Available Commands", options);
-                } else if (cmd.hasOption(select_game)) {
-                    boolean valid = true;
-                    String lobbyID = cmd.getOptionValue(select_game);
-                    if (lobbyID.length() == 1) {
-                        int IDnumber = Integer.parseInt(lobbyID);
-                        if (IDnumber - 1 < this.availableGames.size() && IDnumber - 1 >= 0) {
-                            lobbyID = this.availableGames.get(IDnumber-1).getFirst();
+                    } else if (cmd.hasOption(help)) {
+                        formatter.printHelp("Available Commands", options);
+                    } else if (cmd.hasOption(select_game)) {
+                        boolean valid = true;
+                        String lobbyID = cmd.getOptionValue(select_game);
+                        if (lobbyID.length() == 1) {
+                            int IDnumber = Integer.parseInt(lobbyID);
+                            if (IDnumber - 1 < this.availableGames.size() && IDnumber - 1 >= 0) {
+                                lobbyID = this.availableGames.get(IDnumber-1).getFirst();
+                            } else {
+                                valid = false;
+                            }
                         } else {
                             valid = false;
-                        }
-                    } else {
-                        valid = false;
-                        for(int i = 0; i < this.availableGames.size(); i++){
-                            if(this.availableGames.get(i).getFirst().equals(lobbyID)){
-                                valid = true;
+                            for(int i = 0; i < this.availableGames.size(); i++){
+                                if(this.availableGames.get(i).getFirst().equals(lobbyID)){
+                                    valid = true;
+                                }
                             }
                         }
-                    }
-                    if (valid) {
-                        finished = true;
-                        super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname(), stub);
+                        if (valid) {
+                            finished = true;
+                            super.gameManagerController.onSelectGame(lobbyID, userPlayer.getNickname(), stub);
+                        } else {
+                            System.out.println("Incorrect ID, please select a valid ID");
+                        }
+                    } else if (cmd.hasOption(create_game)) {
+                        int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
+                        if (numOfPlayers >= 2 && numOfPlayers <= 4) {
+                            host = userPlayer.getNickname();
+                            finished = true;
+                            super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname(),stub);
+                        } else if (numOfPlayers > 4) {
+                            System.out.println("You can't have more than 4 players in a game");
+                        } else {
+                            System.out.println("You need to have at least 2 player for the game");
+                        }
                     } else {
-                        System.out.println("Incorrect ID, please select a valid ID");
+                        if(ClientManager.isSocketClient && stub != null){
+                            Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                            ClientManager.clientReceiveMessage(message);
+                        } else {
+                            System.out.println("launchGameManager section");//DEBUG
+                            System.out.println("Unavailable command, remember to type '-' and the desired command");
+                        }
                     }
-                } else if (cmd.hasOption(create_game)) {
-                    int numOfPlayers = Integer.parseInt(cmd.getOptionValue(create_game));
-                    if (numOfPlayers >= 2 && numOfPlayers <= 4) {
-                        host = userPlayer.getNickname();
-                        finished = true;
-                        super.gameManagerController.onCreateGame(numOfPlayers, userPlayer.getNickname(),stub);
-                    } else if (numOfPlayers > 4) {
-                        System.out.println("You can't have more than 4 players in a game");
-                    } else {
-                        System.out.println("You need to have at least 2 player for the game");
-                    }
-                } else {
-                    Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
-                    ClientManager.clientReceiveMessage(message);
-                    System.out.println("launchGameManager section");//DEBUG
-                    System.out.println("Unavailable command, remember to type '-' and the desired command");
-                }
             } catch (ParseException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
                 formatter.printHelp("Available Commands", options);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -511,11 +541,13 @@ public class CLIgeneral extends View{
                     finished = true;
                     super.gameController.setReady(gameID, userPlayer.getNickname());//After this command the game is shown
                 } else {
-                    System.out.println("Aggiornamento Client per RMI");
-                    Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
-                    ClientManager.clientReceiveMessage(message);
-                    System.out.println("launchGameLobby section");
-                    System.out.println("Unavailable command, remember to type '-' and the desired command");
+                    if(ClientManager.isSocketClient && stub != null){
+                        Message message = stub.ReceiveMessageRMI(ClientManager.clientIP);
+                        ClientManager.clientReceiveMessage(message);
+                    } else {
+                        System.out.println("gameCommands section");//DEBUG
+                        System.out.println("Unavailable command, remember to type '-' and the desired command");
+                    }
                 }
             } catch (ParseException pe) {
                 System.out.println("Error parsing command-line arguments, invalid command");
