@@ -1,18 +1,16 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorType;
 import it.polimi.ingsw.model.messageModel.lobbyMessages.LobbyInfoMessage;
-import it.polimi.ingsw.model.modelSupport.Player;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
-import it.polimi.ingsw.server.MyRemoteInterface;
 
-import java.io.IOException;
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class GameLobby extends GameObservable {
+public class GameLobby extends GameObservable implements Serializable, Remote {
 
     private final String HostID;
     private String ID;
@@ -28,18 +26,10 @@ public class GameLobby extends GameObservable {
         return this.host;
     }
 
-    public void startMatch(String user, MyRemoteInterface stub) throws IOException {
+    public void startMatch(String user, it.polimi.ingsw.model.MyRemoteInterface stub) {
         System.out.println("startMatch from GameLobby");
         if(user.equals(host) && numOfPlayers == players.size()){
-            if(stub == null){
-                GameManager.getInstance().createMatchFromLobby(ID, players);
-            } else {
-                try {
-                    stub.createMatchFromLobby(ID, players);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            GameManager.getInstance().createMatchFromLobby(ID, players);
         }else if (players.size() < numOfPlayers){
             super.notifyObserver(user, new ErrorMessage(ErrorType.notEnoughPlayers,"There aren't enough players to start the match"), false, "-");
         }else if(!user.equals(host)){//TODO: This check is not needed, it is done inside the cli, maybe it's needed for the gui, check before removing

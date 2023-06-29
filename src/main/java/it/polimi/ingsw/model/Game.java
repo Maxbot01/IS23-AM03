@@ -61,6 +61,7 @@ public class Game extends GameObservable{
     private String ID;
 
 
+
     /**
      * Initialization of the game.
      * The players have already been created in the lobby, here each player is given its personal goal randomly.
@@ -78,6 +79,7 @@ public class Game extends GameObservable{
         for (int i = 0; i < indexes.length; i++) {
             players.get(i).setPersonalGoalFromIndex(indexes[i]);
         }
+
         //set the livingroom
         this.livingRoom = new LivingRoom(players.size());
         //set common goals
@@ -173,6 +175,7 @@ public class Game extends GameObservable{
                 System.out.print("\n");
             }*/
             this.playingPlayer.getPlayersShelf().insertInColumn(selCards, colIndex);
+            this.playingPlayer.setPlayerShelf(this.playingPlayer.getPlayersShelf());
             /*System.out.println("PRINTING THE MODIFIED SHELF AFTER:");
             for(int i = 0; i < playingPlayer.getPlayersShelf().getShelfCards().length; i++){
                 for(int j = 0; j < playingPlayer.getPlayersShelf().getShelfCards()[0].length; j++){
@@ -200,17 +203,23 @@ public class Game extends GameObservable{
         }
         //the playing players shelf is updated
         //calculate players points gained from the move
-        this.commonGoals.calculateAllPoints(playingPlayer, players.size());
+        this.playingPlayer.updateScore(this.commonGoals.calculateAllPoints(playingPlayer, players.size()));
         //if we are in the last round and the next player has the chair we can set the state as FINISHED and terminate the match
         if(gameState == GameStateType.LAST_ROUND && getNextPlayer().hasChair()){
             this.gameState = GameStateType.FINISHED;
             ArrayList<Pair<String, Integer>> finalScoreBoard = new ArrayList<>();
+            //Sending the last shelf update before the final score because the calculateAdiacentPoints sosbstitutes the cards with empty_spot
+            super.notifyAllObservers(getAllNicks(), new SelectedColumnsMessage(gameState, "ID", new Pair<>(playingPlayer.getNickname(),
+                    playingPlayer.getScore()), getNextPlayer().getNickname(), new Pair<>(playingPlayer.getNickname(),this.playingPlayer.getPlayersShelf().
+                    getShelfCards()),this.livingRoom.getPieces(), this.livingRoom.calculateSelectable()), true, this.ID);
+
             for (Player pl:players){
                 //TODO: possibility to put an observer from the player to the shelf to automatically update points
                 //get final score adds personal points to the score so it has to be called only once
                 finalScoreBoard.add(new Pair<>(pl.getNickname(), pl.getFinalScore()));
             }
             String winnerNickname = finalScoreBoard.stream().reduce((a, b) -> a.getSecond() > b.getSecond() ? a : b).get().getFirst();
+            //Sending the last shelf update
             super.notifyAllObservers(getAllNicks(), new FinishedGameMessage(gameState, "ID", finalScoreBoard, winnerNickname), true, this.ID);
             return;
         }

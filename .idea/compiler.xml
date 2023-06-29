@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="AM03_newfromvideo" />
+        <module name="IS23-AM03" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="AM03_newfromvideo" target="19" />
+      <module name="AM03" target="19" />
     </bytecodeTargetLevel>
   </component>
 </project>
