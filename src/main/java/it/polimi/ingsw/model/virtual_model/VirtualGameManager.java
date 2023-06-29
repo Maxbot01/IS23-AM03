@@ -2,18 +2,19 @@ package it.polimi.ingsw.model.virtual_model;
 
 import it.polimi.ingsw.controller.client.ClientMain;
 import it.polimi.ingsw.controller.client.ClientManager;
+import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.modelSupport.exceptions.UnselectableCardException;
 import it.polimi.ingsw.model.modelSupport.exceptions.lobbyExceptions.LobbyFullException;
-import it.polimi.ingsw.model.MyRemoteInterface;
-import it.polimi.ingsw.server.RemoteUserInfo;
-import it.polimi.ingsw.server.VirtualGameManagerSerializer;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.modelSupport.BoardCard;
+import it.polimi.ingsw.server.RemoteUserInfo;
+import it.polimi.ingsw.server.VirtualGameManagerSerializer;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 
@@ -214,6 +215,19 @@ public class VirtualGameManager implements Remote, Serializable {
             try {
                 stub.startMatch(ID, user, stub);
             } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void userReady(String username, String lobbyID, MyRemoteInterface stub){
+        if (isSocketClient) {
+            VirtualGameManagerSerializer serializedGameManager = new VirtualGameManagerSerializer("userReady", new Object[]{username, lobbyID});
+            ClientMain.sendMessage(serializeMethod(serializedGameManager));
+        } else {
+            try {
+                stub.userReady(username, lobbyID);
+            } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
         }

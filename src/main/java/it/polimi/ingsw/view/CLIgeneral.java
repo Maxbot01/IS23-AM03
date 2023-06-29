@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.controller.client.ClientManager;
 import it.polimi.ingsw.controller.GameManagerController;
+import it.polimi.ingsw.controller.client.ClientManager;
 import it.polimi.ingsw.model.CommonGoals.CommonGoals;
 import it.polimi.ingsw.model.GameStateType;
 import it.polimi.ingsw.model.helpers.Pair;

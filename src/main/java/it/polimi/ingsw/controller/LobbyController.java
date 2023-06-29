@@ -12,12 +12,17 @@ import it.polimi.ingsw.view.View;
 
 import static it.polimi.ingsw.controller.client.ClientMain.stub;
 
+
+/**
+ * This controller menages the lobby phase, getting messages from the server, updating the view, and responding to user inputs
+ */
 public class LobbyController extends Controller implements LobbyViewObserver, Subscriber {
 
     private final String ID;
     private boolean isFirstLobbyMessage;
     public LobbyInfoMessage lastLobbyMessage;
     private Thread lastThread;
+
     public LobbyController(View view, String ID) {
         super(view);
         this.ID = ID;
@@ -30,10 +35,16 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
         return ID;
     }
 
+    /**
+     * User requests the match to start
+     * @param ID
+     * @param user
+     */
     @Override
     public void onStartMatch(String ID, String user) { // The username sent is the host's username
         ClientManager.virtualGameManager.startMatch(ID, user, stub);
     }
+
 
     @Override
     public void onGetHost() {
@@ -41,6 +52,12 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
     @Override
     public void onGetPlayers() {
     }
+
+    /**
+     * Method needed to handle the messages published from the topics of which the user is subscribed
+     * @param message
+     * @return
+     */
     @Override
     public boolean receiveSubscriberMessages(Message message) {
         if(message instanceof LobbyInfoMessage mess) {
@@ -57,23 +74,11 @@ public class LobbyController extends Controller implements LobbyViewObserver, Su
                 }
                 this.lastLobbyMessage = mess;
             }
-            /*if(lastThread != null){
-                System.out.println("launchGameLobby "+lastThread.getName()+" interrupted");
-                lastThread.interrupt();
-            }else{
-                System.out.println("First launchGameLobby");
-            }
-            this.lastThread = Thread.currentThread();
-            System.out.println("launchGameLobby Thread name: "+Thread.currentThread().getName());
-            if(!mess.lastLobbyMessage) {
-                ClientManager.view.launchGameLobby(mess.ID, mess.players, mess.host);
-            }else{
-                this.lastThread.interrupt();
-                System.out.println("Last Lobby thread interrupted");
-            }*/
+
         }else if(message instanceof ErrorMessage mess){
             switch (mess.error.toString()) {
-                case "notEnoughPlayers", "onlyHostCanStartMatch":
+                case "notEnoughPlayers", "onlyHostCanStartMatch", "notEveryoneReady":
+                    //System.out.println("error case in LobbyController: "+mess.info);
                     ClientManager.view.showErrorMessage(mess.info);
                     ClientManager.view.launchGameLobby(lastLobbyMessage.ID,lastLobbyMessage.players,lastLobbyMessage.host);
                     break;

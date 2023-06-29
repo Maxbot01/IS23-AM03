@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public interface MyRemoteInterface extends Remote, Serializable {
         // further remote methods
@@ -36,6 +34,8 @@ public interface MyRemoteInterface extends Remote, Serializable {
         void selectedColumn(ArrayList<BoardCard> selected, Integer column, String user, String gameID) throws RemoteException;
 
         void sendAck() throws RemoteException;
+
+        void userReady(String username, String lobbyID) throws RemoteException;
 
         void registerClient(String ipAddress) throws RemoteException;
 

@@ -18,13 +18,7 @@ import it.polimi.ingsw.server.ServerMain;
 import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.util.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Singleton that represents the front-end logic of the server and exposes the endpoint method that every client can call, it manages the requests creating and deleting the games
@@ -399,6 +393,15 @@ public class GameManager extends GameObservable implements Serializable, Remote,
         return instance;
     }
 
+
+    public void userReady(String username, String lobbyID){
+        System.out.println("USER READY " + username);
+        for (GameLobby x : currentGames.keySet()) {
+            if (x.getID().equals(lobbyID)) {
+                x.addReadyPlayer(username);
+            }
+        }
+    }
 
     public void sendAck() {
     }

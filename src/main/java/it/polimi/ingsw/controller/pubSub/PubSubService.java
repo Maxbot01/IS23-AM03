@@ -6,45 +6,68 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The PubSubService class handles the publish-subscribe mechanism for message distribution.
+ */
 public class PubSubService {
     /**
-     * Each topic has its observers controller
+     * Each topic has its observers' controller.
      */
     HashMap<TopicType, ArrayList<Subscriber>> topicSubMap;
 
-    public PubSubService(){
+    /**
+     * Constructs a new instance of PubSubService.
+     */
+    public PubSubService() {
         topicSubMap = new HashMap<>();
     }
 
-    public void addSubscriber(TopicType topic, Subscriber subscriber){
-        if(topicSubMap.containsKey(topic)){
+    /**
+     * Adds a subscriber to the specified topic.
+     *
+     * @param topic     The topic to subscribe to.
+     * @param subscriber The subscriber to add.
+     */
+    public void addSubscriber(TopicType topic, Subscriber subscriber) {
+        if (topicSubMap.containsKey(topic)) {
             ArrayList<Subscriber> subs = topicSubMap.get(topic);
             subs.add(subscriber);
             topicSubMap.put(topic, subs);
-        }else{
-            //create the topic
+        } else {
+            // Create the topic
             ArrayList<Subscriber> toAdd = new ArrayList<>();
             toAdd.add(subscriber);
             topicSubMap.put(topic, toAdd);
         }
     }
 
-    //Remove an existing subscriber for a topic
-    public void removeSubscriber(TopicType topic, Subscriber subscriber){
-        if(topicSubMap.containsKey(topic)){
+    /**
+     * Removes an existing subscriber from the specified topic.
+     *
+     * @param topic     The topic to unsubscribe from.
+     * @param subscriber The subscriber to remove.
+     */
+    public void removeSubscriber(TopicType topic, Subscriber subscriber) {
+        if (topicSubMap.containsKey(topic)) {
             ArrayList<Subscriber> subscribers = topicSubMap.get(topic);
             subscribers.remove(subscriber);
             topicSubMap.put(topic, subscribers);
         }
     }
 
-    //possibility to hava a callback to ack if the sub received
+    /**
+     * Publishes a message to the specified topic, notifying all subscribers.
+     *
+     * @param topic   The topic to publish the message to.
+     * @param message The message to publish.
+     * @throws IOException If an I/O error occurs.
+     */
     public void publishMessage(TopicType topic, Message message) throws IOException {
-        if (topicSubMap.containsKey(topic)){
-            for (Subscriber s: topicSubMap.get(topic)) {
+        if (topicSubMap.containsKey(topic)) {
+            for (Subscriber s : topicSubMap.get(topic)) {
                 s.receiveSubscriberMessages(message);
             }
-        }else{
+        } else {
             System.err.println("No topic exists");
         }
     }
