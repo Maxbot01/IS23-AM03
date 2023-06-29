@@ -23,6 +23,9 @@ import static it.polimi.ingsw.controller.client.ClientMain.stub;
 import static it.polimi.ingsw.controller.client.ClientManager.lobbyController;
 import static it.polimi.ingsw.controller.client.ClientManager.virtualGameManager;
 
+/**
+ * This controller manages the game phase, getting messages from the server, updating the view, and responding to user inputs
+ */
 public class GameController extends Controller implements GameViewObserver, Subscriber {
 
     private InitStateMessage latestInit;
@@ -54,6 +57,7 @@ public class GameController extends Controller implements GameViewObserver, Subs
      */
     @Override
     public void setReady(String gameID, String nickname) {
+        virtualGameManager.userReady(nickname, gameID, stub);
         this.playerReady = true;
         if (!ClientManager.isSocketClient && stub != null) {
             Message message = null;
@@ -72,39 +76,52 @@ public class GameController extends Controller implements GameViewObserver, Subs
     }
 
     /**
-     *
-     * @param selected
-     * @param user
+     *User has selected the cards. The relative GameManager endpoint method is called
+     * @param selected array list of the user-ordered selected cards
+     * @param user usenrname
      */
     @Override
     public void onSelectedCards(ArrayList<Pair<Integer, Integer>> selected, String user) {
-        //view has selected cards
-        //check if selection was correct
-        if (isSelectionPossible(selected)) {
-/*            if(!ClientManager.isCli){
-                ClientManager.view.chooseColumn();
-            }*/
+
+            System.err.println("sending selected cards");
             virtualGameManager.selectedCards(selected, user, gameID, stub);
-        }else{
-            ClientManager.view.showErrorMessage("Every chosen card must be adiacent to at least one other chosen card");
-            ClientManager.view.chooseCards();
-        }
+
     }
+
+    /**
+     * User has selected the column, it is selectable (checked by the controller). The relative GameManager endpoint method is called
+     * @param selCards selected cards in order
+     * @param colIndex
+     * @param user
+     */
     @Override
     public void onSelectedColumn(ArrayList<BoardCard> selCards, Integer colIndex, String user) {
         //view has selected columns
         virtualGameManager.selectedColumn(selCards, colIndex, user, gameID, stub);
     }
+
+    /**
+     *
+     */
     @Override
     public void onAcceptFinishedGame() {
         //view has accepted finished game
         //virtualGame.acceptFinishedGame();
     }
+
+    /**
+     * User can start choosing cards
+     */
     @Override
     public void startCardsSelection(){
         ClientManager.view.chooseCards();
     }
 
+    /**
+     * Returns the common goals to the view
+     * @param goalString
+     * @return
+     */
     private CommonGoalStrategy getCommonGoalStrategy(String goalString) {
         switch (goalString) {
             case "SixOfTwoGoalStrategy":
@@ -135,6 +152,12 @@ public class GameController extends Controller implements GameViewObserver, Subs
                 throw new IllegalArgumentException("Invalid goal strategy: " + goalString);
         }
     }
+
+    /**
+     * The GameController received the message from a topic on which it has a subscription, the message is coming from the server
+     * @param message Received message
+     * @return
+     */
     @Override
     public boolean receiveSubscriberMessages(Message message){
         //a message has been received
@@ -154,7 +177,6 @@ public class GameController extends Controller implements GameViewObserver, Subs
             CommonGoals commonGoals = new CommonGoals();
             commonGoals.setFirstGoal(getCommonGoalStrategy(firstGoalString));
             commonGoals.setSecondGoal(getCommonGoalStrategy(secondGoalString));
-
 
             // Command "-ready" section:
             if(ClientManager.userNickname.equals(lobbyController.lastLobbyMessage.host)){
@@ -238,13 +260,21 @@ public class GameController extends Controller implements GameViewObserver, Subs
         return true;
     }
     //every controller HAS to be subscribed to a topic and HAS to observe the view
-    /*
-    Types of messages
+
+    /**
+     * User send chat message. The relative GameManager endpoint method is called
+     * @param message
+     * @param toUser
      */
     @Override
     public void onSendChatMessage(String message,String toUser){
         virtualGameManager.receiveChatMessage(this.gameID,toUser,ClientManager.userNickname,message,false,true,stub);
     }
+
+    /**
+     * User received chat info
+     * @param fullChat
+     */
     @Override
     public void onGetChat(boolean fullChat){
         virtualGameManager.receiveChatMessage(this.gameID,null,ClientManager.userNickname,null,fullChat,true,stub);

@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public interface MyRemoteInterface extends Remote, Serializable {
         // further remote methods

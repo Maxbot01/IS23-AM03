@@ -1,24 +1,18 @@
 package it.polimi.ingsw.view.GUIView;
 
 import it.polimi.ingsw.controller.client.ClienRMIObject;
-import it.polimi.ingsw.controller.client.ClienRMIObjectInterface;
 import it.polimi.ingsw.controller.client.ClientMain;
 import it.polimi.ingsw.model.MyRemoteInterface;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

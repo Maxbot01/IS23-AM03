@@ -5,13 +5,13 @@ import it.polimi.ingsw.controller.client.ClientManager;
 import it.polimi.ingsw.controller.controllerObservers.GameManagerViewObserver;
 import it.polimi.ingsw.controller.pubSub.Subscriber;
 import it.polimi.ingsw.controller.pubSub.TopicType;
+import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.model.helpers.Pair;
 import it.polimi.ingsw.model.messageModel.GameManagerMessages.loginGameMessage;
 import it.polimi.ingsw.model.messageModel.Message;
 import it.polimi.ingsw.model.messageModel.NetworkMessage;
 import it.polimi.ingsw.model.messageModel.errorMessages.ErrorMessage;
 import it.polimi.ingsw.model.virtual_model.VirtualGameManager;
-import it.polimi.ingsw.model.MyRemoteInterface;
 import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
