@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+
 public class CLIColors extends CLIgeneral{
 
 
@@ -14,7 +15,6 @@ public class CLIColors extends CLIgeneral{
     public static final String PURPLE_BACKGROUND = "45m";
     public static final String CYAN_BACKGROUND = "46m";
     public static final String WHITE_BACKGROUND = "47m"; //bright: "0;107m"
-
     /*
     // Codici di escape per i colori del testo in CMD
     public static final String RESET = "\u001b[0m";
