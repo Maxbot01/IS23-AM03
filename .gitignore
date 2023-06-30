@@ -36,8 +36,6 @@ libJFXx86/
 ### VS Code ###
 .vscode/
 
-#javadoc
-javadoc/
 
 ### Mac OS ###
 .DS_Store
