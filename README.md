@@ -1,7 +1,4 @@
-# IS23-AM03
-
-### How to play the game
-
+### IS23-AM03
 # Completed features
 ## Schema
 🟢 UML<br />
