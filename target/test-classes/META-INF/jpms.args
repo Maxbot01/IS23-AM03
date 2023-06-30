@@ -1,4 +1,0 @@
---patch-module
-it.polimi.ingsw=_
---add-reads
-it.polimi.ingsw=ALL-UNNAMED
