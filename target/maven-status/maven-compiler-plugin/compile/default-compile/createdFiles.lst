@@ -1,6 +1,5 @@
 it\polimi\ingsw\model\modelSupport\SenderConnectionStrategy.class
 it\polimi\ingsw\model\modelSupport\LivingRoom.class
-it\polimi\ingsw\model\virtual_model\VirtualGameManager.class
 it\polimi\ingsw\model\GameStateType.class
 it\polimi\ingsw\model\messageModel\lobbyMessages\LobbyInfoMessage.class
 it\polimi\ingsw\controller\GameManagerController.class
@@ -53,10 +52,8 @@ it\polimi\ingsw\controller\client\MessageSerializer.class
 it\polimi\ingsw\model\modelSupport\enums\colorType.class
 it\polimi\ingsw\controller\controllerObservers\LobbyViewObserver.class
 it\polimi\ingsw\model\messageModel\errorMessages\SelectedColumnsMessageError.class
-it\polimi\ingsw\view\CLIgeneral.class
 it\polimi\ingsw\server\EchoServerClientHandler.class
 it\polimi\ingsw\model\modelSupport\exceptions\ColumnNotSelectable.class
-it\polimi\ingsw\controller\GameController.class
 it\polimi\ingsw\model\modelSupport\exceptions\lobbyExceptions\LobbyFullException.class
 it\polimi\ingsw\model\GameLobby.class
 it\polimi\ingsw\view\GUIView\GameView$1.class
@@ -67,7 +64,6 @@ it\polimi\ingsw\view\GUIView\ConnectionView.class
 it\polimi\ingsw\Main.class
 it\polimi\ingsw\view\GUIView\GameLobbyView$1.class
 it\polimi\ingsw\controller\pubSub\TopicType.class
-it\polimi\ingsw\controller\client\ClientMain.class
 it\polimi\ingsw\controller\controllerObservers\GameViewObserver.class
 it\polimi\ingsw\model\helpers\Quartet.class
 it\polimi\ingsw\model\messageModel\matchStateMessages\SelectedCardsMessage.class
@@ -91,7 +87,6 @@ it\polimi\ingsw\model\Game.class
 it\polimi\ingsw\model\messageModel\matchStateMessages\InitStateMessage.class
 it\polimi\ingsw\server\ServerMain$ClientHandler.class
 it\polimi\ingsw\model\CommonGoals\Strategy\TriangularGoalStrategy.class
-it\polimi\ingsw\controller\client\ClienRMIObject.class
 it\polimi\ingsw\controller\pubSub\PubSubMessage.class
 it\polimi\ingsw\view\GUIView\GameLobbyView$1$1.class
 it\polimi\ingsw\model\modelSupport\exceptions\NoMoreCardsException.class
