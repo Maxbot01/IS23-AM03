@@ -31,13 +31,11 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-libJFXx86/
-
 ### VS Code ###
 .vscode/
 
-#javadoc
-javadoc/
-
 ### Mac OS ###
 .DS_Store
+
+## idea ##
+.idea
